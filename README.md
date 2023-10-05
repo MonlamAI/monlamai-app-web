@@ -9,21 +9,14 @@
 </h1>
 
 ## _Project Name_
-_The project name should match its code's capability so that new users can easily understand what it does._
+Monlam Ai Tools
 
 ## Owner(s)
 
 _Change to the owner(s) of the new repo. (This template's owners are:)_
-- [@ngawangtrinley](https://github.com/ngawangtrinley)
-- [@mikkokotila](https://github.com/mikkokotila)
-- [@evanyerburgh](https://github.com/evanyerburgh)
-
-## RFXs
-Requests for work (RFWs) and requests for comments (RFCs) associated with this project:
-* [RFX name](#)
-* [RFX name](#)
-* [RFX name](#)
-
+- [@tenkus47](https://github.com/tenkus47)
+- [@tentamdin](https://github.com/tentamdin)
+  
 ## Table of contents
 <p align="center">
   <a href="#project-description">Project description</a> •
