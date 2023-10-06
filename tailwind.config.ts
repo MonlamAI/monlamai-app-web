@@ -5,6 +5,10 @@ export default {
 
   theme: {
     extend: {},
+    fontFamily: {
+      Elsie: ["Elsie", "sans-serif"],
+      Inter: ["Inter", "sans-serif"],
+    },
   },
   plugins: [],
 } satisfies Config;
