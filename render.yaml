@@ -10,6 +10,6 @@ services:
     startCommand: npm run start
     envVars:
       - key: NODE_VERSION
-        value: ~16.14.2
+        value: ~18.18.0
       - key: NODE_ENV
         value: production
