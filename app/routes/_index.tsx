@@ -4,7 +4,7 @@ import type {
   MetaFunction,
 } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import Main from "~/component/Main";
+import Main from "~/component/Mainpage";
 
 export const meta: MetaFunction = () => {
   return [
