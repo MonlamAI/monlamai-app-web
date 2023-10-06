@@ -2,7 +2,7 @@ services:
   - type: web
     name: monlam ai tools
     env: node
-    plan: free
+    plan: starter
     # Update the following line with your Strapi GitHub repo
     repo: https://github.com/OpenPecha/monlam_ai_tools.git
     branch: main
