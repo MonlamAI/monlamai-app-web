@@ -4,16 +4,19 @@ import LoginPage from "../LoginPage";
 import Hero from "./Hero";
 import List from "./List";
 import PowerUser from "./PowerUser";
+import Header from "./Header";
+import Footer from "./Footer";
 
 function Main() {
   const { user } = useLoaderData();
 
   return (
-    <div className="bg-[#1d2d44] text-white">
-      <div className="w-full mx-auto">
+    <div className="text-white">
+      <div className="w-full mx-auto relative  h-screen">
         <Hero />
         <List />
         <PowerUser />
+        <Footer />
       </div>
     </div>
   );

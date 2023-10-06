@@ -1,2 +1,35 @@
 @import url("https://fonts.googleapis.com/css2?family=Elsie&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Elsie&family=Inter&display=swap");
+
+@font-face {
+  font-family: "Monlam";
+  src: url("/font/MonlamTBslim.woff2") format("woff2"),
+    url("/font/MonlamTBslim.woff") format("woff"),
+    url("/font/MonlamTBslim.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Hindi";
+  src: url("/font/Poppins-Regular.woff2") format("woff2"),
+    url("/font/Poppins-Regular.woff") format("woff"),
+    url("/font/Poppins-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+* {
+  font-family: "Monlam";
+}
+
+body {
+  font-size: 14px;
+  color: #333;
+  background-color: #1d2d44;
+  letter-spacing: 1px;
+  height: 200%;
+  width: 100dvw;
+  scroll-behavior: smooth;
+}

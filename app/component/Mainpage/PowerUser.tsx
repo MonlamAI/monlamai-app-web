@@ -2,7 +2,7 @@ import React from "react";
 
 function PowerUser() {
   return (
-    <div className="w-full text-center p-[100px] ">
+    <div className="w-full text-center pb-10 " id="contact">
       <img src="/assets/logo.png" className="w-[150px] mx-auto" alt="logo" />
       <h2 className="font-Elsie text-[48px]">Become our Power User</h2>
       <p className="font-Inter max-w-[500px] mx-auto">
