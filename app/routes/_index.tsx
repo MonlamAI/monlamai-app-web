@@ -3,7 +3,6 @@ import type {
   LoaderFunction,
   MetaFunction,
 } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
 import Main from "~/component/Mainpage";
 
 export const meta: MetaFunction = () => {

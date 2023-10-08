@@ -6,7 +6,7 @@ function Header() {
 
   useEffect(() => {
     // Add a scroll event listener to monitor scroll position
-    const handleScroll = (e) => {
+    const handleScroll = () => {
       if (window.scrollY > window.innerHeight) {
         setScrolled(true);
       } else {
@@ -59,7 +59,7 @@ function Header() {
         <div className="lg:hidden  absolute top-[60px] bg-blue-950 p-5 right-0">
           <ul className="flex flex-col gap-8">
             <li>
-              <a href="/about">ང་ཚོའི་སྐོར།</a>
+              <Link to="about">ང་ཚོའི་སྐོར།</Link>
             </li>
             <li>
               <a href="#skills">མིས་བཟོས་རིག་ནུས།</a>
