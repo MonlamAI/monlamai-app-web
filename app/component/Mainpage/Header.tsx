@@ -56,7 +56,10 @@ function Header() {
 
       {/* mobile view */}
       {showMenu && (
-        <div className="lg:hidden  absolute top-[60px] bg-blue-950 p-5 right-0">
+        <div
+          className="lg:hidden  absolute top-[60px] bg-blue-950 p-5 right-0 w-full
+"
+        >
           <ul className="flex flex-col gap-8">
             <li>
               <Link to="/about">ང་ཚོའི་སྐོར།</Link>

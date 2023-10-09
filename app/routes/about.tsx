@@ -7,12 +7,12 @@ function About() {
     <>
       <div className="text-white">
         <Header />
-        <div className="h-screen py-[160px] m-auto max-w-[1140px]">
+        <div className="h-screen py-[160px] m-auto w-[90%] md:w-[80%]">
           <div className="flex flex-col justify-center items-center gap-10 px-4 lg:flex-row">
             <img
               src="/assets/about.jpg"
               alt="monalm"
-              className="w-[80%] sm:w-[60%] md:w-[50%] border-[#dddcdc] rounded-xl"
+              className="w-[80%] md:w-[60%] lg:w-[40%] border-[#dddcdc] rounded-xl"
             />
             <div className="text-sm leading-7">
               <h4 className="text-[1.5rem] mb-4">

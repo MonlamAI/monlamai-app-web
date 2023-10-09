@@ -52,7 +52,7 @@ function List() {
         <p className="mb-8">
           གཤམ་གསལ་ཚོད་ལྟའི་མ་ལག་ཁག་ལ་ཁྱེད་རང་མཉམ་ཞུགས་བྱ་ཆོག
         </p>
-        <div className="flex gap-2 mx-10 flex-col md:flex-row ">
+        <div className="flex gap-8 md:gap-4 mx-10 flex-col md:flex-row ">
           {models.map((model, index) => (
             <EachModel key={model.name} model={model} index={index} />
           ))}
@@ -66,7 +66,7 @@ function EachModel({ model, index }: EachProps) {
   const { name, desc, img, icon, bg } = model;
   return (
     <div
-      className={`flex flex-col text-black rounded-2xl overflow-hidden min-h-[400px]`}
+      className={`flex flex-col text-black rounded-2xl overflow-hidden w-full md:w-1/4 `}
       style={{ backgroundColor: bg }}
     >
       <img src={img} alt={"image" + index} />
