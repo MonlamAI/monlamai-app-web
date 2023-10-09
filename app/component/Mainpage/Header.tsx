@@ -26,7 +26,7 @@ function Header() {
         scrolled ? "bg-blue-950" : "bg-transparent"
       }`}
     >
-      <a href="index.html" className="flex items-center gap-2 text-[1.25rem]">
+      <a href="/" className="flex items-center gap-2 text-[1.25rem]">
         <img
           src="/assets/logo.png"
           width="40px"
@@ -59,7 +59,7 @@ function Header() {
         <div className="lg:hidden  absolute top-[60px] bg-blue-950 p-5 right-0">
           <ul className="flex flex-col gap-8">
             <li>
-              <Link to="about">ང་ཚོའི་སྐོར།</Link>
+              <Link to="/about">ང་ཚོའི་སྐོར།</Link>
             </li>
             <li>
               <a href="#skills">མིས་བཟོས་རིག་ནུས།</a>
@@ -87,7 +87,7 @@ function Header() {
       <div className="hidden lg:flex gap-2 ml-8 flex-1 justify-between">
         <ul className="flex gap-8">
           <li>
-            <a href="#about">ང་ཚོའི་སྐོར།</a>
+            <Link to="/about">ང་ཚོའི་སྐོར།</Link>
           </li>
           <li>
             <a href="#skills">མིས་བཟོས་རིག་ནུས།</a>
