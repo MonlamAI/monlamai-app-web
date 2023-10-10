@@ -28,7 +28,6 @@ export default function App() {
           integrity="sha384-3AB7yXWz4OeoZcPbieVW64vVXEwADiYyAEhwilzWsLw+9FgqpyjjStpPnpBO8o8S"
           crossOrigin="anonymous"
         />
-
         <Links />
       </head>
       <body>

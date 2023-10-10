@@ -1,9 +1,20 @@
-import type {
-  LinksFunction,
-  LoaderFunction,
-  MetaFunction,
+import {
+  defer,
+  type LinksFunction,
+  type LoaderFunction,
+  type MetaFunction,
 } from "@remix-run/node";
 import Main from "~/component/Mainpage";
+import { getUserSession } from "~/services/session.server";
+
+export const loader: LoaderFunction = async ({ request }) => {
+  let user = await getUserSession(request);
+  let { AUTH0_DOMAIN, AUTH0_CLIENT_ID, NODE_ENV } = process.env;
+  return defer({
+    user,
+    env: { AUTH0_DOMAIN, AUTH0_CLIENT_ID, NODE_ENV },
+  });
+};
 
 export const meta: MetaFunction = () => {
   return [
@@ -20,9 +31,6 @@ export const links: LinksFunction = () => {
       type: "image/png",
     },
   ];
-};
-export const loader: LoaderFunction = async () => {
-  return { user: null };
 };
 
 export default function Index() {
