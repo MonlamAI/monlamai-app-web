@@ -6,6 +6,7 @@ import {
 import { useLoaderData, useLocation } from "@remix-run/react";
 import React, { useEffect } from "react";
 import { useAuth0 } from "~/component/hooks/useAuth";
+import { db } from "~/services/db.server";
 import { commitSession, getSession } from "~/services/session.server";
 export const loader: LoaderFunction = async ({ request }) => {
   let { AUTH0_DOMAIN, AUTH0_CLIENT_ID } = process.env;
@@ -18,7 +19,21 @@ export const action: ActionFunction = async ({ request }) => {
   let user = JSON.parse(userValue);
   let session = await getSession(request.headers.get("Cookie"));
   if (user) {
-    console.log("user", user);
+    const userdata = await db.user.upsert({
+      where: {
+        email: user.email,
+      },
+      create: {
+        picture: user.picture,
+        username: user.name,
+        email: user.email,
+      },
+      update: {
+        picture: user.picture,
+        username: user.name,
+        email: user.email,
+      },
+    });
     session.set("user", user);
     return redirect("/", {
       headers: {

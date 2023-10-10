@@ -10,6 +10,7 @@
   font-style: normal;
   font-display: swap;
 }
+
 @font-face {
   font-family: "Hindi";
   src: url("/font/Poppins-Regular.woff2") format("woff2"),

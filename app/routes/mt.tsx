@@ -1,9 +1,23 @@
+import { type LoaderFunction, redirect } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
 import React from "react";
 import Footer from "~/component/Mainpage/Footer";
 import Header from "~/component/Mainpage/Header";
 import PowerUser from "~/component/Mainpage/PowerUser";
+import { getUserSession } from "~/services/session.server";
+
+export const loader: LoaderFunction = async ({ request }) => {
+  let user = await getUserSession(request);
+  console.log("MachineTranslation user:", user);
+  if (!user) redirect("/");
+  return {
+    user,
+  };
+};
 
 function MachineTranslation() {
+  const { user } = useLoaderData();
+
   return (
     <>
       <div className="text-white">

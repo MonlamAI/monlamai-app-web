@@ -2,7 +2,7 @@ import React from "react";
 
 function PowerUser() {
   return (
-    <div className="w-full text-center pb-10 " id="contact">
+    <div className="w-full text-center pb-10 bg-[#1d2d44]" id="contact">
       <img
         src="/assets/logo.png"
         className="w-24 md:w-[150px] mx-auto"

@@ -58,10 +58,10 @@ function LoginForm() {
             alt="logo"
           />
           <h2 className="mt-3 text-center text-2xl font-bold leading-9 tracking-tight text-stone-600">
-            Pecha tools
+            Monlam Ai Tools
           </h2>
           <div className="mx-auto  mt-2 text-center text-sm  leading-9 tracking-tight text-stone-900">
-            Log in to Pecha tools to continue using tools
+            Log in to Monlam Ai to continue using tools
           </div>
         </div>
 
