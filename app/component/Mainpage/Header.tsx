@@ -1,10 +1,11 @@
-import { Link, useLoaderData } from "@remix-run/react";
+import { Link, useLoaderData, useLocation } from "@remix-run/react";
 import React, { Fragment, useEffect, useState } from "react";
 import Login from "./Login";
 import { Menu, Transition } from "@headlessui/react";
 
 function Header() {
   const { user } = useLoaderData();
+  let location = useLocation();
   const [showMenu, setShowMenu] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -27,7 +28,11 @@ function Header() {
   return (
     <nav
       className={`flex h-[60px] p-3 items-center justify-between fixed top-0 w-full z-20 ${
-        scrolled ? "bg-blue-950" : "bg-transparent"
+        scrolled
+          ? "bg-blue-950"
+          : location.pathname === "/"
+          ? "bg-transparent"
+          : "bg-blue-950"
       }`}
     >
       <a href="/" className="flex items-center gap-2 text-[1.25rem]">
@@ -61,7 +66,7 @@ function Header() {
       {/* mobile view */}
       {showMenu && (
         <div
-          className="lg:hidden  absolute top-[60px] bg-blue-950 p-5 right-0 w-full
+          className="lg:hidden absolute top-[60px] bg-blue-950 p-5 right-0 w-full
 "
         >
           <ul className="flex flex-col gap-6">
@@ -110,7 +115,7 @@ function Header() {
                         <Menu.Item>
                           {() => (
                             <div className="block px-4 py-2 text-sm text-gray-700">
-                              {user.name}
+                              {user?.name}
                             </div>
                           )}
                         </Menu.Item>
