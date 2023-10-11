@@ -1,3 +1,4 @@
+import { Link } from "@remix-run/react";
 import React from "react";
 
 function PowerUser() {
@@ -11,12 +12,12 @@ function PowerUser() {
       <h2 className="font-Elsie text-[2rem] md:text-[48px]">
         Become our Power User
       </h2>
-      <p className="font-Inter max-w-[300px] md:max-w-[500px] mx-auto">
+      <p className="font-Inter max-w-[300px] md:max-w-[500px] mx-auto mb-6">
         Level up with MonlamAI's ML Models! Experience the revolution TODAY.
       </p>
-      <button className="bg-[#3e5c76] px-4 py-2 rounded-md mt-2">
+      <Link to="/form" className="bg-[#3e5c76] px-4 py-2 rounded-md">
         Join Us
-      </button>
+      </Link>
     </div>
   );
 }

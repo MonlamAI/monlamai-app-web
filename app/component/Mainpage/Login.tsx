@@ -52,16 +52,16 @@ function LoginForm() {
       <div className="flex min-h-full flex-col justify-center  sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
           <img
-            src="/favicon.ico"
+            src="/assets/logo.png"
             className="mx-auto w-auto"
             style={{ height: "15vh" }}
             alt="logo"
           />
           <h2 className="mt-3 text-center text-2xl font-bold leading-9 tracking-tight text-stone-600">
-            Monlam Ai Tools
+            སྨོན་ལམ་རིག་ནུས།
           </h2>
           <div className="mx-auto  mt-2 text-center text-sm  leading-9 tracking-tight text-stone-900">
-            Log in to Monlam Ai to continue using tools
+            Log in using Gmail
           </div>
         </div>
 

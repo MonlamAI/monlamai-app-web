@@ -1,4 +1,5 @@
 import { type LoaderFunction, redirect } from "@remix-run/node";
+import { useState } from "react";
 import Footer from "~/component/Mainpage/Footer";
 import Header from "~/component/Mainpage/Header";
 import PowerUser from "~/component/Mainpage/PowerUser";
@@ -40,6 +41,16 @@ const exitFullScreen = () => {
 };
 
 function MachineTranslation() {
+  const [fromLang, setFromLang] = useState("en");
+  const [toLang, setToLang] = useState("bo");
+
+  const handleFromLang = (e: any) => {
+    setFromLang(e.target.value);
+  };
+  const handleToLang = (e: any) => {
+    setToLang(e.target.value);
+  };
+
   return (
     <>
       <div className="text-white">
@@ -57,12 +68,15 @@ function MachineTranslation() {
                   <div className="flex flex-row justify-center items-center rounded-lg border border-[#dddddd] mb-4">
                     <select
                       className="w-[100px] h-10 p-2 rounded-md border bg-[#dddddd]  border-solid m-1"
-                      value="en"
-                      onChange={(e) => {}}
+                      value={fromLang}
+                      onChange={handleFromLang}
                     >
                       <option value="en">English</option>
-                      <option value="zh">Chinese</option>
-                      <option value="ja">Japanese</option>
+                      <option value="bo">བོད་ཡིག</option>
+                      <option value="en">ལེགས་སྦྱར།</option>
+                      <option value="sa">པཱ་ལི།</option>
+                      <option value="sa">हिन्दी</option>
+                      <option value="en">বাংলা</option>
                     </select>
                     <img
                       src="/assets/transfer.png"
@@ -71,12 +85,14 @@ function MachineTranslation() {
                     />
                     <select
                       className="w-[100px] h-10 p-2 rounded-md border bg-[#dddddd]  border-solid m-1"
-                      value="en"
-                      onChange={(e) => {}}
+                      value={toLang}
+                      onChange={handleToLang}
                     >
+                      <option value="bo">བོད་ཡིག</option>
                       <option value="en">English</option>
-                      <option value="zh">Chinese</option>
-                      <option value="ja">Japanese</option>
+                      <option value="en">ལེགས་སྦྱར།</option>
+                      <option value="sa">པཱ་ལི།</option>
+                      <option value="sa">हिन्दी</option>
                     </select>
                   </div>
                   <div className="flex flex-col justify-center items-center md:flex-row  mb-4">

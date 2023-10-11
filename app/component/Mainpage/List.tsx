@@ -66,7 +66,7 @@ function List() {
 
   return (
     <main>
-      <div className="bg-[#2d1f3e] py-[100px]" id="skills">
+      <div className="bg-[#1d2d44] py-[100px]" id="skills">
         <div className="text-center  max-w-[1140px] mx-auto">
           <h2 className="text-[2rem] mb-2">སྨོན་མ་རིག་ནུས་ཞབས་ཞུའི་མ་ལག</h2>
           <p className="mb-8">
