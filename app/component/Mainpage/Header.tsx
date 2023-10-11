@@ -26,7 +26,7 @@ function Header() {
 
   return (
     <nav
-      className={`flex h-[60px] p-2 items-center justify-between fixed top-0 w-full z-20 ${
+      className={`flex h-[60px] p-3 items-center justify-between fixed top-0 w-full z-20 ${
         scrolled ? "bg-blue-950" : "bg-transparent"
       }`}
     >
@@ -64,7 +64,7 @@ function Header() {
           className="lg:hidden  absolute top-[60px] bg-blue-950 p-5 right-0 w-full
 "
         >
-          <ul className="flex flex-col gap-8">
+          <ul className="flex flex-col gap-6">
             <li>
               <Link to="/about">ང་ཚོའི་སྐོར།</Link>
             </li>
@@ -76,7 +76,7 @@ function Header() {
             </li>
           </ul>
           <div>
-            <ul className="flex gap-2 mt-6">
+            <ul className="flex flex-col gap-6 mt-6">
               <li>
                 <a href="#portfolio">
                   <i className="fas fa-globe mr-2"></i>སྐད་ཡིག
@@ -106,7 +106,7 @@ function Header() {
                       leaveFrom="transform opacity-100 scale-100"
                       leaveTo="transform opacity-0 scale-95"
                     >
-                      <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                      <Menu.Items className="absolute left-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                         <Menu.Item>
                           {() => (
                             <div className="block px-4 py-2 text-sm text-gray-700">
@@ -136,7 +136,7 @@ function Header() {
         </div>
       )}
       <div className="hidden lg:flex gap-2 ml-8 flex-1 justify-between">
-        <ul className="flex gap-8">
+        <ul className="flex items-center gap-8">
           <li>
             <Link to="/about">ང་ཚོའི་སྐོར།</Link>
           </li>
@@ -149,7 +149,7 @@ function Header() {
           </li>
         </ul>
         <div>
-          <ul className="flex gap-4 mr-7">
+          <ul className="flex items-center gap-4 mr-7">
             <li>
               <a href="#portfolio">
                 <i className="fas fa-globe mr-2"></i>སྐད་ཡིག

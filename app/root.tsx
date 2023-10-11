@@ -15,6 +15,24 @@ export const links: LinksFunction = () => [
   { rel: "stylesheet", href: globalStyle },
 ];
 
+export function ErrorBoundary({ error }) {
+  console.error(error);
+  return (
+    <html>
+      <head>
+        <title>Oh no!</title>
+        <Meta />
+        <Links />
+      </head>
+      <body className="bg-black text-white">
+        visit home page,if error persist please contact
+        {error}
+        <Scripts />
+      </body>
+    </html>
+  );
+}
+
 export default function App() {
   return (
     <html lang="en">

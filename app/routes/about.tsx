@@ -1,6 +1,17 @@
+import { type LoaderFunction } from "@remix-run/node";
 import React from "react";
 import Footer from "~/component/Mainpage/Footer";
 import Header from "~/component/Mainpage/Header";
+import { getUserSession } from "~/services/session.server";
+
+export const loader: LoaderFunction = async ({ request }) => {
+  let user = await getUserSession(request);
+  let { AUTH0_DOMAIN, AUTH0_CLIENT_ID, NODE_ENV } = process.env;
+  return {
+    env: { AUTH0_DOMAIN, AUTH0_CLIENT_ID, NODE_ENV },
+    user,
+  };
+};
 
 function About() {
   return (
@@ -18,7 +29,7 @@ function About() {
               <h4 className="text-[1.5rem] mb-4">
                 སྨོན་ལམ་མིས་བཟོས་རིག་ནུས་ཀྱི་ལས་གཞི།
               </h4>
-              <p className="mb-4">
+              <div className="mb-4">
                 ཕྱི་ལོ་༢༠༢༣ ལོར་སྨོན་ལམ་བོད་ཀྱི་བརྡ་འཕྲིན་ཞིབ་འཇུག་ཁང་དང་།
                 འབྲེལ་ཡོད་སློབ་ཆེན་དང་།
                 ཚོགས་པ་རེ་འགས་མཉམ་འབྲེལ་ངང་བོད་ཀྱི་སྐད་ཡིག་གི་སྐོར་བརྡ་ཕྲིན་ལག་རྩལ་འཕེལ་རྒྱས་གཏོང་བའི་ལས་གཞིའི་ནང་།
@@ -27,7 +38,7 @@ function About() {
                   <li>སྨོན་ལམ་ཡིག་གཟུགས་ངོས་འཛིན་རིག་ནུས།</li>
                   <li>སྨོན་ལམ་འབྲི་ཀློག་རིག་ནུས།</li>
                 </ol>
-              </p>
+              </div>
               <p>
                 ལས་གཞི་འདི་ནི་མིས་བཟོས་རིག་ནུས་(AI) མཉེན་ཆས་ཡིན་པས།
                 འཕྲུལ་ཆས་རང་ལ་ཡིག་གཟུགས་དང་། སྐད་གདངས།
