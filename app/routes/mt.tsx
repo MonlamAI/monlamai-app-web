@@ -1,8 +1,8 @@
 import { type LoaderFunction } from "@remix-run/node";
 import { useState } from "react";
-import Footer from "~/component/Mainpage/Footer";
-import Header from "~/component/Mainpage/Header";
-import PowerUser from "~/component/Mainpage/PowerUser";
+import Footer from "~/component/Footer";
+import Header from "~/component/Header";
+import PowerUser from "~/component/PowerUser";
 import { getUserSession } from "~/services/session.server";
 
 export const loader: LoaderFunction = async ({ request }) => {

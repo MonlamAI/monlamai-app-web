@@ -1,6 +1,6 @@
 import { useLoaderData } from "@remix-run/react";
-import { useAuth0 } from "../hooks/useAuth";
 import { useRef } from "react";
+import { useAuth0 } from "./hooks/useAuth";
 // import { FcGoogle } from "react-icons/fc";
 // If the user lands on this page, we redirect back to / if they are already logged in.
 

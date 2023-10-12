@@ -1,7 +1,7 @@
-import { Link, useLoaderData, useLocation } from "@remix-run/react";
-import React, { Fragment, useEffect, useState } from "react";
-import Login from "./Login";
 import { Menu, Transition } from "@headlessui/react";
+import { Link, useLoaderData, useLocation } from "@remix-run/react";
+import { Fragment, useEffect, useState } from "react";
+import Login from "./Login";
 
 function Header() {
 

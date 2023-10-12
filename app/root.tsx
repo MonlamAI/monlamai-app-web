@@ -14,8 +14,8 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
-import Footer from "./component/Mainpage/Footer";
-import Header from "./component/Mainpage/Header";
+import Footer from "./component/Footer";
+import Header from "./component/Header";
 import globalStyle from "./styles/global.css";
 import tailwindStyle from "./styles/tailwind.css";
 

@@ -1,13 +1,12 @@
-import React from "react";
-import FormDisplay from "~/component/FormDisplay";
 import {
   redirect,
-  type LoaderFunction,
   type ActionFunction,
+  type LoaderFunction,
 } from "@remix-run/node";
+import Footer from "~/component/Footer";
+import FormDisplay from "~/component/FormDisplay";
+import Header from "~/component/Header";
 import { getUserSession } from "~/services/session.server";
-import Header from "~/component/Mainpage/Header";
-import Footer from "~/component/Mainpage/Footer";
 
 export const loader: LoaderFunction = async ({ request }) => {
   let user = await getUserSession(request);
