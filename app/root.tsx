@@ -1,5 +1,6 @@
 import type { LinksFunction } from "@remix-run/node";
 import {
+  Link,
   Links,
   LiveReload,
   Meta,
@@ -24,8 +25,13 @@ export function ErrorBoundary({ error }) {
         <Meta />
         <Links />
       </head>
-      <body className="bg-black text-white">
-        visit home page,if error persist please contact
+      <body className="h-screen text-center pt-10">
+        <h1 className="text-2xl font-bold">Something went wrong</h1>
+        visit{" "}
+        <Link to="/" className=" text-red-500 font-bold">
+          home page
+        </Link>
+        , if error persist please contact
         {error}
         <Scripts />
       </body>

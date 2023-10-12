@@ -22,11 +22,7 @@ function List() {
 
   function checkAuth(link: string) {
     console.log("user", user);
-    if (!user) {
-      alert("Login to use this feature");
-    } else {
-      navigate(link);
-    }
+    navigate("/tool/" + link);
   }
 
   let models: ModalType[] = [
@@ -36,7 +32,7 @@ function List() {
       desc: "དབང་རྩའི་འཕྲུལ་རིག་གི་ཡིག་སྒྱུར་རིག་ནུས།",
       icon: "fa fa-solid fa-globe",
       bg: "#a3c8eb",
-      link: "/mt",
+      link: "mt",
     },
     {
       img: "/assets/tts.png",
@@ -44,7 +40,7 @@ function List() {
       desc: "ཡེ་གེ་ཀློག་འདོན་གྱིས་འགྲོ་བ་མིའི་ངག་གི་འགན་སྒྲུབ་ཐུབ།",
       icon: "fas fa-volume-up",
       bg: "#ded4dc",
-      link: "/tts",
+      link: "tts",
     },
     {
       img: "/assets/stt.png",
@@ -52,7 +48,7 @@ function List() {
       desc: "རིག་ནུས་འདིའི་བོད་སྐད་གོ་ཐུབ་པའི་ཁྱད་ཆོས་ལྡན།",
       icon: "fas fa-assistive-listening-systems",
       bg: "#c8b3c9",
-      link: "/stt",
+      link: "stt",
     },
     {
       img: "/assets/ocr.png",
@@ -60,7 +56,7 @@ function List() {
       desc: "པར་རིས་ཡིག་གཟུགས་འདྲ་མིན་ངོས་འཛིན་བྱེད་ཐུབ།",
       icon: "fas fa-file-alt",
       bg: "#c7ddd1",
-      link: "/ocr",
+      link: "ocr",
     },
   ];
 

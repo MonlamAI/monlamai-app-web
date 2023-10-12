@@ -34,6 +34,7 @@ export const action: ActionFunction = async ({ request }) => {
         email: user.email,
       },
     });
+    console.log("userdata", userdata);
     session.set("user", user);
     return redirect("/", {
       headers: {

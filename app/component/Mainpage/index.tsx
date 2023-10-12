@@ -6,14 +6,14 @@ import Footer from "./Footer";
 
 function Main() {
   return (
-    <div className="text-white">
+    <>
       <div className="w-full mx-auto relative  h-screen">
         <Hero />
         <List />
         <PowerUser />
         <Footer />
       </div>
-    </div>
+    </>
   );
 }
 

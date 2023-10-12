@@ -1,4 +1,4 @@
-import { type LoaderFunction, redirect } from "@remix-run/node";
+import { type LoaderFunction } from "@remix-run/node";
 import { useState } from "react";
 import Footer from "~/component/Mainpage/Footer";
 import Header from "~/component/Mainpage/Header";
@@ -7,7 +7,6 @@ import { getUserSession } from "~/services/session.server";
 
 export const loader: LoaderFunction = async ({ request }) => {
   let user = await getUserSession(request);
-  if (!user) return redirect("/");
   let { AUTH0_DOMAIN, AUTH0_CLIENT_ID, NODE_ENV } = process.env;
   return {
     env: { AUTH0_DOMAIN, AUTH0_CLIENT_ID, NODE_ENV },

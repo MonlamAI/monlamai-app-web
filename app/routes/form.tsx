@@ -7,6 +7,7 @@ import {
 } from "@remix-run/node";
 import { getUserSession } from "~/services/session.server";
 import Header from "~/component/Mainpage/Header";
+import Footer from "~/component/Mainpage/Footer";
 
 export const loader: LoaderFunction = async ({ request }) => {
   let user = await getUserSession(request);
@@ -44,10 +45,9 @@ export const action: ActionFunction = async ({ request }) => {
 function UserForm() {
   return (
     <>
-      <div className="text-white">
-        <Header />
-        <FormDisplay />
-      </div>
+      <Header />
+      <FormDisplay />
+      <Footer />
     </>
   );
 }

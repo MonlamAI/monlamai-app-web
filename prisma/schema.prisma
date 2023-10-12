@@ -15,4 +15,11 @@ model User {
   email    String  @unique
   username String?
   picture  String?
+  role     role?   @default(newUser)
+}
+
+enum role {
+  newUser
+  powerUser
+  waitlist
 }

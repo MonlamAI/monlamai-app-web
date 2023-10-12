@@ -1,24 +1,34 @@
-import { LoaderFunction } from "@remix-run/node";
+import { type LoaderFunction } from "@remix-run/node";
 import { Link, useLoaderData, useNavigate } from "@remix-run/react";
+import Footer from "~/component/Mainpage/Footer";
+import Header from "~/component/Mainpage/Header";
+import PowerUser from "~/component/Mainpage/PowerUser";
+import { getUserSession } from "~/services/session.server";
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   let toolname = params.toolname;
-  return { toolname };
+  let user = await getUserSession(request);
+  let { AUTH0_DOMAIN, AUTH0_CLIENT_ID, NODE_ENV } = process.env;
+  return {
+    env: { AUTH0_DOMAIN, AUTH0_CLIENT_ID, NODE_ENV },
+    user,
+    toolname,
+  };
 };
 
-function tool() {
+function Tool() {
   let { toolname } = useLoaderData();
-  let navigate = useNavigate();
-  const handleBack = () => {
-    navigate(-1);
-  };
+
   return (
-    <div className="flex flex-col h-screen">
-      <button onClick={handleBack}>back</button>
-      <div className="bg-blue-200 flex-1">{toolname}</div>
-      <Link to="/form">Need Access!</Link>
-    </div>
+    <>
+      <Header />
+      <div className="flex justify-center items-center h-screen">
+        <p>{toolname}</p>
+      </div>
+      <PowerUser />
+      <Footer />
+    </>
   );
 }
 
-export default tool;
+export default Tool;
