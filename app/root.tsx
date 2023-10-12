@@ -54,7 +54,7 @@ function Document({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body className="absolute inset-0 overflow-y-auto overflow-x-hidden bg-gray-100">
+      <body className="inset-0 overflow-y-auto overflow-x-hidden bg-[#1d2d44]">
         {children}
         <Scripts />
         {process.env.NODE_ENV === "development" && <LiveReload />}

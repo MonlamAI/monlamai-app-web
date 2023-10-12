@@ -5,8 +5,8 @@ import {
   type MetaFunction,
 } from "@remix-run/node";
 import Hero from "~/component/Hero";
-import List from "~/component/Tools";
 import PowerUser from "~/component/PowerUser";
+import List from "~/component/Tools";
 import { getUserSession } from "~/services/session.server";
 
 
@@ -38,12 +38,10 @@ export const links: LinksFunction = () => {
 
 export default function Index() {
   return (
-    <div>
-      <div className="w-full mx-auto relative  h-screen">
-        <Hero />
-        <List />
-        <PowerUser />
-      </div>
-    </div>
+    <main>
+      <Hero />
+      <List />
+      <PowerUser />
+    </main>
   )
 }

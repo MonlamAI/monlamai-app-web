@@ -1,8 +1,7 @@
-import React from "react";
 
 function Footer() {
   return (
-    <footer className="p-4 bg-[#1d2d44]">
+    <footer className="p-4">
       <div className="w-full mx-auto max-w-screen-xl p-4 flex flex-col md:flex-row items-center md:justify-between">
         <span className="text-sm text-gray-200 sm:text-center dark:text-gray-200">
           <a href="#" className="hover:underline">

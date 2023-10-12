@@ -1,5 +1,4 @@
 import { Link } from "@remix-run/react";
-import React from "react";
 
 function PowerUser() {
   return (
