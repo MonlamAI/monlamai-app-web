@@ -1,7 +1,4 @@
 import { type LoaderFunction } from "@remix-run/node";
-import React from "react";
-import Footer from "~/component/Mainpage/Footer";
-import Header from "~/component/Mainpage/Header";
 import { getUserSession } from "~/services/session.server";
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -17,7 +14,6 @@ function About() {
   return (
     <>
       <div className="text-white">
-        <Header />
         <div className="h-screen py-[160px] m-auto w-[90%] md:w-[80%]">
           <div className="flex flex-col justify-center items-center gap-10 px-4 lg:flex-row">
             <img
@@ -51,7 +47,6 @@ function About() {
             </div>
           </div>
         </div>
-        <Footer />
       </div>
     </>
   );

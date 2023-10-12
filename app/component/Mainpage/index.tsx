@@ -1,8 +1,6 @@
-import React from "react";
 import Hero from "./Hero";
 import List from "./List";
 import PowerUser from "./PowerUser";
-import Footer from "./Footer";
 
 function Main() {
   return (
@@ -11,7 +9,6 @@ function Main() {
         <Hero />
         <List />
         <PowerUser />
-        <Footer />
       </div>
     </>
   );

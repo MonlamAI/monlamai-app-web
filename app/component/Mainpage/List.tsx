@@ -1,5 +1,4 @@
 import { useLoaderData, useNavigate } from "@remix-run/react";
-import React from "react";
 
 type ModalType = {
   img: string;
@@ -14,16 +13,22 @@ type EachProps = {
   model: ModalType;
   index: number;
   checkAuth: (link: string) => void;
+  navigateTo: (link: string) => void;
 };
 
 function List() {
   const { user } = useLoaderData();
-  let navigate = useNavigate();
+  let navigater = useNavigate();
 
   function checkAuth(link: string) {
     console.log("user", user);
-    navigate("/tool/" + link);
+    navigater("/tool/" + link);
   }
+
+  function navigateTo(link: string) {
+    navigater("/" + link);
+  }
+
 
   let models: ModalType[] = [
     {
@@ -75,6 +80,7 @@ function List() {
                 model={model}
                 index={index}
                 checkAuth={checkAuth}
+                navigateTo={navigateTo}
               />
             ))}
           </div>
@@ -84,7 +90,7 @@ function List() {
   );
 }
 
-function EachModel({ model, index, checkAuth }: EachProps) {
+function EachModel({ model, index, checkAuth, navigateTo }: EachProps) {
   const { name, desc, img, icon, bg, link } = model;
 
   return (
@@ -99,7 +105,7 @@ function EachModel({ model, index, checkAuth }: EachProps) {
         <button
           type="button"
           className="bg-[#368df7] py-3 rounded-xl flex gap-2 text-white  justify-center items-center"
-          onClick={() => checkAuth(link)}
+          onClick={() => navigateTo(link)}
         >
           <i className={icon} style={{ fontSize: 24 }}></i>
           བེད་སྤྱོད་གནང་རོགས།

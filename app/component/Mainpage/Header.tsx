@@ -4,6 +4,7 @@ import Login from "./Login";
 import { Menu, Transition } from "@headlessui/react";
 
 function Header() {
+
   const { user } = useLoaderData();
   let location = useLocation();
   const [showMenu, setShowMenu] = useState(false);

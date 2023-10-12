@@ -7,6 +7,7 @@ import {
 import Main from "~/component/Mainpage";
 import { getUserSession } from "~/services/session.server";
 
+
 export const loader: LoaderFunction = async ({ request }) => {
   let user = await getUserSession(request);
   let { AUTH0_DOMAIN, AUTH0_CLIENT_ID, NODE_ENV } = process.env;
@@ -34,5 +35,9 @@ export const links: LinksFunction = () => {
 };
 
 export default function Index() {
-  return <Main />;
+  return (
+    <div>
+      <Main />
+    </div>
+  )
 }

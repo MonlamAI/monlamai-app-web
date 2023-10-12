@@ -1,5 +1,3 @@
-import React from "react";
-import Header from "./Header";
 import { TypeAnimation } from "react-type-animation";
 function Hero() {
   let sequence = [
@@ -18,7 +16,6 @@ function Hero() {
   ];
   return (
     <>
-      <Header />
       <div className="flex justify-between flex-col h-screen  bg-[url('/assets/robot.jpg')] bg-no-repeat bg-center bg-cover  backdrop-blur-sm ">
         <div className="w-full h-full flex  justify-center items-center backdrop-brightness-50 absolute inset-0 -z-10"></div>
         <div className=" w-full flex-1 flex justify-center items-center flex-col ">
