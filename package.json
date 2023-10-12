@@ -4,9 +4,10 @@
   "sideEffects": false,
   "type": "module",
   "scripts": {
-    "build": "remix build",
-    "dev": "remix dev --manual",
-    "start": "remix-serve ./build/index.js",
+    "build": "npm run build:css && remix build",
+    "build:css": "tailwindcss -m -i ./css/app.css -o app/css/app.css",
+    "dev": "concurrently \"npm run dev:css\" \"remix dev\"",
+    "dev:css": "tailwindcss -w -i ./css/app.css -o app/css/app.css",
     "typecheck": "tsc"
   },
   "dependencies": {
@@ -17,6 +18,8 @@
     "@remix-run/react": "^2.0.1",
     "@remix-run/serve": "^2.0.1",
     "auth0-js": "^9.23.0",
+    "flowbite": "^1.8.1",
+    "flowbite-react": "^0.6.4",
     "isbot": "^3.6.8",
     "prisma": "^5.4.2",
     "react": "^18.2.0",
@@ -31,7 +34,7 @@
     "@types/auth0-js": "^9.21.1",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
-    "daisyui": "^3.9.2",
+    "concurrently": "^8.2.1",
     "eslint": "^8.38.0",
     "tailwindcss": "^3.3.3",
     "typescript": "^5.1.6"

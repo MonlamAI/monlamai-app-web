@@ -1,8 +1,10 @@
 import type { Config } from "tailwindcss";
 
 export default {
-  content: ["./app/**/*.{js,jsx,ts,tsx}"],
-
+  content: [
+    "./app/**/*.{js,jsx,ts,tsx}",
+    "./node_modules/flowbite-react/**/*.js",
+  ],
   theme: {
     extend: {},
     fontFamily: {
@@ -10,5 +12,7 @@ export default {
       Inter: ["Inter", "sans-serif"],
     },
   },
-  plugins: [require("daisyui")],
+  plugins: [
+    require("flowbite/plugin")
+  ],
 } satisfies Config;
