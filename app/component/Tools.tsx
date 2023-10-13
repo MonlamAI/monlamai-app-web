@@ -22,11 +22,11 @@ function List() {
 
   function checkAuth(link: string) {
     console.log("user", user);
-    navigater("/tool/" + link);
+    navigater("/tools/" + link);
   }
 
   function navigateTo(link: string) {
-    navigater("/" + link);
+    navigater("/tools/" + link);
   }
 
 

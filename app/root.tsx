@@ -68,7 +68,9 @@ export default function App() {
   return (
     <Document>
       <Header />
-      <Outlet />
+      <div className="mt-20">
+        <Outlet />
+      </div>
       <Footer />
     </Document>
   );

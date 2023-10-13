@@ -38,7 +38,7 @@ export const links: LinksFunction = () => {
 
 export default function Index() {
   return (
-    <main>
+    <main className="-mt-20">
       <Hero />
       <List />
       <PowerUser />
