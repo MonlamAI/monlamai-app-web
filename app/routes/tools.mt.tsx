@@ -51,7 +51,7 @@ function MachineTranslation() {
   return (
     <div>
       <div id="fullscreen">
-        <div className="flex flex-col gap-6 py-[100px] m-auto w-[90%] md:w-[80%]">
+        <div className="flex flex-col gap-6 py-[100px] m-auto w-11/12 md:w-4/5">
           <div className="text-right">
             <button onClick={toggleFullScreen}>
               <i className="fas fa-expand-arrows-alt text-[#c2c5c5] text-xl"></i>
