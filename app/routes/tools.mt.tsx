@@ -1,6 +1,5 @@
 import { type LoaderFunction } from "@remix-run/node";
 import { useState } from "react";
-import Header from "~/component/Header";
 import PowerUser from "~/component/PowerUser";
 import { getUserSession } from "~/services/session.server";
 
@@ -51,7 +50,6 @@ function MachineTranslation() {
 
   return (
     <div>
-      <Header />
       <div id="fullscreen">
         <div className="flex flex-col gap-6 py-[100px] m-auto w-[90%] md:w-[80%]">
           <div className="text-right">
