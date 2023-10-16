@@ -12,9 +12,13 @@ const langLabels = {
   en: "English",
 };
 
+const charLimit = 500;
+
 export default function Index() {
   const [sourceLang, setSourceLang] = useState("bo");
   const [targetLang, setTargetLang] = useState("en");
+  const [sourceText, setSourceText] = useState("");
+  const [charCount, setCharCount] = useState(0);
 
   const handleLangSwitch = () => {
     const temp = sourceLang;
@@ -22,10 +26,15 @@ export default function Index() {
     setTargetLang(temp);
   };
 
+  const handleOnChange = (e) => {
+    setSourceText(e.target.value.slice(0, charLimit));
+    setCharCount(sourceText.length);
+  };
+
   return (
     <main className="m-auto w-11/12 md:w-4/5">
       <h1>MT Page</h1>
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-1 ">
         <Card className="w-1/2">
           <h3 className="text-center font-bold text-gray-800">
             {langLabels[sourceLang]}
@@ -34,11 +43,16 @@ export default function Index() {
             placeholder="Enter your text here"
             className="w-full h-48"
             required
+            value={sourceText}
+            onChange={handleOnChange}
           />
-          <div className="flex justify-between">
+          <div className="flex justify-between items-center">
             <Button pill color="gray" size="xs">
               Reset
             </Button>
+            <div className="text-gray-400 text-xs">
+              {charCount} / {charLimit}
+            </div>
             <Button pill color="success" size="xs">
               Submit
             </Button>
@@ -48,6 +62,7 @@ export default function Index() {
           className="self-start lg:mt-4"
           color="transparent"
           onClick={handleLangSwitch}
+          pill
         >
           <FaArrowRightArrowLeft size="20px" className="text-gray-400" />
         </Button>
