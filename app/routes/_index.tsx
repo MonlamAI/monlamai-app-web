@@ -4,11 +4,11 @@ import {
   type LoaderFunction,
   type MetaFunction,
 } from "@remix-run/node";
+import Disclaimer from "~/component/Disclaimer";
 import Hero from "~/component/Hero";
 import PowerUser from "~/component/PowerUser";
 import List from "~/component/Tools";
 import { getUserSession } from "~/services/session.server";
-
 
 export const loader: LoaderFunction = async ({ request }) => {
   let user = await getUserSession(request);
@@ -42,6 +42,7 @@ export default function Index() {
       <Hero />
       <List />
       <PowerUser />
+      <Disclaimer />
     </main>
-  )
+  );
 }
