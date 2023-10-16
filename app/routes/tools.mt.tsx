@@ -1,5 +1,9 @@
 import { Button, Card, Textarea } from "flowbite-react";
-import { FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa/index.js";
+import {
+  FaArrowRightArrowLeft,
+  FaRegThumbsDown,
+  FaRegThumbsUp,
+} from "react-icons/fa6/index.js";
 
 export default function Index() {
   return (
@@ -7,10 +11,10 @@ export default function Index() {
       <h1>MT Page</h1>
       <div className="flex gap-3">
         <Card className="w-1/2">
+          <h3 className="text-center font-bold text-gray-800">Tibetan</h3>
           <Textarea
             placeholder="Enter your text here"
-            className="w-full"
-            rows={10}
+            className="w-full h-48"
             required
           />
           <div className="flex justify-between">
@@ -22,8 +26,10 @@ export default function Index() {
             </Button>
           </div>
         </Card>
+        <FaArrowRightArrowLeft className="lg:mt-6" size="20px" />
         <Card className="w-1/2">
-          <p className="text-black">Output Component</p>
+          <h3 className="text-center font-bold text-gray-900">English </h3>
+          <Textarea className="w-full h-48" disabled />
           <div className="flex justify-end">
             <Button color="white">
               <FaRegThumbsUp color="gray" />
