@@ -116,6 +116,7 @@ export default function Index() {
   const [sourceLang, setSourceLang] = useState("en");
   const [targetLang, setTargetLang] = useState("bo");
   const [sourceText, setSourceText] = useState("");
+  const [targetText, setTargetText] = useState("");
   const [charCount, setCharCount] = useState(0);
 
   const data = useActionData<typeof action>();
@@ -126,6 +127,8 @@ export default function Index() {
     const temp = sourceLang;
     setSourceLang(targetLang);
     setTargetLang(temp);
+    setSourceText("");
+    setTargetText("");
   };
 
   const handleOnChange = (e) => {
@@ -157,7 +160,7 @@ export default function Index() {
             ) : (
               <div className="w-full h-[50vh] overflow-auto">
                 <fieldset className="w-full flex" id="radio">
-                  <legend className="mb-4 text-gray-400">
+                  <legend className="mb-4 text-gray-300">
                     Choose a text to translate
                   </legend>
                   <div className="flex flex-col gap-4">
@@ -178,7 +181,7 @@ export default function Index() {
                   </div>
                 </fieldset>
                 <div className="mt-10">
-                  <p className="text-gray-600">
+                  <p className="text-gray-300 text-sm tracking-tight">
                     We apologize for the wait; you are currently on our waiting
                     list. However, you have the option to click on one of the
                     segments to experience firsthand how our model performs.
@@ -193,6 +196,7 @@ export default function Index() {
                 color="gray"
                 size="xs"
                 className="text-slate-500"
+                hidden
               >
                 Clear Text
               </Button>
