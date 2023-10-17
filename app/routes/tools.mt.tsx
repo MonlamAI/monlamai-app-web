@@ -1,7 +1,7 @@
 import type { ActionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { Form, useActionData } from "@remix-run/react";
-import { Button, Card, Label, Radio, Textarea } from "flowbite-react";
+import { Form, useActionData, useNavigation } from "@remix-run/react";
+import { Button, Card, Label, Radio, Spinner, Textarea } from "flowbite-react";
 import { useState } from "react";
 import {
   FaArrowRightArrowLeft,
@@ -18,12 +18,18 @@ const charLimit = 2000;
 
 const boTexts = ["Text 01", "Text 02", "Text 03"];
 
+function timeout(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 export async function action({ request }: ActionArgs) {
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
   if (data.sourceLang === "bo") {
     data.sourceText = data.texts;
   }
+
+  await timeout(3000);
 
   return json({
     translation: `Direction: ${data.sourceLang}-${data.targetLang}\n
@@ -39,6 +45,8 @@ export default function Index() {
   const [charCount, setCharCount] = useState(0);
 
   const data = useActionData<typeof action>();
+  const navigation = useNavigation();
+  const isActionSubmission = navigation.state == "submitting";
 
   const handleLangSwitch = () => {
     const temp = sourceLang;
@@ -53,7 +61,7 @@ export default function Index() {
 
   return (
     <main className="mx-auto w-11/12 md:w-4/5">
-      <h1 className="mb-5 text-xl text-center">Machine Translation</h1>
+      <h1 className="mb-5 text-xl text-center">Monlam Translation</h1>
       <div className="flex items-strech gap-1">
         <Card className="w-1/2">
           <h3 className="text-lg text-gray-600">{langLabels[sourceLang]}</h3>
@@ -117,7 +125,7 @@ export default function Index() {
                   {charCount} / {charLimit}
                 </div>
               )}
-              <Button type="submit" size="xs">
+              <Button type="submit" size="xs" isProcessing={isActionSubmission}>
                 Translate
               </Button>
             </div>
@@ -138,7 +146,13 @@ export default function Index() {
             {langLabels[targetLang]}
           </h3>
           <div className="w-full h-[50vh] p-3 text-black bg-slate-100 rounded-lg overflow-auto">
-            {data && data.translation}
+            {isActionSubmission ? (
+              <div className="h-full flex justify-center items-center">
+                <Spinner />
+              </div>
+            ) : (
+              data && data.translation
+            )}
           </div>
           <div className="flex justify-end">
             <Button color="white">
