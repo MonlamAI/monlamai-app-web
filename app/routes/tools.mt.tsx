@@ -56,9 +56,7 @@ export default function Index() {
       <h1 className="mb-5 text-xl text-center">Machine Translation</h1>
       <div className="flex items-strech gap-1">
         <Card className="w-1/2">
-          <h3 className="text-lg text-center text-gray-600">
-            {langLabels[sourceLang]}
-          </h3>
+          <h3 className="text-lg text-gray-600">{langLabels[sourceLang]}</h3>
           <Form method="post">
             <input type="hidden" name="sourceLang" value={sourceLang} />
             <input type="hidden" name="targetLang" value={targetLang} />
@@ -125,6 +123,7 @@ export default function Index() {
             </div>
           </Form>
         </Card>
+
         <Button
           className="self-start lg:mt-4"
           color="transparent"
@@ -133,8 +132,9 @@ export default function Index() {
         >
           <FaArrowRightArrowLeft size="20px" className="text-gray-400" />
         </Button>
+
         <Card className="w-1/2">
-          <h3 className="text-lg text-center text-gray-600">
+          <h3 className="text-lg text-right text-gray-600">
             {langLabels[targetLang]}
           </h3>
           <div className="w-full h-[50vh] p-3 text-black bg-slate-100 rounded-lg overflow-auto">
