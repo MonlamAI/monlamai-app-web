@@ -63,7 +63,7 @@ export default function Index() {
             <input type="hidden" name="sourceLang" value={sourceLang} />
             <input type="hidden" name="targetLang" value={targetLang} />
             {sourceLang === "en" ? (
-              <div className="w-full h-[60vh]">
+              <div className="w-full h-[50vh]">
                 <Textarea
                   name="sourceText"
                   placeholder="Enter your text here"
@@ -74,7 +74,7 @@ export default function Index() {
                 />
               </div>
             ) : (
-              <div className="w-full h-[60vh] overflow-auto">
+              <div className="w-full h-[50vh] overflow-auto">
                 <fieldset className="w-full flex" id="radio">
                   <legend className="mb-4 text-gray-400">
                     Choose a text to translate
@@ -130,15 +130,15 @@ export default function Index() {
           <h3 className="text-center font-bold text-gray-900">
             {langLabels[targetLang]}
           </h3>
-          <div className="w-full h-[60vh] text-black">
+          <div className="w-full h-[50vh] text-black">
             {data && data.translation}
           </div>
           <div className="flex justify-end">
             <Button color="white">
-              <FaRegThumbsUp color="gray" />
+              <FaRegThumbsUp color="gray" size="20px" />
             </Button>
             <Button color="white">
-              <FaRegThumbsDown color="gray" />
+              <FaRegThumbsDown color="gray" size="20px" />
             </Button>
           </div>
         </Card>
