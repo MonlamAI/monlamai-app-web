@@ -16,39 +16,99 @@ const langLabels = {
 
 const charLimit = 2000;
 
-const boTexts = ["Text 01", "Text 02", "Text 03"];
+const boTexts = [
+  "བདག་ནི་སྐྱེ་བ་ཐམས་ཅད་དུ།",
+  "བསྟན་པ་གསལ་བར་བྱེད་གྱུར་ཅིག",
+  "བསྟན་པ་གསལ་བར་མ་ནུས་ནའང་",
+];
 
-function timeout(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+function parseApiResponse(apiResponse: String) {
+  const translationStartIndex = apiResponse.indexOf("data: ") + 7;
+  const translationEndIndex = apiResponse.indexOf(
+    "<br /><br />",
+    translationStartIndex
+  );
+
+  if (translationStartIndex !== -1 && translationEndIndex !== -1) {
+    const translationOutput = apiResponse.substring(
+      translationStartIndex,
+      translationEndIndex
+    );
+    const disclaimerStartIndex = translationEndIndex + 12; // Skip "<br /><br /><small><i>"
+    const disclaimerEndIndex = apiResponse.indexOf(
+      "</i></small>",
+      disclaimerStartIndex
+    );
+
+    if (disclaimerStartIndex !== -1 && disclaimerEndIndex !== -1) {
+      const disclaimer = apiResponse.substring(
+        disclaimerStartIndex,
+        disclaimerEndIndex
+      );
+
+      return {
+        translation: translationOutput.trim(),
+        disclaimer: disclaimer.trim(),
+      };
+    }
+  }
+
+  // Handle invalid response format
+  return null;
+}
+
+async function translate(text: String, sourceLang: String, targetLang: String) {
+  const url = "https://dharmamitra.org/api/translation/";
+  const data = {
+    input_sentence: text,
+    level_of_explanation: 0,
+    language: `${sourceLang}-${targetLang}`,
+    model: "NO",
+  };
+
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const responseData = await response.text();
+    const parsedResponse = parseApiResponse(responseData);
+    if (!parsedResponse) {
+      throw new Error("Invalid response format!");
+    }
+    const { translation, disclaimer } = parsedResponse;
+    return {
+      translation,
+      disclaimer,
+    };
+  } catch (error) {
+    console.error("Error:", error);
+  }
 }
 
 export async function action({ request }: ActionArgs) {
   const formData = await request.formData();
-  const data = Object.fromEntries(formData);
-  if (data.sourceLang === "bo") {
-    data.sourceText = data.texts;
+  const form = Object.fromEntries(formData);
+  if (form.sourceLang === "bo") {
+    form.sourceText = form.texts;
   }
 
-  // const translation_api = "https://dharmamitra.org/api/translation/";
-  // const response = await fetch(translation_api, {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  //   body: JSON.stringify({
-  //     input_sentence: data.sourceText,
-  //     langauge: `${data.sourceLang}-${data.targetLang}`,
-  //     level_of_explanation: 0,
-  //   }),
-  // });
-
-  // const data = await response.json();
-  // console.log(data);
-
-  await timeout(2000);
+  const result = await translate(
+    form.sourceText,
+    form.sourceLang,
+    form.targetLang
+  );
 
   return json({
-    translation: "this is a translation",
+    translation: result?.translation,
   });
 }
 
@@ -161,7 +221,7 @@ export default function Index() {
           <h3 className="text-lg text-right text-gray-600">
             {langLabels[targetLang]}
           </h3>
-          <div className="w-full h-[50vh] p-3 text-black bg-slate-100 rounded-lg overflow-auto">
+          <div className="w-full h-[50vh] p-3 text-black bg-slate-50 rounded-lg overflow-auto">
             {isActionSubmission ? (
               <div className="h-full flex justify-center items-center">
                 <Spinner />
