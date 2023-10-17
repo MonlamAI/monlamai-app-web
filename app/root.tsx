@@ -1,10 +1,5 @@
-import type {
-  LinksFunction,
-  LoaderFunction
-} from "@remix-run/node";
-import {
-  defer
-} from "@remix-run/node";
+import type { LinksFunction, LoaderFunction } from "@remix-run/node";
+import { defer } from "@remix-run/node";
 import {
   Link,
   Links,
@@ -21,7 +16,6 @@ import tailwindStyle from "./styles/tailwind.css";
 
 import { getUserSession } from "~/services/session.server";
 
-
 export const loader: LoaderFunction = async ({ request }) => {
   let user = await getUserSession(request);
   let { AUTH0_DOMAIN, AUTH0_CLIENT_ID, NODE_ENV } = process.env;
@@ -31,12 +25,10 @@ export const loader: LoaderFunction = async ({ request }) => {
   });
 };
 
-
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: tailwindStyle },
   { rel: "stylesheet", href: globalStyle },
 ];
-
 
 function Document({ children }: { children: React.ReactNode }) {
   return (
@@ -54,7 +46,7 @@ function Document({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body className="inset-0 overflow-y-auto overflow-x-hidden bg-[#1d2d44]">
+      <body className="inset-0 overflow-y-auto overflow-x-hidden">
         {children}
         <Scripts />
         {process.env.NODE_ENV === "development" && <LiveReload />}

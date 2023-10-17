@@ -4,7 +4,6 @@ import { Fragment, useEffect, useState } from "react";
 import Login from "./Login";
 
 function Header() {
-
   const { user } = useLoaderData();
   let location = useLocation();
   const [showMenu, setShowMenu] = useState(false);
@@ -27,15 +26,7 @@ function Header() {
   }, []);
 
   return (
-    <nav
-      className={`flex h-[60px] p-3 items-center justify-between fixed top-0 w-full z-20 ${
-        scrolled
-          ? "bg-blue-950"
-          : location.pathname === "/"
-          ? "bg-transparent"
-          : "bg-blue-950"
-      }`}
-    >
+    <nav className="flex h-[60px] p-3 items-center justify-between fixed top-0 w-full z-20 bg-transparent">
       <a href="/" className="flex items-center gap-2 text-[1.25rem]">
         <img
           src="/assets/logo.png"

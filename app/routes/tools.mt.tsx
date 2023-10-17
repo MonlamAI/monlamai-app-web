@@ -29,12 +29,26 @@ export async function action({ request }: ActionArgs) {
     data.sourceText = data.texts;
   }
 
-  await timeout(3000);
+  // const translation_api = "https://dharmamitra.org/api/translation/";
+  // const response = await fetch(translation_api, {
+  //   method: "POST",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  //   body: JSON.stringify({
+  //     input_sentence: data.sourceText,
+  //     langauge: `${data.sourceLang}-${data.targetLang}`,
+  //     level_of_explanation: 0,
+  //   }),
+  // });
+
+  // const data = await response.json();
+  // console.log(data);
+
+  await timeout(2000);
 
   return json({
-    translation: `Direction: ${data.sourceLang}-${data.targetLang}\n
-  Input: ${data.sourceText}\n
-  Translation: This is a translation`,
+    translation: "this is a translation",
   });
 }
 
@@ -105,7 +119,9 @@ export default function Index() {
                 </fieldset>
                 <div className="mt-10">
                   <p className="text-gray-600">
-                    Join the waitlist to Tibetan input
+                    We apologize for the wait; you are currently on our waiting
+                    list. However, you have the option to click on one of the
+                    segments to experience firsthand how our model performs.
                   </p>
                 </div>
               </div>

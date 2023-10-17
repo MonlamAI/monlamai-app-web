@@ -24,13 +24,3 @@
 * {
   font-family: "Monlam";
 }
-
-body {
-  font-size: 14px;
-  color: #FFFFFF;
-  background-color: #1d2d44;
-  letter-spacing: 1px;
-  height: 200%;
-  width: 100dvw;
-  scroll-behavior: smooth;
-}
