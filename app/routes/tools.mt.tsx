@@ -14,7 +14,7 @@ const langLabels = {
   en: "English",
 };
 
-const charLimit = 500;
+const charLimit = 2000;
 
 const boTexts = ["Text 01", "Text 02", "Text 03"];
 
@@ -54,9 +54,9 @@ export default function Index() {
   return (
     <main className="mx-auto w-11/12 md:w-4/5">
       <h1 className="mb-5 text-xl text-center">Machine Translation</h1>
-      <div className="flex items-strech gap-1 ">
+      <div className="flex items-strech gap-1">
         <Card className="w-1/2">
-          <h3 className="text-center font-bold text-gray-800">
+          <h3 className="text-lg text-center text-gray-600">
             {langLabels[sourceLang]}
           </h3>
           <Form method="post">
@@ -103,7 +103,7 @@ export default function Index() {
                 </div>
               </div>
             )}
-            <div className="flex justify-between items-center">
+            <div className="mt-5 flex justify-between items-center">
               <Button type="reset" pill color="gray" size="xs">
                 Clear Text
               </Button>
@@ -127,10 +127,10 @@ export default function Index() {
           <FaArrowRightArrowLeft size="20px" className="text-gray-400" />
         </Button>
         <Card className="w-1/2">
-          <h3 className="text-center font-bold text-gray-900">
+          <h3 className="text-lg text-center text-gray-600">
             {langLabels[targetLang]}
           </h3>
-          <div className="w-full h-[50vh] text-black">
+          <div className="w-full h-[50vh] p-3 text-black bg-gray-200 rounded-lg overflow-auto">
             {data && data.translation}
           </div>
           <div className="flex justify-end">
