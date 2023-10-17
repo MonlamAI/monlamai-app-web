@@ -66,11 +66,12 @@ export default function Index() {
               <div className="w-full h-[50vh]">
                 <Textarea
                   name="sourceText"
-                  placeholder="Enter your text here"
-                  className="w-full h-full"
+                  placeholder="Enter your text..."
+                  className="w-full h-full border-0 focus:outline-none focus:ring-transparent bg-transparent caret-slate-500 placeholder:text-slate-300"
                   required
                   value={sourceText}
                   onChange={handleOnChange}
+                  autoFocus
                 />
               </div>
             ) : (
@@ -104,7 +105,13 @@ export default function Index() {
               </div>
             )}
             <div className="mt-5 flex justify-between items-center">
-              <Button type="reset" pill color="gray" size="xs">
+              <Button
+                type="reset"
+                pill
+                color="gray"
+                size="xs"
+                className="text-slate-500"
+              >
                 Clear Text
               </Button>
               {sourceLang === "en" && (
@@ -112,7 +119,7 @@ export default function Index() {
                   {charCount} / {charLimit}
                 </div>
               )}
-              <Button type="submit" color="success" size="xs">
+              <Button type="submit" size="xs">
                 Translate
               </Button>
             </div>
@@ -130,7 +137,7 @@ export default function Index() {
           <h3 className="text-lg text-center text-gray-600">
             {langLabels[targetLang]}
           </h3>
-          <div className="w-full h-[50vh] p-3 text-black bg-gray-200 rounded-lg overflow-auto">
+          <div className="w-full h-[50vh] p-3 text-black bg-slate-100 rounded-lg overflow-auto">
             {data && data.translation}
           </div>
           <div className="flex justify-end">
