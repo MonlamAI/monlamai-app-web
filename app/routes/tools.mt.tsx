@@ -1,11 +1,13 @@
+import type { ActionArgs } from "@remix-run/node";
+import { json } from "@remix-run/node";
+import { Form, useActionData } from "@remix-run/react";
 import { Button, Card, Label, Radio, Textarea } from "flowbite-react";
+import { useState } from "react";
 import {
   FaArrowRightArrowLeft,
   FaRegThumbsDown,
   FaRegThumbsUp,
 } from "react-icons/fa6/index.js";
-
-import { useState } from "react";
 
 const langLabels = {
   bo: "Tibetan",
@@ -14,17 +16,29 @@ const langLabels = {
 
 const charLimit = 500;
 
-const boTexts = [
-  "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Fugit fuga obcaecati inventore recusandae natus, repellendus libero mollitia! Pariatur error a temporibus dicta ex, officia dolorem distinctio dignissimos similique! Laborum hic fuga atque voluptatibus veniam quibusdam nisi ipsa fugiat. In nulla iusto architecto quasi, doloribus odit laborum soluta nesciunt assumenda eos",
-  "Pariatur error a temporibus dicta ex, officia dolorem distinctio dignissimos similique! Laborum hic fuga atque voluptatibus veniam quibusdam nisi ipsa fugiat. In nulla iusto architecto quasi, doloribus odit laborum soluta nesciunt assumenda eos",
-  "Fugit fuga obcaecati inventore recusandae natus, repellendus libero mollitia! Pariatur error a temporibus dicta ex, officia dolorem distinctio dignissimos similique! Laborum hic fuga atque voluptatibus veniam quibusdam nisi ipsa fugiat. In nulla iusto architecto quasi, doloribus odit laborum soluta nesciunt assumenda eos",
-];
+const boTexts = ["Text 01", "Text 02", "Text 03"];
+
+export async function action({ request }: ActionArgs) {
+  const formData = await request.formData();
+  const data = Object.fromEntries(formData);
+  if (data.sourceLang === "bo") {
+    data.sourceText = data.texts;
+  }
+
+  return json({
+    translation: `Direction: ${data.sourceLang}-${data.targetLang}\n
+  Input: ${data.sourceText}\n
+  Translation: This is a translation`,
+  });
+}
 
 export default function Index() {
-  const [sourceLang, setSourceLang] = useState("bo");
-  const [targetLang, setTargetLang] = useState("en");
+  const [sourceLang, setSourceLang] = useState("en");
+  const [targetLang, setTargetLang] = useState("bo");
   const [sourceText, setSourceText] = useState("");
   const [charCount, setCharCount] = useState(0);
+
+  const data = useActionData<typeof action>();
 
   const handleLangSwitch = () => {
     const temp = sourceLang;
@@ -45,59 +59,64 @@ export default function Index() {
           <h3 className="text-center font-bold text-gray-800">
             {langLabels[sourceLang]}
           </h3>
-          {sourceLang === "en" ? (
-            <div className="w-full h-[60vh]">
-              <Textarea
-                placeholder="Enter your text here"
-                className="w-full h-full"
-                required
-                value={sourceText}
-                onChange={handleOnChange}
-              />
-            </div>
-          ) : (
-            <div className="w-full h-[60vh] overflow-auto">
-              <fieldset className="w-full flex" id="radio">
-                <legend className="mb-4 text-gray-400">
-                  Choose a text to translate from:
-                </legend>
-                <div className="flex flex-col gap-4">
-                  {boTexts.map((text, index) => (
-                    <div
-                      className="p-2 flex w-full items-center gap-2 border rounded-md"
-                      key={index}
-                    >
-                      <Radio
-                        id={"eg" + index}
-                        value={text}
-                        name="texts"
-                        defaultChecked={index === 0}
-                      />
-                      <Label htmlFor={"eg" + index}>{text}</Label>
-                    </div>
-                  ))}
-                </div>
-              </fieldset>
-              <div className="mt-10">
-                <p className="text-gray-600">
-                  Join the waitlist to Tibetan input
-                </p>
+          <Form method="post">
+            <input type="hidden" name="sourceLang" value={sourceLang} />
+            <input type="hidden" name="targetLang" value={targetLang} />
+            {sourceLang === "en" ? (
+              <div className="w-full h-[60vh]">
+                <Textarea
+                  name="sourceText"
+                  placeholder="Enter your text here"
+                  className="w-full h-full"
+                  required
+                  value={sourceText}
+                  onChange={handleOnChange}
+                />
               </div>
-            </div>
-          )}
-          <div className="flex justify-between items-center">
-            <Button pill color="gray" size="xs">
-              Reset
-            </Button>
-            {sourceLang === "en" && (
-              <div className="text-gray-400 text-xs">
-                {charCount} / {charLimit}
+            ) : (
+              <div className="w-full h-[60vh] overflow-auto">
+                <fieldset className="w-full flex" id="radio">
+                  <legend className="mb-4 text-gray-400">
+                    Choose a text to translate
+                  </legend>
+                  <div className="flex flex-col gap-4">
+                    {boTexts.map((text, index) => (
+                      <div
+                        className="p-2 flex w-full items-center gap-2 border rounded-md"
+                        key={index}
+                      >
+                        <Radio
+                          id={"eg" + index}
+                          value={text}
+                          name="texts"
+                          defaultChecked={index === 0}
+                        />
+                        <Label htmlFor={"eg" + index}>{text}</Label>
+                      </div>
+                    ))}
+                  </div>
+                </fieldset>
+                <div className="mt-10">
+                  <p className="text-gray-600">
+                    Join the waitlist to Tibetan input
+                  </p>
+                </div>
               </div>
             )}
-            <Button pill color="success" size="xs">
-              Submit
-            </Button>
-          </div>
+            <div className="flex justify-between items-center">
+              <Button type="reset" pill color="gray" size="xs">
+                Clear Text
+              </Button>
+              {sourceLang === "en" && (
+                <div className="text-gray-400 text-xs">
+                  {charCount} / {charLimit}
+                </div>
+              )}
+              <Button type="submit" color="success" size="xs">
+                Translate
+              </Button>
+            </div>
+          </Form>
         </Card>
         <Button
           className="self-start lg:mt-4"
@@ -111,7 +130,9 @@ export default function Index() {
           <h3 className="text-center font-bold text-gray-900">
             {langLabels[targetLang]}
           </h3>
-          <div className="w-full h-[60vh]"></div>
+          <div className="w-full h-[60vh] text-black">
+            {data && data.translation}
+          </div>
           <div className="flex justify-end">
             <Button color="white">
               <FaRegThumbsUp color="gray" />
