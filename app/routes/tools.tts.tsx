@@ -58,16 +58,17 @@ export default function Index() {
 
   return (
     <main className="m-auto w-11/12 md:w-4/5">
-      <h1 className="text-center mb-4">Monlam TTS</h1>
+      <h1 className="mb-10 text-4xl lg:text-5xl text-center text-slate-700">
+        Monlam Text To Speech
+      </h1>
       <div className="flex flex-col  lg:flex-row gap-3">
         <Card className="w-full lg:w-1/2">
           <Form id="ttsForm" method="post" className="flex flex-col gap-5">
             <div className="flex flex-col gap-2">
-              <Label htmlFor="countries" value="Voice" />
+              <Label value="Voice" className="text-lg" />
               <Select
-                id="countries"
                 name="voice"
-                className="border-0"
+                className="text-lg border-0"
                 defaultValue=""
                 required
               >
@@ -82,7 +83,7 @@ export default function Index() {
               <Textarea
                 name="sourceText"
                 placeholder="Enter text in English..."
-                className="w-full h-full border-0 focus:outline-none focus:ring-transparent bg-transparent caret-slate-500 placeholder:text-slate-300"
+                className="w-full h-full border-0 focus:outline-none focus:ring-transparent bg-transparent caret-slate-500 placeholder:text-slate-300 text-xl leading-relaxed"
                 required
                 value={sourceText}
                 onChange={handleOnChange}
@@ -93,9 +94,7 @@ export default function Index() {
               <Button
                 type="reset"
                 form="ttsForm"
-                pill
                 color="gray"
-                size="xs"
                 className="text-slate-500"
               >
                 Clear Text
@@ -106,8 +105,6 @@ export default function Index() {
               <Button
                 type="submit"
                 form="ttsForm"
-                pill
-                size="xs"
                 isProcessing={isActionSubmission}
               >
                 Submit
