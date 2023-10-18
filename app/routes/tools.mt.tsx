@@ -140,9 +140,9 @@ export default function Index() {
   };
 
   return (
-    <main className="mx-auto w-11/12 md:w-4/5">
+    <main className="mx-auto w-full md:w-11/12 lg:4/5">
       <h1 className="mb-10 text-3xl text-center">Monlam Translation</h1>
-      <div className="flex items-strech gap-1">
+      <div className="flex flex-col md:flex-row items-strech md:gap-1">
         <Card className="w-1/2">
           <h3 className="text-lg text-gray-500">{langLabels[sourceLang]}</h3>
           <Form method="post">
@@ -169,7 +169,7 @@ export default function Index() {
                   <div className="flex flex-col gap-4">
                     {boTexts.map((text, index) => (
                       <div
-                        className="p-2 flex w-full items-center gap-2 border rounded-md"
+                        className="p-3 flex w-full items-center gap-2 border rounded-md"
                         key={index}
                       >
                         <Radio
@@ -178,13 +178,18 @@ export default function Index() {
                           name="texts"
                           defaultChecked={index === 0}
                         />
-                        <Label htmlFor={"eg" + index}>{text}</Label>
+                        <Label
+                          htmlFor={"eg" + index}
+                          className="font-monlam text-lg"
+                        >
+                          {text}
+                        </Label>
                       </div>
                     ))}
                   </div>
                 </fieldset>
                 <div className="mt-10">
-                  <p className="text-gray-300 text-sm tracking-tight">
+                  <p className="text-gray-400 tracking-tight">
                     We apologize for the wait; you are currently on our waiting
                     list. However, you have the option to click on one of the
                     segments to experience firsthand how our model performs.
@@ -193,21 +198,17 @@ export default function Index() {
               </div>
             )}
             <div className="mt-5 flex justify-between items-center">
-              <Button
-                type="reset"
-                pill
-                color="gray"
-                className="text-slate-500"
-                hidden
-              >
-                Clear Text
-              </Button>
               {sourceLang === "en" && (
                 <div className="text-gray-400 text-xs">
                   {charCount} / {charLimit}
                 </div>
               )}
-              <Button type="submit" isProcessing={isActionSubmission}>
+              <div></div>
+              <Button
+                type="submit"
+                isProcessing={isActionSubmission}
+                className=""
+              >
                 Translate
               </Button>
             </div>
@@ -227,16 +228,14 @@ export default function Index() {
           <h3 className="text-lg text-right text-gray-500">
             {langLabels[targetLang]}
           </h3>
-          <div
-            id="translation"
-            className="w-full h-[50vh] p-3 text-black bg-slate-50 rounded-lg overflow-auto"
-          >
+          <div className="w-full h-[50vh] p-3 text-black bg-slate-50 rounded-lg overflow-auto">
             {isActionSubmission ? (
               <div className="h-full flex justify-center items-center">
                 <Spinner />
               </div>
             ) : (
               <div
+                id="translation"
                 className={`text-lg ${
                   targetLang == "bo" &&
                   "font-monlam tracking-wide leading-loose"
