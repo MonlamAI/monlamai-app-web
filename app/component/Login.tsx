@@ -32,7 +32,9 @@ function LoginForm() {
   let { env } = useLoaderData();
   let { AUTH0_DOMAIN, AUTH0_CLIENT_ID, NODE_ENV } = env;
   let location =
-    NODE_ENV === "production" ? "https://pecha.tools" : "http://localhost:3000";
+    NODE_ENV === "production"
+      ? "https://monlam-ai-tools.onrender.com"
+      : "http://localhost:3000";
   const auth0Config = {
     domain: AUTH0_DOMAIN,
     clientID: AUTH0_CLIENT_ID,
