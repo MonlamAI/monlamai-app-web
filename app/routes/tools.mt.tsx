@@ -153,7 +153,7 @@ export default function Index() {
                 <Textarea
                   name="sourceText"
                   placeholder="Enter your text..."
-                  className="w-full h-full border-0 focus:outline-none focus:ring-transparent bg-transparent caret-slate-500 placeholder:text-slate-300"
+                  className="w-full h-full border-0 focus:outline-none focus:ring-transparent bg-transparent caret-slate-500 placeholder:text-slate-300 text-xl leading-relaxed"
                   required
                   value={sourceText}
                   onChange={handleOnChange}
@@ -197,7 +197,6 @@ export default function Index() {
                 type="reset"
                 pill
                 color="gray"
-                size="xs"
                 className="text-slate-500"
                 hidden
               >
@@ -208,7 +207,7 @@ export default function Index() {
                   {charCount} / {charLimit}
                 </div>
               )}
-              <Button type="submit" size="xs" isProcessing={isActionSubmission}>
+              <Button type="submit" isProcessing={isActionSubmission}>
                 Translate
               </Button>
             </div>
@@ -237,7 +236,14 @@ export default function Index() {
                 <Spinner />
               </div>
             ) : (
-              data && data.translation
+              <div
+                className={`text-lg ${
+                  targetLang == "bo" &&
+                  "font-monlam tracking-wide leading-loose"
+                }`}
+              >
+                {data && data.translation}
+              </div>
             )}
           </div>
           <div className="flex justify-end">
