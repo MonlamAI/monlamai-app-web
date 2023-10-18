@@ -56,6 +56,11 @@ export default function Index() {
     setCharCount(sourceText.length);
   };
 
+  const handleReset = () => {
+    setSourceText("");
+    setCharCount(0);
+  };
+
   return (
     <main className="m-auto w-11/12 md:w-4/5">
       <h1 className="mb-10 text-4xl lg:text-5xl text-center text-slate-700">
@@ -82,7 +87,7 @@ export default function Index() {
             <div className="w-full h-[25vh] lg:h-[50vh]">
               <Textarea
                 name="sourceText"
-                placeholder="Enter text in English..."
+                placeholder="Enter your text..."
                 className="w-full h-full border-0 focus:outline-none focus:ring-transparent bg-transparent caret-slate-500 placeholder:text-slate-300 text-xl leading-relaxed"
                 required
                 value={sourceText}
@@ -96,6 +101,7 @@ export default function Index() {
                 form="ttsForm"
                 color="gray"
                 className="text-slate-500"
+                onClick={handleReset}
               >
                 Clear Text
               </Button>
@@ -107,7 +113,7 @@ export default function Index() {
                 form="ttsForm"
                 isProcessing={isActionSubmission}
               >
-                Submit
+                Convert
               </Button>
             </div>
           </Form>
