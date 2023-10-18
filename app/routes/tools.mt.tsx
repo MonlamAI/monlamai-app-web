@@ -210,7 +210,7 @@ export default function Index() {
                 </div>
               </div>
             )}
-            <div className="mt-5 flex justify-between items-center">
+            <div className="mt-5 flex justify-between items-end">
               {sourceLang === "en" && (
                 <div className="text-gray-400 text-xs">
                   {charCount} / {charLimit}
