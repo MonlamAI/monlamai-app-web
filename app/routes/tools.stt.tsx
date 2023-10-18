@@ -93,11 +93,13 @@ export default function Index() {
   };
 
   return (
-    <main className="m-auto w-11/12 md:w-4/5">
-      <h1 className="text-center mb-4">Monlam STT</h1>
-      <div className="flex flex-col  lg:flex-row gap-3">
+    <main className="mx-auto w-11/12 md:w-4/5">
+      <h1 className="mb-10 text-4xl lg:text-5xl text-center text-slate-700">
+        Monlam Speech To Text
+      </h1>
+      <div className="flex flex-col lg:flex-row items-stretch gap-3">
         <Card className="w-full lg:w-1/2">
-          <Form id="sttForm" method="post" className="flex flex-col gap-4">
+          <Form id="sttForm" method="post" className="flex flex-col w-full h-[25vh] lg:h-[50vh] justify-center  gap-4">
             <div className="flex flex-col items-center gap-5">
               <AudioRecorder
                 onRecordingComplete={(blob) => addAudioElement(blob)}
@@ -111,22 +113,14 @@ export default function Index() {
             </div>
             <div className="flex justify-between">
               <Button
-                pill
                 color="gray"
-                size="xs"
                 className="text-slate-500"
                 onClick={handleReset}
                 disabled={!audioURL}
               >
                 Reset
               </Button>
-              <Button
-                type="submit"
-                pill
-                size="xs"
-                disabled={!audioURL}
-                onClick={handleSubmit}
-              >
+              <Button disabled={!audioURL} onClick={handleSubmit}>
                 Submit
               </Button>
             </div>
@@ -136,15 +130,15 @@ export default function Index() {
           <Label
             htmlFor="transcript"
             value="Transcript"
-            className="text-gray-600 text-md"
+            className="text-lg text-gray-500"
           />
-          <div className="w-full h-[50vh] p-3 text-black bg-slate-100 rounded-lg overflow-auto">
+          <div className="w-full h-[25vh] lg:h-[50vh] p-3 text-black bg-slate-100 rounded-lg overflow-auto">
             {isLoading ? (
               <div className="h-full flex justify-center items-center">
                 <Spinner />
               </div>
             ) : (
-              transcript && <p>{transcript}</p>
+              transcript && <p className="text-lg">{transcript}</p>
             )}
           </div>
           <div className="flex justify-end">
