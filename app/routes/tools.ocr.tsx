@@ -1,13 +1,12 @@
 import type { ActionFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Form, useActionData, useNavigation } from "@remix-run/react";
-import { Button, Card, FileInput, Spinner } from "flowbite-react";
+import { Button, Card, FileInput, Label, Spinner } from "flowbite-react";
 import { FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa6/index.js";
 
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
   console.log(formData);
-
   return json({
     text: "here is text",
   });
@@ -28,10 +27,14 @@ export default function Index() {
         <Card className="md:w-1/2">
           <Form method="post" encType="multipart/form-data">
             <div className="w-full min-h-[50vh] flex items-center justify-center">
-              <div id="fileUpload">
+              <div>
+                <div className="mb-2 block">
+                  <Label htmlFor="file" value="Upload your image here" />
+                </div>
                 <FileInput
-                  helperText="Supports .png, .jpg, .jpeg"
-                  sizing="lg"
+                  helperText="Supports PNG, JPG or JPEG"
+                  id="file"
+                  name="image"
                 />
               </div>
             </div>
