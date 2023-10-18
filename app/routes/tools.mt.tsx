@@ -145,7 +145,7 @@ export default function Index() {
         Monlam Translation
       </h1>
       <div className="flex flex-col md:flex-row items-strech md:gap-1">
-        <Card className="w-1/2">
+        <Card className="w-11/12 mx-auto md:w-1/2">
           <h3 className="text-lg text-gray-500">{langLabels[sourceLang]}</h3>
           <Form method="post">
             <input type="hidden" name="sourceLang" value={sourceLang} />
@@ -218,7 +218,7 @@ export default function Index() {
         </Card>
 
         <Button
-          className="self-start lg:mt-4"
+          className="md:self-start self-center lg:mt-4"
           color="transparent"
           onClick={handleLangSwitch}
           pill
@@ -226,7 +226,7 @@ export default function Index() {
           <FaArrowRightArrowLeft size="20px" className="text-gray-400" />
         </Button>
 
-        <Card className="w-1/2">
+        <Card className="w-11/12 mx-auto md:w-1/2">
           <h3 className="text-lg text-right text-gray-500">
             {langLabels[targetLang]}
           </h3>
