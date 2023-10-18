@@ -116,7 +116,6 @@ export default function Index() {
   const [sourceLang, setSourceLang] = useState("en");
   const [targetLang, setTargetLang] = useState("bo");
   const [sourceText, setSourceText] = useState("");
-  const [targetText, setTargetText] = useState("");
   const [charCount, setCharCount] = useState(0);
 
   const data = useActionData<typeof action>();
@@ -128,7 +127,11 @@ export default function Index() {
     setSourceLang(targetLang);
     setTargetLang(temp);
     setSourceText("");
-    setTargetText("");
+    setCharCount(0);
+    let translationDiv = document.getElementById("translation");
+    if (translationDiv) {
+      translationDiv.innerHTML = "";
+    }
   };
 
   const handleOnChange = (e) => {
@@ -225,7 +228,10 @@ export default function Index() {
           <h3 className="text-lg text-right text-gray-600">
             {langLabels[targetLang]}
           </h3>
-          <div className="w-full h-[50vh] p-3 text-black bg-slate-50 rounded-lg overflow-auto">
+          <div
+            id="translation"
+            className="w-full h-[50vh] p-3 text-black bg-slate-50 rounded-lg overflow-auto"
+          >
             {isActionSubmission ? (
               <div className="h-full flex justify-center items-center">
                 <Spinner />
