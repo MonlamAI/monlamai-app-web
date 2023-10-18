@@ -141,7 +141,7 @@ export default function Index() {
 
   return (
     <main className="mx-auto w-full md:w-11/12 lg:4/5">
-      <h1 className="mb-10 text-4xl lg:text-5xl text-center">
+      <h1 className="mb-10 text-4xl lg:text-5xl text-center text-slate-700">
         Monlam Translation
       </h1>
       <div className="flex flex-col md:flex-row items-strech md:gap-1">
