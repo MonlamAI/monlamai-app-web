@@ -141,10 +141,10 @@ export default function Index() {
 
   return (
     <main className="mx-auto w-11/12 md:w-4/5">
-      <h1 className="mb-5 text-xl text-center">Monlam Translation</h1>
+      <h1 className="mb-10 text-3xl text-center">Monlam Translation</h1>
       <div className="flex items-strech gap-1">
         <Card className="w-1/2">
-          <h3 className="text-lg text-gray-600">{langLabels[sourceLang]}</h3>
+          <h3 className="text-lg text-gray-500">{langLabels[sourceLang]}</h3>
           <Form method="post">
             <input type="hidden" name="sourceLang" value={sourceLang} />
             <input type="hidden" name="targetLang" value={targetLang} />
@@ -225,7 +225,7 @@ export default function Index() {
         </Button>
 
         <Card className="w-1/2">
-          <h3 className="text-lg text-right text-gray-600">
+          <h3 className="text-lg text-right text-gray-500">
             {langLabels[targetLang]}
           </h3>
           <div
