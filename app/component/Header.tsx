@@ -26,7 +26,7 @@ function Header() {
   }, []);
 
   return (
-    <nav className="flex h-[60px] p-3 items-center justify-between fixed top-0 w-full z-20 bg-transparent">
+    <nav className="flex h-[60px] p-3 items-center justify-between fixed top-0 w-full z-20 bg-transparent font-monlam">
       <a href="/" className="flex items-center gap-2 text-[1.25rem]">
         <img
           src="/assets/logo.png"

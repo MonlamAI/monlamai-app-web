@@ -10,6 +10,7 @@ export default {
     fontFamily: {
       Elsie: ["Elsie", "sans-serif"],
       Inter: ["Inter", "sans-serif"],
+      'monlam': ['Monlam', 'sans-serif'],
     },
   },
   plugins: [

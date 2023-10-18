@@ -16,39 +16,99 @@ const langLabels = {
 
 const charLimit = 2000;
 
-const boTexts = ["Text 01", "Text 02", "Text 03"];
+const boTexts = [
+  "བདག་ནི་སྐྱེ་བ་ཐམས་ཅད་དུ།",
+  "བསྟན་པ་གསལ་བར་བྱེད་གྱུར་ཅིག",
+  "བསྟན་པ་གསལ་བར་མ་ནུས་ནའང་",
+];
 
-function timeout(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+function parseApiResponse(apiResponse: String) {
+  const translationStartIndex = apiResponse.indexOf("data: ") + 7;
+  const translationEndIndex = apiResponse.indexOf(
+    "<br /><br />",
+    translationStartIndex
+  );
+
+  if (translationStartIndex !== -1 && translationEndIndex !== -1) {
+    const translationOutput = apiResponse.substring(
+      translationStartIndex,
+      translationEndIndex
+    );
+    const disclaimerStartIndex = translationEndIndex + 12; // Skip "<br /><br /><small><i>"
+    const disclaimerEndIndex = apiResponse.indexOf(
+      "</i></small>",
+      disclaimerStartIndex
+    );
+
+    if (disclaimerStartIndex !== -1 && disclaimerEndIndex !== -1) {
+      const disclaimer = apiResponse.substring(
+        disclaimerStartIndex,
+        disclaimerEndIndex
+      );
+
+      return {
+        translation: translationOutput.trim(),
+        disclaimer: disclaimer.trim(),
+      };
+    }
+  }
+
+  // Handle invalid response format
+  return null;
+}
+
+async function translate(text: String, sourceLang: String, targetLang: String) {
+  const url = "https://dharmamitra.org/api/translation/";
+  const data = {
+    input_sentence: text,
+    level_of_explanation: 0,
+    language: `${sourceLang}-${targetLang}`,
+    model: "NO",
+  };
+
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const responseData = await response.text();
+    const parsedResponse = parseApiResponse(responseData);
+    if (!parsedResponse) {
+      throw new Error("Invalid response format!");
+    }
+    const { translation, disclaimer } = parsedResponse;
+    return {
+      translation,
+      disclaimer,
+    };
+  } catch (error) {
+    console.error("Error:", error);
+  }
 }
 
 export async function action({ request }: ActionArgs) {
   const formData = await request.formData();
-  const data = Object.fromEntries(formData);
-  if (data.sourceLang === "bo") {
-    data.sourceText = data.texts;
+  const form = Object.fromEntries(formData);
+  if (form.sourceLang === "bo") {
+    form.sourceText = form.texts;
   }
 
-  // const translation_api = "https://dharmamitra.org/api/translation/";
-  // const response = await fetch(translation_api, {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  //   body: JSON.stringify({
-  //     input_sentence: data.sourceText,
-  //     langauge: `${data.sourceLang}-${data.targetLang}`,
-  //     level_of_explanation: 0,
-  //   }),
-  // });
-
-  // const data = await response.json();
-  // console.log(data);
-
-  await timeout(2000);
+  const result = await translate(
+    form.sourceText,
+    form.sourceLang,
+    form.targetLang
+  );
 
   return json({
-    translation: "this is a translation",
+    translation: result?.translation,
   });
 }
 
@@ -66,6 +126,12 @@ export default function Index() {
     const temp = sourceLang;
     setSourceLang(targetLang);
     setTargetLang(temp);
+    setSourceText("");
+    setCharCount(0);
+    let translationDiv = document.getElementById("translation");
+    if (translationDiv) {
+      translationDiv.innerHTML = "";
+    }
   };
 
   const handleOnChange = (e) => {
@@ -74,11 +140,24 @@ export default function Index() {
   };
 
   return (
-    <main className="mx-auto w-11/12 md:w-4/5">
-      <h1 className="mb-5 text-xl text-center">Monlam Translation</h1>
-      <div className="flex items-strech gap-1">
-        <Card className="w-1/2">
-          <h3 className="text-lg text-gray-600">{langLabels[sourceLang]}</h3>
+    <main className="mx-auto w-11/12 lg:4/5">
+      <h1 className="mb-10 text-4xl lg:text-5xl text-center text-slate-700">
+        Monlam Translation
+      </h1>
+      <div className="flex justify-between">
+        <h3 className="text-lg text-gray-500">{langLabels[sourceLang]}</h3>
+
+        <Button color="transparent" onClick={handleLangSwitch} pill>
+          <FaArrowRightArrowLeft size="20px" className="text-gray-400" />
+        </Button>
+
+        <h3 className="text-lg text-right text-gray-500">
+          {langLabels[targetLang]}
+        </h3>
+      </div>
+
+      <div className="mt-1 flex flex-col md:flex-row items-strech gap-5">
+        <Card className="md:w-1/2">
           <Form method="post">
             <input type="hidden" name="sourceLang" value={sourceLang} />
             <input type="hidden" name="targetLang" value={targetLang} />
@@ -87,7 +166,7 @@ export default function Index() {
                 <Textarea
                   name="sourceText"
                   placeholder="Enter your text..."
-                  className="w-full h-full border-0 focus:outline-none focus:ring-transparent bg-transparent caret-slate-500 placeholder:text-slate-300"
+                  className="w-full h-full border-0 focus:outline-none focus:ring-transparent bg-transparent caret-slate-500 placeholder:text-slate-300 text-xl leading-relaxed"
                   required
                   value={sourceText}
                   onChange={handleOnChange}
@@ -97,13 +176,13 @@ export default function Index() {
             ) : (
               <div className="w-full h-[50vh] overflow-auto">
                 <fieldset className="w-full flex" id="radio">
-                  <legend className="mb-4 text-gray-400">
+                  <legend className="mb-4 text-gray-300">
                     Choose a text to translate
                   </legend>
                   <div className="flex flex-col gap-4">
                     {boTexts.map((text, index) => (
                       <div
-                        className="p-2 flex w-full items-center gap-2 border rounded-md"
+                        className="p-3 flex w-full items-center gap-2 border rounded-md"
                         key={index}
                       >
                         <Radio
@@ -112,13 +191,18 @@ export default function Index() {
                           name="texts"
                           defaultChecked={index === 0}
                         />
-                        <Label htmlFor={"eg" + index}>{text}</Label>
+                        <Label
+                          htmlFor={"eg" + index}
+                          className="font-monlam text-lg"
+                        >
+                          {text}
+                        </Label>
                       </div>
                     ))}
                   </div>
                 </fieldset>
                 <div className="mt-10">
-                  <p className="text-gray-600">
+                  <p className="text-gray-400 tracking-tight">
                     We apologize for the wait; you are currently on our waiting
                     list. However, you have the option to click on one of the
                     segments to experience firsthand how our model performs.
@@ -126,48 +210,40 @@ export default function Index() {
                 </div>
               </div>
             )}
-            <div className="mt-5 flex justify-between items-center">
-              <Button
-                type="reset"
-                pill
-                color="gray"
-                size="xs"
-                className="text-slate-500"
-              >
-                Clear Text
-              </Button>
+            <div className="mt-5 flex justify-between items-end">
               {sourceLang === "en" && (
                 <div className="text-gray-400 text-xs">
                   {charCount} / {charLimit}
                 </div>
               )}
-              <Button type="submit" size="xs" isProcessing={isActionSubmission}>
+              <div></div>
+              <Button
+                type="submit"
+                isProcessing={isActionSubmission}
+                className=""
+              >
                 Translate
               </Button>
             </div>
           </Form>
         </Card>
 
-        <Button
-          className="self-start lg:mt-4"
-          color="transparent"
-          onClick={handleLangSwitch}
-          pill
-        >
-          <FaArrowRightArrowLeft size="20px" className="text-gray-400" />
-        </Button>
-
-        <Card className="w-1/2">
-          <h3 className="text-lg text-right text-gray-600">
-            {langLabels[targetLang]}
-          </h3>
-          <div className="w-full h-[50vh] p-3 text-black bg-slate-100 rounded-lg overflow-auto">
+        <Card className="md:w-1/2">
+          <div className="w-full h-[50vh] p-3 text-black bg-slate-50 rounded-lg overflow-auto">
             {isActionSubmission ? (
               <div className="h-full flex justify-center items-center">
                 <Spinner />
               </div>
             ) : (
-              data && data.translation
+              <div
+                id="translation"
+                className={`text-lg ${
+                  targetLang == "bo" &&
+                  "font-monlam tracking-wide leading-loose"
+                }`}
+              >
+                {data && data.translation}
+              </div>
             )}
           </div>
           <div className="flex justify-end">
