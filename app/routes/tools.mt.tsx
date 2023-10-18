@@ -140,13 +140,24 @@ export default function Index() {
   };
 
   return (
-    <main className="mx-auto w-full md:w-11/12 lg:4/5">
+    <main className="mx-auto w-11/12 lg:4/5">
       <h1 className="mb-10 text-4xl lg:text-5xl text-center text-slate-700">
         Monlam Translation
       </h1>
-      <div className="flex flex-col md:flex-row items-strech md:gap-1">
-        <Card className="w-11/12 mx-auto md:w-1/2">
-          <h3 className="text-lg text-gray-500">{langLabels[sourceLang]}</h3>
+      <div className="flex justify-between">
+        <h3 className="text-lg text-gray-500">{langLabels[sourceLang]}</h3>
+
+        <Button color="transparent" onClick={handleLangSwitch} pill>
+          <FaArrowRightArrowLeft size="20px" className="text-gray-400" />
+        </Button>
+
+        <h3 className="text-lg text-right text-gray-500">
+          {langLabels[targetLang]}
+        </h3>
+      </div>
+
+      <div className="mt-1 flex flex-col md:flex-row items-strech gap-5">
+        <Card className="md:w-1/2">
           <Form method="post">
             <input type="hidden" name="sourceLang" value={sourceLang} />
             <input type="hidden" name="targetLang" value={targetLang} />
@@ -217,19 +228,7 @@ export default function Index() {
           </Form>
         </Card>
 
-        <Button
-          className="md:self-start self-center lg:mt-4"
-          color="transparent"
-          onClick={handleLangSwitch}
-          pill
-        >
-          <FaArrowRightArrowLeft size="20px" className="text-gray-400" />
-        </Button>
-
-        <Card className="w-11/12 mx-auto md:w-1/2">
-          <h3 className="text-lg text-right text-gray-500">
-            {langLabels[targetLang]}
-          </h3>
+        <Card className="md:w-1/2">
           <div className="w-full h-[50vh] p-3 text-black bg-slate-50 rounded-lg overflow-auto">
             {isActionSubmission ? (
               <div className="h-full flex justify-center items-center">
