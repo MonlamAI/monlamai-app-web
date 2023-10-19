@@ -158,7 +158,7 @@ export default function Index() {
       </div>
 
       <div className="mt-1 flex flex-col md:flex-row items-strech gap-5">
-        <Card className="md:w-1/2">
+        <Card className="md:w-1/2 max-h-[60vh] flex">
           <Form method="post">
             <input type="hidden" name="sourceLang" value={sourceLang} />
             <input type="hidden" name="targetLang" value={targetLang} />
@@ -229,7 +229,7 @@ export default function Index() {
           </Form>
         </Card>
 
-        <Card className="md:w-1/2">
+        <Card className="md:w-1/2 max-h-[60vh] flex">
           <div className="w-full h-[50vh] p-3 text-black bg-slate-50 rounded-lg overflow-auto">
             {isActionSubmission ? (
               <div className="h-full flex justify-center items-center">
