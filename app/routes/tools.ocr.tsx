@@ -5,6 +5,7 @@ import { Button, Card, FileInput, Label, Spinner } from "flowbite-react";
 import parse from "html-react-parser";
 import { useState } from "react";
 import { FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa6/index.js";
+import CopyToClipboard from "~/component/CopyToClipboard";
 
 function toParaTags(textLines: string[]) {
   return textLines
@@ -113,12 +114,16 @@ export default function Index() {
             )}
           </div>
           <div className="flex justify-end">
-            <Button color="white">
+            <Button color="white" disabled={data ? false : true}>
               <FaRegThumbsUp color="gray" size="20px" />
             </Button>
-            <Button color="white">
+            <Button color="white" disabled={data ? false : true}>
               <FaRegThumbsDown color="gray" size="20px" />
             </Button>
+            <CopyToClipboard
+              textToCopy={data?.text}
+              disabled={data ? false : true}
+            />
           </div>
         </Card>
       </div>
