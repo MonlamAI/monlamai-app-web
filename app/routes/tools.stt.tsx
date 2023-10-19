@@ -1,12 +1,10 @@
 import { Button, Card, Label, Spinner } from "flowbite-react";
 import { FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa/index.js";
-// import { BsFillMicFill, BsFillMicMuteFill } from "react-icons/bs/index.js";
 import { BsFillStopFill } from "react-icons/bs/index.js";
-import { useEffect, useState } from "react";
-import { AudioRecorder, useAudioRecorder } from "react-audio-voice-recorder";
-import { type LoaderFunction, type ActionFunction } from "@remix-run/node";
-import { useFetcher, useLoaderData, Form } from "@remix-run/react";
-import { BsFillMicFill, BsFillMicMuteFill } from "react-icons/bs/index.js";
+import { useState } from "react";
+import { type LoaderFunction } from "@remix-run/node";
+import { useLoaderData, Form } from "@remix-run/react";
+import { BsFillMicFill } from "react-icons/bs/index.js";
 import { useRef } from "react";
 import { LiveAudioVisualizer } from "react-audio-visualize";
 export const loader: LoaderFunction = async ({ request }) => {
@@ -21,25 +19,6 @@ export const loader: LoaderFunction = async ({ request }) => {
   };
 };
 
-// export const action: ActionFunction = async ({ request }) => {
-//   const formData = await request.formData();
-//   const blob = formData.get("blob");
-//   console.log("blob", blob, typeof blob);
-//   const apiUrl = process.env.STT_API_URL as string;
-//   const headers = {
-//     Authorization: process.env.MODEL_API_AUTH_TOKEN as string,
-//     "Content-Type": "audio/flac",
-//   };
-//   const response = await fetch(apiUrl, {
-//     method: "POST",
-//     headers,
-//     body: blob,
-//   });
-//   const data = await response.json();
-//   console.log("data", data);
-//   return null;
-// };
-
 export default function Index() {
   // const fetcher = useFetcher();
   const { apiUrl, headers } = useLoaderData();
@@ -53,16 +32,12 @@ export default function Index() {
 
   const handleSubmit = async () => {
     try {
-      // const formData = new FormData();
-      // formData.append("audio", recordedBlob);
-      // fetcher.submit({ blob: recordedBlob }, { method: "post", });
       setIsLoading(true);
       const response = await fetch(apiUrl, {
         method: "POST",
         headers: headers,
         body: audio?.blob,
       });
-      console.log("response", response);
       if (response.ok) {
         const data = await response.json();
         const { text } = data;
@@ -168,7 +143,6 @@ export default function Index() {
               {audio?.url && (
                 <audio id="user-audio" src={audio.url} controls></audio>
               )}
-              {/* <input type="hidden" name="blob" value={} /> */}
             </div>
             <div className="flex justify-between h-10">
               <Button
