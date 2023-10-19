@@ -2,7 +2,7 @@
 export default {
   serverModuleFormat: "esm",
   ignoredRouteFiles: ["**/.*"],
-  serverDependenciesToBundle: ["react-typing-effect"],
+  serverDependenciesToBundle: ["react-typing-effect", "react-audio-visualize"],
   // appDirectory: "app",
   // assetsBuildDirectory: "public/build",
   // publicPath: "/build/",

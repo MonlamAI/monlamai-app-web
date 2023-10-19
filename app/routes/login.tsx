@@ -1,6 +1,15 @@
 import React from "react";
 import { TypeAnimation } from "react-type-animation";
 import { Form } from "@remix-run/react";
+import { auth } from "~/services/auth.server";
+import { LoaderFunction } from "@remix-run/node";
+
+export const loader: LoaderFunction = async ({ request }) => {
+  const user = await auth.isAuthenticated(request, {
+    successRedirect: "/",
+  });
+  return { user };
+};
 
 function login() {
   let sequence = [

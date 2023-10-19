@@ -1,11 +1,14 @@
 import { Button, Card, Label, Spinner } from "flowbite-react";
 import { FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa/index.js";
 // import { BsFillMicFill, BsFillMicMuteFill } from "react-icons/bs/index.js";
+import { BsFillStopFill } from "react-icons/bs/index.js";
 import { useEffect, useState } from "react";
 import { AudioRecorder, useAudioRecorder } from "react-audio-voice-recorder";
 import { type LoaderFunction, type ActionFunction } from "@remix-run/node";
 import { useFetcher, useLoaderData, Form } from "@remix-run/react";
-
+import { BsFillMicFill, BsFillMicMuteFill } from "react-icons/bs/index.js";
+import { useRef } from "react";
+import { LiveAudioVisualizer } from "react-audio-visualize";
 export const loader: LoaderFunction = async ({ request }) => {
   const apiUrl = process.env.STT_API_URL as string;
   const headers = {
@@ -40,29 +43,13 @@ export const loader: LoaderFunction = async ({ request }) => {
 export default function Index() {
   // const fetcher = useFetcher();
   const { apiUrl, headers } = useLoaderData();
-  const [audioURL, setAudioURL] = useState<string | null>("");
-  const [recordedBlob, setRecordedBlob] = useState<Blob | null>(null);
+  const [audioChunks, setAudioChunks] = useState([]);
   const [transcript, setTranscript] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [audio, setAudio] = useState<{ blob: Blob; url: string } | null>(null);
+  let mediaRecorder: any = useRef();
 
-  const recorderControls = useAudioRecorder(
-    {
-      noiseSuppression: true,
-      echoCancellation: true,
-    },
-    (err) => console.table(err) // onNotAllowedOrFound
-  );
-  useEffect(() => {
-    if (recorderControls.isRecording === true) {
-      setAudioURL(null);
-    }
-  }, [recorderControls.isRecording]);
-
-  const addAudioElement = (blob: Blob) => {
-    setRecordedBlob(blob);
-    const url = URL.createObjectURL(blob);
-    setAudioURL(url);
-  };
+  const [recording, setRecording] = useState(false);
 
   const handleSubmit = async () => {
     try {
@@ -73,7 +60,7 @@ export default function Index() {
       const response = await fetch(apiUrl, {
         method: "POST",
         headers: headers,
-        body: recordedBlob,
+        body: audio?.blob,
       });
       console.log("response", response);
       if (response.ok) {
@@ -91,10 +78,69 @@ export default function Index() {
 
   const handleReset = () => {
     // reset the audio element and the transcript
-    setAudioURL("");
+    setAudio(null);
     setTranscript("");
   };
+  const toggleRecording = () => {
+    if (!recording) {
+      startRecording();
+    } else {
+      stopRecording();
+    }
+  };
+  const getMicrophonePermission = async () => {
+    if ("MediaRecorder" in window) {
+      try {
+        const streamData = await navigator.mediaDevices.getUserMedia({
+          audio: true,
+          video: false,
+        });
+        return streamData;
+      } catch (err) {
+        alert(err.message);
+        return false;
+      }
+    } else {
+      alert("The MediaRecorder API is not supported in your browser.");
+    }
+  };
+  const startRecording = async () => {
+    let stream = await getMicrophonePermission();
+    if (stream) {
+      try {
+        // getting audio stream from user's mic persmission
+        let localAudioChunks: [] = [];
+        setAudio(null);
+        setRecording(true);
+        const media = new MediaRecorder(stream, { mimeType: "audio/webm" });
+        mediaRecorder.current = media;
+        //invokes the start method to start the recording process
+        mediaRecorder.current.start();
+        mediaRecorder.current.ondataavailable = (event: any) => {
+          if (typeof event.data === "undefined") return;
+          if (event.data.size === 0) return;
+          localAudioChunks.push(event?.data);
+        };
+        setAudioChunks(localAudioChunks);
+      } catch (error) {
+        console.error("Error accessing the microphone:", error);
+      }
+    }
+  };
 
+  const stopRecording = () => {
+    setRecording(false);
+    //stops the recording instance
+    mediaRecorder.current.stop();
+    mediaRecorder.current.onstop = () => {
+      //creates a blob file from the audiochunks data
+      const audioBlob = new Blob(audioChunks);
+      const audioUrl = URL.createObjectURL(audioBlob);
+      setAudio({ blob: audioBlob, url: audioUrl });
+
+      setAudioChunks([]);
+    };
+  };
   return (
     <main className="mx-auto w-11/12 md:w-4/5">
       <h1 className="mb-10 text-4xl lg:text-5xl text-center text-slate-700">
@@ -108,13 +154,19 @@ export default function Index() {
             className="flex flex-col w-full h-[25vh] lg:h-[50vh] justify-center  flex-1 gap-4"
           >
             <div className="flex flex-col items-center gap-5 flex-1 justify-center">
-              <AudioRecorder
-                onRecordingComplete={(blob) => addAudioElement(blob)}
-                recorderControls={recorderControls}
-                showVisualizer={true}
-              />
-              {audioURL && (
-                <audio id="user-audio" src={audioURL} controls></audio>
+              {recording && mediaRecorder.current && (
+                <LiveAudioVisualizer
+                  mediaRecorder={mediaRecorder.current}
+                  width={200}
+                  height={75}
+                />
+              )}
+              <Button size="md" onClick={toggleRecording}>
+                {recording ? <BsFillStopFill /> : <BsFillMicFill />}
+              </Button>
+
+              {audio?.url && (
+                <audio id="user-audio" src={audio.url} controls></audio>
               )}
               {/* <input type="hidden" name="blob" value={} /> */}
             </div>
@@ -123,11 +175,11 @@ export default function Index() {
                 color="gray"
                 className="text-slate-500"
                 onClick={handleReset}
-                disabled={!audioURL}
+                disabled={!audio?.url}
               >
                 Reset
               </Button>
-              <Button disabled={!audioURL} onClick={handleSubmit}>
+              <Button disabled={!audio?.url} onClick={handleSubmit}>
                 Submit
               </Button>
             </div>
