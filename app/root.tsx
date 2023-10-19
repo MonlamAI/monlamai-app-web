@@ -9,6 +9,8 @@ import {
   Scripts,
   ScrollRestoration,
   useLoaderData,
+  useLocation,
+  useSearchParams,
 } from "@remix-run/react";
 import Footer from "./component/Footer";
 import Header from "./component/Header";
@@ -61,11 +63,14 @@ function Document({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   let { user } = useLoaderData();
+  let location = useLocation();
+
+  let isSteps = location.pathname.includes("steps");
   return (
     <Document>
       {user && <Header />}
       <Outlet />
-      {user && <Footer />}
+      {user && !isSteps && <Footer />}
     </Document>
   );
 }

@@ -14,7 +14,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 function login() {
   let sequence = [
-    "Monalm AI.",
+    "Monlam AI.",
     2000,
     "Neural Machine Translation.",
     2000,
