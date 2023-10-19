@@ -15,13 +15,14 @@ import globalStyle from "./styles/global.css";
 import tailwindStyle from "./styles/tailwind.css";
 
 import { getUserSession } from "~/services/session.server";
+import { getUser } from "./modal/user";
 
 export const loader: LoaderFunction = async ({ request }) => {
-  let user = await getUserSession(request);
-  let { AUTH0_DOMAIN, AUTH0_CLIENT_ID, NODE_ENV } = process.env;
+  let userdata = await getUserSession(request);
+  if (!userdata) return { user: null };
+  let user = await getUser(userdata._json.email);
   return defer({
     user,
-    env: { AUTH0_DOMAIN, AUTH0_CLIENT_ID, NODE_ENV },
   });
 };
 

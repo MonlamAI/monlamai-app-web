@@ -1,10 +1,10 @@
-// app/routes/app/auth0/logout.tsx
-import { redirect, type LoaderFunction } from "@remix-run/node";
-import { destroySession, getSession } from "~/services/session.server";
+import type { ActionFunction } from "@remix-run/node";
+import { redirect } from "@remix-run/node";
 
-// Here we use the logout function of the authenticator to logout the user and clear the Auth0 session.
-export const loader: LoaderFunction = async ({ request }) => {
-  let session = await getSession(request.headers.get("Cookie"));
+import { destroySession, getUserSession } from "~/services/session.server";
+
+export const action: ActionFunction = async ({ request }) => {
+  const session = await getUserSession(request);
 
   return redirect("/", {
     headers: {

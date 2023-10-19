@@ -7,9 +7,17 @@ services:
     repo: https://github.com/OpenPecha/monlam_ai_tools.git
     branch: main
     buildCommand: npm ci --production=false && npm run build && npm prune --production
-    startCommand: npm run start
+    startCommand: npx prisma migrate deploy && npm run start
     envVars:
       - key: NODE_VERSION
         value: ~18.18.0
       - key: NODE_ENV
         value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: monlam-tools-pg
+          property: connectionString
+
+databases:
+  - name: monlam-tools-pg
+    plan: starter

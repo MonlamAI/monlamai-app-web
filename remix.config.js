@@ -1,5 +1,6 @@
 /** @type {import('@remix-run/dev').AppConfig} */
 export default {
+  serverModuleFormat: "esm",
   ignoredRouteFiles: ["**/.*"],
   serverDependenciesToBundle: ["react-typing-effect"],
   // appDirectory: "app",

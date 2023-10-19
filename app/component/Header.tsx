@@ -1,11 +1,10 @@
 import { Menu, Transition } from "@headlessui/react";
-import { Link, useLoaderData, useLocation } from "@remix-run/react";
+import { Form, Link, useLoaderData, useLocation } from "@remix-run/react";
 import { Fragment, useEffect, useState } from "react";
-import Login from "./Login";
 
 function Header() {
   const { user } = useLoaderData();
-  let location = useLocation();
+  console.log(user);
   const [showMenu, setShowMenu] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -107,25 +106,24 @@ function Header() {
                         <Menu.Item>
                           {() => (
                             <div className="block px-4 py-2 text-sm text-gray-700">
-                              {user?.name}
+                              {user?.username}
                             </div>
                           )}
                         </Menu.Item>
                         <Menu.Item>
                           {() => (
-                            <Link
-                              to={"/logout"}
-                              className="block px-4 py-2 text-sm text-gray-700"
-                            >
-                              Sign out
-                            </Link>
+                            <Form method="post" action="/logout">
+                              <button>Logout</button>
+                            </Form>
                           )}
                         </Menu.Item>
                       </Menu.Items>
                     </Transition>
                   </Menu>
                 ) : (
-                  <Login />
+                  <Form method="post" action="/auth0">
+                    <button>Sign In</button>
+                  </Form>
                 )}
               </li>
             </ul>
@@ -180,25 +178,24 @@ function Header() {
                       <Menu.Item>
                         {() => (
                           <div className="block px-4 py-2 text-sm text-gray-700">
-                            {user.name}
+                            {user.username}
                           </div>
                         )}
                       </Menu.Item>
                       <Menu.Item>
                         {() => (
-                          <Link
-                            to={"/logout"}
-                            className="block px-4 py-2 text-sm text-gray-700"
-                          >
-                            Sign out
-                          </Link>
+                          <Form method="post" action="/logout">
+                            <button>logout</button>
+                          </Form>
                         )}
                       </Menu.Item>
                     </Menu.Items>
                   </Transition>
                 </Menu>
               ) : (
-                <Login />
+                <Form method="post" action="/auth0">
+                  <button>Sign In</button>
+                </Form>
               )}
             </li>
           </ul>
