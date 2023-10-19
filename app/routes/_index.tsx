@@ -8,14 +8,15 @@ import Disclaimer from "~/component/Disclaimer";
 import Hero from "~/component/Hero";
 import PowerUser from "~/component/PowerUser";
 import List from "~/component/Tools";
+import { getUser } from "~/modal/user";
 import { getUserSession } from "~/services/session.server";
 
 export const loader: LoaderFunction = async ({ request }) => {
-  let user = await getUserSession(request);
-  let { AUTH0_DOMAIN, AUTH0_CLIENT_ID, NODE_ENV } = process.env;
+  let userdata = await getUserSession(request);
+  if (!userdata) return { user: null };
+  let user = await getUser(userdata._json.email);
   return defer({
     user,
-    env: { AUTH0_DOMAIN, AUTH0_CLIENT_ID, NODE_ENV },
   });
 };
 
