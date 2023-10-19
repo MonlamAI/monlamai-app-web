@@ -6,10 +6,27 @@ import { FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa6/index.js";
 
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
-  console.log(formData);
-  return json({
-    text: "here is text",
-  });
+  const ocrFormData = new FormData();
+  ocrFormData.append("file", formData.get("image") as Blob);
+  try {
+    const response = await fetch("https://ocr.pecha.tools/", {
+      method: "POST",
+      body: ocrFormData,
+    });
+
+    if (!response.ok) {
+      const message = await response.text();
+      console.error("message", message);
+      throw new Error("Network response was not ok.");
+    }
+
+    const data = await response.json();
+    return json({
+      text: data.output,
+    });
+  } catch (error) {
+    console.error("There was a problem with the fetch operation:", error);
+  }
 }
 
 export default function Index() {
@@ -35,6 +52,7 @@ export default function Index() {
                   helperText="Supports PNG, JPG or JPEG"
                   id="file"
                   name="image"
+                  accept="image/png, image/jpeg, image/jpg"
                 />
               </div>
             </div>
