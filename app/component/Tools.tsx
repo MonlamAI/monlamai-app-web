@@ -16,7 +16,7 @@ type EachProps = {
   navigateTo: (link: string) => void;
 };
 
-function List() {
+function Tools() {
   const { user } = useLoaderData();
   let navigater = useNavigate();
 
@@ -101,4 +101,4 @@ function EachModel({ model, index, checkAuth, navigateTo }: EachProps) {
   );
 }
 
-export default List;
+export default Tools;

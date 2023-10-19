@@ -16,7 +16,7 @@ function Hero() {
   ];
   return (
     <>
-      <div className="text-white flex justify-between flex-col h-screen  bg-[url('/assets/robot.jpg')] bg-no-repeat bg-center bg-cover  backdrop-blur-sm ">
+      <div className="text-white flex justify-between flex-col h-screen  backdrop-blur-sm ">
         <div className="w-full h-full flex  justify-center items-center backdrop-brightness-50 absolute inset-0 -z-10"></div>
         <div className=" w-full flex-1 flex justify-center items-center flex-col ">
           <h1 className="text-center text-[40px]  md:text-[50px] max-w-[1000px] mb-2">

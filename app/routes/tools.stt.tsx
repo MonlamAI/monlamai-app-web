@@ -1,7 +1,7 @@
 import { Button, Card, Label, Spinner } from "flowbite-react";
 import { FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa/index.js";
 // import { BsFillMicFill, BsFillMicMuteFill } from "react-icons/bs/index.js";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AudioRecorder, useAudioRecorder } from "react-audio-voice-recorder";
 import { type LoaderFunction, type ActionFunction } from "@remix-run/node";
 import { useFetcher, useLoaderData, Form } from "@remix-run/react";
@@ -40,7 +40,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 export default function Index() {
   // const fetcher = useFetcher();
   const { apiUrl, headers } = useLoaderData();
-  const [audioURL, setAudioURL] = useState<string>("");
+  const [audioURL, setAudioURL] = useState<string | null>("");
   const [recordedBlob, setRecordedBlob] = useState<Blob | null>(null);
   const [transcript, setTranscript] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -52,12 +52,15 @@ export default function Index() {
     },
     (err) => console.table(err) // onNotAllowedOrFound
   );
+  useEffect(() => {
+    if (recorderControls.isRecording === true) {
+      setAudioURL(null);
+    }
+  }, [recorderControls.isRecording]);
 
   const addAudioElement = (blob: Blob) => {
-    console.log("blob", blob);
     setRecordedBlob(blob);
     const url = URL.createObjectURL(blob);
-    console.log("audioURL", url);
     setAudioURL(url);
   };
 
@@ -98,9 +101,13 @@ export default function Index() {
         Monlam Speech To Text
       </h1>
       <div className="flex flex-col lg:flex-row items-stretch gap-3">
-        <Card className="w-full lg:w-1/2">
-          <Form id="sttForm" method="post" className="flex flex-col w-full h-[25vh] lg:h-[50vh] justify-center  gap-4">
-            <div className="flex flex-col items-center gap-5">
+        <Card className="w-full lg:w-1/2 max-h-[60vh] flex">
+          <Form
+            id="sttForm"
+            method="post"
+            className="flex flex-col w-full h-[25vh] lg:h-[50vh] justify-center  flex-1 gap-4"
+          >
+            <div className="flex flex-col items-center gap-5 flex-1 justify-center">
               <AudioRecorder
                 onRecordingComplete={(blob) => addAudioElement(blob)}
                 recorderControls={recorderControls}
@@ -111,7 +118,7 @@ export default function Index() {
               )}
               {/* <input type="hidden" name="blob" value={} /> */}
             </div>
-            <div className="flex justify-between">
+            <div className="flex justify-between h-10">
               <Button
                 color="gray"
                 className="text-slate-500"
@@ -126,7 +133,7 @@ export default function Index() {
             </div>
           </Form>
         </Card>
-        <Card className="w-full lg:w-1/2">
+        <Card className="w-full lg:w-1/2 max-h-[60vh] flex">
           <Label
             htmlFor="transcript"
             value="Transcript"

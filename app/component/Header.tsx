@@ -1,31 +1,12 @@
-import { Menu, Transition } from "@headlessui/react";
 import { Form, Link, useLoaderData, useLocation } from "@remix-run/react";
-import { Fragment, useEffect, useState } from "react";
-
+import { useState } from "react";
+import { Dropdown } from "flowbite-react";
 function Header() {
   const { user } = useLoaderData();
-  console.log(user);
   const [showMenu, setShowMenu] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    // Add a scroll event listener to monitor scroll position
-    const handleScroll = () => {
-      if (window.scrollY > window.innerHeight) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
-    };
-    window.addEventListener("scroll", handleScroll);
-    // Remove the event listener when the component unmounts
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
 
   return (
-    <nav className="flex h-[60px] p-3 items-center justify-between fixed top-0 w-full z-20 bg-transparent font-monlam">
+    <nav className="flex h-[60px] p-3 items-center justify-between  w-full z-20 bg-transparent font-monlam">
       <a href="/" className="flex items-center gap-2 text-[1.25rem]">
         <img
           src="/assets/logo.png"
@@ -57,148 +38,62 @@ function Header() {
       {/* mobile view */}
       {showMenu && (
         <div
-          className="lg:hidden absolute top-[60px] bg-blue-950 p-5 right-0 w-full
+          className="lg:hidden absolute top-[60px] p-5 right-0 w-full bg-white
 "
         >
-          <ul className="flex flex-col gap-6">
-            <li>
-              <Link to="/about">ང་ཚོའི་སྐོར།</Link>
-            </li>
-            <li>
-              <a href="#skills">མིས་བཟོས་རིག་ནུས།</a>
-            </li>
-            <li>
-              <a href="#contact">འབྲེལ་མཐུད།</a>
-            </li>
-          </ul>
-          <div>
-            <ul className="flex flex-col gap-6 mt-6">
-              <li>
-                <a href="#portfolio">
-                  <i className="fas fa-globe mr-2"></i>སྐད་ཡིག
-                </a>
-              </li>
-              <li>
-                {user ? (
-                  <Menu as="div" className="relative ml-3">
-                    <div>
-                      <Menu.Button className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                        <span className="absolute -inset-1.5" />
-                        <span className="sr-only">Open user menu</span>
-                        <img
-                          className="h-8 w-8 rounded-full"
-                          src={user?.picture}
-                          title={user?.email}
-                          alt={user?.email}
-                        />
-                      </Menu.Button>
-                    </div>
-                    <Transition
-                      as={Fragment}
-                      enter="transition ease-out duration-100"
-                      enterFrom="transform opacity-0 scale-95"
-                      enterTo="transform opacity-100 scale-100"
-                      leave="transition ease-in duration-75"
-                      leaveFrom="transform opacity-100 scale-100"
-                      leaveTo="transform opacity-0 scale-95"
-                    >
-                      <Menu.Items className="absolute left-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                        <Menu.Item>
-                          {() => (
-                            <div className="block px-4 py-2 text-sm text-gray-700">
-                              {user?.username}
-                            </div>
-                          )}
-                        </Menu.Item>
-                        <Menu.Item>
-                          {() => (
-                            <Form method="post" action="/logout">
-                              <button>Logout</button>
-                            </Form>
-                          )}
-                        </Menu.Item>
-                      </Menu.Items>
-                    </Transition>
-                  </Menu>
-                ) : (
-                  <Form method="post" action="/auth0">
-                    <button>Sign In</button>
-                  </Form>
-                )}
-              </li>
-            </ul>
+          <div className="flex justify-between items-center">
+            <Link to="/about">ང་ཚོའི་སྐོར།</Link>
+            <Dropdown
+              label="hi"
+              dismissOnClick={false}
+              renderTrigger={() => (
+                <img
+                  className="h-8 w-8 rounded-full"
+                  src={user?.picture}
+                  title={user?.email}
+                  alt={user?.email}
+                />
+              )}
+            >
+              <Dropdown.Item>{user.username}</Dropdown.Item>
+              <Dropdown.Item>
+                {" "}
+                <Form method="post" action="/logout">
+                  <button>logout</button>
+                </Form>
+              </Dropdown.Item>
+            </Dropdown>
           </div>
         </div>
       )}
-      <div className="hidden lg:flex gap-2 ml-8 flex-1 justify-between">
+      <div className="hidden lg:flex gap-2 ml-8 flex-1 justify-between bg-white">
         <ul className="flex items-center gap-8">
           <li>
             <Link to="/about">ང་ཚོའི་སྐོར།</Link>
           </li>
-          <li>
-            <a href="#skills">མིས་བཟོས་རིག་ནུས།</a>
-          </li>
-
-          <li>
-            <a href="#contact">འབྲེལ་མཐུད།</a>
-          </li>
         </ul>
-        <div>
-          <ul className="flex items-center gap-4 mr-7">
-            <li>
-              <a href="#portfolio">
-                <i className="fas fa-globe mr-2"></i>སྐད་ཡིག
-              </a>
-            </li>
-            <li>
-              {user ? (
-                <Menu as="div" className="relative ml-3">
-                  <div>
-                    <Menu.Button className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                      <span className="absolute -inset-1.5" />
-                      <span className="sr-only">Open user menu</span>
-                      <img
-                        className="h-8 w-8 rounded-full"
-                        src={user?.picture}
-                        title={user?.email}
-                        alt={user?.email}
-                      />
-                    </Menu.Button>
-                  </div>
-                  <Transition
-                    as={Fragment}
-                    enter="transition ease-out duration-100"
-                    enterFrom="transform opacity-0 scale-95"
-                    enterTo="transform opacity-100 scale-100"
-                    leave="transition ease-in duration-75"
-                    leaveFrom="transform opacity-100 scale-100"
-                    leaveTo="transform opacity-0 scale-95"
-                  >
-                    <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                      <Menu.Item>
-                        {() => (
-                          <div className="block px-4 py-2 text-sm text-gray-700">
-                            {user.username}
-                          </div>
-                        )}
-                      </Menu.Item>
-                      <Menu.Item>
-                        {() => (
-                          <Form method="post" action="/logout">
-                            <button>logout</button>
-                          </Form>
-                        )}
-                      </Menu.Item>
-                    </Menu.Items>
-                  </Transition>
-                </Menu>
-              ) : (
-                <Form method="post" action="/auth0">
-                  <button>Sign In</button>
-                </Form>
-              )}
-            </li>
-          </ul>
+        <div className="flex items-center gap-4 mr-7">
+          <Dropdown
+            label="hi"
+            dismissOnClick={false}
+            className="bg-white"
+            renderTrigger={() => (
+              <img
+                className="h-8 w-8 rounded-full"
+                src={user?.picture}
+                title={user?.email}
+                alt={user?.email}
+              />
+            )}
+          >
+            <Dropdown.Item>{user.username}</Dropdown.Item>
+            <Dropdown.Item>
+              {" "}
+              <Form method="post" action="/logout">
+                <button>logout</button>
+              </Form>
+            </Dropdown.Item>
+          </Dropdown>
         </div>
       </div>
     </nav>

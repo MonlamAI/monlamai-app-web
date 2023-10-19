@@ -1,5 +1,5 @@
 import type { LinksFunction, LoaderFunction } from "@remix-run/node";
-import { defer } from "@remix-run/node";
+import { defer, redirect } from "@remix-run/node";
 import {
   Link,
   Links,
@@ -8,6 +8,7 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLoaderData,
 } from "@remix-run/react";
 import Footer from "./component/Footer";
 import Header from "./component/Header";
@@ -16,11 +17,12 @@ import tailwindStyle from "./styles/tailwind.css";
 
 import { getUserSession } from "~/services/session.server";
 import { getUser } from "./modal/user";
+import { auth } from "./services/auth.server";
 
 export const loader: LoaderFunction = async ({ request }) => {
   let userdata = await getUserSession(request);
   if (!userdata) return { user: null };
-  let user = await getUser(userdata._json.email);
+  let user = await getUser(userdata?._json?.email);
   return defer({
     user,
   });
@@ -58,13 +60,12 @@ function Document({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
+  let { user } = useLoaderData();
   return (
     <Document>
-      <Header />
-      <div className="mt-20">
-        <Outlet />
-      </div>
-      <Footer />
+      {user && <Header />}
+      <Outlet />
+      {user && <Footer />}
     </Document>
   );
 }

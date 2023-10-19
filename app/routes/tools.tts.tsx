@@ -67,8 +67,12 @@ export default function Index() {
         Monlam Text To Speech
       </h1>
       <div className="flex flex-col  lg:flex-row gap-3">
-        <Card className="w-full lg:w-1/2">
-          <Form id="ttsForm" method="post" className="flex flex-col gap-5">
+        <Card className="w-full lg:w-1/2 max-h-[60vh] flex">
+          <Form
+            id="ttsForm"
+            method="post"
+            className="flex flex-col gap-5 flex-1"
+          >
             <div className="flex flex-col gap-2">
               <Label value="Voice" className="text-lg" />
               <Select
@@ -84,7 +88,7 @@ export default function Index() {
                 <option value="female">Female</option>
               </Select>
             </div>
-            <div className="w-full h-[25vh] lg:h-[50vh]">
+            <div className="w-full flex-1">
               <Textarea
                 name="sourceText"
                 placeholder="Enter your text..."
@@ -118,7 +122,7 @@ export default function Index() {
             </div>
           </Form>
         </Card>
-        <Card className="w-full lg:w-1/2">
+        <Card className="w-full lg:w-1/2 max-h-[60vh] flex">
           <div className="w-full h-[25vh] lg:h-[60vh]">
             <div className="h-full flex justify-center items-center">
               {isActionSubmission ? (

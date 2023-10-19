@@ -3,18 +3,21 @@ import {
   type LinksFunction,
   type LoaderFunction,
   type MetaFunction,
+  redirect,
 } from "@remix-run/node";
 import Disclaimer from "~/component/Disclaimer";
 import Hero from "~/component/Hero";
-import PowerUser from "~/component/PowerUser";
-import List from "~/component/Tools";
+import Tools from "~/component/Tools";
 import { getUser } from "~/modal/user";
+import { auth } from "~/services/auth.server";
 import { getUserSession } from "~/services/session.server";
 
 export const loader: LoaderFunction = async ({ request }) => {
-  let userdata = await getUserSession(request);
-  if (!userdata) return { user: null };
+  let userdata = await auth.isAuthenticated(request, {
+    failureRedirect: "/login",
+  });
   let user = await getUser(userdata._json.email);
+
   return defer({
     user,
   });
@@ -39,11 +42,8 @@ export const links: LinksFunction = () => {
 
 export default function Index() {
   return (
-    <main className="-mt-20">
-      <Hero />
-      <List />
-      <PowerUser />
-      <Disclaimer />
+    <main>
+      <Tools />
     </main>
   );
 }

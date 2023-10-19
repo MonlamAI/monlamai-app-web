@@ -20,24 +20,26 @@ const auth0Strategy = new Auth0Strategy(
     //
     // Use the returned information to process or write to the DB.
     //
-    let email = profile._json?.email;
-    let picture = profile._json?.picture;
-    let username = profile._json?.given_name;
-    const userdata = await db.user.upsert({
-      where: {
-        email,
-      },
-      create: {
-        picture,
-        username,
-        email,
-      },
-      update: {
-        picture,
-        username,
-        email,
-      },
-    });
+    let email = profile?._json?.email;
+    let picture = profile?._json?.picture;
+    let username = profile?._json?.given_name;
+    const userdata =
+      email &&
+      (await db.user.upsert({
+        where: {
+          email,
+        },
+        create: {
+          picture,
+          username,
+          email,
+        },
+        update: {
+          picture,
+          username,
+          email,
+        },
+      }));
     return profile;
   }
 );
