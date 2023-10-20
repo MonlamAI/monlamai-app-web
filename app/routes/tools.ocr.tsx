@@ -57,6 +57,14 @@ export default function Index() {
     }
   };
 
+  const handleFormClear = () => {
+    setSelectedFile(null);
+    const ocrOutputNode = document.getElementById("ocrText");
+    if (ocrOutputNode) {
+      ocrOutputNode.innerText = "";
+    }
+  };
+
   return (
     <main className="mx-auto w-11/12 lg:4/5">
       <h1 className="mb-10 text-4xl lg:text-5xl text-center text-slate-700">
@@ -67,7 +75,7 @@ export default function Index() {
         <Card className="md:w-1/2">
           <Form method="post" encType="multipart/form-data">
             <div className="w-full min-h-[50vh] flex flex-col items-center justify-center gap-5">
-              <div>
+              <div className={selectedFile ? "hidden" : ""}>
                 <div className="mb-2 block">
                   <Label htmlFor="file" value="Upload your image here" />
                 </div>
@@ -85,11 +93,14 @@ export default function Index() {
                 <img
                   src={URL.createObjectURL(selectedFile)}
                   alt="selected file"
-                  style={{ maxWidth: "100%", maxHeight: "300px" }}
+                  style={{ maxWidth: "100%", maxHeight: "500px" }}
                 />
               )}
             </div>
-            <div className="flex justify-end">
+            <div className="flex justify-between">
+              <Button type="reset" color="gray" onClick={handleFormClear}>
+                Clear
+              </Button>
               <Button
                 type="submit"
                 isProcessing={isActionSubmission}
@@ -108,7 +119,10 @@ export default function Index() {
                 <Spinner size="lg" />
               </div>
             ) : (
-              <div className="text-lg font-monlam tracking-wide leading-loose overflow-auto">
+              <div
+                id="ocrText"
+                className="text-lg font-monlam tracking-wide leading-loose overflow-auto"
+              >
                 {data && parse(data.text)}
               </div>
             )}
