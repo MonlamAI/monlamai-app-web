@@ -59,6 +59,8 @@ export default function Index() {
   const handleReset = () => {
     setSourceText("");
     setCharCount(0);
+    // hide the audio element only
+    audioRef.current?.setAttribute("hidden", "");
   };
 
   return (
@@ -107,7 +109,7 @@ export default function Index() {
                 className="text-slate-500"
                 onClick={handleReset}
               >
-                Clear Text
+                Reset
               </Button>
               <div className="text-gray-400 text-xs">
                 {charCount} / {charLimit}
@@ -137,10 +139,10 @@ export default function Index() {
             </div>
           </div>
           <div className="flex justify-end">
-            <Button color="white">
+            <Button color="white" disabled={!data}>
               <FaRegThumbsUp color="gray" size="20px" />
             </Button>
-            <Button color="white">
+            <Button color="white" disabled={!data}>
               <FaRegThumbsDown color="gray" size="20px" />
             </Button>
           </div>
