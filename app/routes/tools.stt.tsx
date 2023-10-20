@@ -1,12 +1,11 @@
 import { Button, Card, Label, Spinner } from "flowbite-react";
 import { FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa/index.js";
-import { BsFillStopFill } from "react-icons/bs/index.js";
-import { useState } from "react";
+import { BsFillStopFill, BsFillMicFill } from "react-icons/bs/index.js";
+import { useState, useRef } from "react";
 import { type LoaderFunction } from "@remix-run/node";
 import { useLoaderData, Form } from "@remix-run/react";
-import { BsFillMicFill } from "react-icons/bs/index.js";
-import { useRef } from "react";
 import { LiveAudioVisualizer } from "react-audio-visualize";
+import CopyToClipboard from "~/component/CopyToClipboard";
 export const loader: LoaderFunction = async ({ request }) => {
   const apiUrl = process.env.STT_API_URL as string;
   const headers = {
@@ -175,12 +174,13 @@ export default function Index() {
             )}
           </div>
           <div className="flex justify-end">
-            <Button color="white">
+            <Button color="white" disabled={!transcript}>
               <FaRegThumbsUp color="gray" size="20px" />
             </Button>
-            <Button color="white">
+            <Button color="white" disabled={!transcript}>
               <FaRegThumbsDown color="gray" size="20px" />
             </Button>
+            <CopyToClipboard textToCopy={transcript} disabled={!transcript} />
           </div>
         </Card>
       </div>
