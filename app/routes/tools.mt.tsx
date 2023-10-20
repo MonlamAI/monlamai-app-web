@@ -11,8 +11,8 @@ import {
 import CopyToClipboard from "~/component/CopyToClipboard";
 
 const langLabels = {
-  bo: "Tibetan",
-  en: "English",
+  bo: "བོད་ཡིག།",
+  en: "དབྱིན་ཡིག།",
 };
 
 const charLimit = 2000;
@@ -142,17 +142,17 @@ export default function Index() {
 
   return (
     <main className="mx-auto w-11/12 lg:4/5">
-      <h1 className="mb-10 text-4xl lg:text-5xl text-center text-slate-700">
-        Monlam Translation
+      <h1 className="mb-10 text-2xl lg:text-3xl text-center text-slate-700 ">
+        ཡིག་སྒྱུར་རིག་ནུས།
       </h1>
       <div className="flex justify-between items-center">
-        <h3 className="text-lg text-gray-500">{langLabels[sourceLang]}</h3>
+        <h3 className="text-lg text-gray-500 ">{langLabels[sourceLang]}</h3>
 
         <Button onClick={handleLangSwitch} pill size="sm">
           <FaArrowRightArrowLeft size="20px" />
         </Button>
 
-        <h3 className="text-lg text-right text-gray-500">
+        <h3 className="text-lg text-right text-gray-500 ">
           {langLabels[targetLang]}
         </h3>
       </div>
@@ -166,8 +166,8 @@ export default function Index() {
               <div className="w-full h-[50vh]">
                 <Textarea
                   name="sourceText"
-                  placeholder="Enter your text..."
-                  className="w-full h-full p-3 border-0 focus:outline-none focus:ring-transparent bg-transparent caret-slate-500 placeholder:text-slate-300 text-xl leading-relaxed"
+                  placeholder="ཡི་གེ་གཏག་རོགས།..."
+                  className="w-full h-full p-3 border-0 focus:outline-none focus:ring-transparent bg-transparent caret-slate-500 placeholder:text-slate-300 placeholder: text-xl leading-relaxed"
                   required
                   value={sourceText}
                   onChange={handleOnChange}
@@ -177,13 +177,13 @@ export default function Index() {
             ) : (
               <div className="w-full h-[50vh] overflow-auto">
                 <fieldset className="w-full flex" id="radio">
-                  <legend className="mb-4 text-gray-300">
-                    Choose a text to translate
+                  <legend className="mb-4 text-gray-400">
+                    གང་རུང་ཞིག་འདེམ་རོགས།
                   </legend>
                   <div className="flex flex-col gap-4">
                     {boTexts.map((text, index) => (
                       <div
-                        className="p-3 flex w-full items-center gap-2 border rounded-md"
+                        className="p-3 flex w-full items-center gap-3 border rounded-md"
                         key={index}
                       >
                         <Radio
@@ -194,7 +194,7 @@ export default function Index() {
                         />
                         <Label
                           htmlFor={"eg" + index}
-                          className="font-monlam text-lg"
+                          className="text-lg text-slate-700"
                         >
                           {text}
                         </Label>
@@ -203,10 +203,9 @@ export default function Index() {
                   </div>
                 </fieldset>
                 <div className="mt-10">
-                  <p className="text-gray-400 tracking-tight">
-                    We apologize for the wait; you are currently on our waiting
-                    list. However, you have the option to click on one of the
-                    segments to experience firsthand how our model performs.
+                  <p className="text-gray-400 tracking-wide leading-loose">
+                    ད་ལྟའི་ཆར་ཁྱེད་རང་ང་ཚོའི་སྒུག་ཐོའི་ནང་ཚུད་ཡོད་པས་ང་ཚོས་ཁྱེད་ལ་དགོངས་དག་ཞུ།
+                    ཁྱེད་ཀྱིས་གོང་གི་ཚིག་དུམ་གང་རུང་ཞིག་བདམས་ནས་ང་ཚོའི་རིག་ནུས་ཀྱི་ནུས་པར་ཚོད་ལྟ་བྱེད་ཐུབ།
                   </p>
                 </div>
               </div>
@@ -223,7 +222,7 @@ export default function Index() {
                 isProcessing={isActionSubmission}
                 className=""
               >
-                Translate
+                ཡིག་སྒྱུར།
               </Button>
             </div>
           </Form>
@@ -239,8 +238,7 @@ export default function Index() {
               <div
                 id="translation"
                 className={`text-lg ${
-                  targetLang == "bo" &&
-                  "font-monlam tracking-wide leading-loose"
+                  targetLang == "bo" && " tracking-wide leading-loose"
                 }`}
               >
                 {data && data.translation}
