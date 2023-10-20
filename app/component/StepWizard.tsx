@@ -2,7 +2,8 @@ import { useFetcher } from "@remix-run/react";
 import { Button, Label, TextInput } from "flowbite-react";
 import React from "react";
 import FormWizard from "react-form-wizard-component";
-import { English_terms, Tibetan_terms } from "~/terms";
+import TermsAndContitions from "~/component/TermsAndConditions";
+
 function StepWizard() {
   const [organization, setOrganization] = React.useState("");
   const [profession, setProfession] = React.useState("");
@@ -127,9 +128,9 @@ function StepWizard() {
           </div>
         </FormWizard.TabContent>
         <FormWizard.TabContent title="Last step" icon="ti-check">
-          <h3>Terms and Conditions</h3>
-          <p>{English_terms}</p>
-          <p>{Tibetan_terms}</p>
+          <div className="w-full lg:max-w-screen-md">
+            <TermsAndContitions />
+          </div>
         </FormWizard.TabContent>
       </FormWizard>
     </div>
