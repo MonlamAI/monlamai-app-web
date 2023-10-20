@@ -1,12 +1,12 @@
-import { Form, Link, useLoaderData, useLocation } from "@remix-run/react";
-import { useState } from "react";
+import { Form, Link, useLoaderData } from "@remix-run/react";
 import { Dropdown } from "flowbite-react";
+import { useState } from "react";
 function Header() {
   const { user } = useLoaderData();
   const [showMenu, setShowMenu] = useState(false);
 
   return (
-    <nav className="flex h-[60px] p-3 items-center justify-between  w-full z-20 bg-transparent font-monlam">
+    <nav className="flex h-[60px] p-3 items-center justify-between  w-full z-20 bg-transparent ">
       <a href="/" className="flex items-center gap-2 text-[1.25rem]">
         <img
           src="/assets/logo.png"

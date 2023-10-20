@@ -121,7 +121,7 @@ export default function Index() {
             ) : (
               <div
                 id="ocrText"
-                className="text-lg font-monlam tracking-wide leading-loose overflow-auto"
+                className="text-lg  tracking-wide leading-loose overflow-auto"
               >
                 {data && parse(data.text)}
               </div>

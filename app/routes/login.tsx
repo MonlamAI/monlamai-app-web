@@ -34,7 +34,7 @@ function login() {
       >
         <div className="relative flex flex-1 flex-col justify-center px-5 pt-8 bg-[#1d2d44] text-white">
           <div className="w-full flex-1 flex justify-center items-center flex-col ">
-            <h1 className="text-center text-[40px]  md:text-[50px] max-w-[1000px] mb-2 font-monlam">
+            <h1 className="text-center text-[40px]  md:text-[50px] max-w-[1000px] mb-2 ">
               སྨོན་ལམ་རིག་ནུས།
             </h1>
             <TypeAnimation

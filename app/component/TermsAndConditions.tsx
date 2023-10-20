@@ -1,8 +1,8 @@
 export default function Index() {
   return (
     <div>
-      <div className="space-y-8 font-monlam leading-loose">
-        <h1 className="text-3xl font-semibold text-center text-gray-700 font-monlam">
+      <div className="space-y-8  leading-loose">
+        <h1 className="text-3xl font-semibold text-center text-gray-700 ">
           བཀོལ་སྤྱོད་ཆ་རྐྱེན།
         </h1>
         <p>
