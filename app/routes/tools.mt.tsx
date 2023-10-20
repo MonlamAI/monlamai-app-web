@@ -158,7 +158,7 @@ export default function Index() {
       </div>
 
       <div className="mt-3 flex flex-col md:flex-row items-strech gap-5">
-        <Card className="md:w-1/2 max-h-[60vh] flex">
+        <Card className="md:w-1/2">
           <Form method="post">
             <input type="hidden" name="sourceLang" value={sourceLang} />
             <input type="hidden" name="targetLang" value={targetLang} />
@@ -167,10 +167,10 @@ export default function Index() {
                 <Textarea
                   name="sourceText"
                   placeholder="Enter your text..."
-                  className="w-full h-full border-0 focus:outline-none focus:ring-transparent bg-transparent caret-slate-500 placeholder:text-slate-300 text-xl leading-relaxed"
+                  className="w-full h-full p-3 border-0 focus:outline-none focus:ring-transparent bg-transparent caret-slate-500 placeholder:text-slate-300 text-xl leading-relaxed"
                   required
                   value={sourceText}
-                  onInput={handleOnChange}
+                  onChange={handleOnChange}
                   autoFocus
                 />
               </div>
@@ -229,11 +229,11 @@ export default function Index() {
           </Form>
         </Card>
 
-        <Card className="md:w-1/2 max-h-[60vh] flex">
+        <Card className="md:w-1/2">
           <div className="w-full h-[50vh] p-3 text-black bg-slate-50 rounded-lg overflow-auto">
             {isActionSubmission ? (
               <div className="h-full flex justify-center items-center">
-                <Spinner />
+                <Spinner size="lg" />
               </div>
             ) : (
               <div
