@@ -1,9 +1,8 @@
-import React from "react";
-import { TypeAnimation } from "react-type-animation";
-import { Form } from "@remix-run/react";
-import { auth } from "~/services/auth.server";
 import type { LoaderFunction } from "@remix-run/node";
+import { Form } from "@remix-run/react";
 import { Button } from "flowbite-react";
+import { TypeAnimation } from "react-type-animation";
+import { auth } from "~/services/auth.server";
 
 export const loader: LoaderFunction = async ({ request }) => {
   const user = await auth.isAuthenticated(request, {
@@ -14,11 +13,11 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 function login() {
   let sequence = [
-    "Monlam AI.",
+    "Monlam AI",
     2000,
-    "Neural Machine Translation.",
+    "Neural Machine Translation",
     2000,
-    "Text to Speech.",
+    "Text to Speech",
     2000,
     "OCR",
     2000,
@@ -35,7 +34,7 @@ function login() {
       >
         <div className="relative flex flex-1 flex-col justify-center px-5 pt-8 bg-[#1d2d44] text-white">
           <div className="w-full flex-1 flex justify-center items-center flex-col ">
-            <h1 className="text-center text-[40px]  md:text-[50px] max-w-[1000px] mb-2">
+            <h1 className="text-center text-[40px]  md:text-[50px] max-w-[1000px] mb-2 font-monlam">
               སྨོན་ལམ་རིག་ནུས།
             </h1>
             <TypeAnimation
