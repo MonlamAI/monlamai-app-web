@@ -68,7 +68,7 @@ export default function Index() {
   return (
     <main className="mx-auto w-11/12 lg:4/5">
       <h1 className="mb-10 text-4xl lg:text-5xl text-center text-slate-700">
-        Monlam OCR
+        ཡིག་འཛིན་རིག་ནུས།
       </h1>
 
       <div className="mt-1 flex flex-col md:flex-row items-strech gap-5">
@@ -76,11 +76,15 @@ export default function Index() {
           <Form method="post" encType="multipart/form-data">
             <div className="w-full min-h-[50vh] flex flex-col items-center justify-center gap-5">
               <div className={selectedFile ? "hidden" : ""}>
-                <div className="mb-2 block">
-                  <Label htmlFor="file" value="Upload your image here" />
+                <div className="mb-5 block">
+                  <Label
+                    htmlFor="file"
+                    value="འདིར་པར་རིས་འཇུག་རོགས།"
+                    className="text-lg text-slate-700"
+                  />
                 </div>
                 <FileInput
-                  helperText="Supports PNG, JPG or JPEG"
+                  helperText="ངོས་ལེན་ཡོད་པའི་པར་རྣམ་ JPG, PNG, JPEG"
                   id="file"
                   name="image"
                   accept="image/png, image/jpeg, image/jpg"
@@ -98,15 +102,16 @@ export default function Index() {
               )}
             </div>
             <div className="flex justify-between">
-              <Button type="reset" color="gray" onClick={handleFormClear}>
-                Clear
-              </Button>
               <Button
-                type="submit"
-                isProcessing={isActionSubmission}
-                className=""
+                type="reset"
+                color="gray"
+                onClick={handleFormClear}
+                className="text-gray-500"
               >
-                Submit
+                <div className="pt-1">བསྐྱར་སྒྲིག།</div>
+              </Button>
+              <Button type="submit" isProcessing={isActionSubmission}>
+                <div className="pt-1">ཐོངས།</div>
               </Button>
             </div>
           </Form>
