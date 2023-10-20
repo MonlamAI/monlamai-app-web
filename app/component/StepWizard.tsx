@@ -64,7 +64,7 @@ function StepWizard() {
         )}
       >
         <FormWizard.TabContent title="Personal details" icon="ti-user">
-          <div className="text-left">
+          <div className="max-w-md mx-auto flex flex-col gap-3">
             <Label htmlFor="organizationInput" value="Your Organisation" />
             <TextInput
               id="organizationInput"
@@ -86,7 +86,7 @@ function StepWizard() {
           </div>
         </FormWizard.TabContent>
         <FormWizard.TabContent title="Additional Info" icon="ti-settings">
-          <div className="flex max-w-md flex-col gap-4">
+          <div className="mx-auto flex max-w-md flex-col gap-4">
             <Label htmlFor="q1input">What are you going to translate?</Label>
             <TextInput
               id="q1input"
@@ -128,7 +128,7 @@ function StepWizard() {
           </div>
         </FormWizard.TabContent>
         <FormWizard.TabContent title="Last step" icon="ti-check">
-          <div className="w-full lg:max-w-screen-md max-h-[60vh] overflow-auto">
+          <div className="mx-auto w-full lg:max-w-screen-md max-h-[500vh] overflow-auto">
             <TermsAndContitions />
           </div>
         </FormWizard.TabContent>

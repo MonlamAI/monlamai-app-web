@@ -1,6 +1,6 @@
 export default function Index() {
   return (
-    <div>
+    <div className="text-slate-900">
       <div className="space-y-8  leading-loose">
         <h1 className="text-3xl font-semibold text-center text-gray-700 ">
           བཀོལ་སྤྱོད་ཆ་རྐྱེན།
@@ -14,14 +14,14 @@ export default function Index() {
           ཆ་རྐྱེན་འདིའི་དོན་ཚན་ཚང་མ་དང་ལེན་བྱས་ཟིན་པ་མཚོན།
         </p>
 
-        <h2 className="text-xl font-semibold text-gray-700">༡ ངོ་སྤྲོད།</h2>
+        <h2 className="text-xl font-semibold text-gray-500">༡༽ ངོ་སྤྲོད།</h2>
         <p>
           ཆ་རྐྱེན་འདི་དག་གིས་སྨོན་ལམ་བརྡ་འཕྲིན་གྱི་རིག་ནུས་དེ་དག་བེད་སྤྱོད་བྱེད་ཕྱོགས་ལ་སྟངས་འཛིན་བྱེད་ཀྱིན་ཡོད།
           དྲ་རྒྱའི་སྟེང་དུ་ཆ་རྐྱེན་གང་རུང་ཞིག་ལ་བསྐྱར་བཅོས་སམ་འགྱུར་བ་གཏོང་རྒྱུའི་དབང་ཆ་ཚང་མ་སྨོན་ལམ་བརྡ་འཕྲིན་ཞིབ་འཇུག་ཁང་ལ་ཡོད་པ་དུས་ནས་དུས་སུ་ཁྱེད་ལ་ཞུ་ངེས།
         </p>
 
-        <h2 className="text-xl font-semibold text-gray-700">
-          ༢ རྒྱུ་ཆ་ཉར་ཚགས་དང་བཀོལ་སྤྱོད།
+        <h2 className="text-xl font-semibold text-gray-500">
+          ༢༽ རྒྱུ་ཆ་ཉར་ཚགས་དང་བཀོལ་སྤྱོད།
         </h2>
         <p>
           ཁྱེད་ཀྱིས་སྨོན་ལམ་རིག་ནུས་འདི་དག་བེད་སྤྱོད་གཏོང་ཚེ།
@@ -29,23 +29,23 @@ export default function Index() {
           སྨོན་ལམ་བརྡ་འཕྲིན་ཞིབ་འཇུག་ཁང་གི་ངོས་ནས་རྒྱུ་ཆ་དེ་དག་རིག་ནུས་སྦྱོང་བརྡར་ཁོ་ནར་མ་གཏོགས་བེད་སྤྱོད་གཏོང་གི་མིན།
         </p>
 
-        <h2 className="text-xl font-semibold text-gray-700">
-          ༣ རྒྱུ་ཆ་ཉེན་སྲུང་།
+        <h2 className="text-xl font-semibold text-gray-500">
+          ༣༽ རྒྱུ་ཆ་ཉེན་སྲུང་།
         </h2>
         <p>
           སྨོན་ལམ་བརྡ་འཕྲིན་ཞིབ་འཇུག་ཁང་གིས་ཁྱེད་ཀྱི་རྒྱུ་ཆ་དེ་དག་ལ་ཆེ་མཐོང་དང་གུས་བརྩི་མཚོན་ཕྱིར་སྤྱི་སྒེར་གང་དུའང་ཕྱི་གྱར་མི་བྱེད་པའི་འགན་ལེན་དང་།
           ཉེན་སྲུང་བྱ་རྒྱུའི་དམ་བཅའ་བརྟན་པོ་ཡོད།
         </p>
 
-        <div className="text-sm text-gray-500 leading-loose text-right">
+        <div className="text-sm text-gray-400 leading-loose text-right">
           <p>སྨོན་ལམ་བརྡ་འཕྲིན་ཞིབ་འཇུག་ཁང་ནས།</p>
-          <p>ཕྱི་ལོ་༢༠༢༣ ཟླ་བ་༡༡ པའི་ ༠༣ ཉིན།</p>
+          <p>ཕྱི་ལོ་ ༢༠༢༣ ཟླ་བ་ ༡༡ པའི་ ༠༣ ཉིན།</p>
         </div>
       </div>
 
       <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
 
-      <div className="space-y-8">
+      <div className="space-y-8 [&>*]:font-Inter">
         <h1 className="text-3xl font-semibold text-center text-gray-700">
           Terms and Conditions
         </h1>
@@ -55,7 +55,7 @@ export default function Index() {
           service, you agree to be bound by these Terms. If you disagree with
           any part of the terms, then you may not access the service.
         </p>
-        <h2 className="text-xl font-semibold text-gray-700">1. Introduction</h2>
+        <h2 className="text-xl font-semibold text-gray-500">1. Introduction</h2>
         <p>
           These Terms and Conditions govern your use of the MonlamAI website and
           any associated services (the "Service") offered by MonlamAI. MonlamAI
@@ -66,7 +66,7 @@ export default function Index() {
           following the posting of any changes to these Terms and Conditions
           constitutes acceptance of those changes.
         </p>
-        <h2 className="text-xl font-semibold text-gray-700">
+        <h2 className="text-xl font-semibold text-gray-500">
           2. Data Collection and Use
         </h2>
         <p>
@@ -77,7 +77,7 @@ export default function Index() {
           requiring inputs for improving and further developing the capabilities
           of our AI models.
         </p>
-        <h2 className="text-xl font-semibold text-gray-700">
+        <h2 className="text-xl font-semibold text-gray-500">
           3. Data Security
         </h2>
         <p>
@@ -85,7 +85,7 @@ export default function Index() {
           appropriate technical and organisational measures to protect your data
           from unauthorised disclosure or access.
         </p>
-        <p className="text-center text-gray-500">
+        <p className="text-center text-gray-400">
           We thank you for choosing MonlamAI.
         </p>
       </div>
