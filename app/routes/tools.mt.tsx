@@ -145,11 +145,11 @@ export default function Index() {
       <h1 className="mb-10 text-4xl lg:text-5xl text-center text-slate-700">
         Monlam Translation
       </h1>
-      <div className="flex justify-between">
+      <div className="flex justify-between items-center">
         <h3 className="text-lg text-gray-500">{langLabels[sourceLang]}</h3>
 
-        <Button color="transparent" onClick={handleLangSwitch} pill>
-          <FaArrowRightArrowLeft size="20px" className="text-gray-400" />
+        <Button onClick={handleLangSwitch} pill size="sm">
+          <FaArrowRightArrowLeft size="20px" />
         </Button>
 
         <h3 className="text-lg text-right text-gray-500">
@@ -157,7 +157,7 @@ export default function Index() {
         </h3>
       </div>
 
-      <div className="mt-1 flex flex-col md:flex-row items-strech gap-5">
+      <div className="mt-3 flex flex-col md:flex-row items-strech gap-5">
         <Card className="md:w-1/2 max-h-[60vh] flex">
           <Form method="post">
             <input type="hidden" name="sourceLang" value={sourceLang} />
@@ -170,7 +170,7 @@ export default function Index() {
                   className="w-full h-full border-0 focus:outline-none focus:ring-transparent bg-transparent caret-slate-500 placeholder:text-slate-300 text-xl leading-relaxed"
                   required
                   value={sourceText}
-                  onChange={handleOnChange}
+                  onInput={handleOnChange}
                   autoFocus
                 />
               </div>
