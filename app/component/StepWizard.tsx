@@ -128,7 +128,7 @@ function StepWizard() {
           </div>
         </FormWizard.TabContent>
         <FormWizard.TabContent title="Last step" icon="ti-check">
-          <div className="w-full lg:max-w-screen-md">
+          <div className="w-full lg:max-w-screen-md max-h-[60vh] overflow-auto">
             <TermsAndContitions />
           </div>
         </FormWizard.TabContent>
