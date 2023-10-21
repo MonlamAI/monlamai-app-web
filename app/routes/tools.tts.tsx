@@ -79,15 +79,15 @@ export default function Index() {
               <Label value="སྐད།" className="text-lg" />
               <Select
                 name="voice"
-                className="text-lg border-0"
                 defaultValue=""
                 required
+                style={{ lineHeight: "1.5rem" }}
               >
-                <option value="" disabled>
-                  སྐད་འདེམ་རོགས།
-                </option>
-                <option value="male">ཕོ་</option>
+                <option value="">སྐད་འདེམ་རོགས།</option>
                 <option value="female">མོ།</option>
+                <option value="male" disabled>
+                  ཕོ་
+                </option>
               </Select>
             </div>
             <div className="w-full flex-1">
