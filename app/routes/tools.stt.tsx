@@ -135,7 +135,7 @@ export default function Index() {
                   height={75}
                 />
               )}
-              <Button size="md" onClick={toggleRecording}>
+              <Button size="xl" onClick={toggleRecording}>
                 {recording ? <BsFillStopFill /> : <BsFillMicFill />}
               </Button>
 
