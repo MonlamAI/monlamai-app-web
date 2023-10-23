@@ -59,7 +59,7 @@ function Tools() {
     <main>
       <div className="py-[100px]" id="skills">
         <div className="text-center  max-w-[1140px] mx-auto">
-          <p className="mb-8">
+          <p className="mb-8 text-xl">
             གཤམ་གསལ་ཚོད་ལྟའི་རིག་ནུས་ཁག་ཁྱེད་ཀྱིས་མཉམ་སྤྱོད་བྱ་ཆོག།
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-4 mx-10">
@@ -82,20 +82,13 @@ function EachModel({ model, index, navigateTo }: EachProps) {
   const { name, desc, icon, link, color } = model;
 
   return (
-    <Card className="shadow-lg hover:border-blue-600 hover:border-2">
-      <div>
-        <i className={icon} style={{ fontSize: 35, color: color }}></i>
-      </div>
+    <Card
+      className="shadow-lg hover:border-blue-600 hover:border-2"
+      onClick={() => navigateTo(link)}
+    >
+      <i className={icon} style={{ fontSize: 35, color: color }}></i>
       <h2 className="text-xl">{name}</h2>
       <p className="text-gray-400">{desc}</p>
-      <button
-        type="button"
-        className="text-[#368df7] py-3 rounded-xl flex gap-2  justify-center items-center mt-2"
-        onClick={() => navigateTo(link)}
-      >
-        བེད་སྤྱོད་གནང་རོགས།
-        <MdOutlineArrowRightAlt />
-      </button>
     </Card>
   );
 }
