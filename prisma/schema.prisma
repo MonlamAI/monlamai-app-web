@@ -17,6 +17,7 @@ model User {
   picture  String?
   role     role?   @default(newUser)
   about    AboutUser? @relation("aboutUser")
+  Feedback Feedback[] @relation("feedback")
 }
 
 model AboutUser{
@@ -31,8 +32,30 @@ model AboutUser{
   userId   Int  @unique
 }
 
+model Feedback{
+  id      Int     @id @default(autoincrement())
+  user    User    @relation("feedback",fields: [userId], references: [id])
+  userId   Int
+  feedback String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  source  String?
+  output String?
+  model   models
+  liked   Boolean?
+  disliked   Boolean? 
+}
+
 enum role {
   newUser
   powerUser
   waitlist
 }
+
+enum models { 
+  mt
+  stt
+  tts
+  ocr
+}
+

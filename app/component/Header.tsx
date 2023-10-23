@@ -1,6 +1,8 @@
 import { Form, Link, useLoaderData } from "@remix-run/react";
 import { Dropdown } from "flowbite-react";
 import { useState } from "react";
+import { HiLogout } from "react-icons/hi/index.js";
+
 function Header() {
   const { user } = useLoaderData();
   const [showMenu, setShowMenu] = useState(false);
@@ -44,7 +46,7 @@ function Header() {
           <div className="flex justify-between items-center">
             <Link to="/about">ང་ཚོའི་སྐོར།</Link>
             <Dropdown
-              label="hi"
+              label={user?.email}
               dismissOnClick={false}
               renderTrigger={() => (
                 <img
@@ -55,9 +57,13 @@ function Header() {
                 />
               )}
             >
-              <Dropdown.Item>{user.username}</Dropdown.Item>
+              <Dropdown.Header>
+                <span className="block text-sm">{user?.username}</span>
+                <span className="block truncate text-sm font-medium">
+                  {user?.email}
+                </span>
+              </Dropdown.Header>
               <Dropdown.Item>
-                {" "}
                 <Form method="post" action="/logout">
                   <button>logout</button>
                 </Form>
@@ -74,7 +80,7 @@ function Header() {
         </ul>
         <div className="flex items-center gap-4 mr-7">
           <Dropdown
-            label="hi"
+            label={user.email}
             dismissOnClick={false}
             className="bg-white"
             renderTrigger={() => (
@@ -86,9 +92,13 @@ function Header() {
               />
             )}
           >
-            <Dropdown.Item>{user.username}</Dropdown.Item>
-            <Dropdown.Item>
-              {" "}
+            <Dropdown.Header>
+              <span className="block text-sm">{user.username}</span>
+              <span className="block truncate text-xs font-medium">
+                {user.email}
+              </span>
+            </Dropdown.Header>
+            <Dropdown.Item icon={HiLogout}>
               <Form method="post" action="/logout">
                 <button>logout</button>
               </Form>

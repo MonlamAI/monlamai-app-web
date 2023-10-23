@@ -1,6 +1,5 @@
 import { useLoaderData, useNavigate } from "@remix-run/react";
-import { Card } from "flowbite-react";
-import { MdOutlineArrowRightAlt } from "react-icons/md/index.js";
+import { motion } from "framer-motion";
 
 type ModalType = {
   icon: string;
@@ -82,14 +81,15 @@ function EachModel({ model, index, navigateTo }: EachProps) {
   const { name, desc, icon, link, color } = model;
 
   return (
-    <div
+    <motion.div
+      whileHover={{ scale: 0.95 }}
       className="rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800 shadow-lg hover:border-blue-600 hover:border-2 h-full flex flex-col gap-5 p-6 cursor-pointer"
       onClick={() => navigateTo(link)}
     >
       <i className={icon} style={{ fontSize: 35, color: color }}></i>
       <h2 className="text-xl">{name}</h2>
       <p className="text-gray-400">{desc}</p>
-    </div>
+    </motion.div>
   );
 }
 

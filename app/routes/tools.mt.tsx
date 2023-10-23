@@ -1,8 +1,8 @@
 import type { ActionArgs, LoaderFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { useFetcher } from "@remix-run/react";
+import { useFetcher, useSearchParams } from "@remix-run/react";
 import { Button, Card, Label, Radio, Spinner, Textarea } from "flowbite-react";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   FaArrowRightArrowLeft,
   FaRegThumbsDown,
@@ -11,7 +11,9 @@ import {
 import CopyToClipboard from "~/component/CopyToClipboard";
 import { auth } from "~/services/auth.server";
 import { fetchGPTData } from "~/services/fetchGPTData.server";
-
+import { motion } from "framer-motion";
+import { checkIfExist } from "~/modal/feedback";
+import { getUser } from "~/modal/user";
 const langLabels = {
   bo: "བོད་ཡིག།",
   en: "དབྱིན་ཡིག།",
@@ -101,6 +103,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   let userdata = await auth.isAuthenticated(request, {
     failureRedirect: "/login",
   });
+
   return { user: userdata };
 }
 
@@ -149,6 +152,8 @@ export default function Index() {
   const [targetLang, setTargetLang] = useState("bo");
   const [sourceText, setSourceText] = useState("");
   const fetcher = useFetcher();
+  const likefetcher = useFetcher();
+
   const targetRef = useRef<HTMLDivElement>(null);
 
   let data = fetcher.data;
@@ -156,6 +161,12 @@ export default function Index() {
 
   const handleLangSwitch = () => {
     fetcher.submit(
+      {},
+      {
+        action: "/reset_actiondata",
+      }
+    );
+    likefetcher.submit(
       {},
       {
         action: "/reset_actiondata",
@@ -172,36 +183,80 @@ export default function Index() {
     sourceLang === "en" && typeof data?.translation === "object"
       ? data?.translation?.join("\n")
       : data?.translation;
+  function handlelike() {
+    likefetcher.submit(
+      {
+        source: sourceText,
+        output: textToCopy,
+        _action: "liked",
+      },
+      {
+        method: "POST",
+        action: "/feedback",
+      }
+    );
+  }
+  function handledislike() {
+    likefetcher.submit(
+      {
+        source: sourceText,
+        output: textToCopy,
+        _action: "disliked",
+      },
+      {
+        method: "POST",
+        action: "/feedback",
+      }
+    );
+  }
+  let liked = likefetcher.data?.liked;
+  let disliked = likefetcher.data?.disliked;
+  let message = likefetcher.data?.message;
   return (
     <main className="mx-auto w-11/12 lg:4/5">
       <h1 className="mb-10 text-2xl lg:text-3xl text-center text-slate-700 ">
         ཡིག་སྒྱུར་རིག་ནུས།
       </h1>
       <div className="flex justify-between items-center">
-        <div className="inline-block w-32 text-lg text-gray-500">
+        <motion.div
+          className="inline-block w-32 text-lg text-gray-500"
+          exit={{ opacity: 0 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+        >
           {langLabels[sourceLang]}
-        </div>
+        </motion.div>
 
         <Button onClick={handleLangSwitch} pill size="sm">
           <FaArrowRightArrowLeft size="20px" />
         </Button>
 
-        <div className="inline-block w-32 text-lg text-right text-gray-500">
+        <motion.div
+          className="inline-block w-32 text-lg text-right text-gray-500"
+          exit={{ opacity: 0 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+        >
           {langLabels[targetLang]}
-        </div>
+        </motion.div>
       </div>
 
-      <div className="mt-3 flex flex-col md:flex-row items-strech gap-5">
+      <motion.div
+        exit={{ opacity: 0 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="mt-3 flex flex-col md:flex-row items-strech gap-5"
+      >
         <Card className="md:w-1/2">
           <fetcher.Form method="post">
             <input type="hidden" name="sourceLang" value={sourceLang} />
             <input type="hidden" name="targetLang" value={targetLang} />
             {sourceLang ? (
-              <div className="w-full h-[50vh]">
+              <div className="w-full h-[50vh] overflow-hidden">
                 <Textarea
                   name="sourceText"
                   placeholder="ཡི་གེ་གཏག་རོགས།..."
-                  className={`w-full h-full p-3 border-0 focus:outline-none focus:ring-transparent bg-transparent caret-slate-500 placeholder:text-slate-300 placeholder:font-monlam placeholder:text-lg ${
+                  className={`w-full h-full max-h-full p-3 border-0 focus:outline-none focus:ring-transparent bg-transparent caret-slate-500 placeholder:text-slate-300 placeholder:font-monlam placeholder:text-lg ${
                     sourceLang == "en" && "font-Inter text-xl"
                   } ${sourceLang == "bo" && "text-lg leading-loose"}`}
                   required
@@ -291,20 +346,36 @@ export default function Index() {
               </div>
             ) : null}
           </div>
-          <div className="flex justify-end">
-            <Button color="white" disabled={data ? false : true}>
-              <FaRegThumbsUp color="gray" size="20px" />
-            </Button>
-            <Button color="white" disabled={data ? false : true}>
-              <FaRegThumbsDown color="gray" size="20px" />
-            </Button>
-            <CopyToClipboard
-              textToCopy={textToCopy}
-              disabled={data ? false : true}
-            />
+          <div className="flex justify-between">
+            <div className={!liked ? "text-red-400" : "text-green-400"}>
+              {message}
+            </div>
+            <div className="flex justify-end">
+              <Button
+                color={"white"}
+                disabled={data && !liked ? false : true}
+                onClick={handlelike}
+              >
+                <FaRegThumbsUp color={liked ? "green" : "gray"} size="20px" />
+              </Button>
+              <Button
+                color="white"
+                disabled={data && !disliked ? false : true}
+                onClick={handledislike}
+              >
+                <FaRegThumbsDown
+                  color={disliked ? "red" : "gray"}
+                  size="20px"
+                />
+              </Button>
+              <CopyToClipboard
+                textToCopy={textToCopy}
+                disabled={data ? false : true}
+              />
+            </div>
           </div>
         </Card>
-      </div>
+      </motion.div>
     </main>
   );
 }
