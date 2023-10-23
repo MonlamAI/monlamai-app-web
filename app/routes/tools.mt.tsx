@@ -170,6 +170,7 @@ export default function Index() {
           <Form method="post">
             <input type="hidden" name="sourceLang" value={sourceLang} />
             <input type="hidden" name="targetLang" value={targetLang} />
+
             {sourceLang === "en" ? (
               <div className="w-full h-[50vh]">
                 <Textarea

@@ -45,18 +45,18 @@ function StepWizard() {
         stepSize="sm"
         onComplete={handleComplete}
         backButtonTemplate={(handleNext) => (
-          <Button className="base-button" onClick={handleNext}>
+          <Button className="base-button float-left mt-2" onClick={handleNext}>
             ཕྱིར་ལོག།
           </Button>
         )}
         nextButtonTemplate={(handleNext) => (
-          <Button className="base-button float-right" onClick={handleNext}>
+          <Button className="base-button float-right mt-2" onClick={handleNext}>
             རྗེས་མ།
           </Button>
         )}
         finishButtonTemplate={(handleComplete) => (
           <Button
-            className="finish-button float-right "
+            className="finish-button float-right  mt-2"
             onClick={handleComplete}
           >
             མོས་མཐུན་ཡོད།
@@ -67,7 +67,7 @@ function StepWizard() {
           title="མི་སྒེར་གྱི་ཆ་འཕྲིན་ཞིབ་ཕྲ།"
           icon="ti-user"
         >
-          <div className="max-w-md mx-auto flex flex-col gap-3">
+          <div className="max-w-md mx-auto flex flex-col gap-3 md:min-h-[50dvh] mt-5">
             <Label htmlFor="organizationInput" value="ཚོགས་པ།" />
             <TextInput
               id="organizationInput"
@@ -87,7 +87,7 @@ function StepWizard() {
           </div>
         </FormWizard.TabContent>
         <FormWizard.TabContent title="རིག་ནུས་བཀོལ་སྤྱོད།" icon="ti-settings">
-          <div className="mx-auto flex max-w-md flex-col gap-4">
+          <div className="mx-auto flex max-w-md flex-col gap-4 md:min-h-[50dvh] mt-5">
             <Label htmlFor="q1input">ཁྱེད་ཀྱིས་ཡིག་སྒྱུར་ཅི་ཞིག་བྱེད་དམ།</Label>
             <TextInput
               id="q1input"
