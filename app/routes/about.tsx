@@ -19,7 +19,7 @@ function About() {
           alt="monlam"
           className="w-[80%] md:w-[60%] lg:w-[40%] border-[#dddcdc] rounded-xl"
         />
-        <div className="text-sm leading-7">
+        <div className="text-lg leading-8">
           <h4 className="text-[1.5rem] mb-4">
             སྨོན་ལམ་མིས་བཟོས་རིག་ནུས་ཀྱི་ལས་གཞི།
           </h4>
