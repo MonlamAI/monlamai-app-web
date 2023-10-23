@@ -10,6 +10,7 @@ import {
 } from "react-icons/fa6/index.js";
 import CopyToClipboard from "~/component/CopyToClipboard";
 import { auth } from "~/services/auth.server";
+import { fetchGPTData } from "~/services/fetchGPTData.server";
 
 const langLabels = {
   bo: "བོད་ཡིག།",
@@ -111,7 +112,10 @@ export async function action({ request }: ActionArgs) {
     form.sourceText = form.texts;
   }
   if (form.sourceLang === "en") {
-    let text_array = form.sourceText?.split("\n");
+    let prompt = `replace all the abbreviation with full form and preserve newlines , "${form?.sourceText}"  `;
+    const data = await fetchGPTData(prompt);
+    let text_array = data?.split("\n");
+
     async function translateText(
       text: string,
       sourceLang: string,
