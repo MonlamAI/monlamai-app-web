@@ -1,29 +1,41 @@
-import ClipboardJS from "clipboard";
 import { Button } from "flowbite-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaRegCopy } from "react-icons/fa6/index.js";
 
-const CopyToClipboard = ({ textToCopy, disabled }) => {
+let timer: any;
+
+type CopyToClipboardProps = {
+  textToCopy: string;
+  disabled: boolean;
+};
+
+const CopyToClipboard = ({ textToCopy, disabled }: CopyToClipboardProps) => {
   const [isCopied, setIsCopied] = useState(false);
 
+  useEffect(() => {
+    setIsCopied(false);
+    return () => {
+      if (timer) clearTimeout(timer); //cleanup timer on unmount
+    };
+  }, [textToCopy]);
+
   const handleCopy = () => {
-    const clipboard = new ClipboardJS("#copyBtn", {
-      text: () => textToCopy,
-    });
+    navigator.clipboard.writeText(textToCopy);
 
-    clipboard.on("success", (e) => {
-      setIsCopied(true);
-      e.clearSelection();
-    });
-
-    clipboard.on("error", () => {
+    setIsCopied(true);
+    timer = setTimeout(() => {
       setIsCopied(false);
-      console.error("Copy to clipboard failed.");
-    });
+    }, 2000);
   };
 
   return (
-    <Button color="white" id="copyBtn" onClick={handleCopy} disabled={disabled}>
+    <Button
+      color="white"
+      id="copyBtn"
+      onClick={handleCopy}
+      disabled={disabled}
+      title="copy"
+    >
       {isCopied ? (
         <span className="text-gray-500">Copied!</span>
       ) : (

@@ -125,7 +125,6 @@ export default function Index() {
   const [sourceLang, setSourceLang] = useState("en");
   const [targetLang, setTargetLang] = useState("bo");
   const [sourceText, setSourceText] = useState("");
-  const [charCount, setCharCount] = useState(0);
 
   const data = useActionData<typeof action>();
   const navigation = useNavigation();
@@ -136,18 +135,13 @@ export default function Index() {
     setSourceLang(targetLang);
     setTargetLang(temp);
     setSourceText("");
-    setCharCount(0);
     let translationDiv = document.getElementById("translation");
     if (translationDiv) {
       translationDiv.innerHTML = "";
     }
   };
 
-  const handleOnChange = (e) => {
-    setSourceText(e.target.value.slice(0, charLimit));
-    setCharCount(sourceText.length);
-  };
-
+  let charCount = sourceText?.length;
   return (
     <main className="mx-auto w-11/12 lg:4/5">
       <h1 className="mb-10 text-2xl lg:text-3xl text-center text-slate-700 ">
@@ -179,7 +173,13 @@ export default function Index() {
                   className="w-full h-full p-3 border-0 focus:outline-none focus:ring-transparent bg-transparent caret-slate-500 placeholder:text-slate-300 placeholder: text-xl leading-relaxed"
                   required
                   value={sourceText}
-                  onChange={handleOnChange}
+                  onInput={(e) => {
+                    setSourceText((prev) => {
+                      let value = e.target.value;
+                      if (value?.length <= charLimit) return value;
+                      return prev;
+                    });
+                  }}
                   autoFocus
                 />
               </div>

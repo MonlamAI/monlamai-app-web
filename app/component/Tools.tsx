@@ -57,9 +57,9 @@ function Tools() {
 
   return (
     <main>
-      <div className="py-[100px]" id="skills">
+      <div className="py-[80px]" id="skills">
         <div className="text-center  max-w-[1140px] mx-auto">
-          <p className="mb-8 text-xl">
+          <p className="mb-20 text-2xl">
             གཤམ་གསལ་ཚོད་ལྟའི་རིག་ནུས་ཁག་ཁྱེད་ཀྱིས་མཉམ་སྤྱོད་བྱ་ཆོག།
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-4 mx-10">
@@ -82,14 +82,14 @@ function EachModel({ model, index, navigateTo }: EachProps) {
   const { name, desc, icon, link, color } = model;
 
   return (
-    <Card
-      className="shadow-lg hover:border-blue-600 hover:border-2"
+    <div
+      className="rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800 shadow-lg hover:border-blue-600 hover:border-2 h-full flex flex-col gap-5 p-6 cursor-pointer"
       onClick={() => navigateTo(link)}
     >
       <i className={icon} style={{ fontSize: 35, color: color }}></i>
       <h2 className="text-xl">{name}</h2>
       <p className="text-gray-400">{desc}</p>
-    </Card>
+    </div>
   );
 }
 
