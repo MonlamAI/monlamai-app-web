@@ -1,10 +1,17 @@
 import { Button, Card, Label, Select, Spinner, Textarea } from "flowbite-react";
 import { FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa/index.js";
 import { Form, useActionData, useNavigation } from "@remix-run/react";
-import { type ActionFunction } from "@remix-run/node";
+import { LoaderFunctionArgs, type ActionFunction } from "@remix-run/node";
 import { useEffect, useRef, useState } from "react";
+import { auth } from "~/services/auth.server";
 
 const charLimit = 2000;
+export async function loader({ request }: LoaderFunctionArgs) {
+  let userdata = await auth.isAuthenticated(request, {
+    failureRedirect: "/login",
+  });
+  return { user: userdata };
+}
 
 export const action: ActionFunction = async ({ request }) => {
   const formdata = await request.formData();
