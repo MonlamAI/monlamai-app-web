@@ -46,12 +46,12 @@ function StepWizard() {
         onComplete={handleComplete}
         backButtonTemplate={(handleNext) => (
           <Button className="base-button" onClick={handleNext}>
-            Back
+            ཕྱིར་ལོག།
           </Button>
         )}
         nextButtonTemplate={(handleNext) => (
           <Button className="base-button float-right" onClick={handleNext}>
-            next
+            རྗེས་མ།
           </Button>
         )}
         finishButtonTemplate={(handleComplete) => (
@@ -59,25 +59,26 @@ function StepWizard() {
             className="finish-button float-right "
             onClick={handleComplete}
           >
-            Agree
+            མོས་མཐུན་ཡོད།
           </Button>
         )}
       >
-        <FormWizard.TabContent title="Personal details" icon="ti-user">
+        <FormWizard.TabContent
+          title="མི་སྒེར་གྱི་ཆ་འཕྲིན་ཞིབ་ཕྲ།"
+          icon="ti-user"
+        >
           <div className="max-w-md mx-auto flex flex-col gap-3">
-            <Label htmlFor="organizationInput" value="Your Organisation" />
+            <Label htmlFor="organizationInput" value="ཚོགས་པ།" />
             <TextInput
               id="organizationInput"
-              placeholder="enter organization name"
               required
               type="text"
               value={organization}
               onChange={(e) => setOrganization(e.target.value)}
             />
-            <Label htmlFor="professionInput" value="Your Profession" />
+            <Label htmlFor="professionInput" value="ལས་གནས།" />
             <TextInput
               id="professionInput"
-              placeholder="enter your profession"
               required
               type="text"
               value={profession}
@@ -85,41 +86,41 @@ function StepWizard() {
             />
           </div>
         </FormWizard.TabContent>
-        <FormWizard.TabContent title="Additional Info" icon="ti-settings">
+        <FormWizard.TabContent title="རིག་ནུས་བཀོལ་སྤྱོད།" icon="ti-settings">
           <div className="mx-auto flex max-w-md flex-col gap-4">
-            <Label htmlFor="q1input">What are you going to translate?</Label>
+            <Label htmlFor="q1input">ཁྱེད་ཀྱིས་ཡིག་སྒྱུར་ཅི་ཞིག་བྱེད་དམ།</Label>
             <TextInput
               id="q1input"
-              placeholder="answer here.."
               type="text"
               required
               value={q1}
               onChange={(e) => setQ1(e.target.value)}
             />
-            <Label htmlFor="q2input">What are you going to transcribe?</Label>
+            <Label htmlFor="q2input">
+              ཁྱེད་ཀྱིས་སྒྲ་གང་ཞིག་ཡིག་འབེབས་བྱེད་དམ།
+            </Label>
             <TextInput
               id="q2input"
               required
-              placeholder="answer here.."
               type="text"
               value={q2}
               onChange={(e) => setQ2(e.target.value)}
             />
             <Label htmlFor="q3input">
-              What speech are you going to generate?
+              ཁྱེད་ཀྱིས་སྒྲ་གང་ཞིག་ཀློག་འདོན་བྱེད་དམ།
             </Label>
             <TextInput
               id="q3input"
-              placeholder="answer here.."
               type="text"
               required
               value={q3}
               onChange={(e) => setQ3(e.target.value)}
             />
-            <Label htmlFor="q4input">what are you going to use OCR for?</Label>
+            <Label htmlFor="q4input">
+              ཁྱེད་ཀྱིས་པར་རིས་གང་ཞིག་ཡིག་འབེབས་བྱེད་དམ།
+            </Label>
             <TextInput
               id="q4input"
-              placeholder="answer here.."
               type="text"
               required
               value={q4}
@@ -127,7 +128,7 @@ function StepWizard() {
             />
           </div>
         </FormWizard.TabContent>
-        <FormWizard.TabContent title="Last step" icon="ti-check">
+        <FormWizard.TabContent title="བཀོལ་སྤྱོད་ཆ་རྐྱེན།" icon="ti-check">
           <div className="mx-auto w-full lg:max-w-screen-md max-h-[500vh] overflow-auto">
             <TermsAndContitions />
           </div>
