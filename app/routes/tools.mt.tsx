@@ -98,7 +98,7 @@ async function translate(text: String, sourceLang: String, targetLang: String) {
 export async function action({ request }: ActionArgs) {
   const formData = await request.formData();
   const form = Object.fromEntries(formData);
-  if (form.sourceLang === "bo") {
+  if (form.sourceLang === "bo" && !form.sourceText) {
     form.sourceText = form.texts;
   }
 
@@ -146,15 +146,17 @@ export default function Index() {
         ཡིག་སྒྱུར་རིག་ནུས།
       </h1>
       <div className="flex justify-between items-center">
-        <h3 className="text-lg text-gray-500 ">{langLabels[sourceLang]}</h3>
+        <div className="inline-block w-32 text-lg text-gray-500">
+          {langLabels[sourceLang]}
+        </div>
 
         <Button onClick={handleLangSwitch} pill size="sm">
           <FaArrowRightArrowLeft size="20px" />
         </Button>
 
-        <h3 className="text-lg text-right text-gray-500 ">
+        <div className="inline-block w-32 text-lg text-right text-gray-500">
           {langLabels[targetLang]}
-        </h3>
+        </div>
       </div>
 
       <div className="mt-3 flex flex-col md:flex-row items-strech gap-5">
@@ -162,12 +164,14 @@ export default function Index() {
           <Form method="post">
             <input type="hidden" name="sourceLang" value={sourceLang} />
             <input type="hidden" name="targetLang" value={targetLang} />
-            {sourceLang === "en" ? (
+            {sourceLang ? (
               <div className="w-full h-[50vh]">
                 <Textarea
                   name="sourceText"
                   placeholder="ཡི་གེ་གཏག་རོགས།..."
-                  className="w-full h-full p-3 border-0 focus:outline-none focus:ring-transparent bg-transparent caret-slate-500 placeholder:text-slate-300 placeholder: text-xl leading-relaxed"
+                  className={`w-full h-full p-3 border-0 focus:outline-none focus:ring-transparent bg-transparent caret-slate-500 placeholder:text-slate-300 placeholder:font-monlam placeholder:text-lg ${
+                    sourceLang == "en" && "font-Inter text-xl"
+                  } ${sourceLang == "bo" && "text-lg leading-loose"}`}
                   required
                   value={sourceText}
                   onChange={handleOnChange}
@@ -211,7 +215,7 @@ export default function Index() {
               </div>
             )}
             <div className="mt-5 flex justify-between items-end">
-              {sourceLang === "en" && (
+              {sourceLang && (
                 <div className="text-gray-400 text-xs">
                   {charCount} / {charLimit}
                 </div>
@@ -239,7 +243,7 @@ export default function Index() {
                 id="translation"
                 className={`text-lg ${
                   targetLang == "bo" && " tracking-wide leading-loose"
-                }`}
+                } ${targetLang == "en" && "font-Inter"}`}
               >
                 {data && data.translation}
               </div>
