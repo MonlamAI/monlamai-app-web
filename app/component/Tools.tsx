@@ -83,7 +83,7 @@ function EachModel({ model, index, navigateTo }: EachProps) {
 
   return (
     <div
-      className="rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800 shadow-lg hover:border-blue-600 hover:border-2 h-full flex flex-col gap-5 p-6 cursor-pointer"
+      className="rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800 shadow-lg hover:border-blue-600 hover:border-2 h-full flex flex-col gap-10 p-8 cursor-pointer"
       onClick={() => navigateTo(link)}
     >
       <i className={icon} style={{ fontSize: 35, color: color }}></i>
