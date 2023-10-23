@@ -5,7 +5,7 @@ import { LoaderFunctionArgs, type ActionFunction } from "@remix-run/node";
 import { useEffect, useRef, useState } from "react";
 import { auth } from "~/services/auth.server";
 
-const charLimit = 2000;
+const charLimit = 500;
 export async function loader({ request }: LoaderFunctionArgs) {
   let userdata = await auth.isAuthenticated(request, {
     failureRedirect: "/login",
@@ -43,8 +43,6 @@ export const action: ActionFunction = async ({ request }) => {
 
 export default function Index() {
   const [sourceText, setSourceText] = useState("");
-  const [charCount, setCharCount] = useState(0);
-
   const data = useActionData<typeof action>();
   const navigation = useNavigation();
   const isActionSubmission = navigation.state == "submitting";
@@ -58,17 +56,14 @@ export default function Index() {
     }
   }, [data]);
 
-  const handleOnChange = (e) => {
-    setSourceText(e.target.value.slice(0, charLimit));
-    setCharCount(sourceText.length);
-  };
-
   const handleReset = () => {
     setSourceText("");
-    setCharCount(0);
+    // setCharCount(0);
     // hide the audio element only
     audioRef.current?.setAttribute("hidden", "");
   };
+
+  let charCount = sourceText?.length;
 
   return (
     <main className="mx-auto w-11/12 md:w-4/5">
@@ -82,21 +77,6 @@ export default function Index() {
             method="post"
             className="flex flex-col gap-5 flex-1"
           >
-            <div className="flex flex-col gap-2">
-              <Label value="སྐད།" className="text-lg" />
-              <Select
-                name="voice"
-                defaultValue=""
-                required
-                style={{ lineHeight: "1.5rem" }}
-              >
-                <option value="">སྐད་འདེམ་རོགས།</option>
-                <option value="female">མོ།</option>
-                <option value="male" disabled>
-                  ཕོ་
-                </option>
-              </Select>
-            </div>
             <div className="w-full flex-1">
               <Textarea
                 name="sourceText"
@@ -104,7 +84,13 @@ export default function Index() {
                 className="w-full h-full border-0 focus:outline-none focus:ring-transparent bg-transparent caret-slate-500 placeholder:text-slate-300 text-xl leading-relaxed"
                 required
                 value={sourceText}
-                onChange={handleOnChange}
+                onInput={(e) => {
+                  setSourceText((prev) => {
+                    let value = e.target.value;
+                    if (value?.length <= charLimit) return value;
+                    return prev;
+                  });
+                }}
                 autoFocus
               />
             </div>
