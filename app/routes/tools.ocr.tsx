@@ -84,7 +84,7 @@ export default function Index() {
                   />
                 </div>
                 <FileInput
-                  helperText="ངོས་ལེན་ཡོད་པའི་པར་རྣམ་ JPG, PNG, JPEG"
+                  helperText="ངོས་ལེན་ཡོད་པའི་པར་རྣམ། JPG, PNG, JPEG"
                   id="file"
                   name="image"
                   accept="image/png, image/jpeg, image/jpg"
