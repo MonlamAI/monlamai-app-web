@@ -6,12 +6,17 @@ import { type LoaderFunction } from "@remix-run/node";
 import { useLoaderData, Form } from "@remix-run/react";
 import { LiveAudioVisualizer } from "react-audio-visualize";
 import CopyToClipboard from "~/component/CopyToClipboard";
+import { auth } from "~/services/auth.server";
 export const loader: LoaderFunction = async ({ request }) => {
   const apiUrl = process.env.STT_API_URL as string;
   const headers = {
     Authorization: process.env.MODEL_API_AUTH_TOKEN as string,
     "Content-Type": "audio/flac",
   };
+  let userdata = await auth.isAuthenticated(request, {
+    failureRedirect: "/login",
+  });
+
   return {
     apiUrl,
     headers,

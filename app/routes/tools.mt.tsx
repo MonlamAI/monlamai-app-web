@@ -1,4 +1,4 @@
-import type { ActionArgs } from "@remix-run/node";
+import type { ActionArgs, LoaderFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Form, useActionData, useNavigation } from "@remix-run/react";
 import { Button, Card, Label, Radio, Spinner, Textarea } from "flowbite-react";
@@ -9,6 +9,7 @@ import {
   FaRegThumbsUp,
 } from "react-icons/fa6/index.js";
 import CopyToClipboard from "~/component/CopyToClipboard";
+import { auth } from "~/services/auth.server";
 
 const langLabels = {
   bo: "བོད་ཡིག།",
@@ -93,6 +94,13 @@ async function translate(text: String, sourceLang: String, targetLang: String) {
   } catch (error) {
     console.error("Error:", error);
   }
+}
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  let userdata = await auth.isAuthenticated(request, {
+    failureRedirect: "/login",
+  });
+  return { user: userdata };
 }
 
 export async function action({ request }: ActionArgs) {

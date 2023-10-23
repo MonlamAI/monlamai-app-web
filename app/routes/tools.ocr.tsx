@@ -1,4 +1,4 @@
-import type { ActionFunctionArgs } from "@remix-run/node";
+import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Form, useActionData, useNavigation } from "@remix-run/react";
 import { Button, Card, FileInput, Label, Spinner } from "flowbite-react";
@@ -6,7 +6,14 @@ import parse from "html-react-parser";
 import { useState } from "react";
 import { FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa6/index.js";
 import CopyToClipboard from "~/component/CopyToClipboard";
+import { auth } from "~/services/auth.server";
 
+export async function loader({ request }: LoaderFunctionArgs) {
+  let userdata = await auth.isAuthenticated(request, {
+    failureRedirect: "/login",
+  });
+  return { user: userdata };
+}
 function toParaTags(textLines: string[]) {
   return textLines
     .map((line) => {
