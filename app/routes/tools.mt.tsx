@@ -1,8 +1,8 @@
 import type { ActionArgs, LoaderFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { Form, useActionData, useNavigation } from "@remix-run/react";
+import { useFetcher } from "@remix-run/react";
 import { Button, Card, Label, Radio, Spinner, Textarea } from "flowbite-react";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import {
   FaArrowRightArrowLeft,
   FaRegThumbsDown,
@@ -106,16 +106,35 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export async function action({ request }: ActionArgs) {
   const formData = await request.formData();
   const form = Object.fromEntries(formData);
+
   if (form.sourceLang === "bo" && !form.sourceText) {
     form.sourceText = form.texts;
   }
+  if (form.sourceLang === "en") {
+    let text_array = form.sourceText?.split("\n");
+    async function translateText(
+      text: string,
+      sourceLang: string,
+      targetLang: string
+    ) {
+      return translate(text, sourceLang, targetLang);
+    }
+    const translationPromises = text_array.map((text: string) => {
+      return translateText(text, form.sourceLang, form.targetLang);
+    });
+    const results = await Promise.all(translationPromises);
+    let translation: string[] = [];
+    results.flatMap((item) => translation.push(item?.translation));
 
+    return json({
+      translation: translation,
+    });
+  }
   const result = await translate(
     form.sourceText,
     form.sourceLang,
     form.targetLang
   );
-
   return json({
     translation: result?.translation,
   });
@@ -125,23 +144,30 @@ export default function Index() {
   const [sourceLang, setSourceLang] = useState("en");
   const [targetLang, setTargetLang] = useState("bo");
   const [sourceText, setSourceText] = useState("");
+  const fetcher = useFetcher();
+  const targetRef = useRef<HTMLDivElement>(null);
 
-  const data = useActionData<typeof action>();
-  const navigation = useNavigation();
-  const isActionSubmission = navigation.state == "submitting";
+  let data = fetcher.data;
+  const isActionSubmission = fetcher.state !== "idle";
 
   const handleLangSwitch = () => {
+    fetcher.submit(
+      {},
+      {
+        action: "/reset_actiondata",
+      }
+    );
     const temp = sourceLang;
     setSourceLang(targetLang);
     setTargetLang(temp);
     setSourceText("");
-    let translationDiv = document.getElementById("translation");
-    if (translationDiv) {
-      translationDiv.innerHTML = "";
-    }
   };
 
   let charCount = sourceText?.length;
+  let textToCopy =
+    sourceLang === "en" && typeof data?.translation === "object"
+      ? data?.translation?.join("\n")
+      : data?.translation;
   return (
     <main className="mx-auto w-11/12 lg:4/5">
       <h1 className="mb-10 text-2xl lg:text-3xl text-center text-slate-700 ">
@@ -163,7 +189,7 @@ export default function Index() {
 
       <div className="mt-3 flex flex-col md:flex-row items-strech gap-5">
         <Card className="md:w-1/2">
-          <Form method="post">
+          <fetcher.Form method="post">
             <input type="hidden" name="sourceLang" value={sourceLang} />
             <input type="hidden" name="targetLang" value={targetLang} />
             {sourceLang ? (
@@ -178,7 +204,7 @@ export default function Index() {
                   value={sourceText}
                   onInput={(e) => {
                     setSourceText((prev) => {
-                      let value = e.target.value;
+                      let value = e.target?.value;
                       if (value?.length <= charLimit) return value;
                       return prev;
                     });
@@ -232,12 +258,13 @@ export default function Index() {
               <Button
                 type="submit"
                 isProcessing={isActionSubmission}
+                disabled={sourceText.length < 8}
                 className=""
               >
                 ཡིག་སྒྱུར།
               </Button>
             </div>
-          </Form>
+          </fetcher.Form>
         </Card>
 
         <Card className="md:w-1/2">
@@ -246,16 +273,19 @@ export default function Index() {
               <div className="h-full flex justify-center items-center">
                 <Spinner size="lg" />
               </div>
-            ) : (
+            ) : targetLang === "bo" ? (
               <div
-                id="translation"
-                className={`text-lg ${
-                  targetLang == "bo" && " tracking-wide leading-loose"
-                } ${targetLang == "en" && "font-Inter"}`}
-              >
-                {data && data.translation}
+                ref={targetRef}
+                className={"text-lg  tracking-wide leading-loose"}
+                dangerouslySetInnerHTML={{
+                  __html: data?.translation?.join("<br />"),
+                }}
+              ></div>
+            ) : targetLang === "en" ? (
+              <div ref={targetRef} className={`text-lg font-Inter`}>
+                {data?.translation}
               </div>
-            )}
+            ) : null}
           </div>
           <div className="flex justify-end">
             <Button color="white" disabled={data ? false : true}>
@@ -265,7 +295,7 @@ export default function Index() {
               <FaRegThumbsDown color="gray" size="20px" />
             </Button>
             <CopyToClipboard
-              textToCopy={data?.translation}
+              textToCopy={textToCopy}
               disabled={data ? false : true}
             />
           </div>
