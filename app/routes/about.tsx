@@ -12,11 +12,11 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 function About() {
   return (
-    <div className="py-[160px] m-auto w-[90%] md:w-[80%]">
+    <div className="md:py-[160px] m-auto w-[90%] md:w-[80%]">
       <div className="flex flex-col justify-center items-center gap-10 px-4 lg:flex-row">
         <img
           src="/assets/about.jpg"
-          alt="monalm"
+          alt="monlam"
           className="w-[80%] md:w-[60%] lg:w-[40%] border-[#dddcdc] rounded-xl"
         />
         <div className="text-sm leading-7">

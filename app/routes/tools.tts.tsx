@@ -1,10 +1,17 @@
 import { Button, Card, Label, Select, Spinner, Textarea } from "flowbite-react";
 import { FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa/index.js";
 import { Form, useActionData, useNavigation } from "@remix-run/react";
-import { type ActionFunction } from "@remix-run/node";
+import { LoaderFunctionArgs, type ActionFunction } from "@remix-run/node";
 import { useEffect, useRef, useState } from "react";
+import { auth } from "~/services/auth.server";
 
 const charLimit = 2000;
+export async function loader({ request }: LoaderFunctionArgs) {
+  let userdata = await auth.isAuthenticated(request, {
+    failureRedirect: "/login",
+  });
+  return { user: userdata };
+}
 
 export const action: ActionFunction = async ({ request }) => {
   const formdata = await request.formData();
@@ -64,9 +71,9 @@ export default function Index() {
   };
 
   return (
-    <main className="m-auto w-11/12 md:w-4/5">
-      <h1 className="mb-10 text-4xl lg:text-5xl text-center text-slate-700">
-        Monlam Text To Speech
+    <main className="mx-auto w-11/12 md:w-4/5">
+      <h1 className="mb-10 text-2xl lg:text-3xl text-center text-slate-700">
+        ཀློག་འདོན་རིག་ནུས།
       </h1>
       <div className="flex flex-col  lg:flex-row gap-3">
         <Card className="w-full lg:w-1/2 max-h-[60vh] flex">
@@ -76,24 +83,24 @@ export default function Index() {
             className="flex flex-col gap-5 flex-1"
           >
             <div className="flex flex-col gap-2">
-              <Label value="Voice" className="text-lg" />
+              <Label value="སྐད།" className="text-lg" />
               <Select
                 name="voice"
-                className="text-lg border-0"
                 defaultValue=""
                 required
+                style={{ lineHeight: "1.5rem" }}
               >
-                <option value="" disabled>
-                  select voice
+                <option value="">སྐད་འདེམ་རོགས།</option>
+                <option value="female">མོ།</option>
+                <option value="male" disabled>
+                  ཕོ་
                 </option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
               </Select>
             </div>
             <div className="w-full flex-1">
               <Textarea
                 name="sourceText"
-                placeholder="Enter your text..."
+                placeholder="ཡི་གེ་གཏག་རོགས།..."
                 className="w-full h-full border-0 focus:outline-none focus:ring-transparent bg-transparent caret-slate-500 placeholder:text-slate-300 text-xl leading-relaxed"
                 required
                 value={sourceText}
@@ -109,7 +116,7 @@ export default function Index() {
                 className="text-slate-500"
                 onClick={handleReset}
               >
-                Reset
+                བསྐྱར་སྒྲིག།
               </Button>
               <div className="text-gray-400 text-xs">
                 {charCount} / {charLimit}
@@ -119,7 +126,7 @@ export default function Index() {
                 form="ttsForm"
                 isProcessing={isActionSubmission}
               >
-                Convert
+                ཀློགས།
               </Button>
             </div>
           </Form>

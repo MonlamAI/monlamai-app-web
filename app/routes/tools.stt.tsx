@@ -6,12 +6,17 @@ import { type LoaderFunction } from "@remix-run/node";
 import { useLoaderData, Form } from "@remix-run/react";
 import { LiveAudioVisualizer } from "react-audio-visualize";
 import CopyToClipboard from "~/component/CopyToClipboard";
+import { auth } from "~/services/auth.server";
 export const loader: LoaderFunction = async ({ request }) => {
   const apiUrl = process.env.STT_API_URL as string;
   const headers = {
     Authorization: process.env.MODEL_API_AUTH_TOKEN as string,
     "Content-Type": "audio/flac",
   };
+  let userdata = await auth.isAuthenticated(request, {
+    failureRedirect: "/login",
+  });
+
   return {
     apiUrl,
     headers,
@@ -117,15 +122,15 @@ export default function Index() {
   };
   return (
     <main className="mx-auto w-11/12 md:w-4/5">
-      <h1 className="mb-10 text-4xl lg:text-5xl text-center text-slate-700">
-        Monlam Speech To Text
+      <h1 className="mb-10 text-2xl lg:text-3xl text-center text-slate-700">
+        སྒྲ་འཛིན་རིག་ནུས།
       </h1>
       <div className="flex flex-col lg:flex-row items-stretch gap-3">
-        <Card className="w-full lg:w-1/2 max-h-[60vh] flex">
+        <Card className="w-full lg:w-1/2 flex">
           <Form
             id="sttForm"
             method="post"
-            className="flex flex-col w-full h-[25vh] lg:h-[50vh] justify-center  flex-1 gap-4"
+            className="flex flex-col w-full h-[25vh] lg:h-[50vh] justify-center gap-4"
           >
             <div className="flex flex-col items-center gap-5 flex-1 justify-center">
               {recording && mediaRecorder.current && (
@@ -135,7 +140,7 @@ export default function Index() {
                   height={75}
                 />
               )}
-              <Button size="md" onClick={toggleRecording}>
+              <Button size="xl" onClick={toggleRecording}>
                 {recording ? <BsFillStopFill /> : <BsFillMicFill />}
               </Button>
 
@@ -150,10 +155,10 @@ export default function Index() {
                 onClick={handleReset}
                 disabled={!audio?.url}
               >
-                Reset
+                བསྐྱར་སྒྲིག།
               </Button>
               <Button disabled={!audio?.url} onClick={handleSubmit}>
-                Submit
+                ཐོངས།
               </Button>
             </div>
           </Form>
@@ -161,7 +166,7 @@ export default function Index() {
         <Card className="w-full lg:w-1/2 max-h-[60vh] flex">
           <Label
             htmlFor="transcript"
-            value="Transcript"
+            value="ཡིག་འབེབས།"
             className="text-lg text-gray-500"
           />
           <div className="w-full h-[25vh] lg:h-[50vh] p-3 text-black bg-slate-100 rounded-lg overflow-auto">

@@ -1,5 +1,5 @@
 import type { LoaderFunction } from "@remix-run/node";
-import { Form } from "@remix-run/react";
+import { Form, Link } from "@remix-run/react";
 import { Button } from "flowbite-react";
 import { TypeAnimation } from "react-type-animation";
 import { auth } from "~/services/auth.server";
@@ -32,8 +32,11 @@ function login() {
         className="flex w-screen flex-col md:grid md:grid-cols-2 lg:grid-cols-[60%_40%]
    min-h-screen"
       >
-        <div className="relative flex flex-1 flex-col justify-center px-5 pt-8 bg-[#1d2d44] text-white">
-          <div className="w-full flex-1 flex justify-center items-center flex-col ">
+        <div
+          className="relative hidden md:flex flex-1 flex-col justify-center px-5 pt-8 text-white
+          bg-[url('/assets/back-light.gif')] bg-no-repeat bg-center bg-cover"
+        >
+          <div className="w-full flex-1 flex justify-center items-center flex-col">
             <h1 className="text-center text-[40px]  md:text-[50px] max-w-[1000px] mb-2 ">
               སྨོན་ལམ་རིག་ནུས།
             </h1>
@@ -46,14 +49,31 @@ function login() {
             />
           </div>
         </div>
-        <div className="flex flex-col gap-4 justify-center items-center rounded-t-[30px] md:rounded-none text-black p-6">
-          <h1 className="text-xl font-extrabold  md:text-3xl">Get started</h1>
-          <div className="flex-col justify-center items-center">
-            <Form method="post" action="/auth0">
-              <Button className="px-10" type="submit">
-                Sign In
-              </Button>
-            </Form>
+        <div className="flex grow flex-col gap-10 justify-center items-center rounded-t-[30px] md:rounded-none text-black p-6">
+          <div className="flex grow w-4/5 flex-col gap-8 justify-center items-center">
+            <img src="/assets/buddha.png" alt="monalm" />
+            <div className="flex-col justify-center items-center">
+              <Form method="post" action="/auth0">
+                <Button className="px-10" type="submit">
+                  ཐོ་ཞུགས།
+                </Button>
+              </Form>
+            </div>
+          </div>
+          <div className="flex flex-col items-center justify-center md:mb-3">
+            <div className="flex gap-2 items-center">
+              <img
+                src="/assets/logo.png"
+                alt="Monalm AI"
+                className=" relative -top-2 grayscale w-10 "
+              />
+              <p className="text-lg font-bold text-gray-500 tracking-wide ">
+                Monlam AI
+              </p>
+            </div>
+            <Link className="py-3 text-xs text-gray-500 " to="/tac">
+              Terms of use
+            </Link>
           </div>
         </div>
       </div>
