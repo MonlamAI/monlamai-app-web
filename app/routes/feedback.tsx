@@ -21,6 +21,6 @@ export const action: ActionFunction = async ({ request }) => {
   return {
     liked: likedata?.liked,
     disliked: likedata?.disliked,
-    message: likedata?.liked ? "བཀའ་དྲིན་ཆེ་" : "དགོངས་འགལ་མེད་པ་ཞུ།",
+    message: likedata?.liked ? "བཀའ་དྲིན་ཆེ།" : "དགོངས་འགལ་མེད་པ་ཞུ།",
   };
 };

@@ -14,6 +14,7 @@ import { fetchGPTData } from "~/services/fetchGPTData.server";
 import { motion } from "framer-motion";
 import { checkIfExist } from "~/modal/feedback";
 import { getUser } from "~/modal/user";
+import TypingAnimation from "~/component/TypingText";
 const langLabels = {
   bo: "བོད་ཡིག།",
   en: "དབྱིན་ཡིག།",
@@ -115,7 +116,7 @@ export async function action({ request }: ActionArgs) {
     form.sourceText = form.texts;
   }
   if (form.sourceLang === "en") {
-    let prompt = `replace all the abbreviation with full form and preserve newlines , "${form?.sourceText}"  `;
+    let prompt = `replace all the abbreviations with full form and preserve newlines, "${form?.sourceText}"  `;
     const data = await fetchGPTData(prompt);
     let text_array = data?.split("\n");
 
@@ -151,6 +152,7 @@ export default function Index() {
   const [sourceLang, setSourceLang] = useState("en");
   const [targetLang, setTargetLang] = useState("bo");
   const [sourceText, setSourceText] = useState("");
+  const [isRotated, setIsRotated] = useState(false);
   const fetcher = useFetcher();
   const likefetcher = useFetcher();
 
@@ -176,6 +178,7 @@ export default function Index() {
     setSourceLang(targetLang);
     setTargetLang(temp);
     setSourceText("");
+    setIsRotated(!isRotated);
   };
 
   let charCount = sourceText?.length;
@@ -227,9 +230,15 @@ export default function Index() {
           {langLabels[sourceLang]}
         </motion.div>
 
-        <Button onClick={handleLangSwitch} pill size="sm">
+        <motion.button
+          className="group flex items-center justify-center p-0.5 text-center font-medium relative focus:z-10 focus:outline-none text-white bg-cyan-700 border border-transparent enabled:hover:bg-cyan-800 focus:ring-cyan-300 dark:bg-cyan-600 dark:enabled:hover:bg-cyan-700 dark:focus:ring-cyan-800 rounded-full focus:ring-2 py-1 px-3"
+          onClick={handleLangSwitch}
+          initial={{ rotate: 0 }}
+          animate={{ rotate: isRotated ? 180 : 0 }}
+          transition={{ duration: 0.3 }}
+        >
           <FaArrowRightArrowLeft size="20px" />
-        </Button>
+        </motion.button>
 
         <motion.div
           className="inline-block w-32 text-lg text-right text-gray-500"
@@ -241,12 +250,7 @@ export default function Index() {
         </motion.div>
       </div>
 
-      <motion.div
-        exit={{ opacity: 0 }}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="mt-3 flex flex-col md:flex-row items-strech gap-5"
-      >
+      <motion.div className="mt-3 flex flex-col md:flex-row items-strech gap-5">
         <Card className="md:w-1/2">
           <fetcher.Form method="post">
             <input type="hidden" name="sourceLang" value={sourceLang} />
@@ -336,13 +340,12 @@ export default function Index() {
               <div
                 ref={targetRef}
                 className={"text-lg  tracking-wide leading-loose"}
-                dangerouslySetInnerHTML={{
-                  __html: data?.translation?.join("<br />"),
-                }}
-              ></div>
+              >
+                <TypingAnimation text={data?.translation?.join("\n")} />
+              </div>
             ) : targetLang === "en" ? (
               <div ref={targetRef} className={`text-lg font-Inter`}>
-                {data?.translation}
+                <TypingAnimation text={data?.translation} />
               </div>
             ) : null}
           </div>

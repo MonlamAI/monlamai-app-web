@@ -71,7 +71,10 @@ function login() {
                 Monlam AI
               </p>
             </div>
-            <Link className="py-3 text-xs text-gray-500 " to="/tac">
+            <Link
+              className="py-3 text-xs text-gray-400 hover:text-gray-500"
+              to="/tac"
+            >
               Terms of use
             </Link>
           </div>

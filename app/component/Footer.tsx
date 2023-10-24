@@ -15,27 +15,18 @@ function Footer() {
                 href="https://www.facebook.com/profile.php?id=100092133731838"
                 target="_blank"
                 rel="noreferrer"
-                className="mr-4 hover:underline md:mr-6 "
+                className="mr-4 hover:underline md:mr-6 hover:text-blue-500"
               >
-                <i className="fab fa-facebook-square fa-lg"></i>
+                <i className="fab fa-facebook-square fa-lg "></i>
               </a>
             </li>
-            {/* <li>
-              <a
-                href="#"
-                target="_blank"
-                rel="noreferrer"
-                className="mr-4 hover:underline md:mr-6"
-              >
-                <i className="fab fa-discord fa-lg"></i>
-              </a>
-            </li> */}
+
             <li>
               <a
                 href="https://www.instagram.com/monlam_ai/"
                 target="_blank"
                 rel="noreferrer"
-                className="mr-4 hover:underline md:mr-6"
+                className="mr-4 hover:underline md:mr-6 hover:text-pink-500"
               >
                 <i className="fab fa-instagram fa-lg"></i>
               </a>
@@ -45,7 +36,7 @@ function Footer() {
                 href="https://twitter.com/Monlam_AI"
                 target="_blank"
                 rel="noreferrer"
-                className="hover:underline"
+                className="hover:underline hover:text-blue-300"
               >
                 <i className="fab fa-twitter fa-lg"></i>
               </a>
