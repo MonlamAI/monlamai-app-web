@@ -42,12 +42,13 @@ export async function action({ request }: ActionFunctionArgs) {
     }
     const data = await response.json();
     return json({
-      text: toParaTags(data.output),
+      text: data.output,
     });
   } catch (error) {
-    console.error("There was a problem with the fetch operation:", error);
+    return {
+      error_message: "There was a problem with the fetch operation:" + error,
+    };
   }
-  return null;
 }
 
 export default function Index() {
@@ -55,14 +56,14 @@ export default function Index() {
   const fetcher = useFetcher();
   const data = fetcher.data;
   const isActionSubmission = fetcher.state !== "idle";
-
+  const errorMessage = data?.error_message;
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
       setSelectedFile(file);
     }
   };
-
+  let isEmptyData = data?.text?.length === 1 && data?.text[0].trim() === "";
   const handleFormClear = () => {
     setSelectedFile(null);
     fetcher.submit(
@@ -134,7 +135,15 @@ export default function Index() {
               </div>
             ) : (
               <div className="text-lg  tracking-wide leading-loose overflow-auto">
-                {data && parse(data.text)}
+                {isEmptyData && (
+                  <div className="text-red-500">
+                    བསྐྱར་དུ་པར་རིས་གཞན་པ་ཞིག་བཙལ་རོགས་གནང་།
+                  </div>
+                )}
+                {errorMessage && (
+                  <div className="text-red-500">{errorMessage}</div>
+                )}
+                {data && parse(toParaTags(data.text))}
               </div>
             )}
           </div>
@@ -146,7 +155,7 @@ export default function Index() {
               <FaRegThumbsDown color="gray" size="20px" />
             </Button>
             <CopyToClipboard
-              textToCopy={data?.text}
+              textToCopy={data?.text?.join("\n")}
               disabled={data ? false : true}
             />
           </div>
