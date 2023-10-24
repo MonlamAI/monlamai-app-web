@@ -12,9 +12,9 @@ import CopyToClipboard from "~/component/CopyToClipboard";
 import { auth } from "~/services/auth.server";
 import { fetchGPTData } from "~/services/fetchGPTData.server";
 import { motion } from "framer-motion";
-import { checkIfExist } from "~/modal/feedback";
-import { getUser } from "~/modal/user";
 import TypingAnimation from "~/component/TypingText";
+import { replacestring } from "~/component/utils/replace";
+import { e2treplace } from "~/component/utils/e2treplace";
 const langLabels = {
   bo: "བོད་ཡིག།",
   en: "དབྱིན་ཡིག།",
@@ -118,7 +118,8 @@ export async function action({ request }: ActionArgs) {
   if (form.sourceLang === "en") {
     let prompt = `replace all the abbreviations with full form and preserve newlines, "${form?.sourceText}"  `;
     const data = await fetchGPTData(prompt);
-    let text_array = data?.split("\n");
+    let replacedInput = e2treplace(data!);
+    let text_array = replacedInput?.split("\n");
 
     async function translateText(
       text: string,
@@ -132,7 +133,9 @@ export async function action({ request }: ActionArgs) {
     });
     const results = await Promise.all(translationPromises);
     let translation: string[] = [];
-    results.flatMap((item) => translation.push(item?.translation));
+    results.flatMap((item) =>
+      translation.push(replacestring(item?.translation))
+    );
 
     return json({
       translation: translation,

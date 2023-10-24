@@ -2,8 +2,8 @@ import { Button, Card, Label, Spinner } from "flowbite-react";
 import { FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa/index.js";
 import { BsFillStopFill, BsFillMicFill } from "react-icons/bs/index.js";
 import { useState, useRef } from "react";
-import { type LoaderFunction } from "@remix-run/node";
-import { useLoaderData, Form } from "@remix-run/react";
+import { type LoaderFunction, ActionFunction, json } from "@remix-run/node";
+import { useFetcher } from "@remix-run/react";
 import { LiveAudioVisualizer } from "react-audio-visualize";
 import CopyToClipboard from "~/component/CopyToClipboard";
 import { auth } from "~/services/auth.server";
@@ -13,7 +13,7 @@ export const loader: LoaderFunction = async ({ request }) => {
     Authorization: process.env.MODEL_API_AUTH_TOKEN as string,
     "Content-Type": "audio/flac",
   };
-  let userdata = await auth.isAuthenticated(request, {
+  await auth.isAuthenticated(request, {
     failureRedirect: "/login",
   });
 
@@ -23,42 +23,62 @@ export const loader: LoaderFunction = async ({ request }) => {
   };
 };
 
+export const action: ActionFunction = async ({ request }) => {
+  const formData = await request.formData();
+  const apiUrl = process.env.STT_API_URL as string;
+  const headers = {
+    Authorization: process.env.MODEL_API_AUTH_TOKEN as string,
+    "Content-Type": "audio/flac",
+  };
+  try {
+    let audio = formData.get("audio") as string;
+    const blob = await fetch(audio).then((res) => res.blob());
+    const response = await fetch(apiUrl, {
+      method: "POST",
+      headers: headers,
+      body: blob,
+    });
+    if (response.ok) {
+      const data = await response.json();
+      return json({ text: data?.text });
+    } else {
+      return json({ error_message: "Failed to send the audio to the server" });
+    }
+  } catch (error) {
+    return { error_message: "Error during submission:" + error };
+  }
+};
+
 export default function Index() {
-  // const fetcher = useFetcher();
-  const { apiUrl, headers } = useLoaderData();
+  const fetcher = useFetcher();
   const [audioChunks, setAudioChunks] = useState([]);
-  const [transcript, setTranscript] = useState<string>("");
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [audio, setAudio] = useState<{ blob: Blob; url: string } | null>(null);
+  const [audio, setAudio] = useState<Blob | null>(null);
+  const [audioURL, setAudioURL] = useState<string | null>(null);
   let mediaRecorder: any = useRef();
 
   const [recording, setRecording] = useState(false);
 
   const handleSubmit = async () => {
-    try {
-      setIsLoading(true);
-      const response = await fetch(apiUrl, {
-        method: "POST",
-        headers: headers,
-        body: audio?.blob,
-      });
-      if (response.ok) {
-        const data = await response.json();
-        const { text } = data;
-        setTranscript(text);
-        setIsLoading(false);
-      } else {
-        console.error("Failed to send the audio to the server");
-      }
-    } catch (error) {
-      console.error("Error during submission:", error);
-    }
+    const form = new FormData();
+    const reader = new FileReader();
+    reader.readAsDataURL(audio as Blob);
+    reader.addEventListener(
+      "loadend",
+      () => {
+        if (typeof reader.result === "string") {
+          form.append("audio", reader.result);
+          fetcher.submit(form, { method: "post" });
+        }
+      },
+      { once: true }
+    );
   };
-
+  const isLoading = fetcher.state !== "idle";
+  const errorMessage = fetcher.data?.error_message;
   const handleReset = () => {
     // reset the audio element and the transcript
     setAudio(null);
-    setTranscript("");
+    setAudioURL(null);
   };
   const toggleRecording = () => {
     if (!recording) {
@@ -114,9 +134,8 @@ export default function Index() {
     mediaRecorder.current.onstop = () => {
       //creates a blob file from the audiochunks data
       const audioBlob = new Blob(audioChunks);
-      const audioUrl = URL.createObjectURL(audioBlob);
-      setAudio({ blob: audioBlob, url: audioUrl });
-
+      setAudio(audioBlob);
+      setAudioURL(window.URL.createObjectURL(audioBlob));
       setAudioChunks([]);
     };
   };
@@ -127,9 +146,8 @@ export default function Index() {
       </h1>
       <div className="flex flex-col lg:flex-row items-stretch gap-3">
         <Card className="w-full lg:w-1/2 flex">
-          <Form
+          <div
             id="sttForm"
-            method="post"
             className="flex flex-col w-full h-[25vh] lg:h-[50vh] justify-center gap-4"
           >
             <div className="flex flex-col items-center gap-5 flex-1 justify-center">
@@ -143,9 +161,13 @@ export default function Index() {
               <Button size="xl" onClick={toggleRecording}>
                 {recording ? <BsFillStopFill /> : <BsFillMicFill />}
               </Button>
-
-              {audio?.url && (
-                <audio id="user-audio" src={audio.url} controls></audio>
+              {audioURL && (
+                <audio
+                  src={audioURL}
+                  controls
+                  typeof="audio/wav"
+                  title="file.wav"
+                ></audio>
               )}
             </div>
             <div className="flex justify-between h-10">
@@ -153,39 +175,41 @@ export default function Index() {
                 color="gray"
                 className="text-slate-500"
                 onClick={handleReset}
-                disabled={!audio?.url}
+                disabled={!audioURL}
               >
                 བསྐྱར་སྒྲིག།
               </Button>
-              <Button disabled={!audio?.url} onClick={handleSubmit}>
+              <Button disabled={!audioURL} onClick={handleSubmit}>
                 ཐོངས།
               </Button>
             </div>
-          </Form>
+          </div>
         </Card>
         <Card className="w-full lg:w-1/2 max-h-[60vh] flex">
-          <Label
-            htmlFor="transcript"
-            value="ཡིག་འབེབས།"
-            className="text-lg text-gray-500"
-          />
+          <Label value="ཡིག་འབེབས།" className="text-lg text-gray-500" />
           <div className="w-full h-[25vh] lg:h-[50vh] p-3 text-black bg-slate-100 rounded-lg overflow-auto">
             {isLoading ? (
               <div className="h-full flex justify-center items-center">
                 <Spinner />
               </div>
             ) : (
-              transcript && <p className="text-lg">{transcript}</p>
+              fetcher?.data?.text && (
+                <p className="text-lg">{fetcher?.data?.text}</p>
+              )
             )}
+            {errorMessage && <div className="text-red-400">{errorMessage}</div>}
           </div>
           <div className="flex justify-end">
-            <Button color="white" disabled={!transcript}>
+            <Button color="white" disabled={!fetcher?.data?.text}>
               <FaRegThumbsUp color="gray" size="20px" />
             </Button>
-            <Button color="white" disabled={!transcript}>
+            <Button color="white" disabled={!fetcher?.data?.text}>
               <FaRegThumbsDown color="gray" size="20px" />
             </Button>
-            <CopyToClipboard textToCopy={transcript} disabled={!transcript} />
+            <CopyToClipboard
+              textToCopy={fetcher?.data?.text}
+              disabled={!fetcher?.data?.text}
+            />
           </div>
         </Card>
       </div>

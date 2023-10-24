@@ -15,8 +15,10 @@ const auth0Strategy = new Auth0Strategy(
     clientID: AUTH0_CLIENT_ID!,
     clientSecret: AUTH0_CLIENT_SECRET!,
     domain: AUTH0_DOMAIN!,
+    scope: "openid profile email",
   },
-  async ({ profile }) => {
+  async (data) => {
+    let { profile, extraParams } = data;
     //
     // Use the returned information to process or write to the DB.
     //

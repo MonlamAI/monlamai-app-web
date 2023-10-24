@@ -1,3 +1,5 @@
+import { Link } from "@remix-run/react";
+
 export default function Index() {
   return (
     <div className="text-slate-900">
@@ -89,6 +91,12 @@ export default function Index() {
           We thank you for choosing MonlamAI.
         </p>
       </div>
+      <Link
+        to="/"
+        className="text-center text-gray-400 w-full flex justify-center mt-2"
+      >
+        Visit Home
+      </Link>
     </div>
   );
 }
