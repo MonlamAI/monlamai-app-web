@@ -2,13 +2,14 @@ import { Form, Link, useLoaderData } from "@remix-run/react";
 import { Dropdown } from "flowbite-react";
 import { useState } from "react";
 import { HiLogout } from "react-icons/hi/index.js";
-
+import { GiHamburgerMenu } from "react-icons/gi/index.js";
+import { RxCross1 } from "react-icons/rx/index.js";
 function Header() {
   const { user } = useLoaderData();
   const [showMenu, setShowMenu] = useState(false);
 
   return (
-    <nav className="flex h-[60px] p-3 items-center justify-between  w-full  bg-white ">
+    <nav className="flex h-[60px] p-3 mb-10 items-center justify-between  w-full  bg-white ">
       <a href="/" className="flex items-center gap-2 text-[1.25rem]">
         <img
           src="/assets/logo.png"
@@ -22,25 +23,13 @@ function Header() {
         className="block lg:hidden"
         onClick={() => setShowMenu((p) => !p)}
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          className="inline-block w-5 h-5 stroke-current"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M4 6h16M4 12h16M4 18h16"
-          ></path>
-        </svg>
+        {showMenu ? <RxCross1 /> : <GiHamburgerMenu />}
       </button>
 
       {/* mobile view */}
       {showMenu && (
         <div
-          className="lg:hidden absolute top-[50px] px-5 pb-2 pt-2 right-0 w-full bg-white shadow-sm
+          className="lg:hidden absolute top-[50px] px-5 pb-2 pt-2 right-0 w-full bg-gray-100 shadow-sm
 "
         >
           <div className="flex justify-between items-center text-sm">
