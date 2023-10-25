@@ -13,6 +13,7 @@ import { auth } from "~/services/auth.server";
 import { fetchGPTData } from "~/services/fetchGPTData.server";
 import { motion } from "framer-motion";
 import { outputReplace, inputReplace } from "~/component/utils/replace.server";
+import ReactionButtons from "~/component/ReactionButtons";
 const langLabels = {
   bo: "བོད་ཡིག།",
   en: "དབྱིན་ཡིག།",
@@ -187,36 +188,8 @@ export default function Index() {
     sourceLang === "en" && typeof data?.translation === "object"
       ? data?.translation?.join("\n")
       : data?.translation;
-  function handlelike() {
-    likefetcher.submit(
-      {
-        source: sourceText,
-        output: textToCopy,
-        _action: "liked",
-        model: "mt",
-      },
-      {
-        method: "POST",
-        action: "/feedback",
-      }
-    );
-  }
-  function handledislike() {
-    likefetcher.submit(
-      {
-        source: sourceText,
-        output: textToCopy,
-        _action: "disliked",
-        model: "mt",
-      },
-      {
-        method: "POST",
-        action: "/feedback",
-      }
-    );
-  }
+
   let liked = likefetcher.data?.liked;
-  let disliked = likefetcher.data?.disliked;
   let message = likefetcher.data?.message;
   return (
     <main className="mx-auto w-11/12 md:4/5">
@@ -361,23 +334,12 @@ export default function Index() {
               {message}
             </div>
             <div className="flex justify-end">
-              <Button
-                color={"white"}
-                disabled={data && !liked ? false : true}
-                onClick={handlelike}
-              >
-                <FaRegThumbsUp color={liked ? "green" : "gray"} size="20px" />
-              </Button>
-              <Button
-                color="white"
-                disabled={data && !disliked ? false : true}
-                onClick={handledislike}
-              >
-                <FaRegThumbsDown
-                  color={disliked ? "red" : "gray"}
-                  size="20px"
-                />
-              </Button>
+              <ReactionButtons
+                fetcher={likefetcher}
+                output={textToCopy}
+                sourceText={sourceText}
+                model="mt"
+              />
               <CopyToClipboard
                 textToCopy={textToCopy}
                 disabled={data ? false : true}

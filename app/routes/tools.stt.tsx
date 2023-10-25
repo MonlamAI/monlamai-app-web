@@ -7,6 +7,7 @@ import { useFetcher } from "@remix-run/react";
 import { LiveAudioVisualizer } from "react-audio-visualize";
 import CopyToClipboard from "~/component/CopyToClipboard";
 import { auth } from "~/services/auth.server";
+import ReactionButtons from "~/component/ReactionButtons";
 export const loader: LoaderFunction = async ({ request }) => {
   const apiUrl = process.env.STT_API_URL as string;
   const headers = {
@@ -55,9 +56,9 @@ export default function Index() {
   const [audio, setAudio] = useState<Blob | null>(null);
   const [audioURL, setAudioURL] = useState<string | null>(null);
   let mediaRecorder: any = useRef();
-
+  const [audioBase64, setBase64] = useState<string | null>(null);
   const [recording, setRecording] = useState(false);
-
+  let likefetcher = useFetcher();
   const handleSubmit = async () => {
     const form = new FormData();
     const reader = new FileReader();
@@ -134,9 +135,24 @@ export default function Index() {
     mediaRecorder.current.onstop = () => {
       //creates a blob file from the audiochunks data
       const audioBlob = new Blob(audioChunks);
+      console.log(audioBlob);
       setAudio(audioBlob);
       setAudioURL(window.URL.createObjectURL(audioBlob));
       setAudioChunks([]);
+
+      const reader = new FileReader();
+
+      // Define a callback function to handle the result
+      reader.onload = function () {
+        // The result is a Base64-encoded string
+        const base64String = reader.result;
+        setBase64(base64String);
+
+        // Now you can use the base64String as needed
+      };
+
+      // Read the Blob as a data URL (Base64)
+      reader.readAsDataURL(audioBlob);
     };
   };
   return (
@@ -199,17 +215,27 @@ export default function Index() {
             )}
             {errorMessage && <div className="text-red-400">{errorMessage}</div>}
           </div>
-          <div className="flex justify-end">
-            <Button color="white" disabled={!fetcher?.data?.text}>
-              <FaRegThumbsUp color="gray" size="20px" />
-            </Button>
-            <Button color="white" disabled={!fetcher?.data?.text}>
-              <FaRegThumbsDown color="gray" size="20px" />
-            </Button>
-            <CopyToClipboard
-              textToCopy={fetcher?.data?.text}
-              disabled={!fetcher?.data?.text}
-            />
+          <div className="flex justify-between">
+            <div
+              className={
+                !likefetcher.data?.liked ? "text-red-400" : "text-green-400"
+              }
+            >
+              {likefetcher?.data?.message}
+            </div>
+            <div className="flex">
+              <ReactionButtons
+                fetcher={likefetcher}
+                output={fetcher?.data?.text}
+                sourceText={audioBase64 ? audioBase64 : null}
+                model="stt"
+              />
+
+              <CopyToClipboard
+                textToCopy={fetcher?.data?.text}
+                disabled={!fetcher?.data?.text}
+              />
+            </div>
           </div>
         </Card>
       </div>
