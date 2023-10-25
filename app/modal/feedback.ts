@@ -1,6 +1,12 @@
 import { db } from "~/services/db.server";
 
-export async function checkIfExist(source, userId, model) {
+export type modelType = "mt" | "stt" | "tts" | "ocr";
+
+export async function checkIfExist(
+  source: string,
+  userId: number,
+  model: modelType
+) {
   let checkDublicate = await db.feedback.findFirst({
     where: {
       userId,
@@ -11,12 +17,13 @@ export async function checkIfExist(source, userId, model) {
   return checkDublicate;
 }
 
-export async function likeMTdata(
+export async function likedata(
   source: string,
   output: string,
-  userId: number
+  userId: number,
+  model: modelType
 ) {
-  let data = await checkIfExist(source, userId, "mt");
+  let data = await checkIfExist(source, userId, model);
   if (!!data?.id) {
     return await db.feedback.update({
       where: {
@@ -34,19 +41,20 @@ export async function likeMTdata(
         output: output,
         liked: true,
         disliked: false,
-        model: "mt",
+        model,
         userId: userId,
       },
     });
   }
 }
 
-export async function dislikeMTdata(
+export async function dislikedata(
   source: string,
   output: string,
-  userId: number
+  userId: number,
+  model: modelType
 ) {
-  let data = await checkIfExist(source, userId, "mt");
+  let data = await checkIfExist(source, userId, model);
   if (!!data?.id) {
     return await db.feedback.update({
       where: {
@@ -64,7 +72,7 @@ export async function dislikeMTdata(
         output: output,
         liked: false,
         disliked: true,
-        model: "mt",
+        model,
         userId: userId,
       },
     });

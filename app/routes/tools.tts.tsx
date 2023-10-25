@@ -1,6 +1,11 @@
-import { Button, Card, Label, Select, Spinner, Textarea } from "flowbite-react";
+import { Button, Card, Spinner, Textarea } from "flowbite-react";
 import { FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa/index.js";
-import { Form, useActionData, useNavigation } from "@remix-run/react";
+import {
+  Form,
+  useActionData,
+  useFetcher,
+  useNavigation,
+} from "@remix-run/react";
 import { LoaderFunctionArgs, type ActionFunction } from "@remix-run/node";
 import { useEffect, useRef, useState } from "react";
 import { auth } from "~/services/auth.server";
@@ -42,14 +47,6 @@ export default function Index() {
   const isActionSubmission = navigation.state == "submitting";
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  // when data is changed, the audio element will be updated
-  // with the new audio data
-  useEffect(() => {
-    if (data) {
-      audioRef.current?.setAttribute("src", `data:audio/wav;base64,${data}`);
-    }
-  }, [data]);
-
   const handleReset = () => {
     setSourceText("");
     // setCharCount(0);
@@ -58,7 +55,40 @@ export default function Index() {
   };
 
   let charCount = sourceText?.length;
-
+  let likeFetcher = useFetcher();
+  function handleLike() {
+    if (!data) return;
+    likeFetcher.submit(
+      {
+        source: sourceText,
+        output: `data:audio/wav;base64,${data}`,
+        _action: "liked",
+        model: "tts",
+      },
+      {
+        method: "POST",
+        action: "/feedback",
+      }
+    );
+  }
+  function handleDislike() {
+    if (!data) return;
+    likeFetcher.submit(
+      {
+        source: sourceText,
+        output: `data:audio/wav;base64,${data}`,
+        _action: "disliked",
+        model: "tts",
+      },
+      {
+        method: "POST",
+        action: "/feedback",
+      }
+    );
+  }
+  let liked = likeFetcher.data?.liked;
+  let disliked = likeFetcher.data?.disliked;
+  let message = likeFetcher.data?.message;
   return (
     <main className="mx-auto w-11/12 md:w-4/5">
       <h1 className="mb-10 text-2xl lg:text-3xl text-center text-slate-700">
@@ -118,20 +148,28 @@ export default function Index() {
                 <Spinner />
               ) : (
                 data && (
-                  <audio ref={audioRef} controls>
+                  <audio src={`data:audio/wav;base64,${data}`} controls>
                     <source />
                   </audio>
                 )
               )}
             </div>
           </div>
-          <div className="flex justify-end">
-            <Button color="white" disabled={!data}>
-              <FaRegThumbsUp color="gray" size="20px" />
-            </Button>
-            <Button color="white" disabled={!data}>
-              <FaRegThumbsDown color="gray" size="20px" />
-            </Button>
+          <div className="flex justify-between">
+            <div className={!liked ? "text-red-400" : "text-green-400"}>
+              {message}
+            </div>
+            <div className="flex justify-end">
+              <Button color="white" disabled={!data} onClick={handleLike}>
+                <FaRegThumbsUp color={liked ? "green" : "gray"} size="20px" />
+              </Button>
+              <Button color="white" disabled={!data} onClick={handleDislike}>
+                <FaRegThumbsDown
+                  color={disliked ? "red" : "gray"}
+                  size="20px"
+                />
+              </Button>
+            </div>
           </div>
         </Card>
       </div>

@@ -12,7 +12,6 @@ import CopyToClipboard from "~/component/CopyToClipboard";
 import { auth } from "~/services/auth.server";
 import { fetchGPTData } from "~/services/fetchGPTData.server";
 import { motion } from "framer-motion";
-import TypingAnimation from "~/component/TypingText";
 import { outputReplace, inputReplace } from "~/component/utils/replace.server";
 const langLabels = {
   bo: "བོད་ཡིག།",
@@ -194,6 +193,7 @@ export default function Index() {
         source: sourceText,
         output: textToCopy,
         _action: "liked",
+        model: "mt",
       },
       {
         method: "POST",
@@ -207,6 +207,7 @@ export default function Index() {
         source: sourceText,
         output: textToCopy,
         _action: "disliked",
+        model: "mt",
       },
       {
         method: "POST",
