@@ -1,5 +1,5 @@
 import { useFetcher } from "@remix-run/react";
-import { Button, Label, TextInput } from "flowbite-react";
+import { Button, Label, TextInput, Select } from "flowbite-react";
 import React from "react";
 import FormWizard from "react-form-wizard-component";
 import TermsAndContitions from "~/component/TermsAndConditions";
@@ -38,6 +38,44 @@ function StepWizard() {
       }
     );
   };
+
+  const q1Options = [
+    "news",
+    "book",
+    "conversation",
+    "poem",
+    "letter",
+    "articles",
+    "documents",
+    "advertesment",
+    "other",
+  ];
+
+  // options to audio transcribe,
+  // conversations, news, teaching, movies, lyrics, other
+  const q2Options = [
+    "conversations",
+    "news",
+    "teaching",
+    "movies",
+    "lyrics",
+    "other",
+  ];
+
+  //   options to read via tts,
+  // book, news, story, prayer, other
+  const q3Options = ["book", "news", "story", "prayer", "other"];
+
+  // options to ocr,
+  // wood block print, handwritten print, modern print, billboard, rock art, other
+  const q4Options = [
+    "wood block print",
+    "handwritten print",
+    "modern print",
+    "billboard",
+    "rock art",
+    "other",
+  ];
 
   // check validate tab
   const checkValidateTab1 = () => {
@@ -135,13 +173,26 @@ function StepWizard() {
                 *
               </span>
             </Label>
-            <TextInput
+            <Select
               id="q1input"
-              type="text"
               required
-              value={q1}
               onChange={(e) => setQ1(e.target.value)}
-            />
+            >
+              {q1Options.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </Select>
+            {q1 === "other" && (
+              <TextInput
+                id="q1input"
+                type="text"
+                required
+                value={q1}
+                onChange={(e) => setQ1(e.target.value)}
+              />
+            )}
             <Label htmlFor="q2input">
               ཁྱེད་ཀྱིས་སྒྲ་གང་ཞིག་ཡིག་འབེབས་བྱེད་དམ།
               <span
@@ -150,13 +201,22 @@ function StepWizard() {
                 *
               </span>
             </Label>
-            <TextInput
-              id="q2input"
-              required
-              type="text"
-              value={q2}
-              onChange={(e) => setQ2(e.target.value)}
-            />
+            <Select id="q2input" required>
+              {q2Options.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </Select>
+            {q2 === "other" && (
+              <TextInput
+                id="q2input"
+                type="text"
+                required
+                value={q2}
+                onChange={(e) => setQ2(e.target.value)}
+              />
+            )}
             <Label htmlFor="q3input">
               ཁྱེད་ཀྱིས་སྒྲ་གང་ཞིག་ཀློག་འདོན་བྱེད་དམ།
               <span
@@ -165,13 +225,22 @@ function StepWizard() {
                 *
               </span>
             </Label>
-            <TextInput
-              id="q3input"
-              type="text"
-              required
-              value={q3}
-              onChange={(e) => setQ3(e.target.value)}
-            />
+            <Select id="q3input" required>
+              {q3Options.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </Select>
+            {q3 === "other" && (
+              <TextInput
+                id="q3input"
+                type="text"
+                required
+                value={q3}
+                onChange={(e) => setQ3(e.target.value)}
+              />
+            )}
             <Label htmlFor="q4input">
               ཁྱེད་ཀྱིས་པར་རིས་གང་ཞིག་ཡིག་འབེབས་བྱེད་དམ།
               <span
@@ -180,13 +249,22 @@ function StepWizard() {
                 *
               </span>
             </Label>
-            <TextInput
-              id="q4input"
-              type="text"
-              required
-              value={q4}
-              onChange={(e) => setQ4(e.target.value)}
-            />
+            <Select id="q4input" required>
+              {q4Options.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </Select>
+            {q4 === "other" && (
+              <TextInput
+                id="q4input"
+                type="text"
+                required
+                value={q4}
+                onChange={(e) => setQ4(e.target.value)}
+              />
+            )}
           </div>
         </FormWizard.TabContent>
         <FormWizard.TabContent
