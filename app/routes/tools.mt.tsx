@@ -81,7 +81,7 @@ async function translate(text: String, sourceLang: String, targetLang: String) {
     });
 
     if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+      return { error: `HTTP error! Status: ${response.status}` };
     }
 
     const responseData = await response.text();
