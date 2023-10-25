@@ -33,11 +33,11 @@ function login() {
       transition={{ duration: 0.5 }}
       exit={{ opacity: 0 }}
       className="flex w-screen flex-col md:grid md:grid-cols-2 lg:grid-cols-[60%_40%]
-   min-h-screen"
+   min-h-[100dvh]"
     >
       <div
         className="relative hidden md:flex flex-1 flex-col justify-center px-5 pt-8 text-white
-          bg-[url('/assets/back-light.gif')] bg-no-repeat bg-center bg-cover"
+          bg-[url('/assets/back-light.gif')] bg-no-repeat bg-center bg-cover shadow-2xl"
       >
         <div className="w-full flex-1 flex justify-center items-center flex-col">
           <h1 className="text-center text-[40px]  md:text-[50px] max-w-[1000px] mb-2 ">
