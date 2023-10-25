@@ -4,6 +4,8 @@ import React from "react";
 import FormWizard from "react-form-wizard-component";
 import TermsAndContitions from "~/component/TermsAndConditions";
 
+import SelectOptions from "./SelectOptions";
+
 function StepWizard() {
   const [organization, setOrganization] = React.useState("");
   const [profession, setProfession] = React.useState("");
@@ -11,19 +13,10 @@ function StepWizard() {
   const [q2, setQ2] = React.useState("");
   const [q3, setQ3] = React.useState("");
   const [q4, setQ4] = React.useState("");
-  const fetcher = useFetcher();
-  let isAgreedDisble =
-    organization === "" ||
-    profession === "" ||
-    q1 === "" ||
-    q2 === "" ||
-    q3 === "" ||
-    q4 === ""
-      ? true
-      : false;
-  const handleComplete = () => {
-    if (isAgreedDisble) return alert("Please fill all the fields");
 
+  const fetcher = useFetcher();
+
+  const handleComplete = () => {
     fetcher.submit(
       {
         organization,
@@ -38,44 +31,6 @@ function StepWizard() {
       }
     );
   };
-
-  const q1Options = [
-    "news",
-    "book",
-    "conversation",
-    "poem",
-    "letter",
-    "articles",
-    "documents",
-    "advertesment",
-    "other",
-  ];
-
-  // options to audio transcribe,
-  // conversations, news, teaching, movies, lyrics, other
-  const q2Options = [
-    "conversations",
-    "news",
-    "teaching",
-    "movies",
-    "lyrics",
-    "other",
-  ];
-
-  //   options to read via tts,
-  // book, news, story, prayer, other
-  const q3Options = ["book", "news", "story", "prayer", "other"];
-
-  // options to ocr,
-  // wood block print, handwritten print, modern print, billboard, rock art, other
-  const q4Options = [
-    "wood block print",
-    "handwritten print",
-    "modern print",
-    "billboard",
-    "rock art",
-    "other",
-  ];
 
   // check validate tab
   const checkValidateTab1 = () => {
@@ -165,106 +120,10 @@ function StepWizard() {
           validationError={errorMessages}
         >
           <div className="mx-auto flex max-w-md flex-col gap-4 md:min-h-[50dvh] mt-5">
-            <Label htmlFor="q1input">
-              ཁྱེད་ཀྱིས་ཡིག་སྒྱུར་ཅི་ཞིག་བྱེད་དམ།
-              <span
-                style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
-              >
-                *
-              </span>
-            </Label>
-            <Select
-              id="q1input"
-              required
-              onChange={(e) => setQ1(e.target.value)}
-            >
-              {q1Options.map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))}
-            </Select>
-            {q1 === "other" && (
-              <TextInput
-                id="q1input"
-                type="text"
-                required
-                value={q1}
-                onChange={(e) => setQ1(e.target.value)}
-              />
-            )}
-            <Label htmlFor="q2input">
-              ཁྱེད་ཀྱིས་སྒྲ་གང་ཞིག་ཡིག་འབེབས་བྱེད་དམ།
-              <span
-                style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
-              >
-                *
-              </span>
-            </Label>
-            <Select id="q2input" required>
-              {q2Options.map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))}
-            </Select>
-            {q2 === "other" && (
-              <TextInput
-                id="q2input"
-                type="text"
-                required
-                value={q2}
-                onChange={(e) => setQ2(e.target.value)}
-              />
-            )}
-            <Label htmlFor="q3input">
-              ཁྱེད་ཀྱིས་སྒྲ་གང་ཞིག་ཀློག་འདོན་བྱེད་དམ།
-              <span
-                style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
-              >
-                *
-              </span>
-            </Label>
-            <Select id="q3input" required>
-              {q3Options.map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))}
-            </Select>
-            {q3 === "other" && (
-              <TextInput
-                id="q3input"
-                type="text"
-                required
-                value={q3}
-                onChange={(e) => setQ3(e.target.value)}
-              />
-            )}
-            <Label htmlFor="q4input">
-              ཁྱེད་ཀྱིས་པར་རིས་གང་ཞིག་ཡིག་འབེབས་བྱེད་དམ།
-              <span
-                style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
-              >
-                *
-              </span>
-            </Label>
-            <Select id="q4input" required>
-              {q4Options.map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))}
-            </Select>
-            {q4 === "other" && (
-              <TextInput
-                id="q4input"
-                type="text"
-                required
-                value={q4}
-                onChange={(e) => setQ4(e.target.value)}
-              />
-            )}
+            <SelectOptions option="q1" value={q1} setValue={setQ1} />
+            <SelectOptions option="q2" value={q2} setValue={setQ2} />
+            <SelectOptions option="q3" value={q3} setValue={setQ3} />
+            <SelectOptions option="q4" value={q4} setValue={setQ4} />
           </div>
         </FormWizard.TabContent>
         <FormWizard.TabContent
