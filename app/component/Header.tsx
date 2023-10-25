@@ -8,7 +8,7 @@ function Header() {
   const [showMenu, setShowMenu] = useState(false);
 
   return (
-    <nav className="flex h-[60px] p-3 items-center justify-between  w-full z-20 bg-transparent ">
+    <nav className="flex h-[60px] p-3 items-center justify-between  w-full  bg-white ">
       <a href="/" className="flex items-center gap-2 text-[1.25rem]">
         <img
           src="/assets/logo.png"
@@ -40,7 +40,7 @@ function Header() {
       {/* mobile view */}
       {showMenu && (
         <div
-          className="lg:hidden absolute top-[60px] px-5 pb-2 pt-2 right-0 w-full bg-white shadow-sm
+          className="lg:hidden absolute top-[50px] px-5 pb-2 pt-2 right-0 w-full bg-white shadow-sm
 "
         >
           <div className="flex justify-between items-center text-sm">
