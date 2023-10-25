@@ -1,6 +1,7 @@
-import { Link } from "@remix-run/react";
-
+import { Link, useLocation } from "@remix-run/react";
 export default function Index() {
+  let location = useLocation();
+  let isForm = location.pathname.includes("steps");
   return (
     <div className="text-slate-900">
       <div className="space-y-8  leading-loose">
@@ -91,12 +92,14 @@ export default function Index() {
           We thank you for choosing MonlamAI.
         </p>
       </div>
-      <Link
-        to="/"
-        className="text-center text-gray-400 w-full flex justify-center mt-2"
-      >
-        Visit Home
-      </Link>
+      {!isForm && (
+        <Link
+          to="/"
+          className="text-center text-gray-400 w-full flex justify-center mt-2"
+        >
+          Visit Home
+        </Link>
+      )}
     </div>
   );
 }
