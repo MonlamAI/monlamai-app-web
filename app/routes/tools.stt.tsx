@@ -1,13 +1,14 @@
 import { Button, Card, Label, Spinner } from "flowbite-react";
 import { FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa/index.js";
 import { BsFillStopFill, BsFillMicFill } from "react-icons/bs/index.js";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { type LoaderFunction, ActionFunction, json } from "@remix-run/node";
 import { useFetcher } from "@remix-run/react";
 import { LiveAudioVisualizer } from "react-audio-visualize";
 import CopyToClipboard from "~/component/CopyToClipboard";
 import { auth } from "~/services/auth.server";
 import ReactionButtons from "~/component/ReactionButtons";
+import { getBrowser } from "~/component/utils/getBrowserDetail";
 export const loader: LoaderFunction = async ({ request }) => {
   const apiUrl = process.env.STT_API_URL as string;
   const headers = {
@@ -49,7 +50,6 @@ export const action: ActionFunction = async ({ request }) => {
     return { error_message: "Error during submission:" + error };
   }
 };
-
 export default function Index() {
   const fetcher = useFetcher();
   const [audioChunks, setAudioChunks] = useState([]);
@@ -76,7 +76,6 @@ export default function Index() {
   };
   const isLoading = fetcher.state !== "idle";
   const errorMessage = fetcher.data?.error_message;
-  let isSafari = navigator.userAgent.indexOf("Safari") !== -1;
 
   const handleReset = () => {
     // reset the audio element and the transcript
@@ -106,6 +105,7 @@ export default function Index() {
       alert("The MediaRecorder API is not supported in your browser.");
     }
   };
+
   const startRecording = async () => {
     let stream = await getMicrophonePermission();
     if (stream) {
@@ -114,9 +114,9 @@ export default function Index() {
         let localAudioChunks: [] = [];
         setAudio(null);
         setRecording(true);
-
+        let browserName = getBrowser();
         const media = new MediaRecorder(stream, {
-          mimeType: !isSafari ? "audio/webm" : "audio/mp4",
+          mimeType: browserName !== "Safari" ? "audio/webm" : "audio/mp4",
         });
         mediaRecorder.current = media;
         //invokes the start method to start the recording process
@@ -136,7 +136,7 @@ export default function Index() {
   const stopRecording = () => {
     setRecording(false);
     //stops the recording instance
-    mediaRecorder.current?.stop();
+    mediaRecorder.current.stop();
     mediaRecorder.current.onstop = () => {
       //creates a blob file from the audiochunks data
       const audioBlob = new Blob(audioChunks);
@@ -172,13 +172,15 @@ export default function Index() {
             className="flex flex-col w-full h-[25vh] lg:h-[50vh] justify-center gap-4"
           >
             <div className="flex flex-col items-center gap-5 flex-1 justify-center">
-              {recording && mediaRecorder.current && !isSafari && (
-                <LiveAudioVisualizer
-                  mediaRecorder={mediaRecorder.current}
-                  width={200}
-                  height={75}
-                />
-              )}
+              {recording &&
+                mediaRecorder.current &&
+                getBrowser() !== "Safari" && (
+                  <LiveAudioVisualizer
+                    mediaRecorder={mediaRecorder.current}
+                    width={200}
+                    height={75}
+                  />
+                )}
               <Button size="xl" onClick={toggleRecording}>
                 {recording ? <BsFillStopFill /> : <BsFillMicFill />}
               </Button>
