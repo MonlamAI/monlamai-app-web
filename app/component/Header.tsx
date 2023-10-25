@@ -40,17 +40,19 @@ function Header() {
       {/* mobile view */}
       {showMenu && (
         <div
-          className="lg:hidden absolute top-[60px] p-5 right-0 w-full bg-white
+          className="lg:hidden absolute top-[60px] px-5 pb-2 pt-2 right-0 w-full bg-white shadow-sm
 "
         >
-          <div className="flex justify-between items-center">
-            <Link to="/about">ང་ཚོའི་སྐོར།</Link>
+          <div className="flex justify-between items-center text-sm">
+            <Link to="/about" onClick={() => setShowMenu(false)}>
+              ང་ཚོའི་སྐོར།
+            </Link>
             <Dropdown
               label={user?.email}
               dismissOnClick={false}
               renderTrigger={() => (
                 <img
-                  className="h-8 w-8 rounded-full"
+                  className="h-8 w-8 rounded-full cursor-pointer"
                   src={user?.picture}
                   title={user?.email}
                   alt={user?.email}
@@ -85,7 +87,7 @@ function Header() {
             className="bg-white"
             renderTrigger={() => (
               <img
-                className="h-8 w-8 rounded-full"
+                className="h-8 w-8 rounded-full cursor-pointer"
                 src={user?.picture}
                 title={user?.email}
                 alt={user?.email}
