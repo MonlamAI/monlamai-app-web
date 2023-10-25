@@ -324,6 +324,8 @@ export default function Index() {
                   __html:
                     targetLang === "bo"
                       ? data?.translation?.join("<br/>")
+                      : data?.translation === ""
+                      ? "input too short"
                       : data?.translation,
                 }}
               ></div>
