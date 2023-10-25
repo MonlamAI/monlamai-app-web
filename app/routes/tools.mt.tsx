@@ -87,7 +87,7 @@ async function translate(text: String, sourceLang: String, targetLang: String) {
     const responseData = await response.text();
     const parsedResponse = parseApiResponse(responseData);
     if (!parsedResponse) {
-      throw new Error("Invalid response format!");
+      return { error: "ཡི་གེ་མང་བ་ཞིག་སྐྱོན་རོགས།" };
     }
     const { translation, disclaimer } = parsedResponse;
     return {
@@ -140,11 +140,13 @@ export async function action({ request }: ActionArgs) {
       translation: translation,
     });
   }
+
   const result = await translate(
     form.sourceText,
     form.sourceLang,
     form.targetLang
   );
+  if (result?.error) return json({ error: result?.error });
   return json({
     translation: result?.translation,
   });
@@ -324,8 +326,8 @@ export default function Index() {
                   __html:
                     targetLang === "bo"
                       ? data?.translation?.join("<br/>")
-                      : data?.translation === ""
-                      ? "input too short"
+                      : data?.error
+                      ? `<span class="text-red-400">${data?.error}</span>`
                       : data?.translation,
                 }}
               ></div>
