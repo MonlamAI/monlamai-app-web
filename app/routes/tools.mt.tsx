@@ -118,7 +118,7 @@ export async function action({ request }: ActionArgs) {
     let prompt = `replace all the abbreviations with full form and preserve newlines, "${form?.sourceText}"  `;
     const data = await fetchGPTData(prompt);
     let replacedInput = inputReplace(data!);
-    let text_array = replacedInput?.split("\n");
+    let text_array = replacedInput?.split("\n").filter((item) => item !== "");
 
     async function translateText(
       text: string,
@@ -218,7 +218,7 @@ export default function Index() {
   let disliked = likefetcher.data?.disliked;
   let message = likefetcher.data?.message;
   return (
-    <main className="mx-auto w-11/12 lg:4/5">
+    <main className="mx-auto w-11/12 md:4/5">
       <h1 className="mb-10 text-2xl lg:text-3xl text-center text-slate-700 ">
         ཡིག་སྒྱུར་རིག་ནུས།
       </h1>
@@ -338,18 +338,22 @@ export default function Index() {
               <div className="h-full flex justify-center items-center">
                 <Spinner size="lg" />
               </div>
-            ) : targetLang === "bo" ? (
+            ) : (
               <div
                 ref={targetRef}
-                className={"text-lg  tracking-wide leading-loose"}
-              >
-                <TypingAnimation text={data?.translation?.join("\n")} />
-              </div>
-            ) : targetLang === "en" ? (
-              <div ref={targetRef} className={`text-lg font-Inter`}>
-                <TypingAnimation text={data?.translation} />
-              </div>
-            ) : null}
+                className={`text-lg  ${
+                  targetLang === "bo"
+                    ? "tracking-wide leading-loose"
+                    : "font-Inter"
+                }`}
+                dangerouslySetInnerHTML={{
+                  __html:
+                    targetLang === "bo"
+                      ? data?.translation?.join("<br/>")
+                      : data?.translation,
+                }}
+              ></div>
+            )}
           </div>
           <div className="flex justify-between">
             <div className={!liked ? "text-red-400" : "text-green-400"}>

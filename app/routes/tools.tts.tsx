@@ -23,20 +23,14 @@ export const action: ActionFunction = async ({ request }) => {
     "Content-Type": "application/json",
   };
 
-  console.log("user form data:", voiceType, userInput);
   const response = await fetch(API_URL, {
     method: "POST",
     headers,
     body: JSON.stringify({
       inputs: userInput,
-      // options: {
-      //   voice: voiceType,
-      // },
     }),
   });
   const data = await response.json();
-  console.log("data", data);
-  // data has sample_rate, audio_base64
   const { audio_base64 } = data;
   return audio_base64;
 };
@@ -75,13 +69,13 @@ export default function Index() {
           <Form
             id="ttsForm"
             method="post"
-            className="flex flex-col gap-5 flex-1"
+            className="flex flex-col gap-5 flex-1 "
           >
-            <div className="w-full flex-1">
+            <div className="w-full flex-1 max-h-[50vh]">
               <Textarea
                 name="sourceText"
                 placeholder="ཡི་གེ་གཏག་རོགས།..."
-                className="w-full h-full border-0 focus:outline-none focus:ring-transparent bg-transparent caret-slate-500 placeholder:text-slate-300 text-xl leading-relaxed"
+                className="w-full h-full max-h-full border-0 focus:outline-none focus:ring-transparent bg-transparent caret-slate-500 placeholder:text-slate-300 text-xl leading-relaxed"
                 required
                 value={sourceText}
                 onInput={(e) => {
