@@ -39,6 +39,26 @@ function StepWizard() {
     );
   };
 
+  // check validate tab
+  const checkValidateTab1 = () => {
+    if (organization === "" || profession === "") {
+      return false;
+    }
+    return true;
+  };
+
+  const checkValidateTab2 = () => {
+    if (q1 === "" || q2 === "" || q3 === "" || q4 === "") {
+      return false;
+    }
+    return true;
+  };
+  // error messages
+  const errorMessages = () => {
+    // you can add alert or console.log or any thing you want
+    alert("Please fill in the required fields");
+  };
+
   return (
     <div>
       <FormWizard
@@ -68,7 +88,14 @@ function StepWizard() {
           icon="ti-user"
         >
           <div className="max-w-md mx-auto flex flex-col gap-3 md:min-h-[50dvh] mt-5">
-            <Label htmlFor="organizationInput" value="ཚོགས་པ།" />
+            <Label htmlFor="organizationInput">
+              ཚོགས་པ།
+              <span
+                style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
+              >
+                *
+              </span>
+            </Label>
             <TextInput
               id="organizationInput"
               required
@@ -76,7 +103,14 @@ function StepWizard() {
               value={organization}
               onChange={(e) => setOrganization(e.target.value)}
             />
-            <Label htmlFor="professionInput" value="ལས་གནས།" />
+            <Label htmlFor="professionInput">
+              ལས་གནས།
+              <span
+                style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
+              >
+                *
+              </span>
+            </Label>
             <TextInput
               id="professionInput"
               required
@@ -86,9 +120,21 @@ function StepWizard() {
             />
           </div>
         </FormWizard.TabContent>
-        <FormWizard.TabContent title="རིག་ནུས་བཀོལ་སྤྱོད།" icon="ti-settings">
+        <FormWizard.TabContent
+          title="རིག་ནུས་བཀོལ་སྤྱོད།"
+          icon="ti-settings"
+          isValid={checkValidateTab1()}
+          validationError={errorMessages}
+        >
           <div className="mx-auto flex max-w-md flex-col gap-4 md:min-h-[50dvh] mt-5">
-            <Label htmlFor="q1input">ཁྱེད་ཀྱིས་ཡིག་སྒྱུར་ཅི་ཞིག་བྱེད་དམ།</Label>
+            <Label htmlFor="q1input">
+              ཁྱེད་ཀྱིས་ཡིག་སྒྱུར་ཅི་ཞིག་བྱེད་དམ།
+              <span
+                style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
+              >
+                *
+              </span>
+            </Label>
             <TextInput
               id="q1input"
               type="text"
@@ -98,6 +144,11 @@ function StepWizard() {
             />
             <Label htmlFor="q2input">
               ཁྱེད་ཀྱིས་སྒྲ་གང་ཞིག་ཡིག་འབེབས་བྱེད་དམ།
+              <span
+                style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
+              >
+                *
+              </span>
             </Label>
             <TextInput
               id="q2input"
@@ -108,6 +159,11 @@ function StepWizard() {
             />
             <Label htmlFor="q3input">
               ཁྱེད་ཀྱིས་སྒྲ་གང་ཞིག་ཀློག་འདོན་བྱེད་དམ།
+              <span
+                style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
+              >
+                *
+              </span>
             </Label>
             <TextInput
               id="q3input"
@@ -118,6 +174,11 @@ function StepWizard() {
             />
             <Label htmlFor="q4input">
               ཁྱེད་ཀྱིས་པར་རིས་གང་ཞིག་ཡིག་འབེབས་བྱེད་དམ།
+              <span
+                style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
+              >
+                *
+              </span>
             </Label>
             <TextInput
               id="q4input"
@@ -128,7 +189,12 @@ function StepWizard() {
             />
           </div>
         </FormWizard.TabContent>
-        <FormWizard.TabContent title="བཀོལ་སྤྱོད་ཆ་རྐྱེན།" icon="ti-check">
+        <FormWizard.TabContent
+          title="བཀོལ་སྤྱོད་ཆ་རྐྱེན།"
+          icon="ti-check"
+          isValid={checkValidateTab2()}
+          validationError={errorMessages}
+        >
           <div className="mx-auto w-full lg:max-w-screen-md max-h-[500vh] overflow-auto">
             <TermsAndContitions />
           </div>
