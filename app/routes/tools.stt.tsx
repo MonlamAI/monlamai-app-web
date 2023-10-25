@@ -76,6 +76,8 @@ export default function Index() {
   };
   const isLoading = fetcher.state !== "idle";
   const errorMessage = fetcher.data?.error_message;
+  let isSafari = navigator.userAgent.indexOf("Safari") !== -1;
+
   const handleReset = () => {
     // reset the audio element and the transcript
     setAudio(null);
@@ -112,7 +114,10 @@ export default function Index() {
         let localAudioChunks: [] = [];
         setAudio(null);
         setRecording(true);
-        const media = new MediaRecorder(stream, { mimeType: "audio/webm" });
+
+        const media = new MediaRecorder(stream, {
+          mimeType: !isSafari ? "audio/webm" : "audio/mp4",
+        });
         mediaRecorder.current = media;
         //invokes the start method to start the recording process
         mediaRecorder.current.start();
@@ -131,7 +136,7 @@ export default function Index() {
   const stopRecording = () => {
     setRecording(false);
     //stops the recording instance
-    mediaRecorder.current.stop();
+    mediaRecorder.current?.stop();
     mediaRecorder.current.onstop = () => {
       //creates a blob file from the audiochunks data
       const audioBlob = new Blob(audioChunks);
@@ -155,7 +160,6 @@ export default function Index() {
       reader.readAsDataURL(audioBlob);
     };
   };
-  let isSafari = navigator.userAgent.indexOf("Safari") !== -1;
   return (
     <main className="mx-auto w-11/12 md:w-4/5">
       <h1 className="mb-10 text-2xl lg:text-3xl text-center text-slate-700">
