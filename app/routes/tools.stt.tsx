@@ -185,12 +185,10 @@ export default function Index() {
                 {recording ? <BsFillStopFill /> : <BsFillMicFill />}
               </Button>
               {audioURL && (
-                <audio
-                  src={audioURL}
-                  controls
-                  typeof="audio/wav"
-                  title="file.wav"
-                ></audio>
+                <audio controls>
+                  <source src={audioURL} type="audio/mpeg"></source>
+                  <source src={audioURL} type="audio/ogg"></source>
+                </audio>
               )}
             </div>
             <div className="flex justify-between h-10">
