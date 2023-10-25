@@ -9,13 +9,11 @@ type optionProps = {
 };
 
 function SelectOptions({ option, value, setValue }: optionProps) {
-  let [Q, setQ] = useState("");
+  let select_options = feedback_options[option];
+  let [Q, setQ] = useState(select_options?.option[0]);
   let [textAreaValue, setTextAreaValue] = useState("");
   let id = useId();
-  let select_options = feedback_options[option];
-  useEffect(() => {
-    setValue(select_options.option[0]);
-  }, []);
+
   useEffect(() => {
     if (Q === "other") {
       setValue(textAreaValue);
@@ -31,7 +29,7 @@ function SelectOptions({ option, value, setValue }: optionProps) {
           *
         </span>
       </Label>
-      <Select id={id} required onChange={(e) => setQ(e.target.value)}>
+      <Select id={id} value={Q} required onChange={(e) => setQ(e.target.value)}>
         {select_options.option.map((option) => (
           <option key={option} value={option}>
             {option}
