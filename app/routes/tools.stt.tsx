@@ -155,6 +155,7 @@ export default function Index() {
       reader.readAsDataURL(audioBlob);
     };
   };
+  let isSafari = navigator.userAgent.indexOf("Safari") !== -1;
   return (
     <main className="mx-auto w-11/12 md:w-4/5">
       <h1 className="mb-10 text-2xl lg:text-3xl text-center text-slate-700">
@@ -167,7 +168,7 @@ export default function Index() {
             className="flex flex-col w-full h-[25vh] lg:h-[50vh] justify-center gap-4"
           >
             <div className="flex flex-col items-center gap-5 flex-1 justify-center">
-              {recording && mediaRecorder.current && (
+              {recording && mediaRecorder.current && !isSafari && (
                 <LiveAudioVisualizer
                   mediaRecorder={mediaRecorder.current}
                   width={200}
