@@ -12,7 +12,7 @@ export const action: ActionFunction = async ({ request }) => {
   let redirect_url =
     process.env.NODE_ENV === "development"
       ? "http://localhost:3000"
-      : (requestUrl.hostname as string);
+      : "https://" + (requestUrl.hostname as string);
 
   let clientId = process.env.AUTH0_CLIENT_ID as string;
 
