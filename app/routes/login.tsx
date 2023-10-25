@@ -66,11 +66,11 @@ function login() {
           </div>
         </div>
         <div className="flex flex-col items-center justify-center md:mb-3">
-          <div className="flex gap-2 items-center">
+          <div className="flex gap-2 items-center justify-center">
             <img
               src="/assets/logo.png"
               alt="Monalm AI"
-              className=" relative -top-2 grayscale w-10 "
+              className=" relative -top-1 grayscale w-8 "
             />
             <p className="text-lg font-bold text-gray-500 tracking-wide ">
               Monlam AI
