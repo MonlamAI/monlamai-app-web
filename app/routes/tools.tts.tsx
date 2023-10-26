@@ -62,8 +62,8 @@ export default function Index() {
       <h1 className="mb-10 text-2xl lg:text-3xl text-center text-slate-700">
         ཀློག་འདོན་རིག་ནུས།
       </h1>
-      <div className="flex flex-col  lg:flex-row gap-3">
-        <Card className="w-full lg:w-1/2 max-h-[60vh] flex">
+      <div className="flex flex-col  lg:flex-row gap-3 lg:h-[60vh]">
+        <Card className="w-full lg:w-1/2 max-h-[60vh] h-[60vh] lg:h-auto flex">
           <Form
             id="ttsForm"
             method="post"
@@ -110,7 +110,7 @@ export default function Index() {
           </Form>
         </Card>
         <Card className="w-full lg:w-1/2 max-h-[60vh] flex">
-          <div className="w-full h-[25vh] lg:h-[60vh]">
+          <div className="w-full flex-1">
             <div className="h-full flex justify-center items-center">
               {isActionSubmission ? (
                 <Spinner />
