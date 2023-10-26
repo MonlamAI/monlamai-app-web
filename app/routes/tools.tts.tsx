@@ -94,7 +94,7 @@ export default function Index() {
                 className="text-slate-500"
                 onClick={handleReset}
               >
-                བསྐྱར་སྒྲིག།
+                བསྐྱར་སྒྲིག
               </Button>
               <div className="text-gray-400 text-xs">
                 {charCount} / {charLimit}

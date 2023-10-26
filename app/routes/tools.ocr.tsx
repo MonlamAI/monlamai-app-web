@@ -110,7 +110,7 @@ export default function Index() {
                 onClick={handleFormClear}
                 className="text-gray-500"
               >
-                <div className="pt-1">བསྐྱར་སྒྲིག།</div>
+                <div className="pt-1">བསྐྱར་སྒྲིག</div>
               </Button>
               <Button type="submit" isProcessing={isActionSubmission}>
                 <div className="pt-1">ཐོངས།</div>

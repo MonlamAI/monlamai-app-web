@@ -198,7 +198,7 @@ export default function Index() {
                 onClick={handleReset}
                 disabled={!audioURL}
               >
-                བསྐྱར་སྒྲིག།
+                བསྐྱར་སྒྲིག
               </Button>
               <Button disabled={!audioURL} onClick={handleSubmit}>
                 ཐོངས།
