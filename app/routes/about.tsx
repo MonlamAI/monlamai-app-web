@@ -12,28 +12,28 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 function About() {
   return (
-    <div className="md:py-[160px] m-auto w-[90%] md:w-[80%]">
+    <div className="py-10 m-auto w-[90%] md:w-[80%]">
       <div className="flex flex-col justify-center items-center gap-10 px-4 lg:flex-row">
         <img
           src="/assets/about.jpg"
           alt="monlam"
-          className="w-[80%] md:w-[60%] lg:w-[40%] border-[#dddcdc] rounded-xl"
+          className="w-[80%] md:w-[60%] lg:w-[40%] border-[#dddcdc] rounded-lg shadow-sm hover:scale-105 transition-all duration-500"
         />
-        <div className="text-lg leading-8">
-          <h4 className="text-[1.5rem] mb-4">
+        <div className=" leading-8">
+          <h4 className="text-2xl mb-4">
             སྨོན་ལམ་མིས་བཟོས་རིག་ནུས་ཀྱི་ལས་གཞི།
           </h4>
-          <div className="mb-4">
+          <div className=" text-md mb-4 text-md">
             ཕྱི་ལོ་༢༠༢༣ ལོར་སྨོན་ལམ་བོད་ཀྱི་བརྡ་འཕྲིན་ཞིབ་འཇུག་ཁང་དང་།
             འབྲེལ་ཡོད་སློབ་ཆེན་དང་།
             ཚོགས་པ་རེ་འགས་མཉམ་འབྲེལ་ངང་བོད་ཀྱི་སྐད་ཡིག་གི་སྐོར་བརྡ་ཕྲིན་ལག་རྩལ་འཕེལ་རྒྱས་གཏོང་བའི་ལས་གཞིའི་ནང་།
-            <ol className="list-decimal ml-5">
+            <ol className=" text-sm leading-8 list-decimal ml-5 mt-2">
               <li>སྨོན་ལམ་ཡིག་སྒྱུར་རིག་ནུས།</li>
               <li>སྨོན་ལམ་ཡིག་གཟུགས་ངོས་འཛིན་རིག་ནུས།</li>
               <li>སྨོན་ལམ་འབྲི་ཀློག་རིག་ནུས།</li>
             </ol>
           </div>
-          <p>
+          <p className="text-md">
             ལས་གཞི་འདི་ནི་མིས་བཟོས་རིག་ནུས་(AI) མཉེན་ཆས་ཡིན་པས།
             འཕྲུལ་ཆས་རང་ལ་ཡིག་གཟུགས་དང་། སྐད་གདངས།
             ཡི་གེ་ཀློག་ཚུལ་བཅས་ངོས་འཛིན་པའི་ནུས་པ་ཡོད་པ་ཞིག་བཟོ་དགོས་པས།
