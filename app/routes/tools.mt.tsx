@@ -200,7 +200,9 @@ export default function Index() {
       </h1>
       <div className="flex justify-between items-center">
         <motion.div
-          className="inline-block w-32 text-lg text-gray-500"
+          className={`inline-block w-32 text-lg text-gray-500 ${
+            sourceLang == "en" && "font-Inter text-xl"
+          } ${sourceLang == "bo" && "text-lg leading-loose"}`}
           exit={{ opacity: 0 }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -219,7 +221,10 @@ export default function Index() {
         </motion.button>
 
         <motion.div
-          className="inline-block w-32 text-lg text-right text-gray-500"
+          className={`inline-block w-32 text-lg text-right text-gray-500
+          ${sourceLang != "en" && "font-Inter text-xl"} ${
+            sourceLang != "bo" && "text-lg leading-loose"
+          }`}
           exit={{ opacity: 0 }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
