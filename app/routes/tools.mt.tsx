@@ -158,7 +158,7 @@ export default function Index() {
   const [targetLang, setTargetLang] = useState("bo");
   const [sourceText, setSourceText] = useState("");
   const [isRotated, setIsRotated] = useState(false);
-  const debouncedSearchTerm = useDebounce(sourceText, 300);
+  const debouncedSearchTerm = useDebounce(sourceText, 1000);
   const fetcher = useFetcher();
   const likefetcher = useFetcher();
 
