@@ -15,8 +15,8 @@ import { motion } from "framer-motion";
 import { outputReplace, inputReplace } from "~/component/utils/replace.server";
 import ReactionButtons from "~/component/ReactionButtons";
 const langLabels = {
-  bo: "བོད་ཡིག།",
-  en: "དབྱིན་ཡིག།",
+  bo: "བོད་སྐད།",
+  en: "English",
 };
 
 const charLimit = 2000;
