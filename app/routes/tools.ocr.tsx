@@ -68,15 +68,15 @@ export default function Index() {
   };
 
   return (
-    <main className="mx-auto w-11/12 lg:4/5">
+    <main className="mx-auto w-11/12 lg:w-4/5">
       <h1 className="mb-10 text-2xl lg:text-3xl text-center text-slate-700">
         ཡིག་འཛིན་རིག་ནུས།
       </h1>
 
-      <div className="mt-1 flex flex-col md:flex-row items-strech gap-5">
+      <div className="mt-1 flex flex-col md:flex-row  lg:h-[55vh] items-strech gap-5">
         <Card className="md:w-1/2">
           <fetcher.Form method="post" encType="multipart/form-data">
-            <div className="w-full min-h-[50vh] flex flex-col items-center justify-center gap-5">
+            <div className="w-full min-h-[45vh] flex flex-col items-center justify-center gap-5">
               <div className={selectedFile ? "hidden" : ""}>
                 <div className="mb-5 block">
                   <Label
