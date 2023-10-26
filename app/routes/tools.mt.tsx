@@ -14,6 +14,7 @@ import { fetchGPTData } from "~/services/fetchGPTData.server";
 import { motion } from "framer-motion";
 import { outputReplace, inputReplace } from "~/component/utils/replace.server";
 import ReactionButtons from "~/component/ReactionButtons";
+import { useDebounce } from "@uidotdev/usehooks";
 const langLabels = {
   bo: "བོད་སྐད།",
   en: "English",
@@ -157,12 +158,19 @@ export default function Index() {
   const [targetLang, setTargetLang] = useState("bo");
   const [sourceText, setSourceText] = useState("");
   const [isRotated, setIsRotated] = useState(false);
+  const debouncedSearchTerm = useDebounce(sourceText, 300);
   const fetcher = useFetcher();
   const likefetcher = useFetcher();
 
   const targetRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    if (debouncedSearchTerm.length > 10) {
+      handleSubmit();
+    }
+  }, [debouncedSearchTerm]);
   let data = fetcher.data;
+
   const isActionSubmission = fetcher.state !== "idle";
 
   const handleLangSwitch = () => {
@@ -193,6 +201,19 @@ export default function Index() {
 
   let liked = likefetcher.data?.liked;
   let message = likefetcher.data?.message;
+
+  function handleSubmit() {
+    fetcher.submit(
+      {
+        sourceLang,
+        targetLang,
+        sourceText,
+      },
+      {
+        method: "POST",
+      }
+    );
+  }
   return (
     <div className="mx-auto w-11/12 md:w-4/5">
       <h1 className="mb-10 text-2xl lg:text-3xl text-center text-slate-700 ">
@@ -235,9 +256,7 @@ export default function Index() {
 
       <motion.div className="mt-3 flex flex-col md:flex-row md:h-[55vh] gap-5">
         <Card className="md:w-1/2">
-          <fetcher.Form method="post">
-            <input type="hidden" name="sourceLang" value={sourceLang} />
-            <input type="hidden" name="targetLang" value={targetLang} />
+          <div>
             {sourceLang ? (
               <div className="w-full h-[40vh] overflow-hidden">
                 <Textarea
@@ -300,17 +319,11 @@ export default function Index() {
                   {charCount} / {charLimit}
                 </div>
               )}
-              <div></div>
-              <Button
-                type="submit"
-                isProcessing={isActionSubmission}
-                disabled={sourceText.length < 8}
-                className=""
-              >
-                ཡིག་སྒྱུར།
-              </Button>
+              <div className="text-gray-400 font-Inter">
+                Status : {isActionSubmission ? "processing" : "idle"}
+              </div>
             </div>
-          </fetcher.Form>
+          </div>
         </Card>
 
         <Card className="md:w-1/2">
