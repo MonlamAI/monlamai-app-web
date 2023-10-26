@@ -9,36 +9,34 @@ function Header() {
   const [showMenu, setShowMenu] = useState(false);
 
   return (
-    <nav className="flex h-[60px] p-3 mb-10 items-center justify-between  w-full  bg-white ">
-      <a href="/" className="flex items-center gap-2 text-[1.25rem]">
-        <img
-          src="/assets/logo.png"
-          width="40px"
-          alt="Monalm AI"
-          className="relative -top-1"
-        />{" "}
-        སྨོན་ལམ་རིག་ནུས།
-      </a>
-      <button
-        className="block lg:hidden"
-        onClick={() => setShowMenu((p) => !p)}
-      >
-        {showMenu ? <RxCross1 /> : <GiHamburgerMenu />}
-      </button>
-
-      {/* mobile view */}
-      {showMenu && (
-        <div
-          className="lg:hidden absolute top-[50px] px-5 pb-2 pt-2 right-0 w-full bg-gray-100 shadow-sm
-"
+    <nav className="flex flex-col lg:flex-row  mb-10  ">
+      <div className="flex p-3 items-center justify-between  w-full  bg-white ">
+        <a href="/" className="flex items-center gap-2 text-[1.25rem]">
+          <img
+            src="/assets/logo.png"
+            width="40px"
+            alt="Monalm AI"
+            className="relative -top-1"
+          />{" "}
+          སྨོན་ལམ་རིག་ནུས།
+        </a>
+        <button
+          className="block lg:hidden"
+          onClick={() => setShowMenu((p) => !p)}
         >
-          <div className="flex justify-between items-center text-sm">
-            <Link to="/about" onClick={() => setShowMenu(false)}>
-              ང་ཚོའི་སྐོར།
-            </Link>
+          {showMenu ? <RxCross1 /> : <GiHamburgerMenu />}
+        </button>
+        <div className="hidden lg:flex gap-2 ml-8 flex-1 justify-between bg-white">
+          <ul className="flex items-center gap-8">
+            <li>
+              <Link to="/about">ང་ཚོའི་སྐོར།</Link>
+            </li>
+          </ul>
+          <div className="flex items-center gap-4 mr-7">
             <Dropdown
-              label={user?.email}
+              label={user.email}
               dismissOnClick={false}
+              className="bg-white"
               renderTrigger={() => (
                 <img
                   className="h-8 w-8 rounded-full cursor-pointer"
@@ -49,12 +47,12 @@ function Header() {
               )}
             >
               <Dropdown.Header>
-                <span className="block text-sm">{user?.username}</span>
-                <span className="block truncate text-sm font-medium">
-                  {user?.email}
+                <span className="block text-sm">{user.username}</span>
+                <span className="block truncate text-xs font-medium">
+                  {user.email}
                 </span>
               </Dropdown.Header>
-              <Dropdown.Item>
+              <Dropdown.Item icon={HiLogout}>
                 <Form method="post" action="/logout">
                   <button>logout</button>
                 </Form>
@@ -62,18 +60,20 @@ function Header() {
             </Dropdown>
           </div>
         </div>
-      )}
-      <div className="hidden lg:flex gap-2 ml-8 flex-1 justify-between bg-white">
-        <ul className="flex items-center gap-8">
-          <li>
-            <Link to="/about">ང་ཚོའི་སྐོར།</Link>
-          </li>
-        </ul>
-        <div className="flex items-center gap-4 mr-7">
+      </div>
+
+      {/* mobile view */}
+      {showMenu && (
+        <div
+          className="lg:hidden flex justify-between flex-1 items-center  px-5 pb-2 right-0 w-full shadow-sm
+"
+        >
+          <Link to="/about" onClick={() => setShowMenu(false)}>
+            ང་ཚོའི་སྐོར།
+          </Link>
           <Dropdown
-            label={user.email}
+            label={user?.email}
             dismissOnClick={false}
-            className="bg-white"
             renderTrigger={() => (
               <img
                 className="h-8 w-8 rounded-full cursor-pointer"
@@ -84,19 +84,19 @@ function Header() {
             )}
           >
             <Dropdown.Header>
-              <span className="block text-sm">{user.username}</span>
-              <span className="block truncate text-xs font-medium">
-                {user.email}
+              <span className="block text-sm">{user?.username}</span>
+              <span className="block truncate text-sm font-medium">
+                {user?.email}
               </span>
             </Dropdown.Header>
-            <Dropdown.Item icon={HiLogout}>
+            <Dropdown.Item>
               <Form method="post" action="/logout">
                 <button>logout</button>
               </Form>
             </Dropdown.Item>
           </Dropdown>
         </div>
-      </div>
+      )}
     </nav>
   );
 }
