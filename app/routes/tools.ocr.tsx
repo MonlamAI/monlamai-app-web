@@ -14,16 +14,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
   });
   return { user: userdata };
 }
-function toParaTags(textLines: string[]) {
-  return textLines
-    .map((line) => {
-      if (line.trim() === "") {
-        return "</p><p>";
-      }
-      return "<p>" + line + "</p>";
-    })
-    .join(" ");
-}
 
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
@@ -38,7 +28,9 @@ export async function action({ request }: ActionFunctionArgs) {
     if (!response.ok) {
       const message = await response.text();
       console.error("message", message);
-      throw new Error("Network response was not ok.");
+      return {
+        error_message: "Network response was not ok.",
+      };
     }
     const data = await response.json();
     return json({
@@ -64,6 +56,7 @@ export default function Index() {
     }
   };
   let isEmptyData = data?.text?.length === 1 && data?.text[0].trim() === "";
+  isEmptyData = isEmptyData || data?.text?.join("") === "";
   const handleFormClear = () => {
     setSelectedFile(null);
     fetcher.submit(
@@ -143,7 +136,13 @@ export default function Index() {
                 {errorMessage && (
                   <div className="text-red-500">{errorMessage}</div>
                 )}
-                {data && parse(toParaTags(data.text))}
+                {data?.text && (
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: data.text?.join("<br/>"),
+                    }}
+                  />
+                )}
               </div>
             )}
           </div>
