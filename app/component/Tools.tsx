@@ -56,9 +56,9 @@ function Tools() {
 
   return (
     <main>
-      <div className="py-[80px]" id="skills">
+      <div className="md:pt-[40px]" id="skills">
         <div className="text-center max-w-7xl mx-auto">
-          <p className="mb-20 text-2xl leading-normal ">
+          <p className="mb-20 text-2xl leading-[200%] ">
             གཤམ་གསལ་ཚོད་ལྟའི་རིག་ནུས་ཁག་ཁྱེད་ཀྱིས་མཉམ་སྤྱོད་བྱ་ཆོག
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mx-10">
