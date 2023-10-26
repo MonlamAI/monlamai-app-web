@@ -194,7 +194,7 @@ export default function Index() {
   let liked = likefetcher.data?.liked;
   let message = likefetcher.data?.message;
   return (
-    <main className="mx-auto w-11/12 md:4/5">
+    <div className="mx-auto w-11/12 md:w-4/5">
       <h1 className="mb-10 text-2xl lg:text-3xl text-center text-slate-700 ">
         ཡིག་སྒྱུར་རིག་ནུས།
       </h1>
@@ -228,13 +228,13 @@ export default function Index() {
         </motion.div>
       </div>
 
-      <motion.div className="mt-3 flex flex-col md:flex-row items-strech gap-5">
+      <motion.div className="mt-3 flex flex-col md:flex-row md:h-[55vh] gap-5">
         <Card className="md:w-1/2">
           <fetcher.Form method="post">
             <input type="hidden" name="sourceLang" value={sourceLang} />
             <input type="hidden" name="targetLang" value={targetLang} />
             {sourceLang ? (
-              <div className="w-full h-[50vh] overflow-hidden">
+              <div className="w-full h-[40vh] overflow-hidden">
                 <Textarea
                   name="sourceText"
                   placeholder="ཡི་གེ་གཏག་རོགས།..."
@@ -352,6 +352,6 @@ export default function Index() {
           </div>
         </Card>
       </motion.div>
-    </main>
+    </div>
   );
 }
