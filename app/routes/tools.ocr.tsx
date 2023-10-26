@@ -1,7 +1,14 @@
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useFetcher } from "@remix-run/react";
-import { Button, Card, FileInput, Label, Spinner } from "flowbite-react";
+import {
+  Button,
+  Card,
+  FileInput,
+  Label,
+  Spinner,
+  TextInput,
+} from "flowbite-react";
 import { useState } from "react";
 import { FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa6/index.js";
 import CopyToClipboard from "~/component/CopyToClipboard";
@@ -17,7 +24,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
   const ocrFormData = new FormData();
-  ocrFormData.append("file", formData.get("image") as Blob);
+  let imageUrl = formData.get("imageUrl") as string;
+  let blob;
+  if (imageUrl) {
+    blob = await fetch(imageUrl).then((res) => res.blob());
+  } else {
+    blob = formData.get("image") as Blob;
+  }
+  ocrFormData.append("file", blob);
   try {
     const response = await fetch("https://ocr.pecha.tools/", {
       method: "POST",
@@ -43,7 +57,8 @@ export async function action({ request }: ActionFunctionArgs) {
 }
 
 export default function Index() {
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [ImageUrl, setImageUrl] = useState<string | null>(null);
+
   const fetcher = useFetcher();
   const data = fetcher.data;
   const isActionSubmission = fetcher.state !== "idle";
@@ -51,13 +66,14 @@ export default function Index() {
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      setSelectedFile(file);
+      let url = URL.createObjectURL(file);
+      setImageUrl(url);
     }
   };
   let isEmptyData = data?.text?.length === 1 && data?.text[0].trim() === "";
   isEmptyData = isEmptyData || data?.text?.join("") === "";
   const handleFormClear = () => {
-    setSelectedFile(null);
+    setImageUrl(null);
     fetcher.submit(
       {},
       {
@@ -66,7 +82,9 @@ export default function Index() {
       }
     );
   };
-
+  function handleUrlChange(e) {
+    setImageUrl(e.target.value);
+  }
   return (
     <main className="mx-auto w-11/12 lg:w-4/5">
       <h1 className="mb-10 text-2xl lg:text-3xl text-center text-slate-700">
@@ -77,7 +95,7 @@ export default function Index() {
         <Card className="md:w-1/2">
           <fetcher.Form method="post" encType="multipart/form-data">
             <div className="w-full min-h-[45vh] flex flex-col items-center justify-center gap-5">
-              <div className={selectedFile ? "hidden" : ""}>
+              <div className={ImageUrl ? "hidden" : ""}>
                 <div className="mb-5 block">
                   <Label
                     htmlFor="file"
@@ -85,19 +103,26 @@ export default function Index() {
                     className="text-lg text-slate-700"
                   />
                 </div>
+                {/* <TextInput
+                  name="imageUrl"
+                  className="font-Inter"
+                  type="text"
+                  onChange={handleUrlChange}
+                  placeholder="enter url of image"
+                /> */}
+                {/* <span className="text-gray-300 flex justify-center">or</span> */}
                 <FileInput
                   helperText="ངོས་ལེན་ཡོད་པའི་པར་རྣམ། JPG, PNG, JPEG"
                   id="file"
                   name="image"
                   accept="image/png, image/jpeg, image/jpg"
-                  required
                   onChange={handleFileChange}
                 />
               </div>
 
-              {selectedFile && (
+              {ImageUrl && (
                 <img
-                  src={URL.createObjectURL(selectedFile)}
+                  src={ImageUrl}
                   alt="selected file"
                   style={{ maxWidth: "100%", maxHeight: "500px" }}
                 />
