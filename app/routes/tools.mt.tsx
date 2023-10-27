@@ -120,46 +120,29 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export async function action({ request }: ActionArgs) {
   const formData = await request.formData();
   const form = Object.fromEntries(formData);
-
-  if (form.sourceLang === "bo" && !form.sourceText) {
-    form.sourceText = form.texts;
-  }
+  let input = form.sourceText;
   if (form.sourceLang === "en") {
-    let prompt = `replace all the abbreviations with full form and preserve newlines, "${form?.sourceText}"  `;
+    let prompt = `replace all the abbreviations with full form and preserve newlines, "${input}"  `;
     const data = await fetchGPTData(prompt);
-    let replacedInput = inputReplace(data!);
-    let text_array = replacedInput
-      ?.split(/\r\n|\r|\n/)
-      .filter((item) => item !== "");
-    async function translateText(
-      text: string,
-      sourceLang: string,
-      targetLang: string
-    ) {
-      return translate(text, sourceLang, targetLang);
-    }
-    const translationPromises = text_array.map((text: string) => {
-      return translateText(text, form.sourceLang, form.targetLang);
-    });
-    const results = await Promise.all(translationPromises);
-    let translation: string[] = [];
-    results.flatMap((item) =>
-      translation.push(outputReplace(item?.translation))
-    );
-
-    return json({
-      translation: translation,
-    });
+    input = inputReplace(data!);
   }
+  let text_array = input?.split(/\r\n|\r|\n/).filter((item) => item !== "");
+  async function translateText(
+    text: string,
+    sourceLang: string,
+    targetLang: string
+  ) {
+    return translate(text, sourceLang, targetLang);
+  }
+  const translationPromises = text_array.map((text: string) => {
+    return translateText(text, form.sourceLang, form.targetLang);
+  });
+  const results = await Promise.all(translationPromises);
+  let translation: string[] = [];
+  results.flatMap((item) => translation.push(outputReplace(item?.translation)));
 
-  const result = await translate(
-    form.sourceText,
-    form.sourceLang,
-    form.targetLang
-  );
-  if (result?.error) return json({ error: result?.error });
   return json({
-    translation: result?.translation,
+    translation: translation,
   });
 }
 
@@ -204,10 +187,7 @@ export default function Index() {
   };
 
   let charCount = sourceText?.length;
-  let textToCopy =
-    sourceLang === "en" && typeof data?.translation === "object"
-      ? data?.translation?.join("\n")
-      : data?.translation;
+  let textToCopy = data?.translation?.join("\n");
 
   let liked = likefetcher.data?.liked;
   let message = likefetcher.data?.message;
@@ -267,11 +247,11 @@ export default function Index() {
       <motion.div className="mt-3 flex flex-col md:flex-row md:h-[55vh] gap-5">
         <Card className="md:w-1/2">
           {sourceLang ? (
-            <div className="w-full h-[40vh] overflow-hidden">
+            <div className="w-full flex min-h-[40vh] flex-1 overflow-hidden">
               <Textarea
                 name="sourceText"
                 placeholder="ཡི་གེ་གཏག་རོགས།..."
-                className={`w-full bg-slate-50 h-full max-h-full p-3 border-0 focus:outline-none focus:ring-transparent  caret-slate-500 placeholder:text-slate-300 placeholder:font-monlam placeholder:text-lg ${
+                className={`w-full bg-slate-50 min-h-full flex-1 p-2 border-0 focus:outline-none focus:ring-transparent  caret-slate-500 placeholder:text-slate-300 placeholder:font-monlam placeholder:text-lg ${
                   sourceLang == "en" && "font-Inter text-xl"
                 } ${sourceLang == "bo" && "text-lg leading-loose"}`}
                 required
@@ -332,7 +312,7 @@ export default function Index() {
         </Card>
 
         <Card className="md:w-1/2">
-          <div className="w-full h-[50vh] p-3 text-black bg-slate-50 rounded-lg overflow-auto">
+          <div className="w-full h-[50vh] p-2 text-black bg-slate-50 rounded-lg overflow-auto">
             {isActionSubmission ? (
               <div className="h-full flex justify-center items-center">
                 <Spinner size="lg" />
@@ -340,21 +320,17 @@ export default function Index() {
             ) : (
               <div
                 ref={targetRef}
-                className={`text-lg mt-1 ${
+                className={`text-lg ${
                   targetLang === "bo"
                     ? "tracking-wide leading-loose"
                     : "font-Inter"
                 }`}
                 dangerouslySetInnerHTML={{
-                  __html:
-                    targetLang === "bo"
-                      ? data?.translation?.join("<br/>")
-                      : data?.error
-                      ? `<span class="text-red-400">${data?.error}</span>`
-                      : data?.translation,
+                  __html: data?.translation?.join("<br/>"),
                 }}
               ></div>
             )}
+            {data?.error && `<span class="text-red-400">${data?.error}</span>`}
           </div>
           <div className="flex justify-between">
             <div className={!liked ? "text-red-400" : "text-green-400"}>
