@@ -19,7 +19,6 @@ import tailwindStyle from "./styles/tailwind.css";
 
 import { getUserSession } from "~/services/session.server";
 import { getUser } from "./modal/user";
-import { auth } from "./services/auth.server";
 
 export const loader: LoaderFunction = async ({ request }) => {
   let userdata = await getUserSession(request);
@@ -33,6 +32,29 @@ export const loader: LoaderFunction = async ({ request }) => {
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: tailwindStyle },
   { rel: "stylesheet", href: globalStyle },
+  {
+    rel: "apple-touch-icon",
+    sizes: "180x180",
+    href: "/apple-touch-icon.png",
+  },
+  {
+    rel: "icon",
+    type: "image/png",
+    sizes: "32x32",
+    href: "/favicon-32x32.png",
+  },
+  {
+    rel: "icon",
+    type: "image/png",
+    sizes: "16x16",
+    href: "/favicon-16x16.png",
+  },
+  {
+    rel: "icon",
+    type: "image/x-icon",
+    href: "/favicon.ico",
+  },
+  { rel: "manifest", href: "/site.webmanifest" },
 ];
 
 function Document({ children }: { children: React.ReactNode }) {

@@ -33,16 +33,6 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-export const links: LinksFunction = () => {
-  return [
-    {
-      rel: "icon",
-      href: "/assets/logo.png",
-      type: "image/png",
-    },
-  ];
-};
-
 export default function Index() {
   return (
     <main>
