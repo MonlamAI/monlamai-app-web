@@ -1,14 +1,4 @@
-import {
-  defer,
-  type LinksFunction,
-  type LoaderFunction,
-  type MetaFunction,
-  redirect,
-} from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
-import Disclaimer from "~/component/Disclaimer";
-import Hero from "~/component/Hero";
-import StepWizard from "~/component/StepWizard";
+import { defer, type LoaderFunction, redirect } from "@remix-run/node";
 import Tools from "~/component/Tools";
 import { getUserAboutData } from "~/modal/aboutUser";
 import { getUser } from "~/modal/user";
@@ -26,17 +16,6 @@ export const loader: LoaderFunction = async ({ request }) => {
   });
 };
 
-export const meta: MetaFunction = () => {
-  return [
-    { title: "Monlam AI Tools" },
-    { name: "description", content: "Tools in MonlamAi" },
-  ];
-};
-
 export default function Index() {
-  return (
-    <main>
-      <Tools />
-    </main>
-  );
+  return <Tools />;
 }

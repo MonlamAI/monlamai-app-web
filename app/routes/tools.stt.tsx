@@ -3,12 +3,18 @@ import { FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa/index.js";
 import { BsFillStopFill, BsFillMicFill } from "react-icons/bs/index.js";
 import { useState, useRef, useEffect } from "react";
 import { type LoaderFunction, ActionFunction, json } from "@remix-run/node";
-import { useFetcher } from "@remix-run/react";
+import { MetaFunction, useFetcher } from "@remix-run/react";
 import { LiveAudioVisualizer } from "react-audio-visualize";
 import CopyToClipboard from "~/component/CopyToClipboard";
 import { auth } from "~/services/auth.server";
 import ReactionButtons from "~/component/ReactionButtons";
 import { getBrowser } from "~/component/utils/getBrowserDetail";
+
+export const meta: MetaFunction<typeof loader> = ({ matches }) => {
+  const parentMeta = matches.flatMap((match) => match.meta ?? []);
+  return [{ title: "Monlam | ཀློག་འདོན་རིག་ནུས།" }, ...parentMeta];
+};
+
 export const loader: LoaderFunction = async ({ request }) => {
   const apiUrl = process.env.STT_API_URL as string;
   const headers = {

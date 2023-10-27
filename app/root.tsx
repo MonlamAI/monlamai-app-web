@@ -5,6 +5,7 @@ import {
   Links,
   LiveReload,
   Meta,
+  MetaFunction,
   Outlet,
   Scripts,
   ScrollRestoration,
@@ -56,6 +57,28 @@ export const links: LinksFunction = () => [
   },
   { rel: "manifest", href: "/site.webmanifest" },
 ];
+
+export const meta: MetaFunction = () => {
+  return [
+    { title: "Monlam AI | སྨོན་ལམ་རིག་ནུས།" },
+    { charSet: "utf-8" },
+    {
+      property: "og:title",
+      content: "Monlam AI | སྨོན་ལམ་རིག་ནུས།",
+    },
+    {
+      name: "description",
+      content:
+        "ཕྱི་ལོ་༢༠༢༣ ལོར་སྨོན་ལམ་བོད་ཀྱི་བརྡ་འཕྲིན་ཞིབ་འཇུག་ཁང་དང་། འབྲེལ་ཡོད་སློབ་ཆེན་དང་། ཚོགས་པ་རེ་འགས་མཉམ་འབྲེལ་ངང་བོད་ཀྱི་སྐད་ཡིག་གི་སྐོར་བརྡ་ཕྲིན་ལག་རྩལ་འཕེལ་རྒྱས་གཏོང་བའི་ལས་གཞིའི་ནང་།",
+    },
+    {
+      name: "keywords",
+      content:
+        "Monlam, AI ,ai,monlamai, tibetan , python, javascript, tibet,programmers",
+    },
+    { name: "viewport", content: "width=device-width, initial-scale=1.0" },
+  ];
+};
 
 function Document({ children }: { children: React.ReactNode }) {
   return (

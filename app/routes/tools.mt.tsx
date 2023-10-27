@@ -1,4 +1,8 @@
-import type { ActionArgs, LoaderFunctionArgs } from "@remix-run/node";
+import type {
+  ActionArgs,
+  LoaderFunctionArgs,
+  MetaFunction,
+} from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useFetcher, useSearchParams } from "@remix-run/react";
 import { Button, Card, Label, Radio, Spinner, Textarea } from "flowbite-react";
@@ -15,6 +19,7 @@ import { motion } from "framer-motion";
 import { outputReplace, inputReplace } from "~/component/utils/replace.server";
 import ReactionButtons from "~/component/ReactionButtons";
 import { useDebounce } from "@uidotdev/usehooks";
+import { meta as meta_data } from "~/root";
 const langLabels = {
   bo: "བོད་སྐད།",
   en: "English",
@@ -100,6 +105,10 @@ async function translate(text: String, sourceLang: String, targetLang: String) {
   }
 }
 
+export const meta: MetaFunction<typeof loader> = ({ matches }) => {
+  const parentMeta = matches.flatMap((match) => match.meta ?? []);
+  return [{ title: "Monlam | ཡིག་སྒྱུར་རིག་ནུས།" }, ...parentMeta];
+};
 export async function loader({ request }: LoaderFunctionArgs) {
   let userdata = await auth.isAuthenticated(request, {
     failureRedirect: "/login",

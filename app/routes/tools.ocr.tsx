@@ -1,4 +1,8 @@
-import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
+import type {
+  ActionFunctionArgs,
+  LoaderFunctionArgs,
+  MetaFunction,
+} from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useFetcher } from "@remix-run/react";
 import {
@@ -9,10 +13,14 @@ import {
   Spinner,
   TextInput,
 } from "flowbite-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa6/index.js";
 import CopyToClipboard from "~/component/CopyToClipboard";
 import { auth } from "~/services/auth.server";
+export const meta: MetaFunction<typeof loader> = ({ matches }) => {
+  const parentMeta = matches.flatMap((match) => match.meta ?? []);
+  return [{ title: "Monlam | ཡིག་འཛིན་རིག་ནུས།" }, ...parentMeta];
+};
 
 export async function loader({ request }: LoaderFunctionArgs) {
   let userdata = await auth.isAuthenticated(request, {
@@ -58,7 +66,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
 export default function Index() {
   const [ImageUrl, setImageUrl] = useState<string | null>(null);
-
+  const imageRef = useRef<HTMLImageElement>(null);
   const fetcher = useFetcher();
   const data = fetcher.data;
   const isActionSubmission = fetcher.state !== "idle";
@@ -82,9 +90,15 @@ export default function Index() {
       }
     );
   };
-  function handleUrlChange(e) {
-    setImageUrl(e.target.value);
+  function handlePaste() {
+    navigator.clipboard.readText().then(
+      (cliptext) => {
+        setImageUrl(cliptext);
+      },
+      (err) => console.log(err)
+    );
   }
+
   return (
     <main className="mx-auto w-11/12 lg:w-4/5">
       <h1 className="mb-10 text-2xl lg:text-3xl text-center text-slate-700">
@@ -104,13 +118,22 @@ export default function Index() {
                   />
                 </div>
                 {/* <TextInput
-                  name="imageUrl"
-                  className="font-Inter"
+                  rightIcon={() => {
+                    return (
+                      <div
+                        title="paste"
+                        className="cursor-pointer pointer-events-auto"
+                        onClick={handlePaste}
+                      >
+                        <BiSolidPaste />
+                      </div>
+                    );
+                  }}
+                  className="font-Inter pointer-events-none"
                   type="text"
-                  onChange={handleUrlChange}
-                  placeholder="enter url of image"
-                /> */}
-                {/* <span className="text-gray-300 flex justify-center">or</span> */}
+                  placeholder="paste url by just a click"
+                />
+                <span className="text-gray-300 flex justify-center">or</span> */}
                 <FileInput
                   helperText="ངོས་ལེན་ཡོད་པའི་པར་རྣམ། JPG, PNG, JPEG"
                   id="file"
@@ -122,6 +145,7 @@ export default function Index() {
 
               {ImageUrl && (
                 <img
+                  ref={imageRef}
                   src={ImageUrl}
                   alt="selected file"
                   style={{ maxWidth: "100%", maxHeight: "500px" }}

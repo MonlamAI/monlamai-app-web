@@ -1,6 +1,7 @@
 import { Button, Card, Spinner, Textarea } from "flowbite-react";
 import {
   Form,
+  MetaFunction,
   useActionData,
   useFetcher,
   useNavigation,
@@ -17,6 +18,11 @@ export async function loader({ request }: LoaderFunctionArgs) {
   });
   return { user: userdata };
 }
+
+export const meta: MetaFunction<typeof loader> = ({ matches }) => {
+  const parentMeta = matches.flatMap((match) => match.meta ?? []);
+  return [{ title: "Monlam | སྒྲ་འཛིན་རིག་ནུས།" }, ...parentMeta];
+};
 
 export const action: ActionFunction = async ({ request }) => {
   const formdata = await request.formData();

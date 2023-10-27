@@ -4,7 +4,7 @@ import { useState } from "react";
 import { HiLogout } from "react-icons/hi/index.js";
 import { GiHamburgerMenu } from "react-icons/gi/index.js";
 import { RxCross1 } from "react-icons/rx/index.js";
-import { motion,AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 function Header() {
   const { user } = useLoaderData();
   const [showMenu, setShowMenu] = useState(false);
@@ -12,7 +12,11 @@ function Header() {
   return (
     <nav className="flex flex-col lg:flex-row  mb-10  ">
       <div className="flex p-3 items-center justify-between  w-full  bg-white ">
-        <a href="/" className="flex items-center gap-2 text-[1.25rem]">
+        <Link
+          prefetch="render"
+          to="/"
+          className="flex items-center gap-2 text-[1.25rem]"
+        >
           <img
             src="/assets/logo.png"
             width="40px"
@@ -20,7 +24,7 @@ function Header() {
             className="relative -top-1"
           />{" "}
           སྨོན་ལམ་རིག་ནུས།
-        </a>
+        </Link>
         <button
           className="block lg:hidden"
           onClick={() => setShowMenu((p) => !p)}
