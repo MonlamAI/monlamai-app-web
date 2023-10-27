@@ -1,4 +1,4 @@
-import { Button } from "flowbite-react";
+import { Button, Spinner } from "flowbite-react";
 import React from "react";
 import { FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa/index.js";
 import { modelType } from "~/modal/feedback";
@@ -13,6 +13,7 @@ type reactProps = {
 function ReactionButtons({ fetcher, output, sourceText, model }: reactProps) {
   let liked = fetcher.data?.liked;
   let disliked = fetcher.data?.disliked;
+  let isLoading = fetcher.state !== "idle";
   function handleLike() {
     if (!output || !sourceText) return;
     fetcher.submit(
@@ -43,6 +44,7 @@ function ReactionButtons({ fetcher, output, sourceText, model }: reactProps) {
       }
     );
   }
+  if (isLoading) return <Spinner />;
   return (
     <div className="flex justify-end">
       <Button color="white" disabled={!output} onClick={handleLike}>
