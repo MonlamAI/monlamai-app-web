@@ -5,14 +5,7 @@ import type {
 } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useFetcher } from "@remix-run/react";
-import {
-  Button,
-  Card,
-  FileInput,
-  Label,
-  Spinner,
-  TextInput,
-} from "flowbite-react";
+import { Button, Card, FileInput, Label, Spinner } from "flowbite-react";
 import { useRef, useState } from "react";
 import { FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa6/index.js";
 import CopyToClipboard from "~/component/CopyToClipboard";
@@ -32,13 +25,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
   const ocrFormData = new FormData();
-  let imageUrl = formData.get("imageUrl") as string;
-  let blob;
-  if (imageUrl) {
-    blob = await fetch(imageUrl).then((res) => res.blob());
-  } else {
-    blob = formData.get("image") as Blob;
-  }
+  let blob = formData.get("image") as Blob;
   ocrFormData.append("file", blob);
   try {
     const response = await fetch("https://ocr.pecha.tools/", {
@@ -90,14 +77,6 @@ export default function Index() {
       }
     );
   };
-  function handlePaste() {
-    navigator.clipboard.readText().then(
-      (cliptext) => {
-        setImageUrl(cliptext);
-      },
-      (err) => console.log(err)
-    );
-  }
 
   return (
     <main className="mx-auto w-11/12 lg:w-4/5">
@@ -117,23 +96,6 @@ export default function Index() {
                     className="text-lg text-slate-700"
                   />
                 </div>
-                {/* <TextInput
-                  rightIcon={() => {
-                    return (
-                      <div
-                        title="paste"
-                        className="cursor-pointer pointer-events-auto"
-                        onClick={handlePaste}
-                      >
-                        <BiSolidPaste />
-                      </div>
-                    );
-                  }}
-                  className="font-Inter pointer-events-none"
-                  type="text"
-                  placeholder="paste url by just a click"
-                />
-                <span className="text-gray-300 flex justify-center">or</span> */}
                 <FileInput
                   helperText="ངོས་ལེན་ཡོད་པའི་པར་རྣམ། JPG, PNG, JPEG"
                   id="file"
@@ -148,7 +110,11 @@ export default function Index() {
                   ref={imageRef}
                   src={ImageUrl}
                   alt="selected file"
-                  style={{ maxWidth: "100%", maxHeight: "500px" }}
+                  style={{
+                    maxWidth: "100%",
+                    maxHeight: "40vh",
+                    objectFit: "contain",
+                  }}
                 />
               )}
             </div>

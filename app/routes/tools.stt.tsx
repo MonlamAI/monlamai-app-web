@@ -1,7 +1,6 @@
 import { Button, Card, Label, Spinner } from "flowbite-react";
-import { FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa/index.js";
 import { BsFillStopFill, BsFillMicFill } from "react-icons/bs/index.js";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { type LoaderFunction, ActionFunction, json } from "@remix-run/node";
 import { MetaFunction, useFetcher } from "@remix-run/react";
 import { LiveAudioVisualizer } from "react-audio-visualize";
