@@ -10,6 +10,8 @@ import { useRef, useState } from "react";
 import { FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa6/index.js";
 import CopyToClipboard from "~/component/CopyToClipboard";
 import { auth } from "~/services/auth.server";
+import { BiQuestionMark } from "react-icons/bi/index.js";
+import { Tooltip } from "flowbite-react";
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
   return [{ title: "Monlam | ཡིག་འཛིན་རིག་ནུས།" }, ...parentMeta];
@@ -85,7 +87,18 @@ export default function Index() {
       </h1>
 
       <div className="mt-1 flex flex-col md:flex-row  lg:h-[55vh] items-strech gap-5">
-        <Card className="md:w-1/2">
+        <Card className="md:w-1/2 relative">
+          <div className="absolute  top-2 right-2 cursor-pointer hover:text-orange-400  bg-gray-200 p-1 rounded-full">
+            <Tooltip
+              content="Please ensure that the image is of high quality and that it includes a lengthy text that is easily readable."
+              animation="duration-500"
+              placement="left"
+              className="w-[400px] font-inter text-xs"
+              style="light"
+            >
+              <BiQuestionMark />
+            </Tooltip>
+          </div>
           <fetcher.Form method="post" encType="multipart/form-data">
             <div className="w-full min-h-[45vh] flex flex-col items-center justify-center gap-5">
               <div className={ImageUrl ? "hidden" : ""}>
