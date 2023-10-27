@@ -1,4 +1,4 @@
-import { Form, Link, useLoaderData } from "@remix-run/react";
+import { Form, Link, NavLink, useLoaderData } from "@remix-run/react";
 import { Dropdown } from "flowbite-react";
 import { useState } from "react";
 import { HiLogout } from "react-icons/hi/index.js";
@@ -12,10 +12,14 @@ function Header() {
   return (
     <nav className="flex flex-col lg:flex-row  mb-10  ">
       <div className="flex p-3 items-center justify-between  w-full  bg-white ">
-        <Link
+        <NavLink
+          className={({ isActive, isPending }) =>
+            `flex items-center gap-2 text-[1.25rem] ${
+              isPending && "text-gray-300"
+            }`
+          }
           prefetch="render"
           to="/"
-          className="flex items-center gap-2 text-[1.25rem]"
         >
           <img
             src="/assets/logo.png"
@@ -24,7 +28,7 @@ function Header() {
             className="relative -top-1"
           />{" "}
           སྨོན་ལམ་རིག་ནུས།
-        </Link>
+        </NavLink>
         <button
           className="block lg:hidden"
           onClick={() => setShowMenu((p) => !p)}
@@ -32,11 +36,17 @@ function Header() {
           {showMenu ? <RxCross1 /> : <GiHamburgerMenu />}
         </button>
         <div className="hidden lg:flex gap-2 ml-8 flex-1 justify-between bg-white">
-          <ul className="flex items-center gap-8">
-            <li>
-              <Link to="/about">ང་ཚོའི་སྐོར།</Link>
-            </li>
-          </ul>
+          <div className="flex items-center gap-8 text-sm ml-4">
+            <NavLink
+              to="/about"
+              className={({ isActive, isPending }) =>
+                isActive ? "text-gray-300" : ""
+              }
+              prefetch="intent"
+            >
+              ང་ཚོའི་སྐོར།
+            </NavLink>
+          </div>
           <div className="flex items-center gap-4 mr-7">
             <Dropdown
               label={user.email}

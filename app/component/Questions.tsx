@@ -8,7 +8,7 @@ type optionProps = {
   setValue: (value: string) => void;
 };
 
-function SelectOptions({ option, value, setValue }: optionProps) {
+function Questions({ option, value, setValue }: optionProps) {
   let select_options = feedback_options[option];
   let [Q, setQ] = useState(select_options?.option[0]);
   let [textAreaValue, setTextAreaValue] = useState("");
@@ -51,4 +51,4 @@ function SelectOptions({ option, value, setValue }: optionProps) {
   );
 }
 
-export default SelectOptions;
+export default Questions;

@@ -1,8 +1,11 @@
-import type { ActionFunction } from "@remix-run/node";
+import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
-import { auth } from "~/services/auth.server";
 
 import { destroySession, getUserSession } from "~/services/session.server";
+
+export const loader: LoaderFunction = async ({ request }) => {
+  return redirect("/");
+};
 
 export const action: ActionFunction = async ({ request }) => {
   const session = await getUserSession(request);

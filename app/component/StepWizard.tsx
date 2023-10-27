@@ -4,7 +4,7 @@ import React from "react";
 import FormWizard from "react-form-wizard-component";
 import TermsAndContitions from "~/component/TermsAndConditions";
 
-import SelectOptions from "./SelectOptions";
+import Questions from "./Questions";
 
 function StepWizard() {
   const [organization, setOrganization] = React.useState("");
@@ -120,10 +120,10 @@ function StepWizard() {
           validationError={errorMessages}
         >
           <div className="mx-auto flex max-w-md flex-col gap-4 md:min-h-[50dvh] mt-5">
-            <SelectOptions option="q1" value={q1} setValue={setQ1} />
-            <SelectOptions option="q2" value={q2} setValue={setQ2} />
-            <SelectOptions option="q3" value={q3} setValue={setQ3} />
-            <SelectOptions option="q4" value={q4} setValue={setQ4} />
+            <Questions option="q1" value={q1} setValue={setQ1} />
+            <Questions option="q2" value={q2} setValue={setQ2} />
+            <Questions option="q3" value={q3} setValue={setQ3} />
+            <Questions option="q4" value={q4} setValue={setQ4} />
           </div>
         </FormWizard.TabContent>
         <FormWizard.TabContent
