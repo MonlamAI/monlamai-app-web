@@ -916,7 +916,69 @@ export function outputReplace(text: string) {
   result = result.replaceAll("ཨིན་ཅི་", "");
   result = result.replaceAll("གུ་གལ་", "གྷུས་གྷལ");
   result = result.replaceAll("མེད་མིན་གྱི་", "ཡོད་མེད་ཀྱི་");
+  //འདི་དག་ནི་དམིགས་བསལ་ཚོར་བ་རྣོ་བའི་སྐོར་ཡིན།
+  result = result.replaceAll("ཏཱ་ལའི་བླ་མ་མཆོག་གིས", "ཁོང་གིས");
+  result = result.replaceAll("བོད་དབུས་ཤར་ཁུལ", "དབུས་ཤར་ཁུལ");
+  result = result.replaceAll("ཨིན་ཇིའི་རྒྱལ་ཁབ་མང་པོ", "རྒྱལ་ཁབ་མང་པོ");
+  result = result.replaceAll("ཨིན་ཅི་གྲོས་ཚོགས", "གྲོས་ཚོགས");
+  result = result.replaceAll("ངོས་རང་", "ང་རང་");
+  result = result.replaceAll(
+    "བྱང་གི་སྒྲ་མི་སྙན་གྱི་བར་གྱི་ལམ་པོ་ཆེ",
+    "ནཱ་ལནྡཱ་བར་གྱི་ལམ་པོ་ཆེ"
+  );
+  result = result.replaceAll("བྱང་གི་སྒྲ་མི་སྙན", "ནཱ་ལནྡཱ");
+  result = result.replaceAll(
+    "བསྟོད་བསྔགས་མི་འདྲ་བ་མང་དུ་བྱས་ཀྱང",
+    "བསྔགས་པ་མ་ཡིན་པ་མང་དུ་བྱས་ཀྱང"
+  );
+  result = result.replaceAll("བོད་མིའི་རྩ་འཛིན་ལས་ཁུངས", "རྩ་འཛིན་ལས་ཁུངས");
+  result = result.replaceAll("ཕྱི་ལོ་ ༢༠༠༨ ལོའི་ཟླ", "ཟླ");
+  result = result.replaceAll("ཕྱི་ལོ་ ༢༠༠༨ ལོར", "");
+  result = result.replaceAll("ཕྱི་ལོ་ ༢༠༠༨ ལོའི་", "");
+  result = result.replaceAll("ཕྱི་ལོ་༢༠༠༨ ལོའི་", "");
+  result = result.replaceAll("ཕྱི་ལོ་༡༩༥༩ ལོའི་", "");
+  result = result.replaceAll("༸ཏཱ་ལའི་བླ་མ།", "");
+  result = result.replaceAll("ངོས་ཀྱིས་", "ངས་");
+  result = result.replaceAll("ངོས་ཀྱི་", "ང་རང་གི་");
+  result = result.replaceAll("ལམ་སྲང་དང་སྐ་རགས", "རྒྱུད་གཅིག་ལམ་གཅིག");
+  result = result.replaceAll("ལམ་དང་སྐེ་རགས་", "རྒྱུད་གཅིག་ལམ་གཅིག");
+  result = result.replaceAll("ཨིན་ཅི་", "");
+  result = result.replaceAll("གུ་གལ་", "གྷུས་གྷལ");
+  result = result.replaceAll("མེད་མིན་གྱི་", "ཡོད་མེད་ཀྱི་");
 
+  result = result.replaceAll("ཨིན་ཆི་ཐེ་", "");
+  result = result.replaceAll("ཨིན་ཆི་", "");
+  result = result.replaceAll("ཨིན་ཆུ་ཐེ་", "");
+  result = result.replaceAll("ཨིན་ཆུ་", "");
+  result = result.replaceAll("ཨིན་ཆ་ཐེ་", "");
+  result = result.replaceAll("ཨིན་ཆ་", "");
+  result = result.replaceAll("ཨེན་ཅི་ཐེ་", "");
+  result = result.replaceAll("ཨེན་ཅི་", "");
+  result = result.replaceAll("ཨིན་ཌི་ཊེ་", "");
+
+  result = result.replaceAll("ཨིན་ཆི་ཐེ་རུ་", "ལ་");
+
+  //ཕྱི་ལོ་༡༩༥༩ ལོའི་
+
+  result = result.replaceAll("བརྡ་བཚོགས་", "བརྡ་བཏང་");
+  result = result.replaceAll("སྒ་ཟ", "སྒ་ཛ");
+  result = result.replaceAll("སྒ་ས", "སྒ་ཛ");
+  result = result.replaceAll("དགྲང་ངར་ཆེ་བ", "ནར་འགྱངས་ཆེ་བ");
+  result = result.replaceAll(
+    "༸ཏཱ་ལའི་བླ་མ་སྐུ་ཕྲེང་བཅུ་བཞི་པ་ཆེན་པོ། ཕྱི་ལོ་༡༩༨༩ ལོའི་ཟླ་༡༠ ཚེས་༡༥ ཉིན།",
+    ""
+  );
+  //༸ཏཱ་ལའི་བླ་མ་སྐུ་ཕྲེང་བཅུ་བཞི་པ་ཆེན་པོ། ཕྱི་ལོ་༡༩༨༩ ལོའི་ཟླ་༡༠ ཚེས་༡༥ ཉིན།
+  result = result.replaceAll("་མཉན་དུ་ཡོད་པ་ན་", "་མཉན་ཡོད་དུ་");
+  result = result.replaceAll(
+    "ཆེན་པོ་མ་ངེས་པ་དང་ཐབས་ཅིག་",
+    "ཆེན་པོ་དང་ཐབས་ཅིག་"
+  );
+  result = result.replaceAll("མ་ངེས་པའི་", "");
+  result = result.replaceAll("ཨིན་ཇིའི་དམག་འཁྲུག་དང་།", "");
+  result = result.replaceAll("དབུས་ཤར་ཨེན་ཊེ་ཡ", "དཀྱིལ་ཤར་ཨེ་ཤ་ཡ");
+  result = result.replaceAll("ང་ཀྱི་", "ང་གི་");
+  result = result.replaceAll("སྟོང་ཉིས་བརྒྱ་ལྔ་བཅུ", "ཉིས་སྟོང་ལྔ་བརྒྱ");
   //མེད་མིན་གྱི་
 
   //ཏཱ་ལའི་བླ་མ་མཆོག་གིས

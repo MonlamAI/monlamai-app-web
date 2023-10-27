@@ -128,8 +128,9 @@ export async function action({ request }: ActionArgs) {
     let prompt = `replace all the abbreviations with full form and preserve newlines, "${form?.sourceText}"  `;
     const data = await fetchGPTData(prompt);
     let replacedInput = inputReplace(data!);
-    let text_array = replacedInput?.split("\n").filter((item) => item !== "");
-
+    let text_array = replacedInput
+      ?.split(/\r\n|\r|\n/)
+      .filter((item) => item !== "");
     async function translateText(
       text: string,
       sourceLang: string,
@@ -265,73 +266,68 @@ export default function Index() {
 
       <motion.div className="mt-3 flex flex-col md:flex-row md:h-[55vh] gap-5">
         <Card className="md:w-1/2">
-          <div>
-            {sourceLang ? (
-              <div className="w-full h-[40vh] overflow-hidden">
-                <Textarea
-                  name="sourceText"
-                  placeholder="ཡི་གེ་གཏག་རོགས།..."
-                  className={`w-full h-full max-h-full p-3 border-0 focus:outline-none focus:ring-transparent bg-transparent caret-slate-500 placeholder:text-slate-300 placeholder:font-monlam placeholder:text-lg ${
-                    sourceLang == "en" && "font-Inter text-xl"
-                  } ${sourceLang == "bo" && "text-lg leading-loose"}`}
-                  required
-                  value={sourceText}
-                  onInput={(e) => {
-                    setSourceText((prev) => {
-                      let value = e.target?.value;
-                      if (value?.length <= charLimit) return value;
-                      return prev;
-                    });
-                  }}
-                  autoFocus
-                />
-              </div>
-            ) : (
-              <div className="w-full h-[50vh] overflow-auto">
-                <fieldset className="w-full flex" id="radio">
-                  <legend className="mb-4 text-gray-400">
-                    གང་རུང་ཞིག་འདེམ་རོགས།
-                  </legend>
-                  <div className="flex flex-col gap-4">
-                    {boTexts.map((text, index) => (
-                      <div
-                        className="p-3 flex w-full items-center gap-3 border rounded-md"
-                        key={index}
+          {sourceLang ? (
+            <div className="w-full h-[40vh] overflow-hidden">
+              <Textarea
+                name="sourceText"
+                placeholder="ཡི་གེ་གཏག་རོགས།..."
+                className={`w-full bg-slate-50 h-full max-h-full p-3 border-0 focus:outline-none focus:ring-transparent  caret-slate-500 placeholder:text-slate-300 placeholder:font-monlam placeholder:text-lg ${
+                  sourceLang == "en" && "font-Inter text-xl"
+                } ${sourceLang == "bo" && "text-lg leading-loose"}`}
+                required
+                value={sourceText}
+                onInput={(e) => {
+                  setSourceText((prev) => {
+                    let value = e.target?.value;
+                    if (value?.length <= charLimit) return value;
+                    return prev;
+                  });
+                }}
+                autoFocus
+              />
+            </div>
+          ) : (
+            <div className="w-full h-[50vh] overflow-auto">
+              <fieldset className="w-full flex" id="radio">
+                <legend className="mb-4 text-gray-400">
+                  གང་རུང་ཞིག་འདེམ་རོགས།
+                </legend>
+                <div className="flex flex-col gap-4">
+                  {boTexts.map((text, index) => (
+                    <div
+                      className="p-3 flex w-full items-center gap-3 border rounded-md"
+                      key={index}
+                    >
+                      <Radio
+                        id={"eg" + index}
+                        value={text}
+                        name="texts"
+                        defaultChecked={index === 0}
+                      />
+                      <Label
+                        htmlFor={"eg" + index}
+                        className="text-lg text-slate-700"
                       >
-                        <Radio
-                          id={"eg" + index}
-                          value={text}
-                          name="texts"
-                          defaultChecked={index === 0}
-                        />
-                        <Label
-                          htmlFor={"eg" + index}
-                          className="text-lg text-slate-700"
-                        >
-                          {text}
-                        </Label>
-                      </div>
-                    ))}
-                  </div>
-                </fieldset>
-                <div className="mt-10">
-                  <p className="text-gray-400 tracking-wide leading-loose">
-                    ད་ལྟའི་ཆར་ཁྱེད་རང་ང་ཚོའི་སྒུག་ཐོའི་ནང་ཚུད་ཡོད་པས་ང་ཚོས་ཁྱེད་ལ་དགོངས་དག་ཞུ།
-                    ཁྱེད་ཀྱིས་གོང་གི་ཚིག་དུམ་གང་རུང་ཞིག་བདམས་ནས་ང་ཚོའི་རིག་ནུས་ཀྱི་ནུས་པར་ཚོད་ལྟ་བྱེད་ཐུབ།
-                  </p>
+                        {text}
+                      </Label>
+                    </div>
+                  ))}
                 </div>
-              </div>
-            )}
-            <div className="mt-5 flex justify-between items-end">
-              {sourceLang && (
-                <div className="text-gray-400 text-xs">
-                  {charCount} / {charLimit}
-                </div>
-              )}
-              <div className="text-gray-400 font-Inter">
-                Status : {isActionSubmission ? "processing" : "idle"}
+              </fieldset>
+              <div className="mt-10">
+                <p className="text-gray-400 tracking-wide leading-loose">
+                  ད་ལྟའི་ཆར་ཁྱེད་རང་ང་ཚོའི་སྒུག་ཐོའི་ནང་ཚུད་ཡོད་པས་ང་ཚོས་ཁྱེད་ལ་དགོངས་དག་ཞུ།
+                  ཁྱེད་ཀྱིས་གོང་གི་ཚིག་དུམ་གང་རུང་ཞིག་བདམས་ནས་ང་ཚོའི་རིག་ནུས་ཀྱི་ནུས་པར་ཚོད་ལྟ་བྱེད་ཐུབ།
+                </p>
               </div>
             </div>
+          )}
+          <div className="mt-5 flex justify-between items-end">
+            {sourceLang && (
+              <div className="text-gray-400 text-xs">
+                {charCount} / {charLimit}
+              </div>
+            )}
           </div>
         </Card>
 
@@ -344,7 +340,7 @@ export default function Index() {
             ) : (
               <div
                 ref={targetRef}
-                className={`text-lg  ${
+                className={`text-lg mt-1 ${
                   targetLang === "bo"
                     ? "tracking-wide leading-loose"
                     : "font-Inter"
