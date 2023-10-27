@@ -31,7 +31,7 @@ function Questions({ option, value, setValue }: optionProps) {
       </Label>
       <Select id={id} value={Q} required onChange={(e) => setQ(e.target.value)}>
         {select_options.option.map((option) => (
-          <option key={option} value={option}>
+          <option key={option + "index"} value={option}>
             {option}
           </option>
         ))}

@@ -7,7 +7,7 @@ import {
   useNavigation,
 } from "@remix-run/react";
 import { LoaderFunctionArgs, type ActionFunction } from "@remix-run/node";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { auth } from "~/services/auth.server";
 import ReactionButtons from "~/component/ReactionButtons";
 
@@ -21,6 +21,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
+  parentMeta.shift(1);
+
   return [{ title: "Monlam | སྒྲ་འཛིན་རིག་ནུས།" }, ...parentMeta];
 };
 

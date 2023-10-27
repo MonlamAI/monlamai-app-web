@@ -11,6 +11,8 @@ import { getBrowser } from "~/component/utils/getBrowserDetail";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
+  parentMeta.shift(1);
+
   return [{ title: "Monlam | ཀློག་འདོན་རིག་ནུས།" }, ...parentMeta];
 };
 
@@ -145,7 +147,6 @@ export default function Index() {
     mediaRecorder.current.onstop = () => {
       //creates a blob file from the audiochunks data
       const audioBlob = new Blob(audioChunks);
-      console.log(audioBlob);
       setAudio(audioBlob);
       setAudioURL(window.URL.createObjectURL(audioBlob));
       setAudioChunks([]);

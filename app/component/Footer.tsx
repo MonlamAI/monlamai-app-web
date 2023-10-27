@@ -1,4 +1,25 @@
 function Footer() {
+  const logos = [
+    {
+      name: "facebook",
+      link: "https://www.facebook.com/profile.php?id=100092133731838",
+      icon: "fab fa-facebook-square fa-lg",
+      color: "#3b5998",
+    },
+    {
+      name: "instagram",
+      link: "https://www.instagram.com/monlam_ai/",
+      icon: "fab fa-instagram fa-lg",
+      color: "#e4405f",
+    },
+    {
+      name: "twitter",
+      link: "https://twitter.com/Monlam_AI",
+      icon: "fab fa-twitter fa-lg",
+      color: "#55acee",
+    },
+  ];
+
   return (
     <div className="w-full p-4">
       <footer className="p-4 lg:fixed bottom-0 w-full">
@@ -9,38 +30,22 @@ function Footer() {
             </a>
             . All Rights Reserved.
           </div>
-          <ul className="flex flex-wrap items-center mt-3 text-sm font-medium text-gray-400 sm:mt-0">
-            <li>
-              <a
-                href="https://www.facebook.com/profile.php?id=100092133731838"
-                target="_blank"
-                rel="noreferrer"
-                className="mr-4 hover:underline md:mr-6 hover:text-blue-500 transition-all duration-500"
-              >
-                <i className="fab fa-facebook-square fa-lg "></i>
-              </a>
-            </li>
-
-            <li>
-              <a
-                href="https://www.instagram.com/monlam_ai/"
-                target="_blank"
-                rel="noreferrer"
-                className="mr-4 hover:underline md:mr-6 hover:text-pink-500 transition-all duration-500"
-              >
-                <i className="fab fa-instagram fa-lg"></i>
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://twitter.com/Monlam_AI"
-                target="_blank"
-                rel="noreferrer"
-                className="hover:underline hover:text-blue-300 transition-all duration-500"
-              >
-                <i className="fab fa-twitter fa-lg"></i>
-              </a>
-            </li>
+          <ul className="flex flex-wrap items-center mt-3 text-sm font-medium text-gray-400 sm:mt-2">
+            {logos.map((logo) => {
+              return (
+                <li key={logo.name}>
+                  <a
+                    href={logo.link}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={`mr-4 hover:underline opacity-40 hover:opacity-100 md:mr-6 transition-all duration-500`}
+                    style={{ color: logo.color }}
+                  >
+                    <i className={logo.icon}></i>
+                  </a>
+                </li>
+              );
+            })}
           </ul>
         </div>
       </footer>

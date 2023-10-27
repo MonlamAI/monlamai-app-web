@@ -2,19 +2,23 @@ import type {
   ActionFunctionArgs,
   LoaderFunctionArgs,
   MetaFunction,
+  LinksFunction,
 } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useFetcher } from "@remix-run/react";
 import { Button, Card, FileInput, Label, Spinner } from "flowbite-react";
-import { useRef, useState } from "react";
+import { useRef, useState, useMemo, useLayoutEffect } from "react";
 import { FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa6/index.js";
 import CopyToClipboard from "~/component/CopyToClipboard";
 import { auth } from "~/services/auth.server";
 import { BiQuestionMark } from "react-icons/bi/index.js";
 import { Tooltip } from "flowbite-react";
+import ReactImageZoom from "react-image-zoom";
+
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
-  return [{ title: "Monlam | ཡིག་འཛིན་རིག་ནུས།" }, ...parentMeta];
+  parentMeta.shift(1);
+  return [...parentMeta, { title: "Monlam | ཡིག་འཛིན་རིག་ནུས།" }];
 };
 
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -55,7 +59,6 @@ export async function action({ request }: ActionFunctionArgs) {
 
 export default function Index() {
   const [ImageUrl, setImageUrl] = useState<string | null>(null);
-  const imageRef = useRef<HTMLImageElement>(null);
   const fetcher = useFetcher();
   const data = fetcher.data;
   const isActionSubmission = fetcher.state !== "idle";
@@ -67,6 +70,7 @@ export default function Index() {
       setImageUrl(url);
     }
   };
+
   let isEmptyData = data?.text?.length === 1 && data?.text[0].trim() === "";
   isEmptyData = isEmptyData || data?.text?.join("") === "";
   const handleFormClear = () => {
@@ -117,10 +121,8 @@ export default function Index() {
                   onChange={handleFileChange}
                 />
               </div>
-
               {ImageUrl && (
                 <img
-                  ref={imageRef}
                   src={ImageUrl}
                   alt="selected file"
                   style={{
