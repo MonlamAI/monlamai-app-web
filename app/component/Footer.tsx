@@ -1,21 +1,25 @@
+import { AiFillFacebook } from "react-icons/ai/index.js";
+import { AiFillInstagram } from "react-icons/ai/index.js";
+import { AiFillTwitterCircle } from "react-icons/ai/index.js";
+
 function Footer() {
   const logos = [
     {
       name: "facebook",
       link: "https://www.facebook.com/profile.php?id=100092133731838",
-      icon: "fab fa-facebook-square fa-lg",
+      icon: <AiFillFacebook />,
       color: "#3b5998",
     },
     {
       name: "instagram",
       link: "https://www.instagram.com/monlam_ai/",
-      icon: "fab fa-instagram fa-lg",
+      icon: <AiFillInstagram />,
       color: "#e4405f",
     },
     {
       name: "twitter",
       link: "https://twitter.com/Monlam_AI",
-      icon: "fab fa-twitter fa-lg",
+      icon: <AiFillTwitterCircle />,
       color: "#55acee",
     },
   ];
@@ -30,23 +34,22 @@ function Footer() {
             </a>
             . All Rights Reserved.
           </div>
-          <ul className="flex flex-wrap items-center mt-3 text-sm font-medium text-gray-400 sm:mt-2">
+          <div className="flex flex-wrap items-center mt-3 text-sm font-medium text-gray-400 sm:mt-2">
             {logos.map((logo) => {
               return (
-                <li key={logo.name}>
-                  <a
-                    href={logo.link}
-                    target="_blank"
-                    rel="noreferrer"
-                    className={`mr-4 hover:underline opacity-40 hover:opacity-100 md:mr-6 transition-all duration-500`}
-                    style={{ color: logo.color }}
-                  >
-                    <i className={logo.icon}></i>
-                  </a>
-                </li>
+                <a
+                  key={logo.name}
+                  href={logo.link}
+                  target="_blank"
+                  rel="noreferrer"
+                  className={`mr-2 hover:underline opacity-40 hover:opacity-100 md:mr-3 transition-all duration-500 text-xl`}
+                  style={{ color: logo.color }}
+                >
+                  {logo.icon}
+                </a>
               );
             })}
-          </ul>
+          </div>
         </div>
       </footer>
     </div>
