@@ -51,18 +51,19 @@ export const action: ActionFunction = async ({ request }) => {
 
 export default function Index() {
   const [sourceText, setSourceText] = useState("");
-  const data = useActionData<typeof action>();
-  const navigation = useNavigation();
-  const isActionSubmission = navigation.state == "submitting";
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-
+  const fetcher = useFetcher();
+  const isActionSubmission = fetcher.state !== "idle";
   const handleReset = () => {
     setSourceText("");
-    // setCharCount(0);
-    // hide the audio element only
-    audioRef.current?.setAttribute("hidden", "");
+    fetcher.submit(
+      {},
+      {
+        method: "POST",
+        action: "/reset_actiondata",
+      }
+    );
   };
-
+  const data = fetcher.data;
   let charCount = sourceText?.length;
   let likeFetcher = useFetcher();
 
@@ -73,7 +74,7 @@ export default function Index() {
       </h1>
       <div className="flex flex-col  lg:flex-row gap-3 lg:h-[60vh]">
         <Card className="w-full lg:w-1/2 max-h-[60vh] h-[60vh] lg:h-auto flex">
-          <Form
+          <fetcher.Form
             id="ttsForm"
             method="post"
             className="flex flex-col gap-5 flex-1 "
@@ -116,7 +117,7 @@ export default function Index() {
                 ཀློགས།
               </Button>
             </div>
-          </Form>
+          </fetcher.Form>
         </Card>
         <Card className="w-full lg:w-1/2 max-h-[60vh] flex">
           <div className="w-full flex-1">
