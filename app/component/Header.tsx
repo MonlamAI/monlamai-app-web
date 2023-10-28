@@ -18,7 +18,7 @@ function Header() {
               isPending && "text-gray-300"
             }`
           }
-          prefetch="render"
+          prefetch="intent"
           to="/"
         >
           <img

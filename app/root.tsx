@@ -1,5 +1,5 @@
 import type { LinksFunction, LoaderFunction } from "@remix-run/node";
-import { defer, redirect } from "@remix-run/node";
+import { json } from "@remix-run/node";
 import {
   Link,
   Links,
@@ -11,7 +11,6 @@ import {
   ScrollRestoration,
   useLoaderData,
   useLocation,
-  useSearchParams,
 } from "@remix-run/react";
 import Footer from "./component/Footer";
 import Header from "./component/Header";
@@ -23,10 +22,8 @@ import { getUser } from "./modal/user";
 
 export const loader: LoaderFunction = async ({ request }) => {
   let userdata = await getUserSession(request);
-  if (!userdata) return { user: null };
-  let user = await getUser(userdata?._json?.email);
-  return defer({
-    user,
+  return json({
+    user: userdata ? await getUser(userdata?._json?.email) : null,
   });
 };
 
@@ -46,26 +43,14 @@ export const links: LinksFunction = () => [
   },
   {
     rel: "icon",
-    type: "image/png",
-    sizes: "16x16",
-    href: "/favicon-16x16.png",
-  },
-  {
-    rel: "icon",
     type: "image/x-icon",
     href: "/favicon.ico",
   },
-  { rel: "manifest", href: "/site.webmanifest" },
 ];
 
 export const meta: MetaFunction = () => {
   return [
     { title: "Monlam AI | སྨོན་ལམ་རིག་ནུས།" },
-    { charSet: "utf-8" },
-    {
-      property: "og:title",
-      content: "Monlam AI | སྨོན་ལམ་རིག་ནུས།",
-    },
     {
       name: "description",
       content:
@@ -76,7 +61,6 @@ export const meta: MetaFunction = () => {
       content:
         "Monlam, AI ,ai,monlamai, tibetan , python, javascript, tibet,programmers",
     },
-    { name: "viewport", content: "width=device-width, initial-scale=1.0" },
   ];
 };
 

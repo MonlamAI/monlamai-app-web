@@ -20,4 +20,4 @@ services:
 
 databases:
   - name: monlam-tools-pg
-    plan: starter
+    plan: standard
