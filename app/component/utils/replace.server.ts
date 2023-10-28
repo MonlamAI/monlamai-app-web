@@ -980,7 +980,8 @@ export function tibetanReplaces(text: string) {
   result = result.replaceAll("དབུས་ཤར་ཨེན་ཊེ་ཡ", "དཀྱིལ་ཤར་ཨེ་ཤ་ཡ");
   result = result.replaceAll("ང་ཀྱི་", "ང་གི་");
   result = result.replaceAll("སྟོང་ཉིས་བརྒྱ་ལྔ་བཅུ", "ཉིས་སྟོང་ལྔ་བརྒྱ");
-  //མེད་མིན་གྱི་
+  result = result.replaceAll("ཁྲེན་སྣ་ཁུག་གི", "ཁྲེན་གྱི");
+  //ཁྲེན་སྣ་ཁུག་གི
   result = result.replaceAll("བརྡ་བཚོགས་", "བརྡ་བཏང་");
   result = result.replaceAll("སྒ་ཟ", "སྒ་ཛ");
   result = result.replaceAll("སྒ་ས", "སྒ་ཛ");
