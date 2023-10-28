@@ -21,10 +21,7 @@ import CopyToClipboard from "~/component/CopyToClipboard";
 import { auth } from "~/services/auth.server";
 import { fetchGPTData } from "~/services/fetchGPTData.server";
 import { motion } from "framer-motion";
-import {
-  englishReplaces,
-  tibetanReplaces,
-} from "~/component/utils/replace.server";
+import { englishReplaces, tibetanReplaces } from "~/component/utils/replace";
 import ReactionButtons from "~/component/ReactionButtons";
 import { useDebounce } from "@uidotdev/usehooks";
 import { meta as meta_data } from "~/root";

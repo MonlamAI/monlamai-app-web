@@ -1,5 +1,5 @@
 import { LoaderFunctionArgs, defer } from "@remix-run/node";
-import { englishReplaces } from "~/component/utils/replace.server";
+import { englishReplaces } from "~/component/utils/replace";
 import { fetchGPTData } from "~/services/fetchGPTData.server";
 
 function parseApiResponse(apiResponse: String) {

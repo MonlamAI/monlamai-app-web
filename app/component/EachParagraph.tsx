@@ -1,6 +1,7 @@
 import { Await, useFetcher } from "@remix-run/react";
 import { Suspense, useEffect } from "react";
 import { motion } from "framer-motion";
+import { tibetanReplaces } from "./utils/replace";
 function EachParagraph({
   source,
   lang,
@@ -35,7 +36,7 @@ function EachParagraph({
           if (res.error) return <p className="text-red-400">{res.error}</p>;
           return (
             <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-              {res?.translation}
+              {tibetanReplaces(res?.translation)}
             </motion.p>
           );
         }}
