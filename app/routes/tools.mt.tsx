@@ -130,9 +130,7 @@ export async function action({ request }: ActionArgs) {
     const data = await fetchGPTData(prompt);
     input = englishReplaces(data!);
   }
-  if (form.sourceLang === "bo") {
-    input = tibetanReplaces(input);
-  }
+
   let text_array = input?.split(/\r\n|\r|\n/).filter((item) => item !== "");
   console.log(text_array);
   async function translateText(
@@ -147,7 +145,9 @@ export async function action({ request }: ActionArgs) {
   });
   const results = await Promise.all(translationPromises);
   let translation: string[] = [];
-  results.flatMap((item) => translation.push(item?.translation));
+  results.flatMap((item) =>
+    translation.push(tibetanReplaces(item?.translation))
+  );
 
   return json({
     translation: translation,
