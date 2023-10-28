@@ -20,7 +20,10 @@ import {
 import CopyToClipboard from "~/component/CopyToClipboard";
 import { auth } from "~/services/auth.server";
 import { fetchGPTData } from "~/services/fetchGPTData.server";
-import { englishReplaces, tibetanReplaces } from "~/component/utils/replace";
+import {
+  englishReplaces,
+  tibetanReplaces,
+} from "~/component/utils/replace.server";
 import ReactionButtons from "~/component/ReactionButtons";
 import { meta as meta_data } from "~/root";
 import EachParagraph from "~/component/EachParagraph";

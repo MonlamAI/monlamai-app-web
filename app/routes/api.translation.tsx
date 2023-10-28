@@ -1,5 +1,8 @@
 import { LoaderFunctionArgs, defer } from "@remix-run/node";
-import { englishReplaces } from "~/component/utils/replace";
+import {
+  englishReplaces,
+  tibetanReplaces,
+} from "~/component/utils/replace.server";
 import { fetchGPTData } from "~/services/fetchGPTData.server";
 
 function parseApiResponse(apiResponse: String) {
@@ -66,7 +69,7 @@ async function translate(text: String, sourceLang: String, targetLang: String) {
     }
     const { translation, disclaimer } = parsedResponse;
     return {
-      translation,
+      translation: tibetanReplaces(translation),
       disclaimer,
     };
   } catch (error) {
