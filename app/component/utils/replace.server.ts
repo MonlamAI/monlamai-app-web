@@ -1,4 +1,4 @@
-export function outputReplace(text: string) {
+export function tibetanReplaces(text: string) {
   let result = text;
   result = result.replaceAll("པ་འི", "པའི");
   result = result.replaceAll("་པ་ར་", "་པར་");
@@ -988,7 +988,7 @@ export function outputReplace(text: string) {
   return result;
 }
 
-export function inputReplace(text: string) {
+export function englishReplaces(text: string) {
   let result = text;
   result += ".";
   result = result.replaceAll("..", ".");

@@ -16,7 +16,10 @@ import CopyToClipboard from "~/component/CopyToClipboard";
 import { auth } from "~/services/auth.server";
 import { fetchGPTData } from "~/services/fetchGPTData.server";
 import { motion } from "framer-motion";
-import { outputReplace, inputReplace } from "~/component/utils/replace.server";
+import {
+  englishReplaces,
+  tibetanReplaces,
+} from "~/component/utils/replace.server";
 import ReactionButtons from "~/component/ReactionButtons";
 import { useDebounce } from "@uidotdev/usehooks";
 import { meta as meta_data } from "~/root";
@@ -108,7 +111,6 @@ async function translate(text: String, sourceLang: String, targetLang: String) {
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
   parentMeta.shift(1);
-
   return [{ title: "Monlam | ཡིག་སྒྱུར་རིག་ནུས།" }, ...parentMeta];
 };
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -126,9 +128,13 @@ export async function action({ request }: ActionArgs) {
   if (form.sourceLang === "en") {
     let prompt = `replace all the abbreviations with full form and preserve newlines, "${input}"  `;
     const data = await fetchGPTData(prompt);
-    input = inputReplace(data!);
+    input = englishReplaces(data!);
+  }
+  if (form.sourceLang === "bo") {
+    input = tibetanReplaces(input);
   }
   let text_array = input?.split(/\r\n|\r|\n/).filter((item) => item !== "");
+  console.log(text_array);
   async function translateText(
     text: string,
     sourceLang: string,
@@ -141,7 +147,7 @@ export async function action({ request }: ActionArgs) {
   });
   const results = await Promise.all(translationPromises);
   let translation: string[] = [];
-  results.flatMap((item) => translation.push(outputReplace(item?.translation)));
+  results.flatMap((item) => translation.push(item?.translation));
 
   return json({
     translation: translation,
