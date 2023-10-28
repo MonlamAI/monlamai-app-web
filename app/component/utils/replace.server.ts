@@ -15,6 +15,7 @@ export function tibetanReplaces(text: string) {
   result = result.replaceAll("༸ཏཱ་ལའི་བླ་མ་གཤེགས", "དགོངས་པ་རྫོགས");
   result = result.replace(/^། /, "");
   //༄༅། །
+  result = result.replaceAll("༸ཏཱ་ལའི་བླ་མས་", "ཁོང་གིས");
   result = result.replaceAll("སྐེ་རགས་དང་རྒྱ་ལམ", "རྒྱུད་གཅིག་ལམ་གཅིག");
   result = result.replaceAll("སྐེ་རགས་དང་རྒྱ་ལམ་གྱི", "རྒྱུད་གཅིག་ལམ་གཅིག་གི");
   result = result.replaceAll("Beltདང་ལམ་གྱི", "རྒྱུད་གཅིག་ལམ་གཅིག་གི");
