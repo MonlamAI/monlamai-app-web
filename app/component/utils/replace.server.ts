@@ -17,7 +17,7 @@ export function tibetanReplaces(text: string) {
   result = result.replaceAll("སྐེ་རགས་དང་རྒྱ་ལམ་གྱི", "རྒྱུད་གཅིག་ལམ་གཅིག་གི");
   result = result.replaceAll("Beltདང་ལམ་གྱི", "རྒྱུད་གཅིག་ལམ་གཅིག་གི");
   result = result.replaceAll("ལས་འགུལ་མི་གོ་སྒྲིག་བྱེད་", "ལས་འགུལ་གོ་སྒྲིག་མི་བྱེད་");
-
+  result = result.replaceAll("དྲུག་ཅུ་གྱ་བརྒྱད", "དྲུག་ཅུ་རེ་བརྒྱད");
   //Beltདང་ལམ་གྱི
   //སྐེ་རགས་དང་རྒྱ་ལམ་གྱི་འཆར་གཞི
   result = result.replaceAll("སེན་ཧ་རན་སེ་སི་ཁོ", "སན་ཧྥན་སི་སུ་ཁོ");
@@ -1008,6 +1008,8 @@ export function englishReplaces(text: string) {
   let result = text;
   result += ".";
   result = result.replaceAll("..", ".");
+  result = result.replaceAll(" – ", " ");
+  result = result.replaceAll("–", " ");
   result = result.replaceAll(". .", ".");
   result = result.replaceAll("“", "");
   result = result.replaceAll("”", "");
