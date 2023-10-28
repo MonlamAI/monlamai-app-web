@@ -12,11 +12,15 @@ export function tibetanReplaces(text: string) {
   result = result.replaceAll("ལྷོ་ཨ་ཧེ་རི་ཁ", "ལྷོ་ཨ་ཧྥི་རི་ཁ");
   result = result.replaceAll("ཨ་ཧེ་རི་ཁ", "ཨ་ཧྥི་རི་ཁ");
   result = result.replaceAll("༸ཏཱ་ལའི་བླ་མ་དགོངས་པ་རྫོགས", "དགོངས་པ་རྫོགས");
+  result = result.replaceAll("༸ཏཱ་ལའི་བླ་མ་གཤེགས", "དགོངས་པ་རྫོགས");
+  result = result.replace(/^། /, "");
   //༄༅། །
+  result = result.replaceAll("༸ཏཱ་ལའི་བླ་མས་", "ཁོང་གིས");
   result = result.replaceAll("སྐེ་རགས་དང་རྒྱ་ལམ", "རྒྱུད་གཅིག་ལམ་གཅིག");
   result = result.replaceAll("སྐེ་རགས་དང་རྒྱ་ལམ་གྱི", "རྒྱུད་གཅིག་ལམ་གཅིག་གི");
   result = result.replaceAll("Beltདང་ལམ་གྱི", "རྒྱུད་གཅིག་ལམ་གཅིག་གི");
-
+  result = result.replaceAll("ལས་འགུལ་མི་གོ་སྒྲིག་བྱེད་", "ལས་འགུལ་གོ་སྒྲིག་མི་བྱེད་");
+  result = result.replaceAll("དྲུག་ཅུ་གྱ་བརྒྱད", "དྲུག་ཅུ་རེ་བརྒྱད");
   //Beltདང་ལམ་གྱི
   //སྐེ་རགས་དང་རྒྱ་ལམ་གྱི་འཆར་གཞི
   result = result.replaceAll("སེན་ཧ་རན་སེ་སི་ཁོ", "སན་ཧྥན་སི་སུ་ཁོ");
@@ -979,8 +983,24 @@ export function tibetanReplaces(text: string) {
   result = result.replaceAll("དབུས་ཤར་ཨེན་ཊེ་ཡ", "དཀྱིལ་ཤར་ཨེ་ཤ་ཡ");
   result = result.replaceAll("ང་ཀྱི་", "ང་གི་");
   result = result.replaceAll("སྟོང་ཉིས་བརྒྱ་ལྔ་བཅུ", "ཉིས་སྟོང་ལྔ་བརྒྱ");
-  //མེད་མིན་གྱི་
-
+  result = result.replaceAll("ཁྲེན་སྣ་ཁུག་གི", "ཁྲེན་གྱི");
+  //ཁྲེན་སྣ་ཁུག་གི
+  result = result.replaceAll("བརྡ་བཚོགས་", "བརྡ་བཏང་");
+  result = result.replaceAll("སྒ་ཟ", "སྒ་ཛ");
+  result = result.replaceAll("སྒ་ས", "སྒ་ཛ");
+  result = result.replaceAll("དགྲང་ངར་ཆེ་བ", "ནར་འགྱངས་ཆེ་བ");
+  result = result.replaceAll("༸ཏཱ་ལའི་བླ་མ་སྐུ་ཕྲེང་བཅུ་བཞི་པ་ཆེན་པོ། ཕྱི་ལོ་༡༩༨༩ ལོའི་ཟླ་༡༠ ཚེས་༡༥ ཉིན།", "");
+  //༸ཏཱ་ལའི་བླ་མ་སྐུ་ཕྲེང་བཅུ་བཞི་པ་ཆེན་པོ། ཕྱི་ལོ་༡༩༨༩ ལོའི་ཟླ་༡༠ ཚེས་༡༥ ཉིན། 
+  result = result.replaceAll("་མཉན་དུ་ཡོད་པ་ན་", "་མཉན་ཡོད་དུ་");
+  result = result.replaceAll("ཆེན་པོ་མ་ངེས་པ་དང་ཐབས་ཅིག་", "ཆེན་པོ་དང་ཐབས་ཅིག་");
+  result = result.replaceAll("མ་ངེས་པའི་", "");
+  result = result.replaceAll("ཨིན་ཇིའི་དམག་འཁྲུག་དང་།", "");
+  result = result.replaceAll("དབུས་ཤར་ཨེན་ཊེ་ཡ", "དཀྱིལ་ཤར་ཨེ་ཤ་ཡ");
+   result = result.replaceAll("ང་ཀྱི་", "ང་གི་");
+   result = result.replaceAll("སྟོང་ཉིས་བརྒྱ་ལྔ་བཅུ", "ཉིས་སྟོང་ལྔ་བརྒྱ");
+   result = result.replaceAll("༸ཏཱ་ལའི་བླ་མ་དགོངས་པ་རྫོགས", "སྐུ་གཤེགས");
+  result = result.replaceAll("༸ཏཱ་ལའི་བླ་མ་གཤེགས", "སྐུ་གཤེགས");
+   result = result.replaceAll("༸ཏཱ་ལའི་བླ་མའི་དགོངས་པ་རྫོགས་ཚུལ་", "ཁོ་སྐུ་གཤེགས་པའི་སྐོར་");
   //ཏཱ་ལའི་བླ་མ་མཆོག་གིས
   //སྲིད་འཛིན་སྐུ་ཕྲེང་བཞི་བཅུ་ང་བཞི
   result = result.replaceAll(/(\d+)([^\d]+)/g, "$1 $2");
@@ -992,6 +1012,8 @@ export function englishReplaces(text: string) {
   let result = text;
   result += ".";
   result = result.replaceAll("..", ".");
+  result = result.replaceAll(" – ", " ");
+  result = result.replaceAll("–", " ");
   result = result.replaceAll(". .", ".");
   result = result.replaceAll("“", "");
   result = result.replaceAll("”", "");
