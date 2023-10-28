@@ -19,7 +19,10 @@ export function tibetanReplaces(text: string) {
   result = result.replaceAll("ལྗོན་ཤིང་རྣམས།", "ལྗོན་ཤིང་།");
   result = result.replaceAll("མེ་ཏོག་རྣམས།", "མེ་ཏོག།");
   result = result.replaceAll("བྱ་བྱིའུ་རྣམས།", "བྱ་བྱིའུ།");
-  //༄༅། །
+  result = result.replaceAll("ཀྱིས་ངེས་ཚིག་མི་སྟེར་བ་", "");
+  result = result.replaceAll("ལ་ངེས་ཚིག་མི་སྟེར་བ", "");
+  //ཀྱིས་ངེས་ཚིག་མི་སྟེར་བ་
+  //ལ་ངེས་ཚིག་མི་སྟེར་བ
   result = result.replaceAll("༸ཏཱ་ལའི་བླ་མས་", "ཁོང་གིས");
   result = result.replaceAll("སྐེ་རགས་དང་རྒྱ་ལམ", "རྒྱུད་གཅིག་ལམ་གཅིག");
   result = result.replaceAll("སྐེ་རགས་དང་རྒྱ་ལམ་གྱི", "རྒྱུད་གཅིག་ལམ་གཅིག་གི");
