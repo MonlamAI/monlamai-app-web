@@ -7,9 +7,14 @@ let timer: any;
 type CopyToClipboardProps = {
   textToCopy: string;
   disabled: boolean;
+  onClick?: () => void;
 };
 
-const CopyToClipboard = ({ textToCopy, disabled }: CopyToClipboardProps) => {
+const CopyToClipboard = ({
+  textToCopy,
+  disabled,
+  onClick,
+}: CopyToClipboardProps) => {
   const [isCopied, setIsCopied] = useState(false);
 
   useEffect(() => {
@@ -20,7 +25,11 @@ const CopyToClipboard = ({ textToCopy, disabled }: CopyToClipboardProps) => {
   }, [textToCopy]);
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(textToCopy);
+    if (onClick) {
+      onClick();
+    } else {
+      navigator.clipboard.writeText(textToCopy);
+    }
 
     setIsCopied(true);
     timer = setTimeout(() => {
