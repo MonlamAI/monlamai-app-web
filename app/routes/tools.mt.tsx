@@ -20,12 +20,11 @@ import {
 import CopyToClipboard from "~/component/CopyToClipboard";
 import { auth } from "~/services/auth.server";
 import { fetchGPTData } from "~/services/fetchGPTData.server";
-import { motion } from "framer-motion";
 import { englishReplaces, tibetanReplaces } from "~/component/utils/replace";
 import ReactionButtons from "~/component/ReactionButtons";
-import { useDebounce } from "@uidotdev/usehooks";
 import { meta as meta_data } from "~/root";
 import EachParagraph from "~/component/EachParagraph";
+import useDebounce from "~/component/hooks/useDebounceState";
 const langLabels = {
   bo: "བོད་སྐད།",
   en: "English",
@@ -95,41 +94,32 @@ export default function Index() {
         ཡིག་སྒྱུར་རིག་ནུས།
       </h1>
       <div className="flex justify-between items-center">
-        <motion.div
+        <div
           className={`inline-block w-32 text-lg text-gray-500 ${
             sourceLang == "en" && "font-Inter text-xl"
           } ${sourceLang == "bo" && "text-lg leading-loose"}`}
-          exit={{ opacity: 0 }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
         >
           {langLabels[sourceLang]}
-        </motion.div>
+        </div>
 
-        <motion.button
+        <button
           className="group flex items-center justify-center p-0.5 text-center font-medium relative focus:z-10 focus:outline-none text-white bg-cyan-700 border border-transparent enabled:hover:bg-cyan-800 focus:ring-cyan-300 dark:bg-cyan-600 dark:enabled:hover:bg-cyan-700 dark:focus:ring-cyan-800 rounded-full focus:ring-2 py-1 px-3"
           onClick={handleLangSwitch}
-          initial={{ rotate: 0 }}
-          animate={{ rotate: isRotated ? 180 : 0 }}
-          transition={{ duration: 0.3 }}
         >
           <FaArrowRightArrowLeft size="20px" />
-        </motion.button>
+        </button>
 
-        <motion.div
+        <div
           className={`inline-block w-32 text-lg text-right text-gray-500
           ${sourceLang != "en" && "font-Inter text-xl"} ${
             sourceLang != "bo" && "text-lg leading-loose"
           }`}
-          exit={{ opacity: 0 }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
         >
           {langLabels[targetLang]}
-        </motion.div>
+        </div>
       </div>
 
-      <motion.div className="mt-3 flex flex-col md:flex-row md:h-[55vh] gap-5">
+      <div className="mt-3 flex flex-col md:flex-row md:h-[55vh] gap-5">
         <Card className="md:w-1/2">
           <div className="w-full flex min-h-[40vh] flex-1 overflow-hidden">
             <Textarea
@@ -206,7 +196,7 @@ export default function Index() {
             </div>
           </div>
         </Card>
-      </motion.div>
+      </div>
     </div>
   );
 }
