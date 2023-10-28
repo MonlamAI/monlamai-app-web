@@ -1,4 +1,8 @@
-import type { LinksFunction, LoaderFunction } from "@remix-run/node";
+import type {
+  LinksFunction,
+  LoaderFunction,
+  HeadersArgs,
+} from "@remix-run/node";
 import { json } from "@remix-run/node";
 import {
   Link,
@@ -22,9 +26,15 @@ import { getUser } from "./modal/user";
 
 export const loader: LoaderFunction = async ({ request }) => {
   let userdata = await getUserSession(request);
-  return json({
-    user: userdata ? await getUser(userdata?._json?.email) : null,
-  });
+  return json(
+    {
+      user: userdata ? await getUser(userdata?._json?.email) : null,
+    },
+    { status: 200, headers: { "cache-control": "no-cache" } }
+  );
+};
+export const headers = ({ loaderHeaders, parentHeaders }: HeadersArgs) => {
+  return { "cache-control": loaderHeaders.get("cache-control") };
 };
 
 export const links: LinksFunction = () => [
@@ -58,8 +68,7 @@ export const meta: MetaFunction = () => {
     },
     {
       name: "keywords",
-      content:
-        "Monlam, AI ,ai,monlamai, tibetan , python, javascript, tibet,programmers",
+      content: "Monlam, AI",
     },
   ];
 };
