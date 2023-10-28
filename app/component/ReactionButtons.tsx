@@ -1,6 +1,6 @@
 import { Button, Spinner } from "flowbite-react";
 import React from "react";
-import { FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa/index.js";
+import { FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa";
 import { modelType } from "~/modal/feedback";
 
 type reactProps = {

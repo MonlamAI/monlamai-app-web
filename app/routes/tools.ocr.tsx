@@ -8,12 +8,11 @@ import { json } from "@remix-run/node";
 import { useFetcher } from "@remix-run/react";
 import { Button, Card, FileInput, Label, Spinner } from "flowbite-react";
 import { useRef, useState, useMemo, useLayoutEffect } from "react";
-import { FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa6/index.js";
+import { FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa6";
 import CopyToClipboard from "~/component/CopyToClipboard";
 import { auth } from "~/services/auth.server";
-import { BiQuestionMark } from "react-icons/bi/index.js";
+import { BiQuestionMark } from "react-icons/bi";
 import { Tooltip } from "flowbite-react";
-import ReactImageZoom from "react-image-zoom";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);

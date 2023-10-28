@@ -16,7 +16,7 @@ import {
   FaArrowRightArrowLeft,
   FaRegThumbsDown,
   FaRegThumbsUp,
-} from "react-icons/fa6/index.js";
+} from "react-icons/fa6";
 import CopyToClipboard from "~/component/CopyToClipboard";
 import { auth } from "~/services/auth.server";
 import { fetchGPTData } from "~/services/fetchGPTData.server";

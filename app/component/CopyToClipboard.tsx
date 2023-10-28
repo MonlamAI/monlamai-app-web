@@ -1,6 +1,6 @@
 import { Button } from "flowbite-react";
 import { useEffect, useState } from "react";
-import { FaRegCopy } from "react-icons/fa6/index.js";
+import { FaRegCopy } from "react-icons/fa6";
 
 let timer: any;
 

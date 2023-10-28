@@ -1,6 +1,6 @@
-import { AiFillFacebook } from "react-icons/ai/index.js";
-import { AiFillInstagram } from "react-icons/ai/index.js";
-import { AiFillTwitterCircle } from "react-icons/ai/index.js";
+import { AiFillFacebook } from "react-icons/ai";
+import { AiFillInstagram } from "react-icons/ai";
+import { AiFillTwitterCircle } from "react-icons/ai";
 
 function Footer() {
   const logos = [

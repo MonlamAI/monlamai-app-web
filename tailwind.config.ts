@@ -10,10 +10,8 @@ export default {
     fontFamily: {
       Elsie: ["Elsie", "sans-serif"],
       Inter: ["Inter", "sans-serif"],
-      'monlam': ['Monlam', 'sans-serif'],
+      monlam: ["Monlam", "sans-serif"],
     },
   },
-  plugins: [
-    require("flowbite/plugin")
-  ],
+  plugins: [require("flowbite/plugin")],
 } satisfies Config;

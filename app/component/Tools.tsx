@@ -1,7 +1,7 @@
 import { Link } from "@remix-run/react";
-import { BsGlobe2, BsFillVolumeUpFill } from "react-icons/bs/index.js";
-import { FaAssistiveListeningSystems } from "react-icons/fa/index.js";
-import { AiFillFileText } from "react-icons/ai/index.js";
+import { BsGlobe2, BsFillVolumeUpFill } from "react-icons/bs";
+import { FaAssistiveListeningSystems } from "react-icons/fa";
+import { AiFillFileText } from "react-icons/ai";
 type ModalType = {
   icon: any;
   name: string;

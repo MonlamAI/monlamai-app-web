@@ -1,5 +1,5 @@
 import { Button, Card, Label, Spinner } from "flowbite-react";
-import { BsFillStopFill, BsFillMicFill } from "react-icons/bs/index.js";
+import { BsFillStopFill, BsFillMicFill } from "react-icons/bs";
 import { useState, useRef } from "react";
 import { type LoaderFunction, ActionFunction, json } from "@remix-run/node";
 import { MetaFunction, useFetcher } from "@remix-run/react";

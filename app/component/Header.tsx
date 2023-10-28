@@ -1,9 +1,9 @@
 import { Form, Link, NavLink, useLoaderData } from "@remix-run/react";
 import { Dropdown } from "flowbite-react";
 import { useState } from "react";
-import { HiLogout } from "react-icons/hi/index.js";
-import { GiHamburgerMenu } from "react-icons/gi/index.js";
-import { RxCross1 } from "react-icons/rx/index.js";
+import { HiLogout } from "react-icons/hi";
+import { GiHamburgerMenu } from "react-icons/gi";
+import { RxCross1 } from "react-icons/rx";
 function Header() {
   const { user } = useLoaderData();
   const [showMenu, setShowMenu] = useState(false);
