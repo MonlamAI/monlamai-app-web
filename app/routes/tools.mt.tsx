@@ -1,33 +1,14 @@
-import type {
-  ActionArgs,
-  LoaderFunctionArgs,
-  MetaFunction,
-} from "@remix-run/node";
-import { defer, json } from "@remix-run/node";
-import {
-  Await,
-  useFetcher,
-  useLoaderData,
-  useSearchParams,
-} from "@remix-run/react";
-import { Button, Card, Label, Radio, Spinner, Textarea } from "flowbite-react";
-import { useState, useRef, useEffect, Suspense } from "react";
-import {
-  FaArrowRightArrowLeft,
-  FaRegThumbsDown,
-  FaRegThumbsUp,
-} from "react-icons/fa6";
+import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
+import { useFetcher } from "@remix-run/react";
+import { Card, Spinner, Textarea } from "flowbite-react";
+import { useState, useRef } from "react";
+import { FaArrowRightArrowLeft } from "react-icons/fa6";
 import CopyToClipboard from "~/component/CopyToClipboard";
 import { auth } from "~/services/auth.server";
-import { fetchGPTData } from "~/services/fetchGPTData.server";
-import {
-  englishReplaces,
-  tibetanReplaces,
-} from "~/component/utils/replace.server";
 import ReactionButtons from "~/component/ReactionButtons";
-import { meta as meta_data } from "~/root";
 import EachParagraph from "~/component/EachParagraph";
 import useDebounce from "~/component/hooks/useDebounceState";
+import { motion } from "framer-motion";
 const langLabels = {
   bo: "བོད་སྐད།",
   en: "English",
@@ -97,29 +78,38 @@ export default function Index() {
         ཡིག་སྒྱུར་རིག་ནུས།
       </h1>
       <div className="flex justify-between items-center">
-        <div
+        <motion.div
           className={`inline-block w-32 text-lg text-gray-500 ${
             sourceLang == "en" && "font-Inter text-xl"
           } ${sourceLang == "bo" && "text-lg leading-loose"}`}
+          exit={{ opacity: 0 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
         >
           {langLabels[sourceLang]}
-        </div>
+        </motion.div>
 
-        <button
+        <motion.button
           className="group flex items-center justify-center p-0.5 text-center font-medium relative focus:z-10 focus:outline-none text-white bg-cyan-700 border border-transparent enabled:hover:bg-cyan-800 focus:ring-cyan-300 dark:bg-cyan-600 dark:enabled:hover:bg-cyan-700 dark:focus:ring-cyan-800 rounded-full focus:ring-2 py-1 px-3"
           onClick={handleLangSwitch}
+          initial={{ rotate: 0 }}
+          animate={{ rotate: isRotated ? 180 : 0 }}
+          transition={{ duration: 0.3 }}
         >
           <FaArrowRightArrowLeft size="20px" />
-        </button>
+        </motion.button>
 
-        <div
+        <motion.div
           className={`inline-block w-32 text-lg text-right text-gray-500
           ${sourceLang != "en" && "font-Inter text-xl"} ${
             sourceLang != "bo" && "text-lg leading-loose"
           }`}
+          exit={{ opacity: 0 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
         >
           {langLabels[targetLang]}
-        </div>
+        </motion.div>
       </div>
 
       <div className="mt-3 flex flex-col md:flex-row md:h-[55vh] gap-5">

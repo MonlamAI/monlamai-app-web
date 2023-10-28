@@ -3,6 +3,7 @@ import { Form, Link } from "@remix-run/react";
 import { Button } from "flowbite-react";
 import { TypeAnimation } from "react-type-animation";
 import { auth } from "~/services/auth.server";
+import { motion } from "framer-motion";
 export const loader: LoaderFunction = async ({ request }) => {
   const user = await auth.isAuthenticated(request, {
     successRedirect: "/",
@@ -26,7 +27,10 @@ function login() {
     2000,
   ];
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
       className="flex w-screen flex-col md:grid md:grid-cols-2 lg:grid-cols-[60%_40%]
    min-h-[100dvh]"
     >
@@ -52,9 +56,11 @@ function login() {
           <img src="/assets/buddha.png" alt="monalm" />
           <div className="flex-col justify-center items-center">
             <Form method="post" action="/auth0">
-              <Button className="px-10" type="submit">
-                ཐོ་ཞུགས།
-              </Button>
+              <motion.div whileHover={{ scale: 1.1 }}>
+                <Button className="px-10" type="submit">
+                  ཐོ་ཞུགས།
+                </Button>
+              </motion.div>
             </Form>
           </div>
         </div>
@@ -77,7 +83,7 @@ function login() {
           </Link>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 

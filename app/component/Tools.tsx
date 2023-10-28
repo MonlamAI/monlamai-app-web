@@ -2,6 +2,7 @@ import { Link } from "@remix-run/react";
 import { BsGlobe2, BsFillVolumeUpFill } from "react-icons/bs";
 import { FaAssistiveListeningSystems } from "react-icons/fa";
 import { AiFillFileText } from "react-icons/ai";
+import { motion } from "framer-motion";
 type ModalType = {
   icon: any;
   name: string;
@@ -69,7 +70,10 @@ function EachModel({ model }: EachProps) {
 
   return (
     <Link prefetch="intent" to={"/tools/" + link}>
-      <div className="rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800 shadow-lg hover:border-blue-600 hover:border-2 h-full flex flex-col gap-10 p-8 cursor-pointer">
+      <motion.div
+        whileHover={{ scale: 0.95 }}
+        className="rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800 shadow-lg hover:border-blue-600 hover:border-2 h-full flex flex-col gap-10 p-8 cursor-pointer"
+      >
         <div
           style={{ fontSize: 35, color: color }}
           className="flex justify-center"
@@ -78,7 +82,7 @@ function EachModel({ model }: EachProps) {
         </div>
         <h2 className="text-xl">{name}</h2>
         <p className="text-gray-400">{desc}</p>
-      </div>
+      </motion.div>
     </Link>
   );
 }

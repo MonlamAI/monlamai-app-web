@@ -1,5 +1,6 @@
 import { Await, useFetcher } from "@remix-run/react";
 import { Suspense, useEffect } from "react";
+import { motion } from "framer-motion";
 function EachParagraph({
   source,
   lang,
@@ -32,7 +33,11 @@ function EachParagraph({
       >
         {(res) => {
           if (res.error) return <p className="text-red-400">{res.error}</p>;
-          return <p>{res?.translation}</p>;
+          return (
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+              {res?.translation}
+            </motion.p>
+          );
         }}
       </Await>
     </Suspense>

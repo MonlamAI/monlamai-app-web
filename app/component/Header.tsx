@@ -4,6 +4,7 @@ import { useState } from "react";
 import { HiLogout } from "react-icons/hi";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { RxCross1 } from "react-icons/rx";
+import { motion, AnimatePresence } from "framer-motion";
 function Header() {
   const { user } = useLoaderData();
   const [showMenu, setShowMenu] = useState(false);
@@ -60,19 +61,25 @@ function Header() {
                 />
               )}
             >
-              <div>
-                <Dropdown.Header>
-                  <span className="block text-sm">{user.username}</span>
-                  <span className="block truncate text-xs font-medium">
-                    {user.email}
-                  </span>
-                </Dropdown.Header>
-                <Dropdown.Item icon={HiLogout}>
-                  <Form method="post" action="/logout">
-                    <button>logout</button>
-                  </Form>
-                </Dropdown.Item>
-              </div>
+              <AnimatePresence>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                >
+                  <Dropdown.Header>
+                    <span className="block text-sm">{user.username}</span>
+                    <span className="block truncate text-xs font-medium">
+                      {user.email}
+                    </span>
+                  </Dropdown.Header>
+                  <Dropdown.Item icon={HiLogout}>
+                    <Form method="post" action="/logout">
+                      <button>logout</button>
+                    </Form>
+                  </Dropdown.Item>
+                </motion.div>
+              </AnimatePresence>
             </Dropdown>
           </div>
         </div>
