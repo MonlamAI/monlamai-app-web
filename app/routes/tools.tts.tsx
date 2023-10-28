@@ -10,6 +10,7 @@ import { LoaderFunctionArgs, type ActionFunction } from "@remix-run/node";
 import { useRef, useState } from "react";
 import { auth } from "~/services/auth.server";
 import ReactionButtons from "~/component/ReactionButtons";
+import inputReplace from "~/component/utils/ttsReplace.server";
 
 const charLimit = 500;
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -40,7 +41,7 @@ export const action: ActionFunction = async ({ request }) => {
     method: "POST",
     headers,
     body: JSON.stringify({
-      inputs: userInput,
+      inputs: inputReplace(userInput),
     }),
   });
   const data = await response.json();
