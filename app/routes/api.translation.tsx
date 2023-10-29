@@ -1,7 +1,7 @@
 import { LoaderFunctionArgs, defer } from "@remix-run/node";
 import {
-  bo_en_english_replace,
-  bo_en_tibetan_replace,
+  bo_en_english_replaces,
+  bo_en_tibetan_replaces,
   en_bo_english_replaces,
   en_bo_tibetan_replaces,
 } from "~/component/utils/replace.server";
@@ -74,7 +74,7 @@ async function translate(text: String, sourceLang: String, targetLang: String) {
       translation:
         sourceLang === "en"
           ? en_bo_tibetan_replaces(translation)
-          : bo_en_english_replace(translation),
+          : bo_en_english_replaces(translation),
       disclaimer,
     };
   } catch (error) {
@@ -94,7 +94,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     source = await fetchGPTData(prompt);
   }
   if (lang === "bo") {
-    source = bo_en_tibetan_replace(source!);
+    source = bo_en_tibetan_replaces(source!);
   }
 
   if (source) {
