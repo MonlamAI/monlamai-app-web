@@ -1823,6 +1823,9 @@ export function bo_en_english_replaces(text: string) {
   result = result.replaceAll(/event: message data: /g, "");
   result = result.replaceAll("' event: message data: '", "");
   
+
+  
+  
   return result;
 }
 
