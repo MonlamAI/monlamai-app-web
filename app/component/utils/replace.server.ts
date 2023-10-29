@@ -22,6 +22,8 @@ export function tibetanReplaces(text: string) {
   result = result.replaceAll("བྱ་བྱིའུ་རྣམས།", "བྱ་བྱིའུ།");
   result = result.replaceAll("ཀྱིས་ངེས་ཚིག་མི་སྟེར་བ་", "");
   result = result.replaceAll("ལ་ངེས་ཚིག་མི་སྟེར་བ", "");
+  
+  //MITRA
   //ཀྱིས་ངེས་ཚིག་མི་སྟེར་བ་
   //ལ་ངེས་ཚིག་མི་སྟེར་བ
   result = result.replaceAll("༸ཏཱ་ལའི་བླ་མས་", "ཁོང་གིས");
@@ -1010,7 +1012,8 @@ export function tibetanReplaces(text: string) {
    result = result.replaceAll("སྟོང་ཉིས་བརྒྱ་ལྔ་བཅུ", "ཉིས་སྟོང་ལྔ་བརྒྱ");
    result = result.replaceAll("༸ཏཱ་ལའི་བླ་མ་དགོངས་པ་རྫོགས", "སྐུ་གཤེགས");
   result = result.replaceAll("༸ཏཱ་ལའི་བླ་མ་གཤེགས", "སྐུ་གཤེགས");
-   result = result.replaceAll("༸ཏཱ་ལའི་བླ་མའི་དགོངས་པ་རྫོགས་ཚུལ་", "ཁོ་སྐུ་གཤེགས་པའི་སྐོར་");
+  result = result.replaceAll("༸ཏཱ་ལའི་བླ་མའི་དགོངས་པ་རྫོགས་ཚུལ་", "ཁོ་སྐུ་གཤེགས་པའི་སྐོར་");
+  result = result.replaceAll("MITRA", "Monlam AI");
   //ཏཱ་ལའི་བླ་མ་མཆོག་གིས
   //སྲིད་འཛིན་སྐུ་ཕྲེང་བཞི་བཅུ་ང་བཞི
   result = result.replaceAll(/(\d+)([^\d]+)/g, "$1 $2");
