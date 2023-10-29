@@ -13,8 +13,19 @@ export function en_bo_tibetan_replaces(text: string) {
   result = result.replaceAll("ཨ་ཧེ་རི་ཁ", "ཨ་ཧྥི་རི་ཁ");
   result = result.replaceAll("༸ཏཱ་ལའི་བླ་མ་དགོངས་པ་རྫོགས", "དགོངས་པ་རྫོགས");
   result = result.replaceAll("༸ཏཱ་ལའི་བླ་མ་གཤེགས", "དགོངས་པ་རྫོགས");
+  result = result.replaceAll("༸ཏཱ་ལའི་བླ་མ་སྐུ་གཤེགས", "སྐུ་གཤེགས");
   result = result.replace(/^། /, "");
-  //༄༅། །
+  result = result.replaceAll("ངེས་ཚིག་མེད་པའི་", "");
+  result = result.replaceAll("ངེས་ཚིག་མེད་པ་", "");
+  result = result.replaceAll("ལྗོན་ཤིང་རྣམས།", "ལྗོན་ཤིང་།");
+  result = result.replaceAll("མེ་ཏོག་རྣམས།", "མེ་ཏོག།");
+  result = result.replaceAll("བྱ་བྱིའུ་རྣམས།", "བྱ་བྱིའུ།");
+  result = result.replaceAll("ཀྱིས་ངེས་ཚིག་མི་སྟེར་བ་", "");
+  result = result.replaceAll("ལ་ངེས་ཚིག་མི་སྟེར་བ", "");
+
+  //MITRA
+  //ཀྱིས་ངེས་ཚིག་མི་སྟེར་བ་
+  //ལ་ངེས་ཚིག་མི་སྟེར་བ
   result = result.replaceAll("༸ཏཱ་ལའི་བླ་མས་", "ཁོང་གིས");
   result = result.replaceAll("སྐེ་རགས་དང་རྒྱ་ལམ", "རྒྱུད་གཅིག་ལམ་གཅིག");
   result = result.replaceAll("སྐེ་རགས་དང་རྒྱ་ལམ་གྱི", "རྒྱུད་གཅིག་ལམ་གཅིག་གི");
@@ -24,6 +35,7 @@ export function en_bo_tibetan_replaces(text: string) {
     "ལས་འགུལ་གོ་སྒྲིག་མི་བྱེད་"
   );
   result = result.replaceAll("དྲུག་ཅུ་གྱ་བརྒྱད", "དྲུག་ཅུ་རེ་བརྒྱད");
+  result = result.replaceAll("ཡག་ག", "ཡག་པོ");
   //Beltདང་ལམ་གྱི
   //སྐེ་རགས་དང་རྒྱ་ལམ་གྱི་འཆར་གཞི
   result = result.replaceAll("སེན་ཧ་རན་སེ་སི་ཁོ", "སན་ཧྥན་སི་སུ་ཁོ");
@@ -964,8 +976,9 @@ export function en_bo_tibetan_replaces(text: string) {
   result = result.replaceAll("ཨིན་ཌི་ཊེ་", "");
 
   result = result.replaceAll("ཨིན་ཆི་ཐེ་རུ་", "ལ་");
+  result = result.replaceAll("ཟས་སྦྱོར་གྱི་ཕྲ་ཕུང་", "ཕྲ་ཕུང་");
 
-  //ཕྱི་ལོ་༡༩༥༩ ལོའི་
+  //་ཟས་སྦྱོར་གྱི་ཕྲ་ཕུང་
 
   result = result.replaceAll("བརྡ་བཚོགས་", "བརྡ་བཏང་");
   result = result.replaceAll("སྒ་ཟ", "སྒ་ཛ");
@@ -1009,10 +1022,12 @@ export function en_bo_tibetan_replaces(text: string) {
   result = result.replaceAll("སྟོང་ཉིས་བརྒྱ་ལྔ་བཅུ", "ཉིས་སྟོང་ལྔ་བརྒྱ");
   result = result.replaceAll("༸ཏཱ་ལའི་བླ་མ་དགོངས་པ་རྫོགས", "སྐུ་གཤེགས");
   result = result.replaceAll("༸ཏཱ་ལའི་བླ་མ་གཤེགས", "སྐུ་གཤེགས");
+
   result = result.replaceAll(
     "༸ཏཱ་ལའི་བླ་མའི་དགོངས་པ་རྫོགས་ཚུལ་",
     "ཁོ་སྐུ་གཤེགས་པའི་སྐོར་"
   );
+  result = result.replaceAll("MITRA", "Monlam AI");
   //ཏཱ་ལའི་བླ་མ་མཆོག་གིས
   //སྲིད་འཛིན་སྐུ་ཕྲེང་བཞི་བཅུ་ང་བཞི
   result = result.replaceAll(/(\d+)([^\d]+)/g, "$1 $2");
