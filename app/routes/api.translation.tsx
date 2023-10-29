@@ -1,7 +1,9 @@
 import { LoaderFunctionArgs, defer } from "@remix-run/node";
 import {
-  englishReplaces,
-  tibetanReplaces,
+  bo_en_english_replace,
+  bo_en_tibetan_replace,
+  en_bo_english_replaces,
+  en_bo_tibetan_replaces,
 } from "~/component/utils/replace.server";
 import { fetchGPTData } from "~/services/fetchGPTData.server";
 
@@ -69,7 +71,10 @@ async function translate(text: String, sourceLang: String, targetLang: String) {
     }
     const { translation, disclaimer } = parsedResponse;
     return {
-      translation: tibetanReplaces(translation),
+      translation:
+        sourceLang === "en"
+          ? en_bo_tibetan_replaces(translation)
+          : bo_en_english_replace(translation),
       disclaimer,
     };
   } catch (error) {
@@ -81,13 +86,18 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
   const lang = url.searchParams.get("lang");
   let source = url.searchParams.get("q");
+  let targetLang = lang === "en" ? "bo" : "en";
+
   if (lang === "en") {
-    source = englishReplaces(source!);
+    source = en_bo_english_replaces(source!);
     let prompt = `replace all the abbreviations with full form and preserve newlines, "${source}"  `;
     source = await fetchGPTData(prompt);
   }
+  if (lang === "bo") {
+    source = bo_en_tibetan_replace(source!);
+  }
+
   if (source) {
-    let targetLang = lang === "en" ? "bo" : "en";
     let result = translate(source, lang, targetLang);
 
     return defer({

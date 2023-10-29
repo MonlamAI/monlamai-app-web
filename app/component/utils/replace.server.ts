@@ -1,4 +1,4 @@
-export function tibetanReplaces(text: string) {
+export function en_bo_tibetan_replaces(text: string) {
   let result = text;
   result = result.replaceAll("པ་འི", "པའི");
   result = result.replaceAll("་པ་ར་", "་པར་");
@@ -19,7 +19,10 @@ export function tibetanReplaces(text: string) {
   result = result.replaceAll("སྐེ་རགས་དང་རྒྱ་ལམ", "རྒྱུད་གཅིག་ལམ་གཅིག");
   result = result.replaceAll("སྐེ་རགས་དང་རྒྱ་ལམ་གྱི", "རྒྱུད་གཅིག་ལམ་གཅིག་གི");
   result = result.replaceAll("Beltདང་ལམ་གྱི", "རྒྱུད་གཅིག་ལམ་གཅིག་གི");
-  result = result.replaceAll("ལས་འགུལ་མི་གོ་སྒྲིག་བྱེད་", "ལས་འགུལ་གོ་སྒྲིག་མི་བྱེད་");
+  result = result.replaceAll(
+    "ལས་འགུལ་མི་གོ་སྒྲིག་བྱེད་",
+    "ལས་འགུལ་གོ་སྒྲིག་མི་བྱེད་"
+  );
   result = result.replaceAll("དྲུག་ཅུ་གྱ་བརྒྱད", "དྲུག་ཅུ་རེ་བརྒྱད");
   //Beltདང་ལམ་གྱི
   //སྐེ་རགས་དང་རྒྱ་ལམ་གྱི་འཆར་གཞི
@@ -989,18 +992,27 @@ export function tibetanReplaces(text: string) {
   result = result.replaceAll("སྒ་ཟ", "སྒ་ཛ");
   result = result.replaceAll("སྒ་ས", "སྒ་ཛ");
   result = result.replaceAll("དགྲང་ངར་ཆེ་བ", "ནར་འགྱངས་ཆེ་བ");
-  result = result.replaceAll("༸ཏཱ་ལའི་བླ་མ་སྐུ་ཕྲེང་བཅུ་བཞི་པ་ཆེན་པོ། ཕྱི་ལོ་༡༩༨༩ ལོའི་ཟླ་༡༠ ཚེས་༡༥ ཉིན།", "");
-  //༸ཏཱ་ལའི་བླ་མ་སྐུ་ཕྲེང་བཅུ་བཞི་པ་ཆེན་པོ། ཕྱི་ལོ་༡༩༨༩ ལོའི་ཟླ་༡༠ ཚེས་༡༥ ཉིན། 
+  result = result.replaceAll(
+    "༸ཏཱ་ལའི་བླ་མ་སྐུ་ཕྲེང་བཅུ་བཞི་པ་ཆེན་པོ། ཕྱི་ལོ་༡༩༨༩ ལོའི་ཟླ་༡༠ ཚེས་༡༥ ཉིན།",
+    ""
+  );
+  //༸ཏཱ་ལའི་བླ་མ་སྐུ་ཕྲེང་བཅུ་བཞི་པ་ཆེན་པོ། ཕྱི་ལོ་༡༩༨༩ ལོའི་ཟླ་༡༠ ཚེས་༡༥ ཉིན།
   result = result.replaceAll("་མཉན་དུ་ཡོད་པ་ན་", "་མཉན་ཡོད་དུ་");
-  result = result.replaceAll("ཆེན་པོ་མ་ངེས་པ་དང་ཐབས་ཅིག་", "ཆེན་པོ་དང་ཐབས་ཅིག་");
+  result = result.replaceAll(
+    "ཆེན་པོ་མ་ངེས་པ་དང་ཐབས་ཅིག་",
+    "ཆེན་པོ་དང་ཐབས་ཅིག་"
+  );
   result = result.replaceAll("མ་ངེས་པའི་", "");
   result = result.replaceAll("ཨིན་ཇིའི་དམག་འཁྲུག་དང་།", "");
   result = result.replaceAll("དབུས་ཤར་ཨེན་ཊེ་ཡ", "དཀྱིལ་ཤར་ཨེ་ཤ་ཡ");
-   result = result.replaceAll("ང་ཀྱི་", "ང་གི་");
-   result = result.replaceAll("སྟོང་ཉིས་བརྒྱ་ལྔ་བཅུ", "ཉིས་སྟོང་ལྔ་བརྒྱ");
-   result = result.replaceAll("༸ཏཱ་ལའི་བླ་མ་དགོངས་པ་རྫོགས", "སྐུ་གཤེགས");
+  result = result.replaceAll("ང་ཀྱི་", "ང་གི་");
+  result = result.replaceAll("སྟོང་ཉིས་བརྒྱ་ལྔ་བཅུ", "ཉིས་སྟོང་ལྔ་བརྒྱ");
+  result = result.replaceAll("༸ཏཱ་ལའི་བླ་མ་དགོངས་པ་རྫོགས", "སྐུ་གཤེགས");
   result = result.replaceAll("༸ཏཱ་ལའི་བླ་མ་གཤེགས", "སྐུ་གཤེགས");
-   result = result.replaceAll("༸ཏཱ་ལའི་བླ་མའི་དགོངས་པ་རྫོགས་ཚུལ་", "ཁོ་སྐུ་གཤེགས་པའི་སྐོར་");
+  result = result.replaceAll(
+    "༸ཏཱ་ལའི་བླ་མའི་དགོངས་པ་རྫོགས་ཚུལ་",
+    "ཁོ་སྐུ་གཤེགས་པའི་སྐོར་"
+  );
   //ཏཱ་ལའི་བླ་མ་མཆོག་གིས
   //སྲིད་འཛིན་སྐུ་ཕྲེང་བཞི་བཅུ་ང་བཞི
   result = result.replaceAll(/(\d+)([^\d]+)/g, "$1 $2");
@@ -1008,7 +1020,7 @@ export function tibetanReplaces(text: string) {
   return result;
 }
 
-export function englishReplaces(text: string) {
+export function en_bo_english_replaces(text: string) {
   let result = text;
   result += ".";
   result = result.replaceAll("..", ".");
@@ -1780,6 +1792,14 @@ export function englishReplaces(text: string) {
   result = result.replaceAll("SARD ", "Social Development Fund ");
   result = result.replaceAll("TCRC ", "Tibetan Computer Resource Centre ");
   result = result.replaceAll("TPI ", "Tibet Policy Institute ");
+  return result;
+}
+
+export function bo_en_tibetan_replace(text: string) {
+  return text;
+}
+export function bo_en_english_replace(text: string) {
+  let result = text.replaceAll("MITRA", "Monlam AI");
   return result;
 }
 
