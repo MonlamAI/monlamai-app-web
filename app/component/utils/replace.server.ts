@@ -1810,10 +1810,10 @@ export function en_bo_english_replaces(text: string) {
   return result;
 }
 
-export function bo_en_tibetan_replace(text: string) {
+export function bo_en_tibetan_replaces(text: string) {
   return text;
 }
-export function bo_en_english_replace(text: string) {
+export function bo_en_english_replaces(text: string) {
   let result = text.replaceAll("MITRA", "Monlam AI");
   return result;
 }
