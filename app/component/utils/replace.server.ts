@@ -1820,6 +1820,8 @@ export function bo_en_tibetan_replaces(text: string) {
 
 export function bo_en_english_replaces(text: string) {
   let result = text.replaceAll("MITRA", "Monlam AI");
+  result = result.replaceAll("' event: message data: '", "");
+  
   return result;
 }
 
