@@ -16,6 +16,7 @@ function EachParagraph({
     }
   }, [source, lang]);
   let data = fetcher.data;
+  if (source === "" || source === "\n") return null;
   if (!data)
     return (
       <div role="status" className="max-w-sm animate-pulse">

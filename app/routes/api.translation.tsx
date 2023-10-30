@@ -7,6 +7,20 @@ import {
 } from "~/component/utils/replace.server";
 import { fetchGPTData } from "~/services/fetchGPTData.server";
 
+function parseWhenEnglishResponse(responseText: string) {
+  let result = responseText.split("\n");
+
+  result = result.map((item) => {
+    let result = item.replace("event: message", "");
+    result = result.replace("data: ", "");
+    result = result.replace(/(^\'|\'$)/g, "");
+    return result;
+  });
+  // let finalResult = result.filter((item) => item !== "");
+
+  return result.join("");
+}
+
 function parseApiResponse(apiResponse: String) {
   const translationStartIndex = apiResponse.indexOf("data: ") + 7;
   const translationEndIndex = apiResponse.indexOf(
@@ -30,7 +44,7 @@ function parseApiResponse(apiResponse: String) {
         disclaimerStartIndex,
         disclaimerEndIndex
       );
-
+      console.log(disclaimer, translationOutput);
       return {
         translation: translationOutput.trim(),
         disclaimer: disclaimer.trim(),
@@ -66,15 +80,21 @@ async function translate(text: String, sourceLang: String, targetLang: String) {
 
     const responseData = await response.text();
     const parsedResponse = parseApiResponse(responseData);
+
     if (!parsedResponse) {
       return { error: "ཡི་གེ་མང་བ་ཞིག་སྐྱོན་རོགས། [input too short]" };
     }
     const { translation, disclaimer } = parsedResponse;
+
+    let parseEnglishRes = parseWhenEnglishResponse(translation);
+    if (parseEnglishRes.includes("Your request is a little bit too short.")) {
+      return { error: "ཡི་གེ་མང་བ་ཞིག་སྐྱོན་རོགས། [input too short]" };
+    }
     return {
       translation:
         sourceLang === "en"
           ? en_bo_tibetan_replaces(translation)
-          : bo_en_english_replaces(translation),
+          : bo_en_english_replaces(parseEnglishRes),
       disclaimer,
     };
   } catch (error) {
