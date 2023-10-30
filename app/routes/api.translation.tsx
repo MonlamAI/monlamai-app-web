@@ -82,7 +82,7 @@ async function translate(text: String, sourceLang: String, targetLang: String) {
     const parsedResponse = parseApiResponse(responseData);
 
     if (!parsedResponse) {
-      return { error: "ཡི་གེ་མང་བ་ཞིག་སྐྱོན་རོགས། [input too short]" };
+      return { error: "api responce couldnot be parsed" };
     }
     const { translation, disclaimer } = parsedResponse;
 
