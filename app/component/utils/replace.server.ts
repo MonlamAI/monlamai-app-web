@@ -1792,6 +1792,7 @@ export function en_bo_tibetan_replaces(text: string) {
     "ཆེན་པོ་མ་ངེས་པ་དང་ཐབས་ཅིག་",
     "ཆེན་པོ་དང་ཐབས་ཅིག་"
   );
+  result = result.replaceAll("མཚན་ཉིད་ངེས་གསལ་མེད་པའི་སྒོ་ནས་", "");
   result = result.replaceAll("མ་ངེས་པའི་", "");
   result = result.replaceAll("ཨིན་ཇིའི་དམག་འཁྲུག་དང་།", "");
   result = result.replaceAll("དབུས་ཤར་ཨེན་ཊེ་ཡ", "དཀྱིལ་ཤར་ཨེ་ཤ་ཡ");
@@ -1799,6 +1800,11 @@ export function en_bo_tibetan_replaces(text: string) {
   result = result.replaceAll("སྟོང་ཉིས་བརྒྱ་ལྔ་བཅུ", "ཉིས་སྟོང་ལྔ་བརྒྱ");
   result = result.replaceAll("༸ཏཱ་ལའི་བླ་མ་དགོངས་པ་རྫོགས", "སྐུ་གཤེགས");
   result = result.replaceAll("༸ཏཱ་ལའི་བླ་མ་གཤེགས", "སྐུ་གཤེགས");
+  result = result.replaceAll("མཚན་ཉིད་ངེས་གསལ་མེད་པའི་", "");
+  result = result.replaceAll("མཚན་ཉིད་མ་ཚང་བའི་", "");
+  result = result.replaceAll("༸ཏཱ་ལའི་བླ་མ་དྲན་གསོའི་དུས་དྲན་", "དྲན་གསོའི་དུས་དྲན་");
+  result = result.replaceAll("ངེས་གཏན་བྲལ་བའི་", "");
+  result = result.replaceAll("༡༩༥༩ ལོའི་", "");
 
   result = result.replaceAll(
     "༸ཏཱ་ལའི་བླ་མའི་དགོངས་པ་རྫོགས་ཚུལ་",
@@ -1820,6 +1826,12 @@ export function bo_en_tibetan_replaces(text: string) {
 
 export function bo_en_english_replaces(text: string) {
   let result = text.replaceAll("MITRA", "Monlam AI");
+  result = result.replaceAll(/event: message data: /g, "");
+  result = result.replaceAll("' event: message data: '", "");
+  
+
+  
+  
   return result;
 }
 
