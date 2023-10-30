@@ -799,6 +799,8 @@ export function en_bo_tibetan_replaces(text: string) {
   result = result.replaceAll("བྱ་བྱིའུ་རྣམས།", "བྱ་བྱིའུ།");
   result = result.replaceAll("ཀྱིས་ངེས་ཚིག་མི་སྟེར་བ་", "");
   result = result.replaceAll("ལ་ངེས་ཚིག་མི་སྟེར་བ", "");
+  result = result.replaceAll("<unk>", "");
+  result = result.replaceAll("[DONE]", "");
 
   //MITRA
   //ཀྱིས་ངེས་ཚིག་མི་སྟེར་བ་
