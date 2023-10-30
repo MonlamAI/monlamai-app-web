@@ -9,6 +9,7 @@ import ReactionButtons from "~/component/ReactionButtons";
 import EachParagraph from "~/component/EachParagraph";
 import useDebounce from "~/component/hooks/useDebounceState";
 import { motion } from "framer-motion";
+import useLocalStorage from "~/component/hooks/useLocaleStorage";
 const langLabels = {
   bo: "བོད་སྐད།",
   en: "English",
@@ -36,8 +37,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 export default function Index() {
-  const [sourceLang, setSourceLang] = useState<"en" | "bo">("en");
-  const [targetLang, setTargetLang] = useState<"en" | "bo">("bo");
+  const [sourceLang, setSourceLang] = useLocalStorage("inputLang", "en");
+  const [targetLang, setTargetLang] = useLocalStorage("outputLang", "bo");
   const [sourceText, setSourceText] = useState("");
   const [isRotated, setIsRotated] = useState(false);
   const debouncedSearchTerm = useDebounce(sourceText, 1000);
@@ -159,6 +160,7 @@ export default function Index() {
                 }`}
               >
                 {text_array.map((text, index) => {
+                  if (text === "" || text === "\n") return null;
                   return (
                     <EachParagraph
                       key={"returndata_" + index}

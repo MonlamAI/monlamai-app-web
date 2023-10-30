@@ -15,8 +15,7 @@ function EachParagraph({
       fetcher.load(url);
     }
   }, [source, lang]);
-  let data = fetcher.data;
-  if (source === "" || source === "\n") return null;
+  let data = fetcher?.data;
   if (!data)
     return (
       <div role="status" className="max-w-sm animate-pulse">
@@ -33,7 +32,7 @@ function EachParagraph({
         errorElement={<p>Error loading package location!</p>}
       >
         {(res) => {
-          if (res.error) return <p className="text-red-400">{res.error}</p>;
+          if (res?.error) return <p className="text-red-400">{res?.error}</p>;
           return (
             <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
               {res?.translation}
