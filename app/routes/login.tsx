@@ -27,10 +27,7 @@ function login() {
     2000,
   ];
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
+    <div
       className="flex w-screen flex-col md:grid md:grid-cols-2 lg:grid-cols-[60%_40%]
    min-h-[100dvh]"
     >
@@ -83,7 +80,7 @@ function login() {
           </Link>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 

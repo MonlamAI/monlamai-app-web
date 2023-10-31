@@ -1,13 +1,7 @@
 import { Button, Card, Spinner, Textarea } from "flowbite-react";
-import {
-  Form,
-  MetaFunction,
-  useActionData,
-  useFetcher,
-  useNavigation,
-} from "@remix-run/react";
+import { MetaFunction, useFetcher } from "@remix-run/react";
 import { LoaderFunctionArgs, type ActionFunction } from "@remix-run/node";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { auth } from "~/services/auth.server";
 import ReactionButtons from "~/component/ReactionButtons";
 import inputReplace from "~/component/utils/ttsReplace.server";
@@ -48,10 +42,13 @@ export const action: ActionFunction = async ({ request }) => {
   const { audio_base64 } = data;
   return audio_base64;
 };
-
 export default function Index() {
   const [sourceText, setSourceText] = useState("");
   const fetcher = useFetcher();
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const data = fetcher.data;
+  let sourceUrl = `data:audio/wav;base64,${data}`;
+
   const isActionSubmission = fetcher.state !== "idle";
   const handleReset = () => {
     setSourceText("");
@@ -63,7 +60,6 @@ export default function Index() {
       }
     );
   };
-  const data = fetcher.data;
   let charCount = sourceText?.length;
   let likeFetcher = useFetcher();
 
@@ -126,9 +122,12 @@ export default function Index() {
                 <Spinner />
               ) : (
                 data && (
-                  <audio src={`data:audio/wav;base64,${data}`} controls>
-                    <source />
-                  </audio>
+                  <>
+                    {" "}
+                    <audio src={sourceUrl} controls ref={audioRef}>
+                      <source />
+                    </audio>
+                  </>
                 )
               )}
             </div>

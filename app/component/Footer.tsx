@@ -42,7 +42,7 @@ function Footer() {
                   href={logo.link}
                   target="_blank"
                   rel="noreferrer"
-                  className={`mr-2 hover:underline opacity-40 hover:opacity-100 md:mr-3 transition-all duration-500 text-xl`}
+                  className={`mr-2 hover:underline md:mr-3 transition-all duration-500 text-xl`}
                   style={{ color: logo.color }}
                 >
                   {logo.icon}
