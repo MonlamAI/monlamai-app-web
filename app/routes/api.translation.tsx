@@ -11,9 +11,10 @@ function parseWhenEnglishResponse(responseText: string) {
   let result = responseText.split("\n");
 
   result = result.map((item) => {
-    let result = item.replace("event: message", "");
-    result = result.replace("data: ", "");
-    result = result.replace(/(^\'|\'$)/g, "");
+    let result = item.replaceAll("event: message", "");
+    result = result.replaceAll("data: ", "");
+    result = result.replaceAll(/(^\'|\'$)/g, "");
+    result = result.replaceAll("<unk>", "");
     return result;
   });
   // let finalResult = result.filter((item) => item !== "");
@@ -24,9 +25,9 @@ function parseWhenTibetanResponse(responseText: string) {
   let result = responseText.split("\n");
 
   result = result.map((item) => {
-    let result = item.replace("event: message", "");
-    result = result.replace("data: ", "");
-    result = result.replace(/(^\'|\'$)/g, "");
+    let result = item.replaceAll("event: message", "");
+    result = result.replaceAll("data: ", "");
+    result = result.replaceAll(/(^\'|\'$)/g, "");
     return result;
   });
   // let finalResult = result.filter((item) => item !== "");
