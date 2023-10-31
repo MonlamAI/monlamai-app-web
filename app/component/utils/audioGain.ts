@@ -12,9 +12,7 @@ export function amplifyMedia(mediaElem, multiplier) {
         return result.gain.gain.value;
       },
     };
-
   let compressor = context.createDynamicsCompressor();
-
   // You can tweak these values as per your requirement
   compressor.threshold.value = -50;
   compressor.knee.value = 40;
@@ -25,5 +23,6 @@ export function amplifyMedia(mediaElem, multiplier) {
   result.source.connect(result.gain);
   result.gain.connect(context.destination);
   result.amplify(multiplier);
+
   return result;
 }

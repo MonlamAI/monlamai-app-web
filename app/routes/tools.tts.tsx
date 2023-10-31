@@ -7,6 +7,8 @@ import ReactionButtons from "~/component/ReactionButtons";
 import inputReplace from "~/component/utils/ttsReplace.server";
 import { amplifyMedia } from "~/component/utils/audioGain";
 import useLocalStorage from "~/component/hooks/useLocaleStorage";
+import { AiOutlineCloudDownload } from "react-icons/ai";
+import { AudioVisualizer } from "react-audio-visualize";
 
 const charLimit = 500;
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -52,7 +54,8 @@ export default function Index() {
 
   const data = fetcher.data;
   let sourceUrl = `data:audio/wav;base64,${data}`;
-
+  const [blob, setBlob] = useState<Blob>();
+  const visualizerRef = useRef<HTMLCanvasElement>(null);
   const isActionSubmission = fetcher.state !== "idle";
   const handleVolumeChange = (e) => {
     setVolume(e.target.value);
@@ -74,6 +77,9 @@ export default function Index() {
   useEffect(() => {
     if (audioRef.current && !setting.current && data) {
       setting.current = amplifyMedia(audioRef.current, volume);
+      fetch(sourceUrl)
+        .then((res) => res.blob())
+        .then(setBlob);
     }
   }, [data]);
   function amplify(number) {
@@ -136,24 +142,41 @@ export default function Index() {
         <Card className="w-full lg:w-1/2 max-h-[60vh] flex">
           <div className="w-full flex-1">
             {data && (
-              <div className="flex items-center gap-3">
-                <span className="text-gray-400">སྒྲ་ཤུགས་ཆེ་ཆུང་།</span>
-                <input
-                  type="range"
-                  min={1}
-                  max={10}
-                  step={0.01}
-                  value={volume}
-                  onChange={handleVolumeChange}
-                />{" "}
+              <div className="flex justify-between mx-2">
+                <div className="flex items-center gap-3">
+                  <span className="text-gray-400">སྒྲ་ཤུགས་ཆེ་ཆུང་།</span>
+                  <input
+                    type="range"
+                    min={1}
+                    max={10}
+                    step={0.01}
+                    value={volume}
+                    onChange={handleVolumeChange}
+                  />{" "}
+                </div>
+                <a href={sourceUrl} download="audio-file" className="text-2xl">
+                  <AiOutlineCloudDownload />
+                </a>
               </div>
             )}
-            <div className="h-full flex justify-center items-center">
+            <div className="h-full flex justify-center items-center gap-2">
               {isActionSubmission && <Spinner />}
-
-              <audio src={sourceUrl} controls ref={audioRef} hidden={!data}>
-                <source />
-              </audio>
+              <div className="flex flex-col justify-center items-center">
+                {blob && (
+                  <AudioVisualizer
+                    ref={visualizerRef}
+                    blob={blob}
+                    width={200}
+                    height={75}
+                    barWidth={1}
+                    gap={0}
+                    barColor={"#f76565"}
+                  />
+                )}
+                <audio src={sourceUrl} controls ref={audioRef} hidden={!data}>
+                  <source />
+                </audio>
+              </div>
             </div>
           </div>
           <div className="flex justify-between">

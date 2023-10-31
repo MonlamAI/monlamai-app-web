@@ -76,6 +76,7 @@ function Document({ children }: { children: React.ReactNode }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
         <Links />
+        <script src="/js/circular-audio-wave.min.js"></script>
       </head>
       <body className="inset-0 overflow-y-auto overflow-x-hidden">
         {children}
