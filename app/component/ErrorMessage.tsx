@@ -2,6 +2,7 @@ import { Link } from "@remix-run/react";
 import React from "react";
 
 function ErrorMessage({ error }) {
+  console.log(error);
   return (
     <>
       <div className="py-10 m-auto w-[90%] md:w-[80%]">

@@ -1,6 +1,10 @@
 import { Button, Card, Spinner, Textarea } from "flowbite-react";
 import { MetaFunction, useFetcher } from "@remix-run/react";
-import { LoaderFunctionArgs, type ActionFunction } from "@remix-run/node";
+import {
+  LoaderFunctionArgs,
+  type ActionFunction,
+  LinksFunction,
+} from "@remix-run/node";
 import { useEffect, useRef, useState } from "react";
 import { auth } from "~/services/auth.server";
 import ReactionButtons from "~/component/ReactionButtons";
@@ -8,7 +12,8 @@ import inputReplace from "~/component/utils/ttsReplace.server";
 import { amplifyMedia } from "~/component/utils/audioGain";
 import useLocalStorage from "~/component/hooks/useLocaleStorage";
 import { AiOutlineCloudDownload } from "react-icons/ai";
-import Waveform from "~/component/WaveSurfer";
+import ErrorMessage from "~/component/ErrorMessage";
+import AudioPlayer from "~/component/AudioPlayer";
 const charLimit = 500;
 export async function loader({ request }: LoaderFunctionArgs) {
   let userdata = await auth.isAuthenticated(request, {
@@ -49,10 +54,12 @@ export default function Index() {
   const [sourceText, setSourceText] = useState("");
   const [volume, setVolume] = useLocalStorage("volume", 1);
   const fetcher = useFetcher();
-  const audioRef = useRef<HTMLAudioElement>(null);
-  const data = fetcher.data;
-  let sourceUrl = `data:audio/wav;base64,${data}`;
   const isActionSubmission = fetcher.state !== "idle";
+  const data = fetcher.data;
+  let sourceUrl = data ? `data:audio/wav;base64,${data}` : null;
+  const audioRef = useRef<HTMLAudioElement>(null);
+  let setting = useRef();
+
   const handleVolumeChange = (e) => {
     setVolume(e.target.value);
     amplify(e.target.value);
@@ -69,7 +76,6 @@ export default function Index() {
   };
   let charCount = sourceText?.length;
   let likeFetcher = useFetcher();
-  let setting = useRef();
   useEffect(() => {
     if (audioRef.current && !setting.current && data) {
       setting.current = amplifyMedia(audioRef.current, volume);
@@ -149,17 +155,11 @@ export default function Index() {
                     onChange={handleVolumeChange}
                   />{" "}
                 </div>
-                <a href={sourceUrl} download="audio-file" className="text-2xl">
-                  <AiOutlineCloudDownload />
-                </a>
               </div>
             )}
-            <div className="h-full flex justify-center items-center gap-2">
-              {isActionSubmission && <Spinner />}
-
-              <div className="flex flex-col justify-center items-center">
-                <Waveform url={sourceUrl} ref={audioRef} data={data} />
-              </div>
+            {isActionSubmission && <Spinner />}
+            <div className="flex-1 h-full flex justify-center items-center">
+              <AudioPlayer ref={audioRef} sourceUrl={sourceUrl} />
             </div>
           </div>
           <div className="flex justify-between">

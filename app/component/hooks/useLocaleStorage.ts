@@ -17,7 +17,7 @@ function useLocalStorage(key, initialValue) {
   const setValue = (value) => {
     try {
       // Save the state to localStorage
-      window.localStorage.setItem(key, JSON.stringify(value));
+      window?.localStorage.setItem(key, JSON.stringify(value));
       // Update the state with the new value
       setStoredValue(value);
     } catch (error) {
@@ -37,10 +37,10 @@ function useLocalStorage(key, initialValue) {
       }
     };
 
-    window.addEventListener("storage", handleStorageChange);
+    window?.addEventListener("storage", handleStorageChange);
 
     return () => {
-      window.removeEventListener("storage", handleStorageChange);
+      window?.removeEventListener("storage", handleStorageChange);
     };
   }, [key]);
 
