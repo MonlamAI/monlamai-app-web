@@ -8,8 +8,7 @@ import inputReplace from "~/component/utils/ttsReplace.server";
 import { amplifyMedia } from "~/component/utils/audioGain";
 import useLocalStorage from "~/component/hooks/useLocaleStorage";
 import { AiOutlineCloudDownload } from "react-icons/ai";
-import { AudioVisualizer } from "react-audio-visualize";
-
+import Waveform from "~/component/WaveSurfer";
 const charLimit = 500;
 export async function loader({ request }: LoaderFunctionArgs) {
   let userdata = await auth.isAuthenticated(request, {
@@ -51,11 +50,8 @@ export default function Index() {
   const [volume, setVolume] = useLocalStorage("volume", 1);
   const fetcher = useFetcher();
   const audioRef = useRef<HTMLAudioElement>(null);
-
   const data = fetcher.data;
   let sourceUrl = `data:audio/wav;base64,${data}`;
-  const [blob, setBlob] = useState<Blob>();
-  const visualizerRef = useRef<HTMLCanvasElement>(null);
   const isActionSubmission = fetcher.state !== "idle";
   const handleVolumeChange = (e) => {
     setVolume(e.target.value);
@@ -77,16 +73,15 @@ export default function Index() {
   useEffect(() => {
     if (audioRef.current && !setting.current && data) {
       setting.current = amplifyMedia(audioRef.current, volume);
-      fetch(sourceUrl)
-        .then((res) => res.blob())
-        .then(setBlob);
     }
   }, [data]);
+
   function amplify(number) {
     if (setting.current) {
       setting.current?.amplify(number);
     }
   }
+
   return (
     <main className="mx-auto w-11/12 md:w-4/5">
       <h1 className="mb-10 text-2xl lg:text-3xl text-center text-slate-700">
@@ -161,21 +156,9 @@ export default function Index() {
             )}
             <div className="h-full flex justify-center items-center gap-2">
               {isActionSubmission && <Spinner />}
+
               <div className="flex flex-col justify-center items-center">
-                {blob && (
-                  <AudioVisualizer
-                    ref={visualizerRef}
-                    blob={blob}
-                    width={200}
-                    height={75}
-                    barWidth={1}
-                    gap={0}
-                    barColor={"#f76565"}
-                  />
-                )}
-                <audio src={sourceUrl} controls ref={audioRef} hidden={!data}>
-                  <source />
-                </audio>
+                <Waveform url={sourceUrl} ref={audioRef} data={data} />
               </div>
             </div>
           </div>

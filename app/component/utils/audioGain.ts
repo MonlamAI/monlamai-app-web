@@ -22,6 +22,7 @@ export function amplifyMedia(mediaElem, multiplier) {
 
   result.source.connect(result.gain);
   result.gain.connect(context.destination);
+
   result.amplify(multiplier);
 
   return result;
