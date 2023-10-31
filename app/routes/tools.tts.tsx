@@ -5,6 +5,8 @@ import { useEffect, useRef, useState } from "react";
 import { auth } from "~/services/auth.server";
 import ReactionButtons from "~/component/ReactionButtons";
 import inputReplace from "~/component/utils/ttsReplace.server";
+import { amplifyMedia } from "~/component/utils/audioGain";
+import useLocalStorage from "~/component/hooks/useLocaleStorage";
 
 const charLimit = 500;
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -44,12 +46,18 @@ export const action: ActionFunction = async ({ request }) => {
 };
 export default function Index() {
   const [sourceText, setSourceText] = useState("");
+  const [volume, setVolume] = useLocalStorage("volume", 1);
   const fetcher = useFetcher();
   const audioRef = useRef<HTMLAudioElement>(null);
+
   const data = fetcher.data;
   let sourceUrl = `data:audio/wav;base64,${data}`;
 
   const isActionSubmission = fetcher.state !== "idle";
+  const handleVolumeChange = (e) => {
+    setVolume(e.target.value);
+    amplify(e.target.value);
+  };
   const handleReset = () => {
     setSourceText("");
     fetcher.submit(
@@ -62,7 +70,17 @@ export default function Index() {
   };
   let charCount = sourceText?.length;
   let likeFetcher = useFetcher();
-
+  let setting = useRef();
+  useEffect(() => {
+    if (audioRef.current && !setting.current && data) {
+      setting.current = amplifyMedia(audioRef.current, 2);
+    }
+  }, [data]);
+  function amplify(number) {
+    if (setting.current) {
+      setting.current?.amplify(number);
+    }
+  }
   return (
     <main className="mx-auto w-11/12 md:w-4/5">
       <h1 className="mb-10 text-2xl lg:text-3xl text-center text-slate-700">
@@ -117,19 +135,25 @@ export default function Index() {
         </Card>
         <Card className="w-full lg:w-1/2 max-h-[60vh] flex">
           <div className="w-full flex-1">
+            {data && (
+              <div className="flex items-center gap-3">
+                <span className="text-gray-400">Amplifier</span>
+                <input
+                  type="range"
+                  min={1}
+                  max={10}
+                  step={0.01}
+                  value={volume}
+                  onChange={handleVolumeChange}
+                />{" "}
+              </div>
+            )}
             <div className="h-full flex justify-center items-center">
-              {isActionSubmission ? (
-                <Spinner />
-              ) : (
-                data && (
-                  <>
-                    {" "}
-                    <audio src={sourceUrl} controls ref={audioRef}>
-                      <source />
-                    </audio>
-                  </>
-                )
-              )}
+              {isActionSubmission && <Spinner />}
+
+              <audio src={sourceUrl} controls ref={audioRef} hidden={!data}>
+                <source />
+              </audio>
             </div>
           </div>
           <div className="flex justify-between">
