@@ -13,6 +13,7 @@ import CopyToClipboard from "~/component/CopyToClipboard";
 import { auth } from "~/services/auth.server";
 import { BiQuestionMark } from "react-icons/bi";
 import { Tooltip } from "flowbite-react";
+import ErrorMessage from "~/component/ErrorMessage";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -189,5 +190,14 @@ export default function Index() {
         </Card>
       </div>
     </main>
+  );
+}
+
+
+export function ErrorBoundary({ error }) {
+  return (
+    <>
+      <ErrorMessage error={error} />
+    </>
   );
 }

@@ -1,4 +1,5 @@
 import { defer, type LoaderFunction, redirect } from "@remix-run/node";
+import ErrorMessage from "~/component/ErrorMessage";
 import Tools from "~/component/Tools";
 import { getUserAboutData } from "~/modal/aboutUser";
 import { getUser } from "~/modal/user";
@@ -18,4 +19,12 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export default function Index() {
   return <Tools />;
+}
+
+export function ErrorBoundary({ error }) {
+  return (
+    <>
+      <ErrorMessage error={error} />
+    </>
+  );
 }

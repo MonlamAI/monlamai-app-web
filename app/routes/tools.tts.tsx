@@ -199,3 +199,11 @@ export default function Index() {
     </main>
   );
 }
+
+export function ErrorBoundary({ error }) {
+  return (
+    <>
+      <ErrorMessage error={error} />
+    </>
+  );
+}

@@ -1,4 +1,5 @@
 import { type LoaderFunction } from "@remix-run/node";
+import ErrorMessage from "~/component/ErrorMessage";
 import { getUserSession } from "~/services/session.server";
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -49,3 +50,11 @@ function About() {
 }
 
 export default About;
+
+export function ErrorBoundary({ error }) {
+  return (
+    <>
+      <ErrorMessage error={error} />
+    </>
+  );
+}

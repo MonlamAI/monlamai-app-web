@@ -10,6 +10,7 @@ import EachParagraph from "~/component/EachParagraph";
 import useDebounce from "~/component/hooks/useDebounceState";
 import { motion } from "framer-motion";
 import useLocalStorage from "~/component/hooks/useLocaleStorage";
+import ErrorMessage from "~/component/ErrorMessage";
 const langLabels = {
   bo: "བོད་སྐད།",
   en: "English",
@@ -193,5 +194,14 @@ export default function Index() {
         </Card>
       </div>
     </div>
+  );
+}
+
+
+export function ErrorBoundary({ error }) {
+  return (
+    <>
+      <ErrorMessage error={error} />
+    </>
   );
 }

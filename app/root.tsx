@@ -23,6 +23,7 @@ import tailwindStyle from "./styles/tailwind.css";
 
 import { getUserSession } from "~/services/session.server";
 import { getUser } from "./modal/user";
+import ErrorMessage from "./component/ErrorMessage";
 
 export const loader: LoaderFunction = async ({ request }) => {
   let userdata = await getUserSession(request);
@@ -103,15 +104,9 @@ export default function App() {
 }
 
 export function ErrorBoundary({ error }) {
-  console.error(error);
   return (
     <Document>
-      <h1 className="text-2xl font-bold">Something went wrong</h1>
-      <Link to="/" className=" text-red-500 font-bold">
-        home page
-      </Link>
-      , if error persist please contact
-      {error}
+      <ErrorMessage error={error} />
     </Document>
   );
 }
