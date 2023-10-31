@@ -46,7 +46,7 @@ const CopyToClipboard = ({
       title="copy"
     >
       {isCopied ? (
-        <span className="text-gray-500">Copied!</span>
+        <span className="text-gray-500">པར་བཤུ་བྱས་ཟིན།</span>
       ) : (
         <FaRegCopy color="gray" size="20px" />
       )}
