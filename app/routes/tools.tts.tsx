@@ -73,7 +73,7 @@ export default function Index() {
   let setting = useRef();
   useEffect(() => {
     if (audioRef.current && !setting.current && data) {
-      setting.current = amplifyMedia(audioRef.current, 2);
+      setting.current = amplifyMedia(audioRef.current, volume);
     }
   }, [data]);
   function amplify(number) {
@@ -137,7 +137,7 @@ export default function Index() {
           <div className="w-full flex-1">
             {data && (
               <div className="flex items-center gap-3">
-                <span className="text-gray-400">Amplifier</span>
+                <span className="text-gray-400">སྒྲ་ཤུགས་ཆེ་ཆུང་།</span>
                 <input
                   type="range"
                   min={1}
