@@ -4,6 +4,7 @@ import { Button } from "flowbite-react";
 import { TypeAnimation } from "react-type-animation";
 import { auth } from "~/services/auth.server";
 import { motion } from "framer-motion";
+import ErrorMessage from "~/component/ErrorMessage";
 export const loader: LoaderFunction = async ({ request }) => {
   const user = await auth.isAuthenticated(request, {
     successRedirect: "/",
@@ -85,3 +86,12 @@ function login() {
 }
 
 export default login;
+
+
+export function ErrorBoundary({ error }) {
+  return (
+    <>
+      <ErrorMessage error={error} />
+    </>
+  );
+}
