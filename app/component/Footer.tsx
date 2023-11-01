@@ -34,9 +34,9 @@ function Footer() {
       >
         <div className=" mx-auto max-w-screen-xl p-4 flex flex-col md:flex-row items-center md:justify-between">
           <div className="text-sm text-gray-400 sm:text-center">
-            <a href="#" className="hover:underline text-[0.7rem]">
+            <div className="hover:underline text-[1rem] cursor-default">
               བདག་དབང་། © སྨོན་ལམ་བརྡ་འཕྲིན་ཞིབ་འཇུག་ཁང་། ༢༠༢༣
-            </a>
+            </div>
           </div>
           <div className="flex flex-wrap items-center mt-3 sm:mt-2">
             {logos.map((logo) => {
@@ -46,8 +46,8 @@ function Footer() {
                   href={logo.link}
                   target="_blank"
                   rel="noreferrer"
-                  className={`mr-2 hover:underline md:mr-3 transition-all duration-500 text-xl`}
-                  style={{ color: logo.color }}
+                  className={`mr-2 hover:underline md:mr-3 transition-all duration-500 `}
+                  style={{ color: logo.color, fontSize: 26 }}
                 >
                   {logo.icon}
                 </a>
