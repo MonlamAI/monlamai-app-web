@@ -33,14 +33,7 @@ const q3Options = [
 
 // options to ocr,
 // wood block print, handwritten print, modern print, billboard, rock art, other
-const q4Options = [
-  "wood block print",
-  "handwritten print",
-  "modern print",
-  "billboard",
-  "rock art",
-  "other",
-];
+const q4Options = ["ཤིང་པར།", "ལག་བྲིས།", "ལྕགས་པར།", "གཞན་དག་"];
 
 export const feedback_options = {
   q1: {
