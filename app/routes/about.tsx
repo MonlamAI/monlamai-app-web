@@ -27,7 +27,7 @@ function About() {
   ];
 
   return (
-    <div className="py-10 m-auto w-[90%] md:w-[80%]">
+    <div className="py-10 m-auto w-[90%] md:w-[80%] font-monlam">
       <div className="flex flex-col justify-center items-center gap-10 px-4 lg:flex-row">
         <img
           src="/assets/about.jpg"
