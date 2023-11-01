@@ -2,8 +2,13 @@ import { Link, useLocation } from "@remix-run/react";
 export default function Index() {
   let location = useLocation();
   let isForm = location.pathname.includes("steps");
+  let isTac = location.pathname.includes("tac");
   return (
-    <div className="text-slate-900 h-[50vh] overflow-y-scroll max-w-3xl mx-auto">
+    <div
+      className={`text-slate-900  ${
+        !isTac ? "h-[50vh] overflow-y-scroll max-w-3xl" : ""
+      } mx-auto`}
+    >
       <div className="space-y-8 ">
         <h1 className="text-3xl font-semibold text-center text-gray-700 pt-4">
           བཀོལ་སྤྱོད་ཆ་རྐྱེན།
