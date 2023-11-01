@@ -71,7 +71,7 @@ export default function Index() {
       if (timer) clearTimeout(timer);
     };
   }, [selection?.text]);
-  let text = selection?.text?.replace("\n", "<br />");
+  let text = selection?.text?.replaceAll("\n", "<br />");
   return (
     <ToolWraper title={"ཡིག་འཛིན་རིག་ནུས།"}>
       <main className="mx-auto w-11/12 lg:w-4/5">

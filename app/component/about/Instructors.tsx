@@ -19,7 +19,7 @@ function Instructor() {
               <img
                 src={instructor.image}
                 alt={instructor.name}
-                className="rounded-full h-24 w-24 object-cover shadow-md p-1"
+                className="rounded-full h-24 w-24 object-cover shadow-md p-1 "
               />
               <p className="text-center text-[14px] pt-2 font-Elsie">
                 {instructor.name}
