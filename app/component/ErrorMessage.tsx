@@ -13,7 +13,7 @@ function ErrorMessage({ error }) {
             className="w-[80%] md:w-[60%] lg:w-[40%] border-[#dddcdc] rounded-lg shadow-sm hover:scale-105 transition-all duration-500"
           />
           <div className="w-[80%] md:w-[60%] lg:w-[40%] text-center">
-            <h4 className="text-2xl mb-4 text-red-500">སྐྱོན་ཞིག་ཤོར་བ་རེད།</h4>
+            <h4 className="text-2xl mb-4 text-red-500">འདིར་དཀའ་ངལ་འདུག</h4>
           </div>
         </div>
       </div>

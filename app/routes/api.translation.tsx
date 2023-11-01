@@ -102,7 +102,7 @@ async function translate(text: String, sourceLang: String, targetLang: String) {
     let parseEnglishRes = parseWhenEnglishResponse(translation);
     let parseTibetanRes = parseWhenTibetanResponse(translation);
     if (parseEnglishRes.includes("Your request is a little bit too short.")) {
-      return { error: "ཡི་གེ་མང་བ་ཞིག་སྐྱོན་རོགས། [input too short]" };
+      return { error: "ནང་འཇུག་ཡི་གེ་ཉུང་དྲག་འདུག" };
     }
     return {
       translation:
