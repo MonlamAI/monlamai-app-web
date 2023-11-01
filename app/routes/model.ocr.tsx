@@ -106,7 +106,7 @@ export default function Index() {
               {loading ? (
                 <Spinner size="lg" hidden={!selection?.text} />
               ) : (
-                <div>{selection?.text}</div>
+                <div className="h-full ">{selection?.text}</div>
               )}
             </div>
           </div>
