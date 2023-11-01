@@ -72,7 +72,7 @@ export default function Index() {
       {},
       {
         method: "POST",
-        action: "/reset_actiondata",
+        action: "/api/reset_actiondata",
       }
     );
   };

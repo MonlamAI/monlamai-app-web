@@ -25,7 +25,7 @@ function ReactionButtons({ fetcher, output, sourceText, model }: reactProps) {
       },
       {
         method: "POST",
-        action: "/feedback",
+        action: "/api/feedback",
       }
     );
   }

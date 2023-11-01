@@ -1,4 +1,3 @@
-import ErrorMessage from "~/component/ErrorMessage";
 import TermsAndConditions from "~/component/TermsAndConditions";
 
 export default function Index() {
@@ -8,13 +7,5 @@ export default function Index() {
         <TermsAndConditions />
       </div>
     </main>
-  );
-}
-
-export function ErrorBoundary({ error }) {
-  return (
-    <>
-      <ErrorMessage error={error} />
-    </>
   );
 }
