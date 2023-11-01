@@ -38,7 +38,7 @@ function Footer() {
               © སྨོན་ལམ་རིག་ནུས། ༢༠༢༣
             </a>
           </div>
-          <div className="flex flex-wrap items-center mt-3 text-sm font-medium text-gray-400 sm:mt-2">
+          <div className="flex flex-wrap items-center mt-3 sm:mt-2">
             {logos.map((logo) => {
               return (
                 <a
