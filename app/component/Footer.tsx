@@ -35,9 +35,8 @@ function Footer() {
         <div className=" mx-auto max-w-screen-xl p-4 flex flex-col md:flex-row items-center md:justify-between">
           <div className="text-sm text-gray-400 sm:text-center">
             <a href="#" className="hover:underline">
-              © Monlam IT 2023
+              © སྨོན་ལམ་རིག་ནུས། ༢༠༢༣
             </a>
-            . All Rights Reserved.
           </div>
           <div className="flex flex-wrap items-center mt-3 text-sm font-medium text-gray-400 sm:mt-2">
             {logos.map((logo) => {
