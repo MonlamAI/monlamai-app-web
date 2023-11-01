@@ -77,7 +77,7 @@ export default function Index() {
   }
   return (
     <div className="mx-auto w-11/12 md:w-4/5">
-      <h1 className="flex gap-4 justify-center mb-10 text-2xl lg:text-3xl text-center text-slate-700 ">
+      <h1 className="flex gap-4 justify-center items-center mb-10 text-2xl lg:text-3xl text-center text-slate-700 ">
         <div className="text-[#ff006a] text-[47px] -mt-2">
           <BsGlobe2 />
         </div>
