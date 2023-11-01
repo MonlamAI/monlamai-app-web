@@ -197,6 +197,9 @@ export default function Index() {
           </div>
         </Card>
       </div>
+      <div className="float-right text-sm mt-3 text-slate-400">
+        Monlam-MITRA ཡིག་སྒྱུར་རིག་ནུས་དཔེ་གཞི་ཐོན་རིམ་10-16
+      </div>
     </div>
   );
 }

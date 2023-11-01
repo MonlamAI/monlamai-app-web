@@ -1,8 +1,11 @@
+import { useLocation } from "@remix-run/react";
 import { AiFillFacebook } from "react-icons/ai";
 import { AiFillInstagram } from "react-icons/ai";
 import { AiFillTwitterCircle } from "react-icons/ai";
 
 function Footer() {
+  let location = useLocation();
+  let isAboutPage = location.pathname.includes("about");
   const logos = [
     {
       name: "facebook",
@@ -26,7 +29,9 @@ function Footer() {
 
   return (
     <div className="w-full p-4">
-      <footer className="p-4 lg:fixed bottom-0 w-full">
+      <footer
+        className={`p-4 ${!isAboutPage ? "lg:fixed" : ""} bottom-0 w-full`}
+      >
         <div className=" mx-auto max-w-screen-xl p-4 flex flex-col md:flex-row items-center md:justify-between">
           <div className="text-sm text-gray-400 sm:text-center">
             <a href="#" className="hover:underline">
