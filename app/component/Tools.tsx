@@ -2,6 +2,7 @@ import { Link } from "@remix-run/react";
 import { BsGlobe2, BsFillVolumeUpFill } from "react-icons/bs";
 import { FaAssistiveListeningSystems } from "react-icons/fa";
 import { AiFillFileText } from "react-icons/ai";
+import SVG from "~/styles/OCR_logo.svg";
 import { motion } from "framer-motion";
 type ModalType = {
   icon: any;
@@ -39,7 +40,7 @@ function Tools() {
       color: "#FF0000",
     },
     {
-      icon: <AiFillFileText />,
+      icon: <img src={SVG} height={45} width={45} />,
       name: "ཡིག་འཛིན་རིག་ནུས།",
       desc: "པར་རིས་ནང་གི་བོད་ཡིག་ཡིག་འབེབས་བྱེད་ཐུབ།",
       link: "ocr",

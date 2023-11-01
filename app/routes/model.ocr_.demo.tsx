@@ -2,7 +2,6 @@ import type {
   ActionFunctionArgs,
   LoaderFunctionArgs,
   MetaFunction,
-  LinksFunction,
 } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useFetcher } from "@remix-run/react";
@@ -14,7 +13,7 @@ import { auth } from "~/services/auth.server";
 import { BiQuestionMark } from "react-icons/bi";
 import { Tooltip } from "flowbite-react";
 import ErrorMessage from "~/component/ErrorMessage";
-import { AiFillFileText } from "react-icons/ai";
+import SVG from "~/styles/OCR_logo.svg";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -89,7 +88,7 @@ export default function Index() {
     <main className="mx-auto w-11/12 lg:w-4/5">
       <h1 className="flex gap-4 justify-center items-center mb-10 text-2xl lg:text-3xl text-center text-slate-700">
         <div className="text-[#9933FF] text-[47px] -mt-2">
-          <AiFillFileText />
+          <img src={SVG} height={45} width={45} />
         </div>
         ཡིག་འཛིན་རིག་ནུས།
       </h1>
