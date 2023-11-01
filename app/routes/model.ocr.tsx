@@ -101,12 +101,14 @@ export default function Index() {
         </Card>
 
         <Card className="md:w-1/2">
-          <div className="w-full h-[50vh] p-3 text-black bg-slate-50 rounded-lg overflow-auto">
+          <div className="w-full min-h-[20vh] md:min-h-[40vh] leading-6 p-3 text-black bg-slate-50 rounded-lg overflow-auto">
             <div className="h-full flex justify-center items-center">
               {loading ? (
                 <Spinner size="lg" hidden={!selection?.text} />
               ) : (
-                <div className="h-full ">{selection?.text}</div>
+                <div className="h-full text-sm md:text-xl">
+                  {selection?.text}
+                </div>
               )}
             </div>
           </div>

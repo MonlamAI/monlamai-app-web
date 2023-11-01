@@ -98,7 +98,7 @@ export default function Index() {
         ཀློག་འདོན་རིག་ནུས།
       </h1>
       <div className="flex flex-col  lg:flex-row gap-3 lg:h-[60vh]">
-        <Card className="w-full lg:w-1/2 max-h-[60vh] h-[60vh] lg:h-auto flex">
+        <Card className="w-full lg:w-1/2 min-h-[20vh] md:min-h-[40vh] lg:h-auto flex">
           <fetcher.Form
             id="ttsForm"
             method="post"
@@ -108,7 +108,7 @@ export default function Index() {
               <Textarea
                 name="sourceText"
                 placeholder="ཡི་གེ་གཏག་རོགས།..."
-                className="w-full h-full max-h-full border-0 focus:outline-none focus:ring-transparent bg-transparent caret-slate-500 placeholder:text-slate-300 text-xl leading-relaxed"
+                className="w-full h-full text-sm max-h-full border-0 focus:outline-none focus:ring-transparent bg-transparent caret-slate-500 placeholder:text-slate-300 md:text-xl leading-relaxed"
                 required
                 value={sourceText}
                 onInput={(e) => {

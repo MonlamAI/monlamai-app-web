@@ -120,7 +120,7 @@ export default function Index() {
 
       <div className="mt-3 flex flex-col md:flex-row md:h-[55vh] gap-5">
         <Card className="md:w-1/2">
-          <div className="w-full flex min-h-[40vh] flex-1 overflow-hidden">
+          <div className="w-full flex min-h-[20vh] md:min-h-[40vh] flex-1 overflow-hidden">
             <Textarea
               name="sourceText"
               placeholder="ཡི་གེ་གཏག་རོགས།..."
@@ -150,7 +150,7 @@ export default function Index() {
         </Card>
 
         <Card className="md:w-1/2">
-          <div className="w-full h-[50vh] p-2 text-black bg-slate-50 rounded-lg overflow-auto">
+          <div className="w-full min-h-[20vh] md:min-h-[40vh] p-2 text-black bg-slate-50 rounded-lg overflow-auto">
             {false ? (
               <div className="h-full flex justify-center items-center">
                 <Spinner size="lg" />
