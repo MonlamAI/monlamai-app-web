@@ -35,7 +35,7 @@ function Footer() {
         <div className=" mx-auto max-w-screen-xl p-4 flex flex-col md:flex-row items-center md:justify-between">
           <div className="text-sm text-gray-400 sm:text-center">
             <a href="#" className="hover:underline text-[0.7rem]">
-              © སྨོན་ལམ་རིག་ནུས། ༢༠༢༣
+              བདག་དབང་། © སྨོན་ལམ་བརྡ་འཕྲིན་ཞིབ་འཇུག་ཁང་། ༢༠༢༣
             </a>
           </div>
           <div className="flex flex-wrap items-center mt-3 sm:mt-2">
