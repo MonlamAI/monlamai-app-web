@@ -85,7 +85,7 @@ export default function Index() {
           {selection ? (
             <>
               <img src={selection?.image} />
-              <button onClick={() => setSelection(null)}>go back</button>
+              <Button onClick={() => setSelection(null)}>go back</Button>
             </>
           ) : (
             <div className="overflow-y-scroll flex flex-col gap-2">
