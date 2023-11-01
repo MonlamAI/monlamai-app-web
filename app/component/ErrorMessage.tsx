@@ -1,7 +1,6 @@
 import { Link } from "@remix-run/react";
 
 function ErrorMessage({ error }) {
-  console.log(error);
   return (
     <>
       <div className="relative h-screen flex flex-col justify-center items-center py-10 m-auto w-[90%] md:w-[80%]">
