@@ -1,6 +1,6 @@
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { useFetcher } from "@remix-run/react";
-import { Card, Spinner, Textarea } from "flowbite-react";
+import { Button, Card, Spinner, Textarea } from "flowbite-react";
 import { useState, useRef } from "react";
 import { FaArrowRightArrowLeft } from "react-icons/fa6";
 import CopyToClipboard from "~/component/CopyToClipboard";
@@ -12,6 +12,7 @@ import { motion } from "framer-motion";
 import useLocalStorage from "~/component/hooks/useLocaleStorage";
 import ErrorMessage from "~/component/ErrorMessage";
 import { BsGlobe2 } from "react-icons/bs";
+import ToolWraper from "~/component/ToolWraper";
 const langLabels = {
   bo: "བོད་སྐད།",
   en: "English",
@@ -76,13 +77,7 @@ export default function Index() {
     navigator.clipboard.writeText(textToCopy);
   }
   return (
-    <div className="mx-auto w-11/12 md:w-4/5">
-      <h1 className="flex gap-4 justify-center items-center mb-10 text-2xl lg:text-3xl text-center text-slate-700 ">
-        <div className="text-[#ff006a] text-[47px] -mt-2">
-          <BsGlobe2 />
-        </div>
-        ཡིག་སྒྱུར་རིག་ནུས།
-      </h1>
+    <ToolWraper title="ཡིག་སྒྱུར་རིག་ནུས།">
       <div className="flex justify-between items-center">
         <motion.div
           className={`inline-block w-32 text-lg text-gray-500 ${
@@ -139,8 +134,14 @@ export default function Index() {
               autoFocus
             />
           </div>
-
-          <div className="mt-5 flex justify-between items-end">
+          <Button
+            color="gray"
+            className="text-slate-500 md:hidden"
+            onClick={() => setSourceText("")}
+          >
+            བསྐྱར་སྒྲིག
+          </Button>
+          <div className="md:mt-5 flex justify-between items-end">
             {sourceLang && (
               <div className="text-gray-400 text-xs">
                 {charCount} / {charLimit}
@@ -200,7 +201,7 @@ export default function Index() {
       <div className="float-right text-sm mt-3 text-slate-400 text-[0.7rem]">
         Monlam-MITRA ཡིག་སྒྱུར་རིག་ནུས་དཔེ་གཞི་ཐོན་རིམ་ <small>v</small>10-16
       </div>
-    </div>
+    </ToolWraper>
   );
 }
 

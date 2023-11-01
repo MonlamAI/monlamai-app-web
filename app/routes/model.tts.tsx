@@ -15,6 +15,7 @@ import { AiOutlineCloudDownload } from "react-icons/ai";
 import ErrorMessage from "~/component/ErrorMessage";
 import AudioPlayer from "~/component/AudioPlayer";
 import { BsFillVolumeUpFill } from "react-icons/bs";
+import ToolWraper from "~/component/ToolWraper";
 const charLimit = 500;
 export async function loader({ request }: LoaderFunctionArgs) {
   let userdata = await auth.isAuthenticated(request, {
@@ -90,100 +91,96 @@ export default function Index() {
   }
 
   return (
-    <main className="mx-auto w-11/12 md:w-4/5">
-      <h1 className=" flex gap-4 justify-center items-center mb-10 text-2xl lg:text-3xl text-center text-slate-700">
-        <div className="text-[#00AAFF] text-[47px] -mt-2">
-          <BsFillVolumeUpFill />
-        </div>
-        ཀློག་འདོན་རིག་ནུས།
-      </h1>
-      <div className="flex flex-col  lg:flex-row gap-3 lg:h-[60vh]">
-        <Card className="w-full lg:w-1/2 min-h-[20vh] md:min-h-[40vh] lg:h-auto flex">
-          <fetcher.Form
-            id="ttsForm"
-            method="post"
-            className="flex flex-col gap-5 flex-1 "
-          >
-            <div className="w-full flex-1 max-h-[50vh]">
-              <Textarea
-                name="sourceText"
-                placeholder="ཡི་གེ་གཏག་རོགས།..."
-                className="w-full h-full text-sm max-h-full border-0 focus:outline-none focus:ring-transparent bg-transparent caret-slate-500 placeholder:text-slate-300 md:text-xl leading-relaxed"
-                required
-                value={sourceText}
-                onInput={(e) => {
-                  setSourceText((prev) => {
-                    let value = e.target.value;
-                    if (value?.length <= charLimit) return value;
-                    return prev;
-                  });
-                }}
-                autoFocus
+    <ToolWraper title="ཀློག་འདོན་རིག་ནུས།">
+      <main className="mx-auto w-11/12 md:w-4/5">
+        <div className="flex flex-col  lg:flex-row gap-3 lg:h-[60vh]">
+          <Card className="w-full lg:w-1/2 min-h-[20vh] md:min-h-[40vh] lg:h-auto flex">
+            <fetcher.Form
+              id="ttsForm"
+              method="post"
+              className="flex flex-col gap-5 flex-1 "
+            >
+              <div className="w-full flex-1 max-h-[50vh]">
+                <Textarea
+                  name="sourceText"
+                  placeholder="ཡི་གེ་གཏག་རོགས།..."
+                  className="w-full h-full text-sm max-h-full border-0 focus:outline-none focus:ring-transparent bg-transparent caret-slate-500 placeholder:text-slate-300 md:text-xl leading-relaxed"
+                  required
+                  value={sourceText}
+                  onInput={(e) => {
+                    setSourceText((prev) => {
+                      let value = e.target.value;
+                      if (value?.length <= charLimit) return value;
+                      return prev;
+                    });
+                  }}
+                  autoFocus
+                />
+              </div>
+              <div className="flex justify-between items-center">
+                <Button
+                  type="reset"
+                  form="ttsForm"
+                  color="gray"
+                  className="text-slate-500"
+                  onClick={handleReset}
+                >
+                  བསྐྱར་སྒྲིག
+                </Button>
+                <div className="text-gray-400 text-xs">
+                  {charCount} / {charLimit}
+                </div>
+                <Button
+                  type="submit"
+                  form="ttsForm"
+                  isProcessing={isActionSubmission}
+                >
+                  ཀློགས།
+                </Button>
+              </div>
+            </fetcher.Form>
+          </Card>
+          <Card className="w-full lg:w-1/2 max-h-[60vh] flex">
+            <div className="w-full flex-1">
+              {data && (
+                <div className="flex justify-between mx-2">
+                  <div className="flex items-center gap-3">
+                    <span className="text-gray-400">སྒྲ་ཤུགས་ཆེ་ཆུང་།</span>
+                    <input
+                      type="range"
+                      min={1}
+                      max={10}
+                      step={0.01}
+                      value={volume}
+                      onChange={handleVolumeChange}
+                    />{" "}
+                  </div>
+                </div>
+              )}
+              {isActionSubmission && <Spinner />}
+              <div className="flex-1 h-full flex justify-center items-center">
+                <AudioPlayer ref={audioRef} sourceUrl={sourceUrl} />
+              </div>
+            </div>
+            <div className="flex justify-between">
+              <div
+                className={
+                  !likeFetcher.data?.liked ? "text-red-400" : "text-green-400"
+                }
+              >
+                {likeFetcher.data?.message}
+              </div>
+              <ReactionButtons
+                fetcher={likeFetcher}
+                output={data ? `data:audio/wav;base64,${data}` : null}
+                sourceText={sourceText}
+                model="tts"
               />
             </div>
-            <div className="flex justify-between items-center">
-              <Button
-                type="reset"
-                form="ttsForm"
-                color="gray"
-                className="text-slate-500"
-                onClick={handleReset}
-              >
-                བསྐྱར་སྒྲིག
-              </Button>
-              <div className="text-gray-400 text-xs">
-                {charCount} / {charLimit}
-              </div>
-              <Button
-                type="submit"
-                form="ttsForm"
-                isProcessing={isActionSubmission}
-              >
-                ཀློགས།
-              </Button>
-            </div>
-          </fetcher.Form>
-        </Card>
-        <Card className="w-full lg:w-1/2 max-h-[60vh] flex">
-          <div className="w-full flex-1">
-            {data && (
-              <div className="flex justify-between mx-2">
-                <div className="flex items-center gap-3">
-                  <span className="text-gray-400">སྒྲ་ཤུགས་ཆེ་ཆུང་།</span>
-                  <input
-                    type="range"
-                    min={1}
-                    max={10}
-                    step={0.01}
-                    value={volume}
-                    onChange={handleVolumeChange}
-                  />{" "}
-                </div>
-              </div>
-            )}
-            {isActionSubmission && <Spinner />}
-            <div className="flex-1 h-full flex justify-center items-center">
-              <AudioPlayer ref={audioRef} sourceUrl={sourceUrl} />
-            </div>
-          </div>
-          <div className="flex justify-between">
-            <div
-              className={
-                !likeFetcher.data?.liked ? "text-red-400" : "text-green-400"
-              }
-            >
-              {likeFetcher.data?.message}
-            </div>
-            <ReactionButtons
-              fetcher={likeFetcher}
-              output={data ? `data:audio/wav;base64,${data}` : null}
-              sourceText={sourceText}
-              model="tts"
-            />
-          </div>
-        </Card>
-      </div>
-    </main>
+          </Card>
+        </div>
+      </main>
+    </ToolWraper>
   );
 }
 

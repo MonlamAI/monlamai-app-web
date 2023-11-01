@@ -1,7 +1,7 @@
 import { BsGlobe2, BsFillVolumeUpFill } from "react-icons/bs";
 import { FaAssistiveListeningSystems } from "react-icons/fa";
-import SVG from "~/styles/OCR_logo.svg";
-
+import OCR_SVG from "~/styles/OCR_logo.svg";
+import STT_SVG from "~/styles/STT_logo.svg";
 export type ModalType = {
   icon: any;
   name: string;
@@ -26,14 +26,14 @@ export let models: ModalType[] = [
     color: "#00AAFF",
   },
   {
-    icon: <FaAssistiveListeningSystems />,
+    icon: <img src={STT_SVG} height={45} width={45} />,
     name: "སྒྲ་འཛིན་རིག་ནུས།",
     desc: "བོད་སྐད་ཡིག་འབེབས་བྱེད་ཐུབ།",
     link: "stt",
     color: "#FF0000",
   },
   {
-    icon: <img src={SVG} height={45} width={45} />,
+    icon: <img src={OCR_SVG} height={45} width={45} />,
     name: "ཡིག་འཛིན་རིག་ནུས།",
     desc: "པར་རིས་ནང་གི་བོད་ཡིག་ཡིག་འབེབས་བྱེད་ཐུབ།",
     link: "ocr",

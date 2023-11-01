@@ -15,6 +15,7 @@ import ErrorMessage from "~/component/ErrorMessage";
 import { AiFillFileText } from "react-icons/ai";
 import { dummydata } from "~/helper/dummy";
 import SVG from "~/styles/OCR_logo.svg";
+import ToolWraper from "~/component/ToolWraper";
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
   parentMeta.shift(1);
@@ -72,61 +73,56 @@ export default function Index() {
   }, [selection?.text]);
 
   return (
-    <main className="mx-auto w-11/12 lg:w-4/5">
-      <h1 className="flex gap-4 justify-center items-center mb-10 text-2xl lg:text-3xl text-center text-slate-700">
-        <div className="text-[#9933FF] text-[47px] -mt-2">
-          <img src={SVG} height={50} width={50} />
-        </div>
-        ཡིག་འཛིན་རིག་ནུས།
-      </h1>
+    <ToolWraper title={"ཡིག་འཛིན་རིག་ནུས།"}>
+      <main className="mx-auto w-11/12 lg:w-4/5">
+        <div className="mt-1 flex flex-col md:flex-row  lg:h-[55vh] items-strech gap-5">
+          <Card className="md:w-1/2 relative">
+            {selection ? (
+              <>
+                <img src={selection?.image} />
+                <Button onClick={() => setSelection(null)}>go back</Button>
+              </>
+            ) : (
+              <div className="overflow-y-scroll flex flex-col gap-2">
+                {dummydata?.map((item, index) => {
+                  return (
+                    <div onClick={() => setSelection(item)}>
+                      {index + 1}. <img src={item.image} alt={item.image} />
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </Card>
 
-      <div className="mt-1 flex flex-col md:flex-row  lg:h-[55vh] items-strech gap-5">
-        <Card className="md:w-1/2 relative">
-          {selection ? (
-            <>
-              <img src={selection?.image} />
-              <Button onClick={() => setSelection(null)}>go back</Button>
-            </>
-          ) : (
-            <div className="overflow-y-scroll flex flex-col gap-2">
-              {dummydata?.map((item, index) => {
-                return (
-                  <div onClick={() => setSelection(item)}>
-                    {index + 1}. <img src={item.image} alt={item.image} />
+          <Card className="md:w-1/2">
+            <div className="w-full min-h-[20vh] md:min-h-[40vh] leading-6 p-3 text-black bg-slate-50 rounded-lg overflow-auto">
+              <div className="h-full flex justify-center items-center">
+                {loading ? (
+                  <Spinner size="lg" hidden={!selection?.text} />
+                ) : (
+                  <div className="h-full text-sm md:text-xl">
+                    {selection?.text}
                   </div>
-                );
-              })}
+                )}
+              </div>
             </div>
-          )}
-        </Card>
-
-        <Card className="md:w-1/2">
-          <div className="w-full min-h-[20vh] md:min-h-[40vh] leading-6 p-3 text-black bg-slate-50 rounded-lg overflow-auto">
-            <div className="h-full flex justify-center items-center">
-              {loading ? (
-                <Spinner size="lg" hidden={!selection?.text} />
-              ) : (
-                <div className="h-full text-sm md:text-xl">
-                  {selection?.text}
-                </div>
-              )}
+            <div className="flex justify-end">
+              <Button color="white" disabled={true}>
+                <FaRegThumbsUp color="gray" size="20px" />
+              </Button>
+              <Button color="white" disabled={true}>
+                <FaRegThumbsDown color="gray" size="20px" />
+              </Button>
+              <CopyToClipboard
+                textToCopy={selection?.text ?? ""}
+                disabled={false}
+              />
             </div>
-          </div>
-          <div className="flex justify-end">
-            <Button color="white" disabled={true}>
-              <FaRegThumbsUp color="gray" size="20px" />
-            </Button>
-            <Button color="white" disabled={true}>
-              <FaRegThumbsDown color="gray" size="20px" />
-            </Button>
-            <CopyToClipboard
-              textToCopy={selection?.text ?? ""}
-              disabled={false}
-            />
-          </div>
-        </Card>
-      </div>
-    </main>
+          </Card>
+        </div>
+      </main>
+    </ToolWraper>
   );
 }
 

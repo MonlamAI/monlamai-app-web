@@ -10,6 +10,7 @@ import ReactionButtons from "~/component/ReactionButtons";
 import { getBrowser } from "~/component/utils/getBrowserDetail";
 import ErrorMessage from "~/component/ErrorMessage";
 import { FaAssistiveListeningSystems } from "react-icons/fa";
+import ToolWraper from "~/component/ToolWraper";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -169,93 +170,91 @@ export default function Index() {
     };
   };
   return (
-    <main className="mx-auto w-11/12 md:w-4/5">
-      <h1 className="flex gap-4 justify-center item-center mb-10 text-2xl lg:text-3xl text-center text-slate-700">
-        <div className="text-[#FF0000] text-[47px] -mt-2">
-          <FaAssistiveListeningSystems />
-        </div>
-        སྒྲ་འཛིན་རིག་ནུས།
-      </h1>
-      <div className="flex flex-col lg:flex-row items-stretch gap-3">
-        <Card className="w-full lg:w-1/2 flex">
-          <div
-            id="sttForm"
-            className="flex flex-col w-full h-[25vh] lg:h-[50vh] justify-center gap-4"
-          >
-            <div className="flex flex-col items-center gap-5 flex-1 justify-center">
-              {recording &&
-                mediaRecorder.current &&
-                getBrowser() !== "Safari" && (
-                  <LiveAudioVisualizer
-                    mediaRecorder={mediaRecorder.current}
-                    width={200}
-                    height={75}
-                  />
+    <ToolWraper title={"སྒྲ་འཛིན་རིག་ནུས།"}>
+      <main className="mx-auto w-11/12 md:w-4/5">
+        <div className="flex flex-col lg:flex-row items-stretch gap-3">
+          <Card className="w-full lg:w-1/2 flex">
+            <div
+              id="sttForm"
+              className="flex flex-col w-full h-[25vh] lg:h-[50vh] justify-center gap-4"
+            >
+              <div className="flex flex-col items-center gap-5 flex-1 justify-center">
+                {recording &&
+                  mediaRecorder.current &&
+                  getBrowser() !== "Safari" && (
+                    <LiveAudioVisualizer
+                      mediaRecorder={mediaRecorder.current}
+                      width={200}
+                      height={75}
+                    />
+                  )}
+                <Button size="xl" onClick={toggleRecording}>
+                  {recording ? <BsFillStopFill /> : <BsFillMicFill />}
+                </Button>
+                {audioURL && (
+                  <audio controls>
+                    <source src={audioURL} type="audio/mpeg"></source>
+                    <source src={audioURL} type="audio/ogg"></source>
+                  </audio>
                 )}
-              <Button size="xl" onClick={toggleRecording}>
-                {recording ? <BsFillStopFill /> : <BsFillMicFill />}
-              </Button>
-              {audioURL && (
-                <audio controls>
-                  <source src={audioURL} type="audio/mpeg"></source>
-                  <source src={audioURL} type="audio/ogg"></source>
-                </audio>
+              </div>
+              <div className="flex justify-between h-10">
+                <Button
+                  color="gray"
+                  className="text-slate-500"
+                  onClick={handleReset}
+                  disabled={!audioURL}
+                >
+                  བསྐྱར་སྒྲིག
+                </Button>
+                <Button disabled={!audioURL} onClick={handleSubmit}>
+                  ཐོངས།
+                </Button>
+              </div>
+            </div>
+          </Card>
+          <Card className="w-full lg:w-1/2 max-h-[60vh] flex">
+            <Label value="ཡིག་འབེབས།" className="text-lg text-gray-500" />
+            <div className="w-full h-[25vh] lg:h-[50vh] p-3 text-black bg-slate-100 rounded-lg overflow-auto">
+              {isLoading ? (
+                <div className="h-full flex justify-center items-center">
+                  <Spinner />
+                </div>
+              ) : (
+                fetcher?.data?.text && (
+                  <p className="text-lg">{fetcher?.data?.text}</p>
+                )
+              )}
+              {errorMessage && (
+                <div className="text-red-400">{errorMessage}</div>
               )}
             </div>
-            <div className="flex justify-between h-10">
-              <Button
-                color="gray"
-                className="text-slate-500"
-                onClick={handleReset}
-                disabled={!audioURL}
+            <div className="flex justify-between">
+              <div
+                className={
+                  !likefetcher.data?.liked ? "text-red-400" : "text-green-400"
+                }
               >
-                བསྐྱར་སྒྲིག
-              </Button>
-              <Button disabled={!audioURL} onClick={handleSubmit}>
-                ཐོངས།
-              </Button>
-            </div>
-          </div>
-        </Card>
-        <Card className="w-full lg:w-1/2 max-h-[60vh] flex">
-          <Label value="ཡིག་འབེབས།" className="text-lg text-gray-500" />
-          <div className="w-full h-[25vh] lg:h-[50vh] p-3 text-black bg-slate-100 rounded-lg overflow-auto">
-            {isLoading ? (
-              <div className="h-full flex justify-center items-center">
-                <Spinner />
+                {likefetcher?.data?.message}
               </div>
-            ) : (
-              fetcher?.data?.text && (
-                <p className="text-lg">{fetcher?.data?.text}</p>
-              )
-            )}
-            {errorMessage && <div className="text-red-400">{errorMessage}</div>}
-          </div>
-          <div className="flex justify-between">
-            <div
-              className={
-                !likefetcher.data?.liked ? "text-red-400" : "text-green-400"
-              }
-            >
-              {likefetcher?.data?.message}
-            </div>
-            <div className="flex">
-              <ReactionButtons
-                fetcher={likefetcher}
-                output={fetcher?.data?.text}
-                sourceText={audioBase64 ? audioBase64 : null}
-                model="stt"
-              />
+              <div className="flex">
+                <ReactionButtons
+                  fetcher={likefetcher}
+                  output={fetcher?.data?.text}
+                  sourceText={audioBase64 ? audioBase64 : null}
+                  model="stt"
+                />
 
-              <CopyToClipboard
-                textToCopy={fetcher?.data?.text}
-                disabled={!fetcher?.data?.text}
-              />
+                <CopyToClipboard
+                  textToCopy={fetcher?.data?.text}
+                  disabled={!fetcher?.data?.text}
+                />
+              </div>
             </div>
-          </div>
-        </Card>
-      </div>
-    </main>
+          </Card>
+        </div>
+      </main>
+    </ToolWraper>
   );
 }
 
