@@ -69,7 +69,7 @@ function EachModel({ model }: EachProps) {
   const { name, desc, icon, link, color } = model;
 
   return (
-    <Link prefetch="intent" to={"/tools/" + link}>
+    <Link prefetch="intent" to={"/model/" + link}>
       <motion.div
         whileHover={{ scale: 0.95 }}
         className="rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800 shadow-lg hover:border-blue-600 hover:border-2 h-full flex flex-col gap-10 p-8 cursor-pointer"
