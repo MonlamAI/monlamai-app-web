@@ -14,10 +14,13 @@ function Lamas() {
           alt="dalai_lama"
           className=" object-cover flex w-full md:w-[40%] justify-center  rounded-lg shadow-sm"
         />
-        <div className="flex flex-wrap gap-6">
+        <div className="flex flex-wrap gap-6 justify-center">
           {lamas.map((lama) => {
             return (
-              <div className="h-24 w-24 md:h-28 md:w-28 my-2" key={lama.name}>
+              <div
+                className="h-24 w-24 md:h-28 md:w-28 my-5 md:my-4"
+                key={lama.name}
+              >
                 <img
                   src={lama.image}
                   alt={lama.name}

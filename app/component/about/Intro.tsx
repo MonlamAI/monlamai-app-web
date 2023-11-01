@@ -9,7 +9,7 @@ function Intro() {
         className="w-[80%] md:w-[60%] lg:w-[40%] border-[#dddcdc] rounded-lg shadow-sm hover:scale-105 transition-all duration-500"
       />
       <div className="leading-8">
-        <h4 className="text-2xl mb-4">ངོ་སྤྲོད།</h4>
+        <h4 className="text-2xl mb-4 text-center">ངོ་སྤྲོད།</h4>
         <p className="text-md">
           དེང་སྐབས་འཛམ་གླིང་ཁྱོན་ཡོངས་སུ་ཚན་རྩལ་འཕྲུལ་རིག་ཆེས་ཆེར་དར་ཞིང་།
           ལྷག་པར་ཉེ་བའི་ལོ་འདི་འགར་ཀུན་གྱིས་ཚ་ཚ་འུར་འུར་དུ་གླེང་བཞིན་པའི་མིས་བཟོས་རིག་ནུས་(Artificial
