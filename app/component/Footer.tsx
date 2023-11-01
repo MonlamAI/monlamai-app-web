@@ -1,8 +1,7 @@
 import { useLocation } from "@remix-run/react";
 import { AiFillFacebook } from "react-icons/ai";
-import { AiFillInstagram } from "react-icons/ai";
 import { AiFillTwitterCircle } from "react-icons/ai";
-
+import instasvg from "~/styles/instagram.svg";
 function Footer() {
   let location = useLocation();
   let isAboutPage = location.pathname.includes("about");
@@ -16,7 +15,7 @@ function Footer() {
     {
       name: "instagram",
       link: "https://www.instagram.com/monlam_ai/",
-      icon: <AiFillInstagram />,
+      icon: <img src={instasvg} height={45} width={45} />,
       color: "#e4405f",
     },
     {
@@ -34,7 +33,7 @@ function Footer() {
       >
         <div className=" mx-auto max-w-screen-xl p-4 flex flex-col md:flex-row items-center md:justify-between">
           <div className="text-sm text-gray-400 sm:text-center">
-            <div className="hover:underline text-[1rem] cursor-default">
+            <div className="hover:underline text-[1rem] cursor-default leading-relaxed text-center">
               བདག་དབང་། © སྨོན་ལམ་བརྡ་འཕྲིན་ཞིབ་འཇུག་ཁང་། ༢༠༢༣
             </div>
           </div>

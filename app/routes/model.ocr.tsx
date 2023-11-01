@@ -71,7 +71,7 @@ export default function Index() {
       if (timer) clearTimeout(timer);
     };
   }, [selection?.text]);
-
+  let text = selection?.text?.replace("\n", "<br />");
   return (
     <ToolWraper title={"ཡིག་འཛིན་རིག་ནུས།"}>
       <main className="mx-auto w-11/12 lg:w-4/5">
@@ -86,9 +86,9 @@ export default function Index() {
               <div className="overflow-y-scroll flex flex-col gap-2">
                 {dummydata?.map((item, index) => {
                   return (
-                    <div onClick={() => setSelection(item)}>
+                    <Card onClick={() => setSelection(item)}>
                       {index + 1}. <img src={item.image} alt={item.image} />
-                    </div>
+                    </Card>
                   );
                 })}
               </div>
@@ -101,9 +101,10 @@ export default function Index() {
                 {loading ? (
                   <Spinner size="lg" hidden={!selection?.text} />
                 ) : (
-                  <div className="h-full text-sm md:text-xl">
-                    {selection?.text}
-                  </div>
+                  <div
+                    className="h-full text-sm md:text-xl"
+                    dangerouslySetInnerHTML={{ __html: text }}
+                  ></div>
                 )}
               </div>
             </div>

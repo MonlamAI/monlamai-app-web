@@ -94,7 +94,7 @@ export default function Index() {
     <ToolWraper title="ཀློག་འདོན་རིག་ནུས།">
       <main className="mx-auto w-11/12 md:w-4/5">
         <div className="flex flex-col  lg:flex-row gap-3 lg:h-[60vh]">
-          <Card className="w-full lg:w-1/2 min-h-[20vh] md:min-h-[40vh] lg:h-auto flex">
+          <Card className="w-full lg:w-1/2 min-h-[20vh] lg:min-h-[40vh] lg:h-auto flex">
             <fetcher.Form
               id="ttsForm"
               method="post"
