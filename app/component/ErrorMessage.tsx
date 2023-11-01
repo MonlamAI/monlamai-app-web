@@ -1,6 +1,3 @@
-import { Link } from "@remix-run/react";
-import React from "react";
-
 function ErrorMessage({ error }) {
   console.log(error);
   return (

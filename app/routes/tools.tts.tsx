@@ -14,6 +14,7 @@ import useLocalStorage from "~/component/hooks/useLocaleStorage";
 import { AiOutlineCloudDownload } from "react-icons/ai";
 import ErrorMessage from "~/component/ErrorMessage";
 import AudioPlayer from "~/component/AudioPlayer";
+import { BsFillVolumeUpFill } from "react-icons/bs";
 const charLimit = 500;
 export async function loader({ request }: LoaderFunctionArgs) {
   let userdata = await auth.isAuthenticated(request, {
@@ -90,7 +91,10 @@ export default function Index() {
 
   return (
     <main className="mx-auto w-11/12 md:w-4/5">
-      <h1 className="mb-10 text-2xl lg:text-3xl text-center text-slate-700">
+      <h1 className=" flex gap-3 justify-center mb-10 text-2xl lg:text-3xl text-center text-slate-700">
+        <div className="text-[#00AAFF]">
+          <BsFillVolumeUpFill />
+        </div>
         ཀློག་འདོན་རིག་ནུས།
       </h1>
       <div className="flex flex-col  lg:flex-row gap-3 lg:h-[60vh]">

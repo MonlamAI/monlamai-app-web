@@ -14,6 +14,7 @@ import { auth } from "~/services/auth.server";
 import { BiQuestionMark } from "react-icons/bi";
 import { Tooltip } from "flowbite-react";
 import ErrorMessage from "~/component/ErrorMessage";
+import { AiFillFileText } from "react-icons/ai";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -86,7 +87,10 @@ export default function Index() {
 
   return (
     <main className="mx-auto w-11/12 lg:w-4/5">
-      <h1 className="mb-10 text-2xl lg:text-3xl text-center text-slate-700">
+      <h1 className="flex gap-2 justify-center mb-10 text-2xl lg:text-3xl text-center text-slate-700">
+        <div className="text-[#9933FF]">
+          <AiFillFileText />
+        </div>
         ཡིག་འཛིན་རིག་ནུས།
       </h1>
 
@@ -192,7 +196,6 @@ export default function Index() {
     </main>
   );
 }
-
 
 export function ErrorBoundary({ error }) {
   return (

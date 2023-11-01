@@ -11,6 +11,7 @@ import useDebounce from "~/component/hooks/useDebounceState";
 import { motion } from "framer-motion";
 import useLocalStorage from "~/component/hooks/useLocaleStorage";
 import ErrorMessage from "~/component/ErrorMessage";
+import { BsGlobe2 } from "react-icons/bs";
 const langLabels = {
   bo: "བོད་སྐད།",
   en: "English",
@@ -76,7 +77,10 @@ export default function Index() {
   }
   return (
     <div className="mx-auto w-11/12 md:w-4/5">
-      <h1 className="mb-10 text-2xl lg:text-3xl text-center text-slate-700 ">
+      <h1 className="flex gap-2 justify-center mb-10 text-2xl lg:text-3xl text-center text-slate-700 ">
+        <div className="text-[#ff006a]">
+          <BsGlobe2 />
+        </div>
         ཡིག་སྒྱུར་རིག་ནུས།
       </h1>
       <div className="flex justify-between items-center">
@@ -196,7 +200,6 @@ export default function Index() {
     </div>
   );
 }
-
 
 export function ErrorBoundary({ error }) {
   return (

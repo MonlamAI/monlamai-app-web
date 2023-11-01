@@ -9,6 +9,7 @@ import { auth } from "~/services/auth.server";
 import ReactionButtons from "~/component/ReactionButtons";
 import { getBrowser } from "~/component/utils/getBrowserDetail";
 import ErrorMessage from "~/component/ErrorMessage";
+import { FaAssistiveListeningSystems } from "react-icons/fa";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -169,7 +170,10 @@ export default function Index() {
   };
   return (
     <main className="mx-auto w-11/12 md:w-4/5">
-      <h1 className="mb-10 text-2xl lg:text-3xl text-center text-slate-700">
+      <h1 className="flex gap-3 justify-center mb-10 text-2xl lg:text-3xl text-center text-slate-700">
+        <div className="text-[#FF0000]">
+          <FaAssistiveListeningSystems />
+        </div>
         སྒྲ་འཛིན་རིག་ནུས།
       </h1>
       <div className="flex flex-col lg:flex-row items-stretch gap-3">
@@ -254,7 +258,6 @@ export default function Index() {
     </main>
   );
 }
-
 
 export function ErrorBoundary({ error }) {
   return (
