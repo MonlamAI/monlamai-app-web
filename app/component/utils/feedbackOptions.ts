@@ -1,29 +1,35 @@
 const q1Options = [
-  "news",
-  "book",
-  "conversation",
-  "poem",
-  "letter",
-  "articles",
-  "documents",
-  "advertesment",
-  "other",
+  "གསར་འགྱུར་",
+  "དཔེ་དེབ་",
+  "གླེང་མོལ་",
+  "སྙན་ངག་",
+  "འཕྲིན་ཡིག་",
+  "རྩོམ་ཡིག་",
+  "ཡིག་ཆ་",
+  "ཁྱབ་བསྒྲགས་",
+  "གཞན་དག་",
 ];
 
 // options to audio transcribe,
 // conversations, news, teaching, movies, lyrics, other
 const q2Options = [
-  "conversations",
-  "news",
-  "teaching",
-  "movies",
-  "lyrics",
-  "other",
+  "གླེང་མོལ་",
+  "གསར་འགྱུར་",
+  "སློབ་ཁྲིད་",
+  "གློག་བརྙན་",
+  "གཞས་ཚིག་",
+  "གཞན་དག་",
 ];
 
 //   options to read via tts,
 // book, news, story, prayer, other
-const q3Options = ["book", "news", "story", "prayer", "other"];
+const q3Options = [
+  "དཔེ་དེབ་",
+  "གསར་འགྱུར",
+  "གཏམ་རྒྱུད།",
+  "ཞལ་འདོན་",
+  "གཞན་དག་",
+];
 
 // options to ocr,
 // wood block print, handwritten print, modern print, billboard, rock art, other

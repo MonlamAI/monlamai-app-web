@@ -53,23 +53,29 @@ function StepWizard() {
   };
 
   return (
-    <div>
+    <div className=" mx-auto">
       <FormWizard
         stepSize="sm"
         onComplete={handleComplete}
-        backButtonTemplate={(handleNext) => (
-          <Button className="base-button float-left mt-2" onClick={handleNext}>
-            ཕྱིར་ལོག།
+        backButtonTemplate={(handleback) => (
+          <Button
+            className="base-button  w-lg mx-auto mt-5"
+            onClick={handleback}
+          >
+            ཕྱིར་ལོག
           </Button>
         )}
         nextButtonTemplate={(handleNext) => (
-          <Button className="base-button float-right mt-2" onClick={handleNext}>
+          <Button
+            className="base-button  w-lg mx-auto mt-5"
+            onClick={handleNext}
+          >
             རྗེས་མ།
           </Button>
         )}
         finishButtonTemplate={(handleComplete) => (
           <Button
-            className="finish-button float-right  mt-2"
+            className="base-button  w-lg mx-auto mt-5"
             onClick={handleComplete}
           >
             མོས་མཐུན་ཡོད།
@@ -80,32 +86,26 @@ function StepWizard() {
           title="མི་སྒེར་གྱི་ཆ་འཕྲིན་ཞིབ་ཕྲ།"
           icon="ti-user"
         >
-          <div className="max-w-md mx-auto flex flex-col gap-3 md:min-h-[50dvh] mt-5">
+          <div className="max-w-md mx-auto flex flex-col gap-3  mt-5">
             <Label htmlFor="organizationInput">
               ཚོགས་པ།
-              <span
-                style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
-              >
-                *
-              </span>
+              <span className="text-red-500 text-[20px] ml-1">*</span>
             </Label>
             <TextInput
               id="organizationInput"
               required
+              placeholder="དཔེར་ན་ སྨན་རྩིས་ཁང་།"
               type="text"
               value={organization}
               onChange={(e) => setOrganization(e.target.value)}
             />
             <Label htmlFor="professionInput">
               ལས་གནས།
-              <span
-                style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}
-              >
-                *
-              </span>
+              <span className="text-red-500 text-[20px] ml-1">*</span>
             </Label>
             <TextInput
               id="professionInput"
+              placeholder="དཔེར་ན་ སྨན་པ།"
               required
               type="text"
               value={profession}
@@ -132,9 +132,7 @@ function StepWizard() {
           isValid={checkValidateTab2()}
           validationError={errorMessages}
         >
-          <div className="mx-auto w-full lg:max-w-screen-md max-h-[500vh] overflow-auto">
-            <TermsAndContitions />
-          </div>
+          <TermsAndContitions />
         </FormWizard.TabContent>
       </FormWizard>
     </div>

@@ -25,9 +25,7 @@ function Questions({ option, value, setValue }: optionProps) {
     <>
       <Label htmlFor={id}>
         {select_options.label}
-        <span style={{ color: "red", fontSize: "20px", fontWeight: "bold" }}>
-          *
-        </span>
+        <span className="text-red-500 text-[20px] ml-1">*</span>
       </Label>
       <Select id={id} value={Q} required onChange={(e) => setQ(e.target.value)}>
         {select_options.option.map((option) => (

@@ -3,9 +3,9 @@ export default function Index() {
   let location = useLocation();
   let isForm = location.pathname.includes("steps");
   return (
-    <div className="text-slate-900">
-      <div className="space-y-8  leading-loose">
-        <h1 className="text-3xl font-semibold text-center text-gray-700 ">
+    <div className="text-slate-900 h-[40vh] overflow-y-scroll max-w-3xl mx-auto">
+      <div className="space-y-8 ">
+        <h1 className="text-3xl font-semibold text-center text-gray-700 pt-4">
           བཀོལ་སྤྱོད་ཆ་རྐྱེན།
         </h1>
         <p>
