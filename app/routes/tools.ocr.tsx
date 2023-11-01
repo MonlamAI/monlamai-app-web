@@ -87,8 +87,8 @@ export default function Index() {
 
   return (
     <main className="mx-auto w-11/12 lg:w-4/5">
-      <h1 className="flex gap-2 justify-center mb-10 text-2xl lg:text-3xl text-center text-slate-700">
-        <div className="text-[#9933FF]">
+      <h1 className="flex gap-4 justify-center mb-10 text-2xl lg:text-3xl text-center text-slate-700">
+        <div className="text-[#9933FF] text-[47px] -mt-2">
           <AiFillFileText />
         </div>
         ཡིག་འཛིན་རིག་ནུས།

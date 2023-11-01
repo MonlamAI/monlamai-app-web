@@ -91,8 +91,8 @@ export default function Index() {
 
   return (
     <main className="mx-auto w-11/12 md:w-4/5">
-      <h1 className=" flex gap-3 justify-center mb-10 text-2xl lg:text-3xl text-center text-slate-700">
-        <div className="text-[#00AAFF]">
+      <h1 className=" flex gap-4 justify-center mb-10 text-2xl lg:text-3xl text-center text-slate-700">
+        <div className="text-[#00AAFF] text-[47px] -mt-2">
           <BsFillVolumeUpFill />
         </div>
         ཀློག་འདོན་རིག་ནུས།
