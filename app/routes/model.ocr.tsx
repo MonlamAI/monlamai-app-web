@@ -86,12 +86,15 @@ export default function Index() {
               <div className="overflow-y-scroll flex flex-col gap-2">
                 {dummydata?.map((item, index) => {
                   return (
-                    <Card
-                      onClick={() => setSelection(item)}
-                      key={item.id + index}
-                    >
-                      {item.id}. <img src={item.image} alt={item.image} />
-                    </Card>
+                    <div className="flex gap-1">
+                      <div className="flex items-center">{item.id}.</div>
+                      <Card
+                        onClick={() => setSelection(item)}
+                        key={item.id + index}
+                      >
+                        <img src={item.image} alt={item.image} />
+                      </Card>
+                    </div>
                   );
                 })}
               </div>
