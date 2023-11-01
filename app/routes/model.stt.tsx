@@ -9,14 +9,13 @@ import { auth } from "~/services/auth.server";
 import ReactionButtons from "~/component/ReactionButtons";
 import { getBrowser } from "~/component/utils/getBrowserDetail";
 import ErrorMessage from "~/component/ErrorMessage";
-import { FaAssistiveListeningSystems } from "react-icons/fa";
 import ToolWraper from "~/component/ToolWraper";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
   parentMeta.shift(1);
 
-  return [{ title: "Monlam | ཀློག་འདོན་རིག་ནུས།" }, ...parentMeta];
+  return [{ title: "Monlam | སྒྲ་འཛིན་རིག་ནུས།" }, ...parentMeta];
 };
 
 export const loader: LoaderFunction = async ({ request }) => {

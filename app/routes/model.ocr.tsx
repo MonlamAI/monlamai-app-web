@@ -2,19 +2,15 @@ import type {
   ActionFunctionArgs,
   LoaderFunctionArgs,
   MetaFunction,
-  LinksFunction,
 } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { useFetcher } from "@remix-run/react";
-import { Button, Card, FileInput, Label, Spinner } from "flowbite-react";
-import { useRef, useState, useEffect, useLayoutEffect } from "react";
+import { Button, Card, Spinner } from "flowbite-react";
+import { useState, useEffect } from "react";
 import { FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa6";
 import CopyToClipboard from "~/component/CopyToClipboard";
 import { auth } from "~/services/auth.server";
 import ErrorMessage from "~/component/ErrorMessage";
-import { AiFillFileText } from "react-icons/ai";
 import { dummydata } from "~/helper/dummy";
-import SVG from "~/styles/OCR_logo.svg";
 import ToolWraper from "~/component/ToolWraper";
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
