@@ -7,13 +7,13 @@ function Sponsors() {
         མཉམ་འབྲེལ་དང་རོགས་རམ།
       </h2>
 
-      <div className="flex gap-3 justify-between flex-wrap">
+      <div className="flex gap-4 justify-center flex-wrap ">
         {sponsor_list.map((sponsor, id) => {
           return (
             <div className="my-4 font-Elsie " key={sponsor}>
               <img
                 src={sponsor}
-                className="w-[7rem] object-contain hover:scale-110 transition-all duration-700"
+                className="w-[9rem] object-contain hover:scale-110 transition-all duration-700"
                 style={{ aspectRatio: "3/2", mixBlendMode: "darken" }}
               />
             </div>
