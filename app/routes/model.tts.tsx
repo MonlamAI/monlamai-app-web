@@ -100,11 +100,11 @@ export default function Index() {
               method="post"
               className="flex flex-col gap-5 flex-1 "
             >
-              <div className="w-full flex-1 max-h-[50vh]">
+              <div className="w-full flex-1 max-h-[50vh] ">
                 <Textarea
                   name="sourceText"
                   placeholder="ཡི་གེ་གཏག་རོགས།..."
-                  className="w-full h-full text-sm max-h-full border-0 focus:outline-none focus:ring-transparent bg-transparent caret-slate-500 placeholder:text-slate-300 md:text-xl leading-relaxed"
+                  className={`w-full bg-slate-50 min-h-full flex-1 p-2 border-0 focus:outline-none focus:ring-transparent  caret-slate-500 placeholder:text-slate-300 placeholder:font-monlam placeholder:text-lg text-lg leading-loose`}
                   required
                   value={sourceText}
                   onInput={(e) => {

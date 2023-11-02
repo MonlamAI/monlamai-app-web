@@ -53,7 +53,7 @@ export default function Index() {
     likefetcher.submit(
       {},
       {
-        action: "/reset_actiondata",
+        action: "/api/reset_actiondata",
       }
     );
     const temp = sourceLang;

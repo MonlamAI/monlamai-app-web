@@ -7,7 +7,7 @@ export default function Index() {
     <div
       className={`text-slate-900  ${
         !isTac ? "h-[50vh] overflow-y-scroll max-w-3xl" : ""
-      } mx-auto`}
+      } mx-auto leading-8`}
     >
       <div className="space-y-8 ">
         <h1 className="text-3xl font-semibold text-center text-gray-700 pt-4">
