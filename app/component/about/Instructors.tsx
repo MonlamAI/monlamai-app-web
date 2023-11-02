@@ -9,11 +9,11 @@ function Instructor() {
         ཆེད་ལས་སློབ་སྟོན་པ།
       </h2>
 
-      <div className="flex flex-wrap gap-6 justify-center">
+      <div className="flex flex-wrap gap-2 justify-center">
         {instructors.map((instructor) => {
           return (
             <div
-              className="h-24 w-24 md:h-28 md:w-28 my-10 md:my-4 font-Elsie"
+              className="h-fit w-24  md:w-28  md:my-4 font-Elsie"
               key={instructor.name}
             >
               <img

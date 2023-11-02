@@ -12,7 +12,7 @@ function Lamas() {
         <img
           src="/assets/lamas/dalai_lama.png"
           alt="dalai_lama"
-          className=" object-contain flex w-full md:w-[40%] justify-center rounded-full"
+          className=" object-contain flex h-full my-auto hover:scale-110 transition-all duration-700 md:w-[40%] justify-center rounded-lg"
         />
         <div className="flex flex-wrap gap-6 justify-center">
           {lamas.map((lama) => {
