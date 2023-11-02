@@ -34,12 +34,13 @@ function Questions({ option, value, setValue }: optionProps) {
           </option>
         ))}
       </Select>
-      {Q === "other" && (
+      {Q === "གཞན་དག" && (
         <TextInput
           value={textAreaValue}
           onChange={(e) => {
             setTextAreaValue(e.target.value);
           }}
+          placeholder="གཞན་དག་གང་རེད་"
           autoFocus
           type="text"
           required

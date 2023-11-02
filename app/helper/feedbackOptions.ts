@@ -7,7 +7,7 @@ const q1Options = [
   "རྩོམ་ཡིག་",
   "ཡིག་ཆ་",
   "ཁྱབ་བསྒྲགས་",
-  "གཞན་དག་",
+  "གཞན་དག",
 ];
 
 // options to audio transcribe,
@@ -17,23 +17,17 @@ const q2Options = [
   "གསར་འགྱུར་",
   "སློབ་ཁྲིད་",
   "གློག་བརྙན་",
-  "གཞས་ཚིག་",
-  "གཞན་དག་",
+  "གཞས་ཚིག",
+  "གཞན་དག",
 ];
 
 //   options to read via tts,
 // book, news, story, prayer, other
-const q3Options = [
-  "དཔེ་དེབ་",
-  "གསར་འགྱུར",
-  "གཏམ་རྒྱུད།",
-  "ཞལ་འདོན་",
-  "གཞན་དག་",
-];
+const q3Options = ["དཔེ་དེབ་", "གསར་འགྱུར", "གཏམ་རྒྱུད།", "ཞལ་འདོན་", "གཞན་དག"];
 
 // options to ocr,
 // wood block print, handwritten print, modern print, billboard, rock art, other
-const q4Options = ["ཤིང་པར།", "ལག་བྲིས།", "ལྕགས་པར།", "གཞན་དག་"];
+const q4Options = ["ཤིང་པར།", "ལག་བྲིས།", "ལྕགས་པར།", "གཞན་དག"];
 
 export const feedback_options = {
   q1: {

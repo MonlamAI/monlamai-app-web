@@ -16,8 +16,14 @@ function Header() {
   const [showMenu, setShowMenu] = useState(false);
   let location = useLocation();
   let isStep = location.pathname.includes("step");
+  let isAbout = location.pathname.includes("about");
+
   return (
-    <nav className={`flex flex-col lg:flex-row  ${isStep ? "" : "mb-10"}  `}>
+    <nav
+      className={`flex flex-col lg:flex-row  ${
+        isStep || isAbout ? "" : "mb-10"
+      }  `}
+    >
       <div className="flex p-3 items-center justify-between  w-full  bg-white ">
         <NavLink
           className={({ isActive, isPending }) =>
