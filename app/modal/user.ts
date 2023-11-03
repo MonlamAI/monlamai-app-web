@@ -25,3 +25,15 @@ export async function getUser(email: string) {
     where: { email },
   });
 }
+
+export async function getUsers(value: string) {
+  if (!value && value === "") {
+    return await db.user.findMany();
+  }
+
+  return await db.user.findMany({
+    where: {
+      OR: [{ username: { contains: value } }, { email: { contains: value } }],
+    },
+  });
+}

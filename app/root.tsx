@@ -5,7 +5,6 @@ import type {
 } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import {
-  Link,
   Links,
   LiveReload,
   Meta,
