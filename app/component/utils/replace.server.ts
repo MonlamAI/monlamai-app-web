@@ -935,6 +935,7 @@ export function en_bo_tibetan_replaces(text: string) {
     "རྒྱ་ནག་རྒྱལ་སྤྱིའི་ཚོང་འབྲེལ་གྱི་སྲི་ཞུའི་ཚོང་འདུས་དང་"
   );
   result = result.replaceAll("ལག་ཐོགས་ཁ་པར", "ལག་འཁྱེར་ཁ་པར");
+  
   result = result.replaceAll("ཤིན་ཏཱ་ཞིང་ཆེན", "ཧྲན་ཏུང་ཞིང་ཆེན་");
   result = result.replaceAll(
     "བཟོ་ལས་རིག་པས་མིའི་འཕྲུལ་ཆས་ཀྱི",
@@ -1838,6 +1839,7 @@ export function bo_en_english_replaces(text: string) {
   let result = text.replaceAll("MITRA", "Monlam AI");
   result = result.replaceAll(/event: message data: /g, "");
   result = result.replaceAll("' event: message data: '", "");
+  result = result.replaceAll("Tibet was not pure independence", "Tibet was pure independence");
   
 
   
