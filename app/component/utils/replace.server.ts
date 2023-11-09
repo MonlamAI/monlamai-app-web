@@ -834,6 +834,7 @@ export function en_bo_tibetan_replaces(text: string) {
   result = result.replaceAll("ཀྲུང་གོས", "རྒྱ་ནག་གིས");
   result = result.replaceAll("ཀྲུང་གོ", "རྒྱ་ནག");
   result = result.replaceAll("ཆ་འཕྲིན", "བརྡ་འཕྲིན");
+  result = result.replaceAll("བཅོས་མའི་རྣམ་དཔྱོད", "མིས་བཟོས་རིག་ནུས");
   
   result = result.replaceAll("རྒྱུད་གཅིག་ལམ་གཅིག་གྱི", "རྒྱུད་གཅིག་ལམ་གཅིག་གི");
   result = result.replaceAll(
@@ -934,6 +935,7 @@ export function en_bo_tibetan_replaces(text: string) {
     "རྒྱ་ནག་རྒྱལ་སྤྱིའི་ཚོང་འབྲེལ་གྱི་སྲི་ཞུའི་ཚོང་འདུས་དང་"
   );
   result = result.replaceAll("ལག་ཐོགས་ཁ་པར", "ལག་འཁྱེར་ཁ་པར");
+  
   result = result.replaceAll("ཤིན་ཏཱ་ཞིང་ཆེན", "ཧྲན་ཏུང་ཞིང་ཆེན་");
   result = result.replaceAll(
     "བཟོ་ལས་རིག་པས་མིའི་འཕྲུལ་ཆས་ཀྱི",
@@ -1014,6 +1016,7 @@ export function en_bo_tibetan_replaces(text: string) {
   result = result.replaceAll("ཡུ་ཁི་རན", "ཡུག་ཁི་རན");
   result = result.replaceAll("སིང་ག་པོར", "སིང་ག་པུར");
   result = result.replaceAll("བཅོས་མའི་རིག་རྩལ", "མིས་བཟོས་རིག་ནུས");
+  result = result.replaceAll("བྱེེད", "བྱེད");
   result = result.replaceAll(
     "སྐེད་རགས་དང་ལམ་གྱི་ལས་འཆར",
     "རྒྱུད་གཅིག་ལམ་གཅིག་གི་ལས་འཆར"
@@ -1836,6 +1839,7 @@ export function bo_en_english_replaces(text: string) {
   let result = text.replaceAll("MITRA", "Monlam AI");
   result = result.replaceAll(/event: message data: /g, "");
   result = result.replaceAll("' event: message data: '", "");
+  result = result.replaceAll("Tibet was not pure independence", "Tibet was pure independence");
   
 
   
