@@ -6,7 +6,7 @@ import {
   en_bo_tibetan_replaces,
 } from "~/component/utils/replace.server";
 import { fetchGPTData } from "~/services/fetchGPTData.server";
-
+type Lang = "bo" | "en";
 function parseWhenEnglishResponse(responseText: string) {
   let result = responseText.split("\n");
 
@@ -69,7 +69,7 @@ function parseApiResponse(apiResponse: String) {
   return null;
 }
 
-async function translate(text: String, sourceLang: String, targetLang: String) {
+async function translate(text: String, sourceLang: Lang, targetLang: Lang) {
   const url = "https://dharmamitra.org/api/translation/";
   const data = {
     input_sentence: text,
@@ -77,55 +77,58 @@ async function translate(text: String, sourceLang: String, targetLang: String) {
     language: `${sourceLang}-${targetLang}`,
     model: "NO",
   };
-
+  let response;
   try {
-    const response = await fetch(url, {
+    response = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
     });
-
     if (!response.ok) {
-      return { error: `HTTP error! Status: ${response.status}` };
+      return { error: `API Error Try after sometime` };
     }
-
-    const responseData = await response.text();
-    const parsedResponse = parseApiResponse(responseData);
-
-    if (!parsedResponse) {
-      return { error: "api responce couldnot be parsed" };
-    }
-    const { translation, disclaimer } = parsedResponse;
-
-    let parseEnglishRes = parseWhenEnglishResponse(translation);
-    let parseTibetanRes = parseWhenTibetanResponse(translation);
-    if (parseEnglishRes.includes("Your request is a little bit too short.")) {
-      return { error: "ནང་འཇུག་ཡི་གེ་ཉུང་དྲག་འདུག" };
-    }
-    return {
-      translation:
-        sourceLang === "en"
-          ? en_bo_tibetan_replaces(parseTibetanRes)
-          : bo_en_english_replaces(parseEnglishRes),
-      disclaimer,
-    };
-  } catch (error) {
-    console.error("Error:", error);
+  } catch (e) {
+    return { error: `API Error Try after sometime` };
   }
+
+  const responseData = await response?.text();
+  const parsedResponse = parseApiResponse(responseData!);
+
+  if (!parsedResponse) {
+    return { error: "api responce couldnot be parsed" };
+  }
+  const { translation, disclaimer } = parsedResponse;
+
+  let parseEnglishRes = parseWhenEnglishResponse(translation);
+  let parseTibetanRes = parseWhenTibetanResponse(translation);
+  if (parseEnglishRes.includes("Your request is a little bit too short.")) {
+    return { error: "ནང་འཇུག་ཡི་གེ་ཉུང་དྲག་འདུག" };
+  }
+  return {
+    translation:
+      sourceLang === "en"
+        ? en_bo_tibetan_replaces(parseTibetanRes)
+        : bo_en_english_replaces(parseEnglishRes),
+    disclaimer,
+  };
 }
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
-  const lang = url.searchParams.get("lang");
+  const lang = url.searchParams.get("lang") as "bo" | "en";
   let source = url.searchParams.get("q");
-  let targetLang = lang === "en" ? "bo" : "en";
+  let targetLang: Lang = lang === "en" ? "bo" : "en";
 
   if (lang === "en") {
     source = en_bo_english_replaces(source!);
     let prompt = `replace all the abbreviations with full form and preserve newlines, "${source}"  `;
-    source = await fetchGPTData(prompt);
+    try {
+      source = await fetchGPTData(prompt);
+    } catch (e) {
+      console.log(e);
+    }
   }
   if (lang === "bo") {
     source = bo_en_tibetan_replaces(source!);

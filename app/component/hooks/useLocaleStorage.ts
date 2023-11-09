@@ -4,11 +4,11 @@ function useLocalStorage(key, initialValue) {
   const [storedValue, setStoredValue] = useState(() => {
     try {
       // Try to get a value from localStorage by the key
-      const item = window.localStorage.getItem(key);
+      const item = window?.localStorage?.getItem(key);
       return item ? JSON.parse(item) : initialValue;
     } catch (error) {
       // If there's an error, return the initial value
-      console.error("Error retrieving data from localStorage:", error);
+      // console.error("Error retrieving data from localStorage:", error);
       return initialValue;
     }
   });
