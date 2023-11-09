@@ -11,7 +11,6 @@ import useDebounce from "~/component/hooks/useDebounceState";
 import { motion } from "framer-motion";
 import useLocalStorage from "~/component/hooks/useLocaleStorage";
 import ErrorMessage from "~/component/ErrorMessage";
-import { BsGlobe2 } from "react-icons/bs";
 import ToolWraper from "~/component/ToolWraper";
 const langLabels = {
   bo: "བོད་སྐད།",
