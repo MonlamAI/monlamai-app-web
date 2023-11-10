@@ -1822,6 +1822,7 @@ export function en_bo_tibetan_replaces(text: string) {
     "ཁོ་སྐུ་གཤེགས་པའི་སྐོར་"
   );
   result = result.replaceAll("MITRA", "Monlam AI");
+  result = result.replaceAll("API Error Try after sometime", "ཅུང་ཙམ་སྒུག་རོགས་གནང་། འདིར་མ་ལག་ལ་བཟོ་བཅོས་ཅུང་ཙམ་རྒྱག་བཞིན་པ་ཡིན།");
   //ཏཱ་ལའི་བླ་མ་མཆོག་གིས
   //སྲིད་འཛིན་སྐུ་ཕྲེང་བཞི་བཅུ་ང་བཞི
   result = result.replaceAll(/(\d+)([^\d]+)/g, "$1 $2");
