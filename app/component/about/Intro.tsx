@@ -1,8 +1,6 @@
-import React from "react";
-
 function Intro() {
   return (
-    <div className=" flex flex-col h-[80dvh] mb-20 justify-center items-center gap-10 px-4 lg:flex-row">
+    <div className=" flex flex-col  mb-20 justify-center items-center gap-10 px-4 lg:flex-row">
       <img
         src="/assets/about.jpg"
         alt="monlam"

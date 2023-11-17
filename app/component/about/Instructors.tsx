@@ -1,5 +1,3 @@
-import { Card } from "flowbite-react";
-import React from "react";
 import { instructors } from "~/helper/instructors";
 
 function Instructor() {

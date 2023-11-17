@@ -14,7 +14,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 function About() {
   return (
-    <div className="py-10 m-auto w-[90%] md:w-[80%] font-monlam">
+    <div className="py-10 m-auto w-[90%] md:w-[80%] font-monlam flex flex-col">
       <Intro />
       <Lamas />
       <Instructor />

@@ -1,10 +1,8 @@
-import { Card } from "flowbite-react";
-import React from "react";
 import { lamas } from "~/helper/lama";
 
 function Lamas() {
   return (
-    <div className="mt-20 ">
+    <div>
       <h2 className="lg:text-3xl text-xl font-bold font-monlam my-10 lg:my-20 flex justify-center">
         བླ་ཆེན་རྣམ་པས་བྱིན་རླབས་དང་ལམ་སྟོན།
       </h2>

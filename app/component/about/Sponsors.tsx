@@ -1,4 +1,3 @@
-import Marquee, { Motion, randomIntFromInterval } from "react-marquee-slider";
 import { sponsors as sponsor_list } from "~/helper/sponsors";
 function Sponsors() {
   return (
