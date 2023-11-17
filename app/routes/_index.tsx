@@ -1,4 +1,4 @@
-import { defer, type LoaderFunction, redirect } from "@remix-run/node";
+import { type LoaderFunction, redirect, json } from "@remix-run/node";
 import ErrorMessage from "~/component/ErrorMessage";
 import Tools from "~/component/Tools";
 import { getUserAboutData } from "~/modal/aboutUser";
@@ -12,7 +12,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   //check if all questions are answered
   let aboutUser = await getUserAboutData(user?.id);
   if (!aboutUser) return redirect("/steps");
-  return defer({
+  return json({
     user,
   });
 };

@@ -4,6 +4,7 @@ import Intro from "~/component/about/Intro";
 import Lamas from "~/component/about/Lama";
 import Sponsors from "~/component/about/Sponsors";
 import { auth } from "~/services/auth.server";
+
 export const loader: LoaderFunction = async ({ request }) => {
   let userdata = await auth.isAuthenticated(request, {
     failureRedirect: "/login",
