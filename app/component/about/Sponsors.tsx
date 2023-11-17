@@ -11,6 +11,7 @@ function Sponsors() {
           return (
             <div className="my-4 font-Elsie " key={sponsor}>
               <img
+                loading="lazy"
                 src={sponsor}
                 className="w-[9rem] object-contain hover:scale-110 transition-all duration-700"
                 style={{ aspectRatio: "3/2", mixBlendMode: "darken" }}
