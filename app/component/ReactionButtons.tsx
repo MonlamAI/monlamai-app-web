@@ -1,10 +1,11 @@
+import { Fetcher } from "@remix-run/react";
 import { Button, Spinner } from "flowbite-react";
 import React from "react";
 import { FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa";
 import { modelType } from "~/modal/feedback";
 
 type reactProps = {
-  fetcher: any;
+  fetcher: Fetcher;
   output: string | null;
   sourceText: string | null;
   model: modelType;
@@ -13,7 +14,7 @@ type reactProps = {
 function ReactionButtons({ fetcher, output, sourceText, model }: reactProps) {
   let liked = fetcher.data?.liked;
   let disliked = fetcher.data?.disliked;
-  let isLoading = fetcher.state !== "idle";
+  let isLoading = fetcher.state !== "idle" && fetcher.formData?.get("_action");
   function handleLike() {
     if (!output || !sourceText) return;
     fetcher.submit(
@@ -47,10 +48,18 @@ function ReactionButtons({ fetcher, output, sourceText, model }: reactProps) {
   if (isLoading) return <Spinner />;
   return (
     <div className="flex justify-end">
-      <Button color="white" disabled={!output} onClick={handleLike}>
+      <Button
+        color="white"
+        disabled={!output || isLoading}
+        onClick={handleLike}
+      >
         <FaRegThumbsUp color={liked ? "green" : "gray"} size="20px" />
       </Button>
-      <Button color="white" disabled={!output} onClick={handleDislike}>
+      <Button
+        color="white"
+        disabled={!output || isLoading}
+        onClick={handleDislike}
+      >
         <FaRegThumbsDown color={disliked ? "red" : "gray"} size="20px" />
       </Button>
     </div>
