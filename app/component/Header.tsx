@@ -19,11 +19,7 @@ function Header() {
   let isAbout = location.pathname.includes("about");
 
   return (
-    <nav
-      className={`flex flex-col lg:flex-row  ${
-        isStep || isAbout ? "" : "mb-10"
-      }  `}
-    >
+    <nav className={`flex flex-col lg:flex-row  `}>
       <div className="flex p-3 items-center justify-between  w-full  bg-white ">
         <NavLink
           className={({ isActive, isPending }) =>

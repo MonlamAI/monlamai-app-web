@@ -197,7 +197,7 @@ export default function Index() {
           </div>
         </Card>
       </div>
-      <div className="float-right text-sm mt-3 text-slate-400 text-[0.7rem]">
+      <div className="w-full text-center md:w-fit md:float-right text-xs mt-3 text-slate-400 text-[0.7rem]">
         Monlam-MITRA ཡིག་སྒྱུར་རིག་ནུས་དཔེ་གཞི་ཐོན་རིམ་ <small>v</small>10-16
       </div>
     </ToolWraper>
