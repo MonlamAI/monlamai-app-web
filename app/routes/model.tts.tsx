@@ -40,17 +40,22 @@ export const action: ActionFunction = async ({ request }) => {
     Authorization: process.env.MODEL_API_AUTH_TOKEN as string,
     "Content-Type": "application/json",
   };
-
-  const response = await fetch(API_URL, {
-    method: "POST",
-    headers,
-    body: JSON.stringify({
-      inputs: inputReplace(userInput),
-    }),
-  });
-  const data = await response.json();
-  const { audio_base64 } = data;
-  return audio_base64;
+  try {
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers,
+      body: JSON.stringify({
+        inputs: inputReplace(userInput),
+      }),
+    });
+    const data = await response.json();
+    const { audio_base64 } = data;
+    return audio_base64;
+  } catch (e) {
+    return {
+      error: "There was a problem with the API :" + e,
+    };
+  }
 };
 export default function Index() {
   const [sourceText, setSourceText] = useState("");
@@ -159,7 +164,11 @@ export default function Index() {
               )}
               {isActionSubmission && <Spinner />}
               <div className="flex-1 h-full flex justify-center items-center">
-                <AudioPlayer ref={audioRef} sourceUrl={sourceUrl} />
+                {data?.error ? (
+                  <div className="text-red-400">{data?.error}</div>
+                ) : (
+                  <AudioPlayer ref={audioRef} sourceUrl={sourceUrl} />
+                )}
               </div>
             </div>
             <div className="flex justify-between">
