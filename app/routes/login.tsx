@@ -87,7 +87,6 @@ function login() {
 
 export default login;
 
-
 export function ErrorBoundary({ error }) {
   return (
     <>

@@ -27,7 +27,15 @@ function Questions({ option, value, setValue }: optionProps) {
         {select_options.label}
         <span className="text-red-500 text-[20px] ml-1">*</span>
       </Label>
-      <Select id={id} value={Q} required onChange={(e) => setQ(e.target.value)}>
+      <Select
+        id={id}
+        value={Q}
+        required
+        onChange={(e) => setQ(e.target.value)}
+        style={{
+          lineHeight: "normal",
+        }}
+      >
         {select_options.option.map((option) => (
           <option key={option + "index"} value={option}>
             {option}
