@@ -1,5 +1,5 @@
 import { Await, useFetcher } from "@remix-run/react";
-import { Suspense, useEffect } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 function EachParagraph({
   source,
@@ -9,14 +9,24 @@ function EachParagraph({
   lang: "en" | "bo";
 }) {
   let fetcher = useFetcher();
+  const [isloading, setIsLoading] = useState(false);
   useEffect(() => {
     if (source) {
+      setIsLoading(true);
       let url = "/api/translation?q=" + source + "&lang=" + lang;
       fetcher.load(url);
     }
   }, [source, lang]);
   let data = fetcher?.data;
-  if (!data)
+  useEffect(() => {
+    if (!data) {
+      setIsLoading(true);
+    } else {
+      setIsLoading(false);
+    }
+  }, [data]);
+
+  if (isloading || !data)
     return (
       <div role="status" className="max-w-sm animate-pulse">
         <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4"></div>

@@ -151,31 +151,25 @@ export default function Index() {
 
         <Card className="md:w-1/2">
           <div className="w-full min-h-[20vh] md:min-h-[40vh] p-2 text-black bg-slate-50 rounded-lg overflow-auto">
-            {false ? (
-              <div className="h-full flex justify-center items-center">
-                <Spinner size="lg" />
-              </div>
-            ) : (
-              <div
-                ref={targetRef}
-                className={`text-lg ${
-                  targetLang === "bo"
-                    ? "tracking-wide leading-loose"
-                    : "font-Inter"
-                }`}
-              >
-                {text_array.map((text, index) => {
-                  if (text === "" || text === "\n") return null;
-                  return (
-                    <EachParagraph
-                      key={"returndata_" + index}
-                      lang={sourceLang}
-                      source={text}
-                    />
-                  );
-                })}
-              </div>
-            )}
+            <div
+              ref={targetRef}
+              className={`text-lg ${
+                targetLang === "bo"
+                  ? "tracking-wide leading-loose"
+                  : "font-Inter"
+              }`}
+            >
+              {text_array.map((text, index) => {
+                if (text === "" || text === "\n") return null;
+                return (
+                  <EachParagraph
+                    key={"returndata_" + index}
+                    lang={sourceLang}
+                    source={text}
+                  />
+                );
+              })}
+            </div>
           </div>
           <div className="flex justify-between">
             <div className={!liked ? "text-red-400" : "text-green-400"}>
