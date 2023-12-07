@@ -119,7 +119,6 @@ export default function Index() {
     let stream = await getMicrophonePermission();
     if (stream) {
       try {
-        // getting audio stream from user's mic persmission
         let localAudioChunks: [] = [];
         setAudio(null);
         setRecording(true);
@@ -128,7 +127,6 @@ export default function Index() {
           mimeType: browserName !== "Safari" ? "audio/webm" : "audio/mp4",
         });
         mediaRecorder.current = media;
-        //invokes the start method to start the recording process
         mediaRecorder.current.start();
         mediaRecorder.current.ondataavailable = (event: any) => {
           if (typeof event.data === "undefined") return;
@@ -157,11 +155,8 @@ export default function Index() {
 
       // Define a callback function to handle the result
       reader.onload = function () {
-        // The result is a Base64-encoded string
         const base64String = reader.result;
         setBase64(base64String);
-
-        // Now you can use the base64String as needed
       };
 
       // Read the Blob as a data URL (Base64)

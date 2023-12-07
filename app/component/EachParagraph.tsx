@@ -10,13 +10,14 @@ function EachParagraph({
 }) {
   let fetcher = useFetcher();
   const [isloading, setIsLoading] = useState(false);
+  const [retry, setRetry] = useState(0);
   useEffect(() => {
     if (source) {
       setIsLoading(true);
       let url = "/api/translation?q=" + source + "&lang=" + lang;
       fetcher.load(url);
     }
-  }, [source, lang]);
+  }, [source, lang, retry]);
   let data = fetcher?.data;
   useEffect(() => {
     if (!data) {
@@ -42,7 +43,15 @@ function EachParagraph({
         errorElement={<p>Error loading package location!</p>}
       >
         {(res) => {
-          if (res?.error) return <p className="text-red-400">{res?.error}</p>;
+          if (res?.error)
+            return (
+              <div
+                className="text-red-400 text-sm"
+                onClick={() => setRetry(retry + 1)}
+              >
+                ཡང་བསྐྱར་མཚོལ་
+              </div>
+            );
           return (
             <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
               {res?.translation}
