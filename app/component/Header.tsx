@@ -1,11 +1,5 @@
-import {
-  Form,
-  Link,
-  NavLink,
-  useLoaderData,
-  useLocation,
-} from "@remix-run/react";
-import { Dropdown } from "flowbite-react";
+import { Form, Link, NavLink, useLoaderData } from "@remix-run/react";
+import { DarkThemeToggle, Dropdown, Flowbite } from "flowbite-react";
 import { useState } from "react";
 import { HiLogout } from "react-icons/hi";
 import { GiHamburgerMenu } from "react-icons/gi";
@@ -14,13 +8,10 @@ import { motion, AnimatePresence } from "framer-motion";
 function Header() {
   const { user } = useLoaderData();
   const [showMenu, setShowMenu] = useState(false);
-  let location = useLocation();
-  let isStep = location.pathname.includes("step");
-  let isAbout = location.pathname.includes("about");
 
   return (
     <nav className={`flex flex-col lg:flex-row  `}>
-      <div className="flex p-3 items-center justify-between  w-full  bg-white ">
+      <div className="flex p-3 items-center justify-between  w-full bg-white dark:bg-slate-700 dark:text-gray-200 ">
         <NavLink
           className={({ isActive, isPending }) =>
             `flex items-center gap-2 text-[1.25rem] ${
@@ -44,7 +35,7 @@ function Header() {
         >
           {showMenu ? <RxCross1 /> : <GiHamburgerMenu />}
         </button>
-        <div className="hidden lg:flex gap-2 ml-8 flex-1 justify-between bg-white">
+        <div className="hidden lg:flex gap-2 ml-8 flex-1 justify-between bg-white dark:bg-slate-700 dark:text-gray-200">
           <div className="flex items-center gap-8 text-sm ml-4">
             <NavLink
               to="/about"

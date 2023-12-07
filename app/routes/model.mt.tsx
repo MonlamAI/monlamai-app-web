@@ -78,16 +78,13 @@ export default function Index() {
   return (
     <ToolWraper title="ཡིག་སྒྱུར་རིག་ནུས།">
       <div className="flex justify-between items-center">
-        <motion.div
-          className={`inline-block w-32 text-lg text-gray-500 ${
+        <div
+          className={`inline-block w-32 text-lg text-gray-500 dark:text-gray-300 ${
             sourceLang == "en" && "font-Inter text-xl"
           } ${sourceLang == "bo" && "text-lg leading-loose"}`}
-          exit={{ opacity: 0 }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
         >
           {langLabels[sourceLang]}
-        </motion.div>
+        </div>
 
         <motion.button
           className="group flex items-center justify-center p-0.5 text-center font-medium relative focus:z-10 focus:outline-none text-white bg-cyan-700 border border-transparent enabled:hover:bg-cyan-800 focus:ring-cyan-300 dark:bg-cyan-600 dark:enabled:hover:bg-cyan-700 dark:focus:ring-cyan-800 rounded-full focus:ring-2 py-1 px-3"
@@ -99,17 +96,14 @@ export default function Index() {
           <FaArrowRightArrowLeft size="20px" />
         </motion.button>
 
-        <motion.div
-          className={`inline-block w-32 text-lg text-right text-gray-500
+        <div
+          className={`inline-block w-32 text-lg text-right text-gray-500 dark:text-gray-300
           ${sourceLang != "en" && "font-Inter text-xl"} ${
             sourceLang != "bo" && "text-lg leading-loose"
           }`}
-          exit={{ opacity: 0 }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
         >
           {langLabels[targetLang]}
-        </motion.div>
+        </div>
       </div>
 
       <div className="mt-3 flex flex-col md:flex-row md:h-[55vh] gap-5">
@@ -150,7 +144,7 @@ export default function Index() {
         </Card>
 
         <Card className="md:w-1/2">
-          <div className="w-full min-h-[20vh] md:min-h-[40vh] p-2 text-black bg-slate-50 rounded-lg overflow-auto">
+          <div className="w-full min-h-[20vh] md:min-h-[40vh] p-2 dark:text-gray-200 dark:bg-slate-500 rounded-lg overflow-auto">
             <div
               ref={targetRef}
               className={`text-lg ${

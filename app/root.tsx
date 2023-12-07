@@ -23,7 +23,6 @@ import tailwindStyle from "./styles/tailwind.css";
 import { getUserSession } from "~/services/session.server";
 import { getUser } from "./modal/user";
 import ErrorMessage from "./component/ErrorMessage";
-
 export const loader: LoaderFunction = async ({ request }) => {
   let userdata = await getUserSession(request);
   return json(
@@ -77,7 +76,7 @@ function Document({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body className="inset-0 overflow-y-auto overflow-x-hidden">
+      <body className="inset-0 overflow-y-auto overflow-x-hidden dark:bg-slate-700 dark:text-gray-200">
         {children}
         <Scripts />
         {process.env.NODE_ENV === "development" && <LiveReload />}

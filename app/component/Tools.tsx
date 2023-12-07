@@ -37,7 +37,7 @@ function EachModel({ model }: EachProps) {
       >
         <div
           style={{ fontSize: 35, color: color }}
-          className="flex justify-center"
+          className="flex justify-center dark:invert"
         >
           {icon}
         </div>

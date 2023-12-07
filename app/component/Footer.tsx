@@ -1,9 +1,12 @@
 import { useLocation } from "@remix-run/react";
+import { DarkThemeToggle, Flowbite } from "flowbite-react";
 import { AiFillFacebook } from "react-icons/ai";
 import { AiFillTwitterCircle } from "react-icons/ai";
 import instasvg from "~/styles/instagram.svg";
+import useLocalStorage from "./hooks/useLocaleStorage";
 function Footer() {
   let location = useLocation();
+  let [isDarkMode, setIsDarkMode] = useLocalStorage("Darktheme", false);
   let isAboutPage = location.pathname.includes("about");
   const logos = [
     {
@@ -25,6 +28,10 @@ function Footer() {
       color: "#55acee",
     },
   ];
+
+  function handleClick() {
+    setIsDarkMode(!isDarkMode);
+  }
 
   return (
     <div className="w-full p-4">
@@ -52,6 +59,11 @@ function Footer() {
                 </a>
               );
             })}
+            <div onClick={handleClick}>
+              <Flowbite>
+                <DarkThemeToggle />
+              </Flowbite>
+            </div>
           </div>
         </div>
       </footer>

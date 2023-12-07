@@ -214,7 +214,7 @@ export default function Index() {
           </Card>
           <Card className="w-full lg:w-1/2 max-h-[60vh] flex">
             <Label value="ཡིག་འབེབས།" className="text-lg text-gray-500" />
-            <div className="w-full h-[25vh] lg:h-[50vh] p-3 text-black bg-slate-100 rounded-lg overflow-auto">
+            <div className="w-full h-[25vh] lg:h-[50vh] p-3 text-black bg-slate-100 dark:text-gray-200 dark:bg-slate-700 rounded-lg overflow-auto">
               {isLoading ? (
                 <div className="h-full flex justify-center items-center">
                   <Spinner />
