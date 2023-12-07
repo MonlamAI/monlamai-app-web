@@ -34,7 +34,7 @@ function login() {
     >
       <div
         className="relative hidden md:flex flex-1 flex-col justify-center px-5 pt-8 text-white
-          bg-[url('/assets/back-light.gif')] bg-no-repeat bg-center bg-cover shadow-2xl"
+          bg-[url('/assets/back-light-compressed.gif')] bg-no-repeat bg-center bg-cover shadow-2xl"
       >
         <div className="w-full flex-1 flex justify-center items-center flex-col">
           <h1 className="text-center text-[40px]  md:text-[50px] max-w-[1000px] mb-2 ">
