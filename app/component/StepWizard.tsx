@@ -5,6 +5,7 @@ import FormWizard from "react-form-wizard-component";
 import TermsAndContitions from "~/component/TermsAndConditions";
 
 import Questions from "./Questions";
+import uselitteraTranlation from "./hooks/useLitteraTranslation";
 
 function StepWizard() {
   const [organization, setOrganization] = React.useState("");
@@ -51,7 +52,7 @@ function StepWizard() {
     // you can add alert or console.log or any thing you want
     alert("Please fill in the required fields");
   };
-
+  let translation = uselitteraTranlation();
   return (
     <div className=" mx-auto">
       <FormWizard
@@ -62,7 +63,7 @@ function StepWizard() {
             className="base-button  w-lg mx-auto mt-5"
             onClick={handleback}
           >
-            ཕྱིར་ལོག
+            {translation.back}
           </Button>
         )}
         nextButtonTemplate={(handleNext) => (
@@ -70,7 +71,7 @@ function StepWizard() {
             className="base-button  w-lg mx-auto mt-5"
             onClick={handleNext}
           >
-            རྗེས་མ།
+            {translation.next}
           </Button>
         )}
         finishButtonTemplate={(handleComplete) => (
@@ -78,17 +79,17 @@ function StepWizard() {
             className="base-button  w-lg mx-auto mt-5"
             onClick={handleComplete}
           >
-            མོས་མཐུན་ཡོད།
+            {translation.agree}
           </Button>
         )}
       >
         <FormWizard.TabContent
-          title="མི་སྒེར་གྱི་ཆ་འཕྲིན་ཞིབ་ཕྲ།"
+          title={translation.personalInformation}
           icon="ti-user"
         >
           <div className="max-w-md mx-auto flex flex-col gap-3  mt-5">
             <Label htmlFor="organizationInput">
-              ཚོགས་པ།
+              {translation.organisation}
               <span className="text-red-500 text-[20px] ml-1">*</span>
             </Label>
             <TextInput
@@ -100,7 +101,7 @@ function StepWizard() {
               onChange={(e) => setOrganization(e.target.value)}
             />
             <Label htmlFor="professionInput">
-              ལས་གནས།
+              {translation.profession}
               <span className="text-red-500 text-[20px] ml-1">*</span>
             </Label>
             <TextInput
@@ -114,7 +115,7 @@ function StepWizard() {
           </div>
         </FormWizard.TabContent>
         <FormWizard.TabContent
-          title="རིག་ནུས་བཀོལ་སྤྱོད།"
+          title={translation.toolUsage}
           icon="ti-settings"
           isValid={checkValidateTab1()}
           validationError={errorMessages}
@@ -127,7 +128,7 @@ function StepWizard() {
           </div>
         </FormWizard.TabContent>
         <FormWizard.TabContent
-          title="བཀོལ་སྤྱོད་ཆ་རྐྱེན།"
+          title={translation.TermsAndConditions}
           icon="ti-check"
           isValid={checkValidateTab2()}
           validationError={errorMessages}

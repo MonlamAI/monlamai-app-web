@@ -19,7 +19,7 @@ import Footer from "./component/Footer";
 import Header from "./component/Header";
 import globalStyle from "./styles/global.css";
 import tailwindStyle from "./styles/tailwind.css";
-
+import { LitteraProvider } from "@assembless/react-littera";
 import { getUserSession } from "~/services/session.server";
 import { getUser } from "./modal/user";
 import ErrorMessage from "./component/ErrorMessage";
@@ -93,9 +93,11 @@ export default function App() {
   let isSteps = location.pathname.includes("steps");
   return (
     <Document>
-      {user && <Header />}
-      <Outlet />
-      {user && !isSteps && <Footer />}
+      <LitteraProvider locales={["en_US", "bo_TI"]}>
+        {user && <Header />}
+        <Outlet />
+        {user && !isSteps && <Footer />}
+      </LitteraProvider>
     </Document>
   );
 }

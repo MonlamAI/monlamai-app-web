@@ -29,18 +29,20 @@ const q3Options = ["དཔེ་དེབ་", "གསར་འགྱུར", "�
 // wood block print, handwritten print, modern print, billboard, rock art, other
 const q4Options = ["ཤིང་པར།", "ལག་བྲིས།", "ལྕགས་པར།", "གཞན་དག"];
 
-export const feedback_options = {
-  q1: {
-    label: "ཁྱེད་ཀྱིས་ཡིག་སྒྱུར་ཅི་ཞིག་བྱེད་དམ།",
-    option: q1Options,
-  },
-  q2: {
-    label: "ཁྱེད་ཀྱིས་སྒྲ་གང་ཞིག་ཡིག་འབེབས་བྱེད་དམ།",
-    option: q2Options,
-  },
-  q3: { label: "ཁྱེད་ཀྱིས་སྒྲ་གང་ཞིག་ཀློག་འདོན་བྱེད་དམ།", option: q3Options },
-  q4: {
-    label: "ཁྱེད་ཀྱིས་པར་རིས་གང་ཞིག་ཡིག་འབེབས་བྱེད་དམ།",
-    option: q4Options,
-  },
+export const feedback_options = (translation) => {
+  return {
+    q1: {
+      label: translation.mt_question,
+      option: q1Options,
+    },
+    q2: {
+      label: translation.stt_question,
+      option: q2Options,
+    },
+    q3: { label: translation.tts_question, option: q3Options },
+    q4: {
+      label: translation.ocr_question,
+      option: q4Options,
+    },
+  };
 };

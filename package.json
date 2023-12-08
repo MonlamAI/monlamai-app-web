@@ -10,6 +10,7 @@
     "typecheck": "tsc"
   },
   "dependencies": {
+    "@assembless/react-littera": "^2.4.0",
     "@headlessui/react": "^1.7.17",
     "@prisma/client": "^5.4.2",
     "@remix-run/css-bundle": "^2.0.1",
