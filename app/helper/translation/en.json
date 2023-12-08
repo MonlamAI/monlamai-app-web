@@ -1,0 +1,22 @@
+{
+  "language": "Language",
+  "search": "Search",
+  "searchText": "Search Text",
+  "login": "log in",
+  "signup": "sign up",
+  "logout": "log out",
+  "aboutUs": "About",
+  "monlamAI": "Monlam AI",
+  "personalInformation": "Personal Information",
+  "toolUsage": "Tool Usage",
+  "TermsAndConditions": "Terms and Conditions",
+  "organisation": "Organisation",
+  "profession": "Profession",
+  "back": "Back",
+  "next": "Next",
+  "agree": "Agree",
+  "mt_question": "what are you going to Translate?",
+  "stt_question": "what are you going to Transcribe?",
+  "tts_question": "what speech you want to synthesize?",
+  "ocr_question": "what text you want to recognize from Image?"
+}

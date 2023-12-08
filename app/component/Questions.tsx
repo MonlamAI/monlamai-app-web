@@ -1,6 +1,8 @@
 import { Label, Select, TextInput } from "flowbite-react";
 import { useState, useId, useEffect } from "react";
 import { feedback_options } from "../helper/feedbackOptions";
+import useLocalStorage from "./hooks/useLocaleStorage";
+import uselitteraTranlation from "./hooks/useLitteraTranslation";
 
 type optionProps = {
   option: "q1" | "q2" | "q3" | "q4";
@@ -9,7 +11,10 @@ type optionProps = {
 };
 
 function Questions({ option, value, setValue }: optionProps) {
-  let select_options = feedback_options[option];
+  let translation = uselitteraTranlation();
+  let feedback = feedback_options(translation);
+  let select_options = feedback[option];
+  console.log(select_options);
   let [Q, setQ] = useState(select_options?.option[0]);
   let [textAreaValue, setTextAreaValue] = useState("");
   let id = useId();

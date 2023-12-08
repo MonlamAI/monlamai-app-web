@@ -5,9 +5,12 @@ import { HiLogout } from "react-icons/hi";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { RxCross1 } from "react-icons/rx";
 import { motion, AnimatePresence } from "framer-motion";
+import TranslationSwitcher from "./TranslationSwitcher";
+import uselitteraTranlation from "./hooks/useLitteraTranslation";
 function Header() {
   const { user } = useLoaderData();
   const [showMenu, setShowMenu] = useState(false);
+  const translation = uselitteraTranlation();
 
   return (
     <nav className={`flex flex-col lg:flex-row  `}>
@@ -27,7 +30,7 @@ function Header() {
             alt="Monalm AI"
             className="relative -top-1"
           />{" "}
-          སྨོན་ལམ་རིག་ནུས།
+          {translation.monlamAI}
         </NavLink>
         <button
           className="block lg:hidden"
@@ -44,10 +47,11 @@ function Header() {
               }
               prefetch="intent"
             >
-              ང་ཚོའི་སྐོར།
+              {translation.aboutUs}
             </NavLink>
           </div>
           <div className="flex items-center gap-4 mr-7">
+            <TranslationSwitcher />
             <Dropdown
               label={user.email}
               dismissOnClick={false}
@@ -75,7 +79,7 @@ function Header() {
                   </Dropdown.Header>
                   <Dropdown.Item icon={HiLogout}>
                     <Form method="post" action="/logout">
-                      <button>logout</button>
+                      <button>{translation.logout}</button>
                     </Form>
                   </Dropdown.Item>
                 </motion.div>
@@ -92,7 +96,7 @@ function Header() {
 "
         >
           <Link to="/about" onClick={() => setShowMenu(false)}>
-            ང་ཚོའི་སྐོར།
+            {translation.aboutUs}
           </Link>
           <Dropdown
             label={user?.email}
@@ -114,7 +118,7 @@ function Header() {
             </Dropdown.Header>
             <Dropdown.Item>
               <Form method="post" action="/logout">
-                <button>logout</button>
+                <button>{translation.logout}</button>
               </Form>
             </Dropdown.Item>
           </Dropdown>
