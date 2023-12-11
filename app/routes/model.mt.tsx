@@ -40,7 +40,10 @@ export default function Index() {
   const [targetLang, setTargetLang] = useLocalStorage("outputLang", "bo");
   const [sourceText, setSourceText] = useState("");
   const [isRotated, setIsRotated] = useState(false);
-  const [selectedTool, setSelectedTool] = useState<"text" | "document">("text");
+  const [selectedTool, setSelectedTool] = useLocalStorage<"text" | "document">(
+    "mt_selected_input",
+    "text"
+  );
 
   const debouncedSearchTerm = useDebounce(sourceText, 1000);
   const likefetcher = useFetcher();
@@ -270,8 +273,11 @@ function DocumentComponent({ sourceText, setSourceText, sourceLang }) {
         <p>Drop the files here ...</p>
       ) : (
         <>
-          <p className="flex-1  border-blue-400 border-2 rounded text-slate-300 p-3">
-            <img src="//ssl.gstatic.com/translate/drag_and_drop.png" />
+          <p className="flex-1 flex flex-col justify-center items-center border-blue-400 border-2 rounded text-slate-300 p-3">
+            <img
+              className="w-1/2 "
+              src="//ssl.gstatic.com/translate/drag_and_drop.png"
+            />
             Drag 'n' drop some files here, or click to select files
           </p>
         </>
