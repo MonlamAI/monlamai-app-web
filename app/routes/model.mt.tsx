@@ -1,7 +1,7 @@
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { useFetcher } from "@remix-run/react";
-import { Button, Card, Spinner, Textarea } from "flowbite-react";
-import { useState, useRef } from "react";
+import { Button, Card, Textarea } from "flowbite-react";
+import { useState, useRef, useCallback } from "react";
 import { FaArrowRightArrowLeft } from "react-icons/fa6";
 import CopyToClipboard from "~/component/CopyToClipboard";
 import { auth } from "~/services/auth.server";
@@ -12,6 +12,9 @@ import { motion } from "framer-motion";
 import useLocalStorage from "~/component/hooks/useLocaleStorage";
 import ErrorMessage from "~/component/ErrorMessage";
 import ToolWraper from "~/component/ToolWraper";
+import { useDropzone } from "react-dropzone";
+import { readDocxFile, readTextFile } from "~/component/utils/readers";
+
 const langLabels = {
   bo: "བོད་སྐད།",
   en: "English",
@@ -43,6 +46,7 @@ export default function Index() {
   const [targetLang, setTargetLang] = useLocalStorage("outputLang", "bo");
   const [sourceText, setSourceText] = useState("");
   const [isRotated, setIsRotated] = useState(false);
+  const [selectedTool, setSelectedTool] = useState<"text" | "document">("text");
   const debouncedSearchTerm = useDebounce(sourceText, 1000);
   const likefetcher = useFetcher();
 
@@ -108,24 +112,25 @@ export default function Index() {
 
       <div className="mt-3 flex flex-col md:flex-row md:h-[55vh] gap-5">
         <Card className="md:w-1/2">
-          <div className="w-full flex min-h-[20vh] md:min-h-[40vh] flex-1 overflow-hidden">
-            <Textarea
-              name="sourceText"
-              placeholder="ཡི་གེ་གཏག་རོགས།..."
-              className={`w-full bg-slate-50 min-h-full flex-1 p-2 border-0 focus:outline-none focus:ring-transparent  caret-slate-500 placeholder:text-slate-300 placeholder:font-monlam placeholder:text-lg ${
-                sourceLang == "en" && "font-Inter text-xl"
-              } ${sourceLang == "bo" && "text-lg leading-loose"}`}
-              required
-              value={sourceText}
-              onInput={(e) => {
-                setSourceText((prev) => {
-                  let value = e.target?.value;
-                  if (value?.length <= charLimit) return value;
-                  return prev;
-                });
-              }}
-              autoFocus
-            />
+          <ListInput
+            selectedTool={selectedTool}
+            setSelectedTool={setSelectedTool}
+          />
+          <div className="w-full flex flex-col gap-2 min-h-[20vh] md:min-h-[40vh] flex-1 overflow-hidden">
+            {selectedTool === "text" && (
+              <TextComponent
+                sourceText={sourceText}
+                setSourceText={setSourceText}
+                sourceLang={sourceLang}
+              />
+            )}
+            {selectedTool === "document" && (
+              <DocumentComponent
+                sourceText={sourceText}
+                setSourceText={setSourceText}
+                sourceLang={sourceLang}
+              />
+            )}
           </div>
           <Button
             color="gray"
@@ -197,5 +202,91 @@ export function ErrorBoundary({ error }) {
     <>
       <ErrorMessage error={error} />
     </>
+  );
+}
+
+function TextComponent({ sourceText, setSourceText, sourceLang }) {
+  return (
+    <Textarea
+      name="sourceText"
+      placeholder="ཡི་གེ་གཏག་རོགས།..."
+      className={`w-full bg-slate-50 min-h-full flex-1 p-2 border-0 focus:outline-none focus:ring-transparent  caret-slate-500 placeholder:text-slate-300 placeholder:font-monlam placeholder:text-lg ${
+        sourceLang == "en" && "font-Inter text-xl"
+      } ${sourceLang == "bo" && "text-lg leading-loose"}`}
+      required
+      value={sourceText}
+      onInput={(e) => {
+        setSourceText((prev) => {
+          let value = e.target?.value;
+          if (value?.length <= charLimit) return value;
+          return prev;
+        });
+      }}
+      autoFocus
+    />
+  );
+}
+
+function DocumentComponent({ sourceText, setSourceText, sourceLang }) {
+  const onDrop = useCallback((acceptedFiles) => {
+    // Do something with the files
+    var file = acceptedFiles[0];
+    if (!file) {
+      return;
+    }
+
+    if (file.name.endsWith(".txt")) {
+      readTextFile(file);
+    } else if (file.name.endsWith(".docx")) {
+      readDocxFile(file);
+    } else {
+      console.log("Unsupported file type.");
+    }
+  }, []);
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: {
+      "text/html": [".txt", ".docs"],
+    },
+  });
+
+  return (
+    <div className="min-h-full flex-1 flex cursor-pointer" {...getRootProps()}>
+      <input {...getInputProps()} />
+      {isDragActive ? (
+        <p>Drop the files here ...</p>
+      ) : (
+        <>
+          <p className="flex-1  border-blue-400 border-2 rounded text-slate-300 p-3">
+            <img src="//ssl.gstatic.com/translate/drag_and_drop.png" />
+            Drag 'n' drop some files here, or click to select files
+          </p>
+        </>
+      )}
+    </div>
+  );
+}
+
+function ListInput({ selectedTool, setSelectedTool }) {
+  const isTextSelected = selectedTool === "text";
+  const isDocumentSelected = selectedTool === "document";
+
+  return (
+    <div className="flex gap-2 mt-2">
+      <Button
+        color={isTextSelected ? "blue" : "gray"}
+        size={"xs"}
+        onClick={() => setSelectedTool("text")}
+      >
+        Text
+      </Button>
+      <Button
+        color={isDocumentSelected ? "blue" : "gray"}
+        size={"xs"}
+        onClick={() => setSelectedTool("document")}
+      >
+        Document
+      </Button>
+    </div>
   );
 }

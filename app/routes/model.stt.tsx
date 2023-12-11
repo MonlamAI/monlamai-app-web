@@ -163,6 +163,21 @@ export default function Index() {
       reader.readAsDataURL(audioBlob);
     };
   };
+  const [base64, setBase64a] = useState("");
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        setBase64a(reader.result);
+      };
+      reader.onerror = (error) => {
+        console.error("Error: ", error);
+      };
+    }
+  };
   return (
     <ToolWraper title={"སྒྲ་འཛིན་རིག་ནུས།"}>
       <main className="mx-auto w-11/12 md:w-4/5">
@@ -172,26 +187,30 @@ export default function Index() {
               id="sttForm"
               className="flex flex-col w-full h-[25vh] lg:h-[50vh] justify-center gap-4"
             >
-              <div className="flex flex-col items-center gap-5 flex-1 justify-center">
-                {recording &&
-                  mediaRecorder.current &&
-                  getBrowser() !== "Safari" && (
-                    <LiveAudioVisualizer
-                      mediaRecorder={mediaRecorder.current}
-                      width={200}
-                      height={75}
-                    />
+              {base64 ? (
+                base64
+              ) : (
+                <div className="flex flex-col items-center gap-5 flex-1 justify-center">
+                  {recording &&
+                    mediaRecorder.current &&
+                    getBrowser() !== "Safari" && (
+                      <LiveAudioVisualizer
+                        mediaRecorder={mediaRecorder.current}
+                        width={200}
+                        height={75}
+                      />
+                    )}
+                  <Button size="xl" onClick={toggleRecording}>
+                    {recording ? <BsFillStopFill /> : <BsFillMicFill />}
+                  </Button>
+                  {audioURL && (
+                    <audio controls>
+                      <source src={audioURL} type="audio/mpeg"></source>
+                      <source src={audioURL} type="audio/ogg"></source>
+                    </audio>
                   )}
-                <Button size="xl" onClick={toggleRecording}>
-                  {recording ? <BsFillStopFill /> : <BsFillMicFill />}
-                </Button>
-                {audioURL && (
-                  <audio controls>
-                    <source src={audioURL} type="audio/mpeg"></source>
-                    <source src={audioURL} type="audio/ogg"></source>
-                  </audio>
-                )}
-              </div>
+                </div>
+              )}
               <div className="flex justify-between h-10">
                 <Button
                   color="gray"
@@ -205,6 +224,7 @@ export default function Index() {
                   ཐོངས།
                 </Button>
               </div>
+              <input type="file" accept="audio/*" onChange={handleFileChange} />
             </div>
           </Card>
           <Card className="w-full lg:w-1/2 max-h-[60vh] flex">

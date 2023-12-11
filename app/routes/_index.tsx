@@ -8,7 +8,9 @@ export const loader: LoaderFunction = async ({ request }) => {
   let userdata = await auth.isAuthenticated(request, {
     failureRedirect: "/login",
   });
+
   let user = await getUser(userdata?._json.email);
+
   //check if all questions are answered
   let aboutUser = await getUserAboutData(user?.id);
   if (!aboutUser) return redirect("/steps");

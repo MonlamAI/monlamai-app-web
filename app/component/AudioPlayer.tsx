@@ -5,6 +5,7 @@ import { BsFillStopFill, BsPauseFill, BsPlay } from "react-icons/bs";
 let timer;
 function AudioPlayer(props, ref) {
   let { sourceUrl } = props;
+  console.log(sourceUrl);
   const [playStatus, setPlayStatus] = useState("stop");
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
