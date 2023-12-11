@@ -1,8 +1,10 @@
-export function readTextFile(file) {
+const MAX_TEXT_LIMIT = 2000;
+
+export function readTextFile(file, setSourceText) {
   var reader = new FileReader();
   reader.onload = function (e) {
     var contents = e.target.result;
-    console.log(contents);
+    if (contents?.length < MAX_TEXT_LIMIT) setSourceText(contents);
   };
   reader.onerror = function (e) {
     console.error("Error reading file:", e);

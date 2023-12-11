@@ -1,7 +1,7 @@
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { useFetcher } from "@remix-run/react";
 import { Button, Card, Textarea } from "flowbite-react";
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { FaArrowRightArrowLeft } from "react-icons/fa6";
 import CopyToClipboard from "~/component/CopyToClipboard";
 import { auth } from "~/services/auth.server";
@@ -22,12 +22,6 @@ const langLabels = {
 
 const charLimit = 2000;
 
-const boTexts = [
-  "བདག་ནི་སྐྱེ་བ་ཐམས་ཅད་དུ།",
-  "བསྟན་པ་གསལ་བར་བྱེད་གྱུར་ཅིག",
-  "བསྟན་པ་གསལ་བར་མ་ནུས་ནའང་",
-];
-
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
   parentMeta.shift(1);
@@ -47,6 +41,7 @@ export default function Index() {
   const [sourceText, setSourceText] = useState("");
   const [isRotated, setIsRotated] = useState(false);
   const [selectedTool, setSelectedTool] = useState<"text" | "document">("text");
+
   const debouncedSearchTerm = useDebounce(sourceText, 1000);
   const likefetcher = useFetcher();
 
@@ -236,19 +231,37 @@ function DocumentComponent({ sourceText, setSourceText, sourceLang }) {
     }
 
     if (file.name.endsWith(".txt")) {
-      readTextFile(file);
+      readTextFile(file, setSourceText);
     } else if (file.name.endsWith(".docx")) {
       readDocxFile(file);
     } else {
       console.log("Unsupported file type.");
     }
   }, []);
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop,
-    accept: {
-      "text/html": [".txt", ".docs"],
-    },
-  });
+  const { getRootProps, getInputProps, isDragActive, acceptedFiles } =
+    useDropzone({
+      onDrop,
+      accept: {
+        "text/html": [".txt", ".docs"],
+      },
+    });
+  function reset() {
+    acceptedFiles.splice(0, acceptedFiles.length);
+    if (sourceText !== "") setSourceText("");
+  }
+  useEffect(() => {
+    if (sourceText === "") reset();
+  }, [sourceText]);
+
+  if (acceptedFiles.length > 0)
+    return (
+      <div>
+        {acceptedFiles.map((item) => item.name)}{" "}
+        <Button className="hidden md:block" onClick={reset}>
+          reset
+        </Button>
+      </div>
+    );
 
   return (
     <div className="min-h-full flex-1 flex cursor-pointer" {...getRootProps()}>
