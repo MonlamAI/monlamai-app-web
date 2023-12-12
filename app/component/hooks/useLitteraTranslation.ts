@@ -1,4 +1,4 @@
-import { useLittera } from "@assembless/react-littera";
+import { useLittera, useLitteraMethods } from "@assembless/react-littera";
 import en from "~/helper/translation/en.json";
 import bo from "~/helper/translation/bo.json";
 
@@ -29,6 +29,7 @@ export function translationList() {
 }
 export default function uselitteraTranlation() {
   let translations = translationList();
+  const { locale } = useLitteraMethods();
   const translation = useLittera(translations);
-  return translation;
+  return { translation, locale };
 }

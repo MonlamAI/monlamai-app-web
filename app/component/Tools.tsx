@@ -9,15 +9,26 @@ type EachProps = {
 };
 
 function Tools() {
-  let translation = uselitteraTranlation();
+  let { translation, locale } = uselitteraTranlation();
+  let isEnglish = locale === "en_US";
   return (
     <main>
-      <div className="md:pt-[40px]" id="skills">
+      <div className="md:pt-[40px]">
         <div className="text-center max-w-7xl mx-auto">
-          <p className=" px-3 mb-20 text-2xl leading-[200%] ">
+          <p
+            className=" px-3 mb-20 text-2xl leading-[200%] "
+            style={{
+              fontFamily: isEnglish ? "Inter" : "monlam",
+            }}
+          >
             {translation.homepageHeading}
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mx-10">
+          <div
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mx-10"
+            style={{
+              fontFamily: isEnglish ? "Inter" : "monlam",
+            }}
+          >
             {models.map((model, index) => (
               <EachModel key={model.name} model={model} />
             ))}
@@ -39,7 +50,7 @@ function EachModel({ model }: EachProps) {
       >
         <div
           style={{ fontSize: 35, color: color }}
-          className="flex justify-center dark:invert"
+          className="flex justify-center dark:mix-blend-exclusion dark:rounded-lg "
         >
           {icon}
         </div>

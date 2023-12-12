@@ -10,7 +10,7 @@ import uselitteraTranlation from "./hooks/useLitteraTranslation";
 function Header() {
   const { user } = useLoaderData();
   const [showMenu, setShowMenu] = useState(false);
-  const translation = uselitteraTranlation();
+  const { translation } = uselitteraTranlation();
 
   return (
     <nav className={`flex flex-col lg:flex-row  `}>

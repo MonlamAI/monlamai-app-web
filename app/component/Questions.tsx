@@ -11,7 +11,7 @@ type optionProps = {
 };
 
 function Questions({ option, value, setValue }: optionProps) {
-  let translation = uselitteraTranlation();
+  let { translation } = uselitteraTranlation();
   let feedback = feedback_options(translation);
   let select_options = feedback[option];
   console.log(select_options);

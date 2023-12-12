@@ -52,7 +52,7 @@ function StepWizard() {
     // you can add alert or console.log or any thing you want
     alert("Please fill in the required fields");
   };
-  let translation = uselitteraTranlation();
+  let { translation } = uselitteraTranlation();
   return (
     <div className=" mx-auto">
       <FormWizard
