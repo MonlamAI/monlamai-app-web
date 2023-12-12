@@ -26,6 +26,7 @@
     "flowbite-react": "^0.6.4",
     "framer-motion": "^10.16.4",
     "isbot": "^3.6.8",
+    "mammoth": "^1.6.0",
     "morgan": "^1.10.0",
     "openai": "^4.12.4",
     "prisma": "^5.4.2",
