@@ -28,4 +28,10 @@ module.exports = {
   // publicPath: "/build/",
   // serverBuildPath: "build/index.js",
   tailwind: true,
+  browserNodeBuiltinsPolyfill: {
+    modules: {
+      path: true,
+      util: true,
+    },
+  },
 };

@@ -14,6 +14,7 @@ import ErrorMessage from "~/component/ErrorMessage";
 import ToolWraper from "~/component/ToolWraper";
 import { useDropzone } from "react-dropzone";
 import { readDocxFile, readTextFile } from "~/component/utils/readers";
+import { FaFile } from "react-icons/fa";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 
 const langLabels = {
@@ -157,6 +158,8 @@ export default function Index() {
                   : "font-Inter"
               }`}
             >
+              {/* {selectedTool === "text" && (
+                <> */}
               {text_array.map((text, index) => {
                 if (text === "" || text === "\n") return null;
                 return (
@@ -167,6 +170,14 @@ export default function Index() {
                   />
                 );
               })}
+              {/* </>
+              )} */}
+              {/* {selectedTool === "document" && text_array.length !== 0 && (
+                <DownloadDocument
+                  textArray={text_array}
+                  sourceLang={sourceLang}
+                />
+              )} */}
             </div>
           </div>
           <div className="flex justify-between">
@@ -237,7 +248,7 @@ function DocumentComponent({ sourceText, setSourceText, sourceLang }) {
     if (file.name.endsWith(".txt")) {
       readTextFile(file, setSourceText);
     } else if (file.name.endsWith(".docx")) {
-      readDocxFile(file);
+      readDocxFile(file, setSourceText);
     } else {
       console.log("Unsupported file type.");
     }
@@ -246,7 +257,7 @@ function DocumentComponent({ sourceText, setSourceText, sourceLang }) {
     useDropzone({
       onDrop,
       accept: {
-        "text/html": [".txt", ".docs"],
+        "text/html": [".txt", ".docx"],
       },
     });
   function reset() {
@@ -259,10 +270,13 @@ function DocumentComponent({ sourceText, setSourceText, sourceLang }) {
 
   if (acceptedFiles.length > 0)
     return (
-      <div>
-        {acceptedFiles.map((item) => item.name)}{" "}
-        <Button className="hidden md:block" onClick={reset}>
-          reset
+      <div className="bg-gray-200 p-5 rounded-lg shadow-md flex justify-between items-center">
+        <div className="flex gap-4">
+          <FaFile size="20px" />
+          {acceptedFiles.map((item) => item.name)}{" "}
+        </div>
+        <Button size="sm" className="" pill onClick={reset}>
+          X
         </Button>
       </div>
     );
@@ -308,5 +322,32 @@ function ListInput({ selectedTool, setSelectedTool }) {
         Document
       </Button>
     </div>
+  );
+}
+
+function DownloadDocument({ textArray, sourceLang }) {
+  const downloadTxtFile = () => {
+    // Join the array of strings into a single string with new lines
+    const fileContent = textArray.join("\n");
+    // Create a Blob from the content
+    const blob = new Blob([fileContent], { type: "text/plain" });
+    // Create a URL for the Blob
+    const fileUrl = URL.createObjectURL(blob);
+    // Create a temporary anchor element and trigger the download
+    const downloadLink = document.createElement("a");
+    downloadLink.href = fileUrl;
+    downloadLink.download = "download.txt";
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+
+    // Free up the Blob URL memory
+    URL.revokeObjectURL(fileUrl);
+  };
+
+  return (
+    <>
+      <button onClick={downloadTxtFile}>Download as TXT</button>
+    </>
   );
 }
