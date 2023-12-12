@@ -2,18 +2,20 @@ import { Link } from "@remix-run/react";
 
 import { motion } from "framer-motion";
 import { ModalType, models } from "~/helper/models";
+import uselitteraTranlation from "./hooks/useLitteraTranslation";
 
 type EachProps = {
   model: ModalType;
 };
 
 function Tools() {
+  let translation = uselitteraTranlation();
   return (
     <main>
       <div className="md:pt-[40px]" id="skills">
         <div className="text-center max-w-7xl mx-auto">
           <p className=" px-3 mb-20 text-2xl leading-[200%] ">
-            གཤམ་གསལ་ཚོད་ལྟའི་རིག་ནུས་ཁག་ཁྱེད་ཀྱིས་མཉམ་སྤྱོད་བྱ་ཆོག
+            {translation.homepageHeading}
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mx-10">
             {models.map((model, index) => (

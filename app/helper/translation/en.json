@@ -18,5 +18,6 @@
   "mt_question": "what are you going to Translate?",
   "stt_question": "what are you going to Transcribe?",
   "tts_question": "what speech you want to synthesize?",
-  "ocr_question": "what text you want to recognize from Image?"
+  "ocr_question": "what text you want to recognize from Image?",
+  "homepageHeading": "Following are tools for experiment"
 }

@@ -1,6 +1,6 @@
 import { useLitteraMethods } from "@assembless/react-littera";
 import React, { useEffect } from "react";
-
+import { IoMdGlobe } from "react-icons/io";
 import { translationCodes } from "./hooks/useLitteraTranslation";
 import useLocalStorage from "./hooks/useLocaleStorage";
 
@@ -33,29 +33,12 @@ function TranslationSwitcher() {
   };
 
   return (
-    <div className="relative z-20">
-      <button
+    <div className="relative z-20 m-auto">
+      <IoMdGlobe
         onClick={() => setIsOpen(!isOpen)}
-        type="button"
-        className="inline-flex items-center justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        className="cursor-pointer text-2xl hover:text-blue-300 transition-all duration-150 "
         id={LANGUAGE_SELECTOR_ID}
-        aria-expanded={isOpen}
-      >
-        {selectedLanguage.name}
-        <svg
-          className="-me-1 ms-2 h-5 w-5"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-          aria-hidden="true"
-        >
-          <path
-            fillRule="evenodd"
-            d="M10.293 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L10 12.586l3.293-3.293a1 1 0 011.414 1.414l-4 4z"
-            clipRule="evenodd"
-          />
-        </svg>
-      </button>
+      />
       {isOpen && (
         <div
           className="origin-top-right absolute right-0 mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"

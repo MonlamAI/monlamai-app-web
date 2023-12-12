@@ -5,7 +5,7 @@ import {
   type ActionFunction,
   LinksFunction,
 } from "@remix-run/node";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { auth } from "~/services/auth.server";
 import ReactionButtons from "~/component/ReactionButtons";
 import inputReplace from "~/component/utils/ttsReplace.server";
@@ -16,6 +16,8 @@ import ErrorMessage from "~/component/ErrorMessage";
 import AudioPlayer from "~/component/AudioPlayer";
 import { BsFillVolumeUpFill } from "react-icons/bs";
 import ToolWraper from "~/component/ToolWraper";
+import { readDocxFile, readTextFile } from "~/component/utils/readers";
+import { useDropzone } from "react-dropzone";
 const charLimit = 500;
 export async function loader({ request }: LoaderFunctionArgs) {
   let userdata = await auth.isAuthenticated(request, {
@@ -33,7 +35,7 @@ export const meta: MetaFunction<typeof loader> = ({ matches }) => {
 
 export const action: ActionFunction = async ({ request }) => {
   const formdata = await request.formData();
-  const voiceType = formdata.get("voice") as string;
+  // const voiceType = formdata.get("voice") as string;
   const userInput = formdata.get("sourceText") as string;
   const API_URL = process.env.TTS_API_URL as string;
   const headers = {
@@ -59,6 +61,10 @@ export const action: ActionFunction = async ({ request }) => {
 };
 export default function Index() {
   const [sourceText, setSourceText] = useState("");
+  const [selectedTool, setSelectedTool] = useLocalStorage(
+    "tts_selected_input",
+    "text"
+  );
   const [volume, setVolume] = useLocalStorage("volume", 1);
   const fetcher = useFetcher();
   const isActionSubmission = fetcher.state !== "idle";
@@ -95,6 +101,19 @@ export default function Index() {
     }
   }
 
+  function submitHandler(e) {
+    e.preventDefault();
+    fetcher.submit(
+      {
+        sourceText: sourceText,
+      },
+      {
+        method: "POST",
+        action: "/api/tts",
+      }
+    );
+  }
+
   return (
     <ToolWraper title="ཀློག་འདོན་རིག་ནུས།">
       <main className="mx-auto w-11/12 md:w-4/5">
@@ -102,25 +121,26 @@ export default function Index() {
           <Card className="w-full lg:w-1/2 min-h-[20vh] lg:min-h-[40vh] lg:h-auto flex">
             <fetcher.Form
               id="ttsForm"
-              method="post"
               className="flex flex-col gap-5 flex-1 "
+              onSubmit={submitHandler}
             >
               <div className="w-full flex-1 max-h-[50vh] ">
-                <Textarea
-                  name="sourceText"
-                  placeholder="ཡི་གེ་གཏག་རོགས།..."
-                  className={`w-full bg-slate-50 min-h-full flex-1 p-2 border-0 focus:outline-none focus:ring-transparent  caret-slate-500 placeholder:text-slate-300 placeholder:font-monlam placeholder:text-lg text-lg leading-loose`}
-                  required
-                  value={sourceText}
-                  onInput={(e) => {
-                    setSourceText((prev) => {
-                      let value = e.target.value;
-                      if (value?.length <= charLimit) return value;
-                      return prev;
-                    });
-                  }}
-                  autoFocus
+                <ListInput
+                  selectedTool={selectedTool}
+                  setSelectedTool={setSelectedTool}
                 />
+                {selectedTool === "text" && (
+                  <TextComponent
+                    setSourceText={setSourceText}
+                    sourceText={sourceText}
+                  />
+                )}
+                {selectedTool === "document" && (
+                  <DocumentComponent
+                    setSourceText={setSourceText}
+                    sourceText={sourceText}
+                  />
+                )}
               </div>
               <div className="flex justify-between items-center">
                 <Button
@@ -198,5 +218,110 @@ export function ErrorBoundary({ error }) {
     <>
       <ErrorMessage error={error} />
     </>
+  );
+}
+
+function TextComponent({ sourceText, setSourceText }) {
+  return (
+    <Textarea
+      name="sourceText"
+      placeholder="ཡི་གེ་གཏག་རོགས།..."
+      className={`w-full bg-slate-50 min-h-full flex-1 p-2 border-0 focus:outline-none focus:ring-transparent  caret-slate-500 placeholder:text-slate-300 placeholder:font-monlam placeholder:text-lg text-lg leading-loose`}
+      required
+      value={sourceText}
+      onInput={(e) => {
+        setSourceText((prev) => {
+          let value = e.target.value;
+          if (value?.length <= charLimit) return value;
+          return prev;
+        });
+      }}
+      autoFocus
+    />
+  );
+}
+
+function DocumentComponent({ sourceText, setSourceText }) {
+  const onDrop = useCallback((acceptedFiles) => {
+    // Do something with the files
+    var file = acceptedFiles[0];
+    if (!file) {
+      return;
+    }
+
+    if (file.name.endsWith(".txt")) {
+      readTextFile(file, setSourceText);
+    } else if (file.name.endsWith(".docx")) {
+      readDocxFile(file);
+    } else {
+      console.log("Unsupported file type.");
+    }
+  }, []);
+  const { getRootProps, getInputProps, isDragActive, acceptedFiles } =
+    useDropzone({
+      onDrop,
+      accept: {
+        "text/html": [".txt", ".docs"],
+      },
+    });
+  function reset() {
+    acceptedFiles.splice(0, acceptedFiles.length);
+    if (sourceText !== "") setSourceText("");
+  }
+  useEffect(() => {
+    if (sourceText === "") reset();
+  }, [sourceText]);
+
+  if (acceptedFiles.length > 0)
+    return (
+      <div>
+        {acceptedFiles.map((item) => item.name)}{" "}
+        <Button className="hidden md:block" onClick={reset}>
+          reset
+        </Button>
+      </div>
+    );
+
+  return (
+    <div className="min-h-full flex-1 flex cursor-pointer" {...getRootProps()}>
+      <input {...getInputProps()} />
+      {isDragActive ? (
+        <p>Drop the files here ...</p>
+      ) : (
+        <>
+          <p className="flex-1 flex flex-col justify-center items-center  rounded text-slate-300 p-3">
+            <img
+              className="w-1/2 "
+              src="//ssl.gstatic.com/translate/drag_and_drop.png"
+            />
+            Drag 'n' drop some files here, or click to select files
+          </p>
+        </>
+      )}
+    </div>
+  );
+}
+
+function ListInput({ selectedTool, setSelectedTool }) {
+  const isTextSelected = selectedTool === "text";
+  const isDocumentSelected = selectedTool === "document";
+
+  return (
+    <div className="flex gap-2 mt-2 mb-3">
+      <Button
+        color={isTextSelected ? "blue" : "gray"}
+        size={"xs"}
+        onClick={() => setSelectedTool("text")}
+      >
+        Text
+      </Button>
+      <Button
+        color={isDocumentSelected ? "blue" : "gray"}
+        size={"xs"}
+        onClick={() => setSelectedTool("document")}
+      >
+        Document
+      </Button>
+    </div>
   );
 }
