@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, forwardRef, memo } from "react";
 import { AiOutlineCloudDownload } from "react-icons/ai";
 import { BsFillStopFill, BsPauseFill, BsPlay } from "react-icons/bs";
 
 let timer;
 function AudioPlayer(props, ref) {
   let { sourceUrl } = props;
-  console.log(sourceUrl);
   const [playStatus, setPlayStatus] = useState("stop");
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
@@ -43,7 +42,7 @@ function AudioPlayer(props, ref) {
         }}
       />
 
-      <div className="bg-white border-slate-100 transition-all duration-500 dark:bg-slate-800 transition-all duration-500 dark:border-slate-500 border-b rounded-t-xl p-4 pb-6 sm:p-10 sm:pb-8 lg:p-6 xl:p-10 xl:pb-8 space-y-6 sm:space-y-8 lg:space-y-6 xl:space-y-8">
+      <div className="bg-white border-slate-100  dark:bg-slate-800 transition-all duration-500 dark:border-slate-500 border-b rounded-t-xl p-4 pb-6 sm:p-10 sm:pb-8 lg:p-6 xl:p-10 xl:pb-8 space-y-6 sm:space-y-8 lg:space-y-6 xl:space-y-8">
         <div className="space-y-2">
           <div className="relative">
             <div className="bg-slate-100 transition-all duration-500 dark:bg-slate-700 rounded-full overflow-hidden">
@@ -97,7 +96,7 @@ function AudioPlayer(props, ref) {
   );
 }
 
-export default React.forwardRef(AudioPlayer);
+export default memo(forwardRef(AudioPlayer));
 
 const ProgressBar = ({ max, value }) => {
   const formatTime = (time) => {

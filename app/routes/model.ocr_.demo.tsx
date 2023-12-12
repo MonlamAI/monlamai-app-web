@@ -14,6 +14,7 @@ import { BiQuestionMark } from "react-icons/bi";
 import { Tooltip } from "flowbite-react";
 import ErrorMessage from "~/component/ErrorMessage";
 import ToolWraper from "~/component/ToolWraper";
+import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -83,9 +84,9 @@ export default function Index() {
       }
     );
   };
-
+  let { translation } = uselitteraTranlation();
   return (
-    <ToolWraper title="ཡིག་འཛིན་རིག་ནུས།">
+    <ToolWraper title="OCR">
       <main className="mx-auto w-11/12 lg:w-4/5">
         <div className="mt-1 flex flex-col md:flex-row  lg:h-[55vh] items-strech gap-5">
           <Card className="md:w-1/2 relative">
@@ -137,10 +138,10 @@ export default function Index() {
                   onClick={handleFormClear}
                   className="text-gray-500"
                 >
-                  <div className="pt-1">བསྐྱར་སྒྲིག</div>
+                  <div className="pt-1">{translation.reset}</div>
                 </Button>
                 <Button type="submit" isProcessing={isActionSubmission}>
-                  <div className="pt-1">ཐོངས།</div>
+                  <div className="pt-1">{translation.submit}</div>
                 </Button>
               </div>
             </fetcher.Form>

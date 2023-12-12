@@ -12,23 +12,18 @@ function Tools() {
   let { translation, locale } = uselitteraTranlation();
   let isEnglish = locale === "en_US";
   return (
-    <main>
+    <main
+      style={{
+        fontFamily: isEnglish ? "Inter" : "monlam",
+        lineHeight: "normal",
+      }}
+    >
       <div className="md:pt-[40px]">
         <div className="text-center max-w-7xl mx-auto">
-          <p
-            className=" px-3 mb-20 text-2xl leading-[200%] "
-            style={{
-              fontFamily: isEnglish ? "Inter" : "monlam",
-            }}
-          >
+          <p className=" px-3 mb-20 text-2xl leading-[200%] ">
             {translation.homepageHeading}
           </p>
-          <div
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mx-10"
-            style={{
-              fontFamily: isEnglish ? "Inter" : "monlam",
-            }}
-          >
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mx-10">
             {models.map((model, index) => (
               <EachModel key={model.name} model={model} />
             ))}
@@ -41,7 +36,7 @@ function Tools() {
 
 function EachModel({ model }: EachProps) {
   const { name, desc, icon, link, color } = model;
-
+  const { translation, locale } = uselitteraTranlation();
   return (
     <Link prefetch="intent" to={"/model/" + link}>
       <motion.div
@@ -54,8 +49,8 @@ function EachModel({ model }: EachProps) {
         >
           {icon}
         </div>
-        <h2 className="text-xl">{name}</h2>
-        <p className="text-gray-400">{desc}</p>
+        <h2 className="text-xl">{translation[name]}</h2>
+        <p className="text-gray-400">{translation[desc]}</p>
       </motion.div>
     </Link>
   );

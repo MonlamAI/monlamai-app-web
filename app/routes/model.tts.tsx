@@ -5,7 +5,7 @@ import {
   type ActionFunction,
   LinksFunction,
 } from "@remix-run/node";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { auth } from "~/services/auth.server";
 import ReactionButtons from "~/component/ReactionButtons";
 import inputReplace from "~/component/utils/ttsReplace.server";
@@ -18,6 +18,7 @@ import { BsFillVolumeUpFill } from "react-icons/bs";
 import ToolWraper from "~/component/ToolWraper";
 import { readDocxFile, readTextFile } from "~/component/utils/readers";
 import { useDropzone } from "react-dropzone";
+import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 const charLimit = 500;
 export async function loader({ request }: LoaderFunctionArgs) {
   let userdata = await auth.isAuthenticated(request, {
@@ -67,9 +68,11 @@ export default function Index() {
   );
   const [volume, setVolume] = useLocalStorage("volume", 1);
   const fetcher = useFetcher();
-  const isActionSubmission = fetcher.state !== "idle";
+  const isLoading = fetcher.state !== "idle";
   const data = fetcher.data;
-  let sourceUrl = data ? `data:audio/wav;base64,${data}` : null;
+  let sourceUrl = useMemo(() => {
+    return data ? `data:audio/wav;base64,${data}` : null;
+  }, [data]);
   const audioRef = useRef<HTMLAudioElement>(null);
   let setting = useRef();
 
@@ -109,21 +112,17 @@ export default function Index() {
       },
       {
         method: "POST",
-        action: "/api/tts",
       }
     );
   }
 
+  let { translation } = uselitteraTranlation();
   return (
-    <ToolWraper title="ཀློག་འདོན་རིག་ནུས།">
+    <ToolWraper title="TTS">
       <main className="mx-auto w-11/12 md:w-4/5">
         <div className="flex flex-col  lg:flex-row gap-3 lg:h-[60vh]">
           <Card className="w-full lg:w-1/2 min-h-[20vh] lg:min-h-[40vh] lg:h-auto flex">
-            <fetcher.Form
-              id="ttsForm"
-              className="flex flex-col gap-5 flex-1 "
-              onSubmit={submitHandler}
-            >
+            <div className="flex flex-col gap-5 flex-1 ">
               <div className="w-full flex-1 max-h-[50vh] ">
                 <ListInput
                   selectedTool={selectedTool}
@@ -149,8 +148,9 @@ export default function Index() {
                   color="gray"
                   className="text-slate-500"
                   onClick={handleReset}
+                  disabled={true}
                 >
-                  བསྐྱར་སྒྲིག
+                  {translation.reset}
                 </Button>
                 <div className="text-gray-400 text-xs">
                   {charCount} / {charLimit}
@@ -158,12 +158,14 @@ export default function Index() {
                 <Button
                   type="submit"
                   form="ttsForm"
-                  isProcessing={isActionSubmission}
+                  isProcessing={isLoading}
+                  onClick={submitHandler}
+                  disabled={!sourceText || sourceText === ""}
                 >
-                  ཀློགས།
+                  {translation.submit}
                 </Button>
               </div>
-            </fetcher.Form>
+            </div>
           </Card>
           <Card className="w-full lg:w-1/2 max-h-[60vh] flex">
             <div className="w-full flex-1">
@@ -182,14 +184,17 @@ export default function Index() {
                   </div>
                 </div>
               )}
-              {isActionSubmission && <Spinner />}
-              <div className="flex-1 h-full flex justify-center items-center">
-                {data?.error ? (
-                  <div className="text-red-400">{data?.error}</div>
-                ) : (
-                  <AudioPlayer ref={audioRef} sourceUrl={sourceUrl} />
-                )}
-              </div>
+              {isLoading ? (
+                <Spinner />
+              ) : (
+                <div className="flex-1 h-full flex justify-center items-center">
+                  {data?.error ? (
+                    <div className="text-red-400">{data?.error}</div>
+                  ) : (
+                    <AudioPlayer ref={audioRef} sourceUrl={sourceUrl} />
+                  )}
+                </div>
+              )}
             </div>
             <div className="flex justify-between">
               <div

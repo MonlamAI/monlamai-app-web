@@ -12,6 +12,7 @@ import { auth } from "~/services/auth.server";
 import ErrorMessage from "~/component/ErrorMessage";
 import { dummydata } from "~/helper/dummy";
 import ToolWraper from "~/component/ToolWraper";
+import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
   parentMeta.shift(1);
@@ -67,16 +68,19 @@ export default function Index() {
       if (timer) clearTimeout(timer);
     };
   }, [selection?.text]);
+  let { translation } = uselitteraTranlation();
   let text = selection?.text?.replaceAll("\n", "<br />");
   return (
-    <ToolWraper title={"ཡིག་འཛིན་རིག་ནུས།"}>
+    <ToolWraper title="OCR">
       <main className="mx-auto w-11/12 lg:w-4/5">
         <div className="mt-1 flex flex-col md:flex-row  lg:h-[55vh] items-strech gap-5">
           <Card className="md:w-1/2 relative">
             {selection ? (
               <>
                 <img src={selection?.image} />
-                <Button onClick={() => setSelection(null)}>བསྐྱར་སྒྲིག</Button>
+                <Button onClick={() => setSelection(null)}>
+                  {translation.reset}
+                </Button>
               </>
             ) : (
               <div className="overflow-y-scroll flex flex-col gap-2">

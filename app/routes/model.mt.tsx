@@ -14,6 +14,7 @@ import ErrorMessage from "~/component/ErrorMessage";
 import ToolWraper from "~/component/ToolWraper";
 import { useDropzone } from "react-dropzone";
 import { readDocxFile, readTextFile } from "~/component/utils/readers";
+import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 
 const langLabels = {
   bo: "བོད་སྐད།",
@@ -65,7 +66,7 @@ export default function Index() {
   };
 
   let charCount = sourceText?.length;
-
+  let { translation } = uselitteraTranlation();
   let liked = likefetcher.data?.liked;
   let message = likefetcher.data?.message;
   let text_array = debouncedSearchTerm
@@ -78,7 +79,7 @@ export default function Index() {
     navigator.clipboard.writeText(textToCopy);
   }
   return (
-    <ToolWraper title="ཡིག་སྒྱུར་རིག་ནུས།">
+    <ToolWraper title="MT">
       <div className="flex justify-between items-center">
         <div
           className={`inline-block w-32 text-lg text-gray-500 dark:text-gray-300 ${
@@ -135,7 +136,7 @@ export default function Index() {
             className="text-slate-500 md:hidden"
             onClick={() => setSourceText("")}
           >
-            བསྐྱར་སྒྲིག
+            {translation.reset}
           </Button>
           <div className="md:mt-5 flex justify-between items-end">
             {sourceLang && (

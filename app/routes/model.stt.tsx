@@ -10,6 +10,7 @@ import ReactionButtons from "~/component/ReactionButtons";
 import { getBrowser } from "~/component/utils/getBrowserDetail";
 import ErrorMessage from "~/component/ErrorMessage";
 import ToolWraper from "~/component/ToolWraper";
+import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -178,8 +179,9 @@ export default function Index() {
       };
     }
   };
+  let { translation } = uselitteraTranlation();
   return (
-    <ToolWraper title={"སྒྲ་འཛིན་རིག་ནུས།"}>
+    <ToolWraper title="STT">
       <main className="mx-auto w-11/12 md:w-4/5">
         <div className="flex flex-col lg:flex-row items-stretch gap-3">
           <Card className="w-full lg:w-1/2 flex">
@@ -218,10 +220,10 @@ export default function Index() {
                   onClick={handleReset}
                   disabled={!audioURL}
                 >
-                  བསྐྱར་སྒྲིག
+                  {translation.reset}
                 </Button>
                 <Button disabled={!audioURL} onClick={handleSubmit}>
-                  ཐོངས།
+                  {translation.submit}
                 </Button>
               </div>
               <input type="file" accept="audio/*" onChange={handleFileChange} />

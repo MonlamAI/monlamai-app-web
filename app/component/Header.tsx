@@ -10,10 +10,17 @@ import uselitteraTranlation from "./hooks/useLitteraTranslation";
 function Header() {
   const { user } = useLoaderData();
   const [showMenu, setShowMenu] = useState(false);
-  const { translation } = uselitteraTranlation();
+  const { translation, locale } = uselitteraTranlation();
+  let isEnglish = locale === "en_US";
 
   return (
-    <nav className={`flex flex-col lg:flex-row  `}>
+    <nav
+      className={`flex flex-col lg:flex-row  `}
+      style={{
+        fontFamily: isEnglish ? "Inter" : "monlam",
+        lineHeight: "normal",
+      }}
+    >
       <div className="flex p-3 items-center justify-between  w-full bg-white dark:bg-slate-700 dark:text-gray-200 ">
         <NavLink
           className={({ isActive, isPending }) =>
