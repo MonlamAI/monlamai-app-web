@@ -187,12 +187,12 @@ export default function Index() {
   return (
     <ToolWraper title="STT">
       <main className="mx-auto w-11/12 md:w-4/5">
-        <ListInput
-          selectedTool={selectedTool}
-          setSelectedTool={setSelectedTool}
-        />
         <div className="flex flex-col lg:flex-row items-stretch gap-3">
           <Card className="w-full lg:w-1/2 flex">
+            <ListInput
+              selectedTool={selectedTool}
+              setSelectedTool={setSelectedTool}
+            />
             <div
               id="sttForm"
               className="flex flex-col w-full h-[25vh] lg:h-[50vh] justify-center gap-4"
@@ -302,6 +302,7 @@ function ListInput({ selectedTool, setSelectedTool }) {
       <Button
         color={isDocumentSelected ? "blue" : "gray"}
         size={"xs"}
+        disabled
         onClick={() => setSelectedTool("document")}
       >
         Document

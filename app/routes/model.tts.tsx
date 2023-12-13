@@ -322,6 +322,7 @@ function ListInput({ selectedTool, setSelectedTool }) {
         Text
       </Button>
       <Button
+        disabled
         color={isDocumentSelected ? "blue" : "gray"}
         size={"xs"}
         onClick={() => setSelectedTool("document")}
