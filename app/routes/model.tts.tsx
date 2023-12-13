@@ -124,10 +124,10 @@ export default function Index() {
         <div className="flex flex-col  lg:flex-row gap-3 lg:h-[60vh]">
           <Card className="w-full lg:w-1/2 min-h-[20vh] lg:min-h-[40vh] lg:h-auto flex">
             <div className="flex flex-col gap-2 flex-1 ">
-              {/* <ListInput
+              <ListInput
                 selectedTool={selectedTool}
                 setSelectedTool={setSelectedTool}
-              /> */}
+              />
               <div className="w-full flex-1 max-h-[50vh] ">
                 {selectedTool === "text" && (
                   <TextComponent
@@ -322,7 +322,6 @@ function ListInput({ selectedTool, setSelectedTool }) {
         Text
       </Button>
       <Button
-        disabled
         color={isDocumentSelected ? "blue" : "gray"}
         size={"xs"}
         onClick={() => setSelectedTool("document")}

@@ -1,6 +1,6 @@
 import { Button, Card, Label, Spinner } from "flowbite-react";
 import { BsFillStopFill, BsFillMicFill } from "react-icons/bs";
-import { useState, useRef } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { type LoaderFunction, ActionFunction, json } from "@remix-run/node";
 import { MetaFunction, useFetcher } from "@remix-run/react";
 import { LiveAudioVisualizer } from "react-audio-visualize";
@@ -11,6 +11,8 @@ import { getBrowser } from "~/component/utils/getBrowserDetail";
 import ErrorMessage from "~/component/ErrorMessage";
 import ToolWraper from "~/component/ToolWraper";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
+import { useDropzone } from "react-dropzone";
+import { FaFile } from "react-icons/fa6";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -63,15 +65,18 @@ export const action: ActionFunction = async ({ request }) => {
 export default function Index() {
   const fetcher = useFetcher();
   const [audioChunks, setAudioChunks] = useState([]);
-  const [selectedTool, setSelectedTool] = useState<
-    "recording" | "audio file"
-  >();
+  const [selectedTool, setSelectedTool] = useState<"recording" | "audiofile">(
+    "recording"
+  );
   const [audio, setAudio] = useState<Blob | null>(null);
   const [audioURL, setAudioURL] = useState<string | null>(null);
   let mediaRecorder: any = useRef();
   const [audioBase64, setBase64] = useState<string | null>(null);
   const [recording, setRecording] = useState(false);
   let likefetcher = useFetcher();
+  useEffect(() => {
+    setAudioURL(null);
+  }, [selectedTool]);
   const handleSubmit = async () => {
     const form = new FormData();
     const reader = new FileReader();
@@ -168,8 +173,7 @@ export default function Index() {
     };
   };
 
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
+  const handleFileChange = (file) => {
     if (file) {
       setAudio(file);
       const reader = new FileReader();
@@ -188,38 +192,39 @@ export default function Index() {
   return (
     <ToolWraper title="STT">
       <main className="mx-auto w-11/12 md:w-4/5">
-        <div className="flex flex-col lg:flex-row items-stretch gap-3">
-          <Card className="w-full lg:w-1/2 flex">
-            {/* <ListInput
-              selectedTool={selectedTool}
-              setSelectedTool={setSelectedTool}
-            /> */}
-            <div
-              id="sttForm"
-              className="flex flex-col w-full h-[25vh] lg:h-[50vh] justify-center gap-4"
-            >
-              {/* <input type="file" accept="audio/*" onChange={handleFileChange} /> */}
-
-              <div className="flex flex-col items-center gap-5 flex-1 justify-center">
-                {recording &&
-                  mediaRecorder.current &&
-                  getBrowser() !== "Safari" && (
-                    <LiveAudioVisualizer
-                      mediaRecorder={mediaRecorder.current}
-                      width={200}
-                      height={75}
-                    />
+        <div className="flex flex-col lg:flex-row  gap-3">
+          <Card className="w-full lg:w-1/2 flex ">
+            <div className="flex flex-col w-full h-[25vh] lg:h-[50vh] justify-center  gap-4">
+              <ListInput
+                selectedTool={selectedTool}
+                setSelectedTool={setSelectedTool}
+              />
+              {selectedTool === "recording" && (
+                <div className="flex flex-col items-center gap-5 flex-1 justify-center">
+                  {recording &&
+                    mediaRecorder.current &&
+                    getBrowser() !== "Safari" && (
+                      <LiveAudioVisualizer
+                        mediaRecorder={mediaRecorder.current}
+                        width={200}
+                        height={75}
+                      />
+                    )}
+                  <Button size="xl" onClick={toggleRecording}>
+                    {recording ? <BsFillStopFill /> : <BsFillMicFill />}
+                  </Button>
+                  {audioURL && (
+                    <audio controls>
+                      <source src={audioURL} type="audio/mpeg"></source>
+                      <source src={audioURL} type="audio/ogg"></source>
+                    </audio>
                   )}
-                <Button size="xl" onClick={toggleRecording}>
-                  {recording ? <BsFillStopFill /> : <BsFillMicFill />}
-                </Button>
-                {audioURL && (
-                  <audio controls>
-                    <source src={audioURL} type="audio/mpeg"></source>
-                    <source src={audioURL} type="audio/ogg"></source>
-                  </audio>
-                )}
-              </div>
+                </div>
+              )}
+              {selectedTool === "audiofile" && (
+                <HandleAudioFile handleFileChange={handleFileChange} />
+              )}
+
               <div className="flex justify-between h-10">
                 <Button
                   color="gray"
@@ -288,26 +293,83 @@ export function ErrorBoundary({ error }) {
 }
 
 function ListInput({ selectedTool, setSelectedTool }) {
-  const isTextSelected = selectedTool === "text";
-  const isDocumentSelected = selectedTool === "document";
+  const isTextSelected = selectedTool === "recording";
+  const isDocumentSelected = selectedTool === "audiofile";
 
   return (
     <div className="flex gap-2 mt-2">
       <Button
         color={isTextSelected ? "blue" : "gray"}
         size={"xs"}
-        onClick={() => setSelectedTool("text")}
+        onClick={() => setSelectedTool("recording")}
       >
-        Text
+        Recording
       </Button>
       <Button
         color={isDocumentSelected ? "blue" : "gray"}
         size={"xs"}
-        disabled
-        onClick={() => setSelectedTool("document")}
+        onClick={() => setSelectedTool("audiofile")}
       >
-        Document
+        File
       </Button>
     </div>
+  );
+}
+
+function HandleAudioFile({ handleFileChange }) {
+  const [myFiles, setMyFiles] = useState(null);
+  const onDrop = useCallback((acceptedFiles) => {
+    // Do something with the files
+    var file = acceptedFiles[0];
+    if (!file) {
+      return;
+    }
+    handleFileChange(file);
+    setMyFiles(file);
+  }, []);
+  const removeFile = () => {
+    setMyFiles(null);
+  };
+
+  let { getRootProps, getInputProps, isDragActive, acceptedFiles } =
+    useDropzone({
+      onDrop,
+      accept: {
+        "audio/*": [".mp3", ".wav"],
+      },
+      multiple: false,
+    });
+
+  if (myFiles)
+    return (
+      <div className="bg-gray-200 flex-1 max-w-full p-5 rounded-lg shadow-md flex justify-between items-center">
+        <div className="flex gap-4">
+          <FaFile size="20px" />
+          {myFiles?.name}
+        </div>
+        <Button size="sm" className="" pill onClick={removeFile}>
+          X
+        </Button>
+      </div>
+    );
+  return (
+    <>
+      <form className=" flex-1 flex cursor-pointer" {...getRootProps()}>
+        <input {...getInputProps()} />
+        {isDragActive ? (
+          <p>Drop the files here ...</p>
+        ) : (
+          <>
+            <p className="flex-1 flex flex-col justify-center items-center border-blue-400 border-2 rounded text-slate-300 p-3">
+              <img
+                className="w-1/2 "
+                src="//ssl.gstatic.com/translate/drag_and_drop.png"
+              />
+              Drag 'n' drop some files here, or click to select files
+            </p>
+          </>
+        )}
+      </form>
+    </>
   );
 }
