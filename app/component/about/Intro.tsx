@@ -29,15 +29,15 @@ export function TibetanIntro() {
 export function EnglishIntro() {
   return (
     <div className=" flex flex-col  mb-20 justify-center items-center gap-10 px-4 lg:flex-row">
-      <div className="leading-8">
+      <div>
         <img
           src="/assets/about.jpg"
           alt="monlam"
           className="w-[80%] float-left my-2 mx-4 md:w-[60%] lg:w-[40%] border-[#dddcdc] rounded-lg shadow-sm hover:scale-95 transition-all duration-500"
         />
         <h4 className="text-2xl mb-4 text-center  font-bold">Introduction</h4>
-        <div className="text-sm md:text-lg">
-          <p>
+        <div className="text-sm md:text-md ">
+          <p className="leading-[normal]">
             Welcome to a new era of innovation and progress! In today's world,
             technology has reached remarkable heights, and Artificial
             Intelligence (AI) stands at the forefront of this technological
@@ -49,7 +49,7 @@ export function EnglishIntro() {
             perspective are invaluable in driving positive global change.
           </p>
           <br />
-          <p>
+          <p className="leading-[normal]">
             Our projects are ambitious and complex, demanding the collaboration
             of numerous skilled computer engineers and dedicated staff. At the
             Monlam IT Research Center, we have successfully partnered with a

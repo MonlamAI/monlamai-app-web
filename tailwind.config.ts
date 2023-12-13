@@ -8,7 +8,7 @@ export default {
   theme: {
     extend: {},
     fontFamily: {
-      poppin: ["'Poppins'", "sans-serif"],
+      poppins: ["Poppins", "sans-serif"],
       Inter: ["Inter", "sans-serif"],
       monlam: ["Monlam", "sans-serif"],
     },

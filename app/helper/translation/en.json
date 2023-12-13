@@ -24,10 +24,10 @@
   "STT": "Speech to Text",
   "TTS": "Text to Speech",
   "OCR": "OCR",
-  "MT_description": "Translate text from English to Tibetan and vice versa",
+  "MT_description": "English to Tibetan and vice versa",
   "STT_description": "Convert Tibetan speech to text",
-  "TTS_description": "Read out Tibetan text",
-  "OCR_description": "Convert Image to text",
+  "TTS_description": "Have our AI speak Tibetan text",
+  "OCR_description": "Convert an image into text with AI",
   "reset": "Reset",
   "submit": "Submit"
 }
