@@ -182,22 +182,23 @@ export default function Index() {
       };
     }
   };
-  let { translation } = uselitteraTranlation();
+  let { translation, label } = uselitteraTranlation();
+  let isEnglish = label === "en_US";
   let isDisabled = !audioURL;
   return (
     <ToolWraper title="STT">
       <main className="mx-auto w-11/12 md:w-4/5">
         <div className="flex flex-col lg:flex-row items-stretch gap-3">
           <Card className="w-full lg:w-1/2 flex">
-            <ListInput
+            {/* <ListInput
               selectedTool={selectedTool}
               setSelectedTool={setSelectedTool}
-            />
+            /> */}
             <div
               id="sttForm"
               className="flex flex-col w-full h-[25vh] lg:h-[50vh] justify-center gap-4"
             >
-              <input type="file" accept="audio/*" onChange={handleFileChange} />
+              {/* <input type="file" accept="audio/*" onChange={handleFileChange} /> */}
 
               <div className="flex flex-col items-center gap-5 flex-1 justify-center">
                 {recording &&
@@ -234,7 +235,7 @@ export default function Index() {
             </div>
           </Card>
           <Card className="w-full lg:w-1/2 max-h-[60vh] flex">
-            <Label value="ཡིག་འབེབས།" className="text-lg text-gray-500" />
+            <Label value={isEnglish} className="text-lg text-gray-500" />
             <div className="w-full h-[25vh] lg:h-[50vh] p-3 text-black bg-slate-100 dark:text-gray-200 dark:bg-slate-700 rounded-lg overflow-auto">
               {isLoading ? (
                 <div className="h-full flex justify-center items-center">

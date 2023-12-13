@@ -112,10 +112,10 @@ export default function Index() {
 
       <div className="mt-3 flex flex-col md:flex-row md:h-[55vh] gap-5">
         <Card className="md:w-1/2">
-          <ListInput
+          {/* <ListInput
             selectedTool={selectedTool}
             setSelectedTool={setSelectedTool}
-          />
+          /> */}
           <div className="w-full flex flex-col gap-2 min-h-[20vh] md:min-h-[40vh] flex-1 overflow-hidden">
             {selectedTool === "text" && (
               <TextComponent
