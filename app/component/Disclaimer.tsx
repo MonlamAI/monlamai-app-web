@@ -4,7 +4,7 @@ export default function Disclaimer() {
   return (
     <>
       <div className="max-w-5xl mx-auto pb-10 bg-[#1d2d44]" id="contact">
-        <div className="font-Elsie text-xl text-center mb-2">Disclaimer</div>
+        <div className="text-xl text-center mb-2">Disclaimer</div>
         <p className=" text-xs">
           We welcome you to utilize our Model. Please be aware that any data you
           upload to our web application and any feedback you provide will be

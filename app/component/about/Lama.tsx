@@ -7,7 +7,7 @@ function Lamas() {
   let isEnglish = locale === "en_US";
   return (
     <div>
-      <h2 className="lg:text-3xl text-xl font-bold font-monlam my-10 lg:my-20 flex justify-center">
+      <h2 className="lg:text-3xl text-xl font-bold my-10 lg:my-20 flex justify-center ">
         {isEnglish
           ? "Blessings and Guidance of our Gurus"
           : "བླ་ཆེན་རྣམ་པས་བྱིན་རླབས་དང་ལམ་སྟོན།"}
@@ -63,7 +63,7 @@ function EachLama({ lama }) {
         onLoad={() => setLoaded(true)}
         className="  rounded-full h-24 w-24 object-cover shadow-md p-1 hover:scale-105 transition-all duration-500 "
       />
-      <p className="text-center text-[10px] py-2  font-Elsie">{lama.name}</p>
+      <p className="text-center text-[10px] py-2 ">{lama.name}</p>
     </div>
   );
 }

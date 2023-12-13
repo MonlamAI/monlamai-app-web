@@ -35,16 +35,18 @@ function EachModel({ model }: EachProps) {
     <Link prefetch="intent" to={"/model/" + link}>
       <motion.div
         whileHover={{ scale: 0.95 }}
-        className="rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800 shadow-lg hover:border-blue-600 hover:border-2 h-full flex flex-col gap-10 p-8 cursor-pointer"
+        className="rounded-lg flex flex-col border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800 shadow-lg hover:border-blue-600 hover:border-2 h-full gap-5 p-6 cursor-pointer"
       >
         <div
           style={{ fontSize: 35, color: color }}
-          className="flex justify-center dark:mix-blend-exclusion dark:rounded-lg "
+          className="flex justify-center dark:mix-blend-exclusion dark:rounded-lg h-32"
         >
           {icon}
         </div>
-        <h2 className="text-[1.6rem]">{translation[name]}</h2>
-        <p className="text-gray-400 ">{translation[desc]}</p>
+        <div className="flex flex-col justify-between flex-1 gap-10">
+          <h2 className="text-[1.6rem] content-start">{translation[name]}</h2>
+          <p className="text-gray-400 ">{translation[desc]}</p>
+        </div>
       </motion.div>
     </Link>
   );
