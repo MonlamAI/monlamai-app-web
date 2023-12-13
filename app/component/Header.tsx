@@ -17,7 +17,7 @@ function Header() {
     <nav
       className={`flex flex-col lg:flex-row  `}
       style={{
-        fontFamily: isEnglish ? "Inter" : "monlam",
+        fontFamily: isEnglish ? "elsie" : "monlam",
         lineHeight: "normal",
       }}
     >

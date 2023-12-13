@@ -30,7 +30,7 @@ function login() {
     2000,
   ];
 
-  const translated = uselitteraTranlation();
+  const { translation, locale } = uselitteraTranlation();
 
   return (
     <div
@@ -60,11 +60,16 @@ function login() {
         </div>
         <div className="flex grow w-4/5 flex-col gap-8 justify-center items-center">
           <img src="/assets/buddha.png" alt="monalm" />
-          <div className="flex-col justify-center items-center">
+          <div className="flex-col justify-center items-center ">
             <Form method="post" action="/auth0">
               <motion.div whileHover={{ scale: 1.1 }}>
-                <Button className="px-10" type="submit">
-                  {translated.login}
+                <Button type="submit">
+                  <span
+                    className=" leading-[normal] relative"
+                    style={{ top: locale === "en_US" ? "-2px" : "-4px" }}
+                  >
+                    {translation.login}
+                  </span>
                 </Button>
               </motion.div>
             </Form>

@@ -1,10 +1,13 @@
 import { instructors } from "~/helper/instructors";
+import uselitteraTranlation from "../hooks/useLitteraTranslation";
 
 function Instructor() {
+  let { locale } = uselitteraTranlation();
+  let isEnglish = locale === "en_US";
   return (
     <div className="my-20">
       <h2 className="lg:text-3xl text-xl font-bold font-monlam my-10 md:my-20 flex justify-center">
-        ཆེད་ལས་སློབ་སྟོན་པ།
+        {isEnglish ? "Advisors" : "ཆེད་ལས་སློབ་སྟོན་པ།"}
       </h2>
 
       <div className="flex flex-wrap gap-2 justify-center">

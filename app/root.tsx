@@ -23,6 +23,7 @@ import { LitteraProvider } from "@assembless/react-littera";
 import { getUserSession } from "~/services/session.server";
 import { getUser } from "./modal/user";
 import ErrorMessage from "./component/ErrorMessage";
+import uselitteraTranlation from "./component/hooks/useLitteraTranslation";
 export const loader: LoaderFunction = async ({ request }) => {
   let userdata = await getUserSession(request);
   return json(
@@ -89,13 +90,22 @@ function Document({ children }: { children: React.ReactNode }) {
 export default function App() {
   let { user } = useLoaderData();
   let location = useLocation();
-
+  let { locale } = uselitteraTranlation();
   let isSteps = location.pathname.includes("steps");
+  let isEnglish = locale === "en_US";
+
   return (
     <Document>
       <LitteraProvider locales={["en_US", "bo_TI"]}>
         {user && <Header />}
-        <Outlet />
+        <div
+          style={{
+            fontFamily: isEnglish ? "elsie" : "monlam",
+            lineHeight: "normal",
+          }}
+        >
+          <Outlet />
+        </div>
         {user && !isSteps && <Footer />}
       </LitteraProvider>
     </Document>

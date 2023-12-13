@@ -63,6 +63,9 @@ export const action: ActionFunction = async ({ request }) => {
 export default function Index() {
   const fetcher = useFetcher();
   const [audioChunks, setAudioChunks] = useState([]);
+  const [selectedTool, setSelectedTool] = useState<
+    "recording" | "audio file"
+  >();
   const [audio, setAudio] = useState<Blob | null>(null);
   const [audioURL, setAudioURL] = useState<string | null>(null);
   let mediaRecorder: any = useRef();
@@ -164,15 +167,15 @@ export default function Index() {
       reader.readAsDataURL(audioBlob);
     };
   };
-  const [base64, setBase64a] = useState("");
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
+      setAudio(file);
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => {
-        setBase64a(reader.result);
+        setAudioURL(reader.result);
       };
       reader.onerror = (error) => {
         console.error("Error: ", error);
@@ -180,53 +183,54 @@ export default function Index() {
     }
   };
   let { translation } = uselitteraTranlation();
+  let isDisabled = !audioURL;
   return (
     <ToolWraper title="STT">
       <main className="mx-auto w-11/12 md:w-4/5">
+        <ListInput
+          selectedTool={selectedTool}
+          setSelectedTool={setSelectedTool}
+        />
         <div className="flex flex-col lg:flex-row items-stretch gap-3">
           <Card className="w-full lg:w-1/2 flex">
             <div
               id="sttForm"
               className="flex flex-col w-full h-[25vh] lg:h-[50vh] justify-center gap-4"
             >
-              {base64 ? (
-                base64
-              ) : (
-                <div className="flex flex-col items-center gap-5 flex-1 justify-center">
-                  {recording &&
-                    mediaRecorder.current &&
-                    getBrowser() !== "Safari" && (
-                      <LiveAudioVisualizer
-                        mediaRecorder={mediaRecorder.current}
-                        width={200}
-                        height={75}
-                      />
-                    )}
-                  <Button size="xl" onClick={toggleRecording}>
-                    {recording ? <BsFillStopFill /> : <BsFillMicFill />}
-                  </Button>
-                  {audioURL && (
-                    <audio controls>
-                      <source src={audioURL} type="audio/mpeg"></source>
-                      <source src={audioURL} type="audio/ogg"></source>
-                    </audio>
+              <input type="file" accept="audio/*" onChange={handleFileChange} />
+
+              <div className="flex flex-col items-center gap-5 flex-1 justify-center">
+                {recording &&
+                  mediaRecorder.current &&
+                  getBrowser() !== "Safari" && (
+                    <LiveAudioVisualizer
+                      mediaRecorder={mediaRecorder.current}
+                      width={200}
+                      height={75}
+                    />
                   )}
-                </div>
-              )}
+                <Button size="xl" onClick={toggleRecording}>
+                  {recording ? <BsFillStopFill /> : <BsFillMicFill />}
+                </Button>
+                {audioURL && (
+                  <audio controls>
+                    <source src={audioURL} type="audio/mpeg"></source>
+                    <source src={audioURL} type="audio/ogg"></source>
+                  </audio>
+                )}
+              </div>
               <div className="flex justify-between h-10">
                 <Button
                   color="gray"
                   className="text-slate-500"
                   onClick={handleReset}
-                  disabled={!audioURL}
                 >
                   {translation.reset}
                 </Button>
-                <Button disabled={!audioURL} onClick={handleSubmit}>
+                <Button onClick={handleSubmit} disabled={isDisabled}>
                   {translation.submit}
                 </Button>
               </div>
-              <input type="file" accept="audio/*" onChange={handleFileChange} />
             </div>
           </Card>
           <Card className="w-full lg:w-1/2 max-h-[60vh] flex">
@@ -279,5 +283,29 @@ export function ErrorBoundary({ error }) {
     <>
       <ErrorMessage error={error} />
     </>
+  );
+}
+
+function ListInput({ selectedTool, setSelectedTool }) {
+  const isTextSelected = selectedTool === "text";
+  const isDocumentSelected = selectedTool === "document";
+
+  return (
+    <div className="flex gap-2 mt-2">
+      <Button
+        color={isTextSelected ? "blue" : "gray"}
+        size={"xs"}
+        onClick={() => setSelectedTool("text")}
+      >
+        Text
+      </Button>
+      <Button
+        color={isDocumentSelected ? "blue" : "gray"}
+        size={"xs"}
+        onClick={() => setSelectedTool("document")}
+      >
+        Document
+      </Button>
+    </div>
   );
 }

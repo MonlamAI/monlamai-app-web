@@ -19,7 +19,8 @@ import ToolWraper from "~/component/ToolWraper";
 import { readDocxFile, readTextFile } from "~/component/utils/readers";
 import { useDropzone } from "react-dropzone";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
-const charLimit = 500;
+import { FaFile } from "react-icons/fa6";
+const charLimit = 2000;
 export async function loader({ request }: LoaderFunctionArgs) {
   let userdata = await auth.isAuthenticated(request, {
     failureRedirect: "/login",
@@ -122,12 +123,12 @@ export default function Index() {
       <main className="mx-auto w-11/12 md:w-4/5">
         <div className="flex flex-col  lg:flex-row gap-3 lg:h-[60vh]">
           <Card className="w-full lg:w-1/2 min-h-[20vh] lg:min-h-[40vh] lg:h-auto flex">
-            <div className="flex flex-col gap-5 flex-1 ">
+            <div className="flex flex-col gap-2 flex-1 ">
+              <ListInput
+                selectedTool={selectedTool}
+                setSelectedTool={setSelectedTool}
+              />
               <div className="w-full flex-1 max-h-[50vh] ">
-                <ListInput
-                  selectedTool={selectedTool}
-                  setSelectedTool={setSelectedTool}
-                />
                 {selectedTool === "text" && (
                   <TextComponent
                     setSourceText={setSourceText}
@@ -257,7 +258,7 @@ function DocumentComponent({ sourceText, setSourceText }) {
     if (file.name.endsWith(".txt")) {
       readTextFile(file, setSourceText);
     } else if (file.name.endsWith(".docx")) {
-      readDocxFile(file);
+      readDocxFile(file, setSourceText);
     } else {
       console.log("Unsupported file type.");
     }
@@ -266,23 +267,23 @@ function DocumentComponent({ sourceText, setSourceText }) {
     useDropzone({
       onDrop,
       accept: {
-        "text/html": [".txt", ".docs"],
+        "text/html": [".txt", ".docx"],
       },
     });
   function reset() {
     acceptedFiles.splice(0, acceptedFiles.length);
     if (sourceText !== "") setSourceText("");
   }
-  useEffect(() => {
-    if (sourceText === "") reset();
-  }, [sourceText]);
 
   if (acceptedFiles.length > 0)
     return (
-      <div>
-        {acceptedFiles.map((item) => item.name)}{" "}
-        <Button className="hidden md:block" onClick={reset}>
-          reset
+      <div className="bg-gray-200 p-5 rounded-lg shadow-md flex justify-between items-center">
+        <div className="flex gap-4">
+          <FaFile size="20px" />
+          {acceptedFiles.map((item) => item.name)}{" "}
+        </div>
+        <Button size="sm" className="" pill onClick={reset}>
+          X
         </Button>
       </div>
     );
@@ -312,7 +313,7 @@ function ListInput({ selectedTool, setSelectedTool }) {
   const isDocumentSelected = selectedTool === "document";
 
   return (
-    <div className="flex gap-2 mt-2 mb-3">
+    <div className="flex gap-2">
       <Button
         color={isTextSelected ? "blue" : "gray"}
         size={"xs"}

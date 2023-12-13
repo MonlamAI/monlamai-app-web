@@ -1,4 +1,4 @@
-function Intro() {
+export function TibetanIntro() {
   return (
     <div className=" flex flex-col  mb-20 justify-center items-center gap-10 px-4 lg:flex-row">
       <img
@@ -26,4 +26,41 @@ function Intro() {
   );
 }
 
-export default Intro;
+export function EnglishIntro() {
+  return (
+    <div className=" flex flex-col  mb-20 justify-center items-center gap-10 px-4 lg:flex-row">
+      <img
+        src="/assets/about.jpg"
+        alt="monlam"
+        className="w-[80%] float-left my-2 mx-4 md:w-[60%] lg:w-[40%] border-[#dddcdc] rounded-lg shadow-sm hover:scale-95 transition-all duration-500"
+      />
+      <div className="leading-8">
+        <h4 className="text-2xl mb-4 text-center font-Elsie ">Introduction</h4>
+        <div className="text-[3vw] md:text-lg">
+          <p>
+            Welcome to a new era of innovation and progress! In today's world,
+            technology has reached remarkable heights, and Artificial
+            Intelligence (AI) stands at the forefront of this technological
+            revolution. AI's advancement in information technology is reshaping
+            how we access and utilize knowledge. The future promises even more
+            sophisticated technological advancements, enhancing the efficiency
+            and effectiveness of information for communities worldwide. This
+            includes groups like the Tibetan community, whose rich knowledge and
+            perspective are invaluable in driving positive global change.
+          </p>
+          <br />
+          <p>
+            Our projects are ambitious and complex, demanding the collaboration
+            of numerous skilled computer engineers and dedicated staff. At the
+            Monlam IT Research Center, we have successfully partnered with a
+            wide range of organizations, both public and private. These
+            collaborations have enabled us to compile thousands of cognitive
+            samples and training materials, crucial for advancing AI research
+            and applications. Join us as we journey towards a smarter, more
+            connected world.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
