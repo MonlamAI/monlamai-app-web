@@ -8,7 +8,7 @@ export default {
   theme: {
     extend: {},
     fontFamily: {
-      Elsie: ["Elsie", "sans-serif"],
+      poppin: ["'Poppins'", "sans-serif"],
       Inter: ["Inter", "sans-serif"],
       monlam: ["Monlam", "sans-serif"],
     },

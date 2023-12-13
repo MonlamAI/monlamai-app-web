@@ -29,14 +29,14 @@ export function TibetanIntro() {
 export function EnglishIntro() {
   return (
     <div className=" flex flex-col  mb-20 justify-center items-center gap-10 px-4 lg:flex-row">
-      <img
-        src="/assets/about.jpg"
-        alt="monlam"
-        className="w-[80%] float-left my-2 mx-4 md:w-[60%] lg:w-[40%] border-[#dddcdc] rounded-lg shadow-sm hover:scale-95 transition-all duration-500"
-      />
       <div className="leading-8">
-        <h4 className="text-2xl mb-4 text-center font-Elsie ">Introduction</h4>
-        <div className="text-[3vw] md:text-lg">
+        <img
+          src="/assets/about.jpg"
+          alt="monlam"
+          className="w-[80%] float-left my-2 mx-4 md:w-[60%] lg:w-[40%] border-[#dddcdc] rounded-lg shadow-sm hover:scale-95 transition-all duration-500"
+        />
+        <h4 className="text-2xl mb-4 text-center  font-bold">Introduction</h4>
+        <div className="text-sm md:text-lg">
           <p>
             Welcome to a new era of innovation and progress! In today's world,
             technology has reached remarkable heights, and Artificial

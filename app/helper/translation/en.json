@@ -20,7 +20,7 @@
   "tts_question": "what speech you want to synthesize?",
   "ocr_question": "what text you want to recognize from Image?",
   "homepageHeading": "Elevate Your Experiments with Our Cutting-Edge AI Models ",
-  "MT": "Machine Translation",
+  "MT": "Translation",
   "STT": "Speech to Text",
   "TTS": "Text to Speech",
   "OCR": "OCR",

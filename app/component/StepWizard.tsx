@@ -1,9 +1,8 @@
 import { useFetcher } from "@remix-run/react";
-import { Button, Label, TextInput, Select } from "flowbite-react";
+import { Button, Label, TextInput } from "flowbite-react";
 import React from "react";
 import FormWizard from "react-form-wizard-component";
 import TermsAndContitions from "~/component/TermsAndConditions";
-
 import Questions from "./Questions";
 import uselitteraTranlation from "./hooks/useLitteraTranslation";
 

@@ -24,6 +24,7 @@ import { getUserSession } from "~/services/session.server";
 import { getUser } from "./modal/user";
 import ErrorMessage from "./component/ErrorMessage";
 import uselitteraTranlation from "./component/hooks/useLitteraTranslation";
+import StepWizard from "./component/StepWizard";
 export const loader: LoaderFunction = async ({ request }) => {
   let userdata = await getUserSession(request);
   return json(
@@ -99,10 +100,9 @@ export default function App() {
       <LitteraProvider locales={["en_US", "bo_TI"]}>
         {user && <Header />}
         <div
-          style={{
-            fontFamily: isEnglish ? "elsie" : "monlam",
-            lineHeight: "normal",
-          }}
+          className={`${
+            isEnglish ? "font-poppins" : "font-monlam"
+          } leading-[normal]`}
         >
           <Outlet />
         </div>
