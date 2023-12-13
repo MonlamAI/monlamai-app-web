@@ -243,7 +243,12 @@ export default function Index() {
                 </div>
               ) : (
                 fetcher?.data?.text && (
-                  <p className="text-lg">{fetcher?.data?.text}</p>
+                  <p
+                    className="font-monlam text-2xl"
+                    style={{ lineHeight: "1.8" }}
+                  >
+                    {fetcher?.data?.text}
+                  </p>
                 )
               )}
               {errorMessage && (
