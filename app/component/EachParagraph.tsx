@@ -37,29 +37,31 @@ function EachParagraph({
       </div>
     );
   return (
-    <Suspense fallback={<p>Loading package location...</p>}>
-      <Await
-        resolve={data?.translation}
-        errorElement={<p>Error loading package location!</p>}
-      >
-        {(res) => {
-          if (res?.error)
+    <div className="font-monlam text-2xl" style={{ lineHeight: "1.8" }}>
+      <Suspense fallback={<p>Loading package location...</p>}>
+        <Await
+          resolve={data?.translation}
+          errorElement={<p>Error loading package location!</p>}
+        >
+          {(res) => {
+            if (res?.error)
+              return (
+                <div
+                  className="text-red-400  "
+                  onClick={() => setRetry(retry + 1)}
+                >
+                  ཡང་བསྐྱར་མཚོལ་
+                </div>
+              );
             return (
-              <div
-                className="text-red-400 text-sm"
-                onClick={() => setRetry(retry + 1)}
-              >
-                ཡང་བསྐྱར་མཚོལ་
-              </div>
+              <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                {res?.translation}
+              </motion.p>
             );
-          return (
-            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-              {res?.translation}
-            </motion.p>
-          );
-        }}
-      </Await>
-    </Suspense>
+          }}
+        </Await>
+      </Suspense>
+    </div>
   );
 }
 

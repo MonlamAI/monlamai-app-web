@@ -84,8 +84,8 @@ export default function Index() {
       <div className="flex justify-between items-center">
         <div
           className={`inline-block w-32 text-lg text-gray-500 dark:text-gray-300 ${
-            sourceLang == "en" && "font-Inter text-xl"
-          } ${sourceLang == "bo" && "text-lg leading-loose"}`}
+            sourceLang == "en" && "font-poppins text-xl"
+          } ${sourceLang == "bo" && "text-lg leading-loose font-monlam"}`}
         >
           {langLabels[sourceLang]}
         </div>
@@ -102,8 +102,8 @@ export default function Index() {
 
         <div
           className={`inline-block w-32 text-lg text-right text-gray-500 dark:text-gray-300
-          ${sourceLang != "en" && "font-Inter text-xl"} ${
-            sourceLang != "bo" && "text-lg leading-loose"
+          ${sourceLang != "en" && "font-poppins text-xl"} ${
+            sourceLang != "bo" && "text-lg leading-loose font-monlam"
           }`}
         >
           {langLabels[targetLang]}
@@ -221,8 +221,8 @@ function TextComponent({ sourceText, setSourceText, sourceLang }) {
       name="sourceText"
       placeholder="ཡི་གེ་གཏག་རོགས།..."
       className={`w-full bg-slate-50 min-h-full flex-1 p-2 border-0 focus:outline-none focus:ring-transparent  caret-slate-500 placeholder:text-slate-300 placeholder:font-monlam placeholder:text-lg ${
-        sourceLang == "en" && "font-Inter text-xl"
-      } ${sourceLang == "bo" && "text-lg leading-loose"}`}
+        sourceLang == "en" && "font-poppins text-xl"
+      } ${sourceLang == "bo" && "text-lg leading-loose font-monlam "}`}
       required
       value={sourceText}
       onInput={(e) => {

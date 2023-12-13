@@ -108,7 +108,8 @@ export default function Index() {
                   <Spinner size="lg" hidden={!selection?.text} />
                 ) : (
                   <div
-                    className="h-full text-sm md:text-xl"
+                    className="h-full text-sm font-monlam md:text-2xl "
+                    style={{ lineHeight: "1.8" }}
                     dangerouslySetInnerHTML={{ __html: text }}
                   ></div>
                 )}
