@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: monlam ai tools
+    name: monlam ai tools staging
     env: node
     plan: standard
     # Update the following line with your Strapi GitHub repo
