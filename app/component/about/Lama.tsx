@@ -63,7 +63,7 @@ function EachLama({ lama }) {
         onLoad={() => setLoaded(true)}
         className="  rounded-full h-24 w-24 object-cover shadow-md p-1 hover:scale-105 transition-all duration-500 "
       />
-      <p className="text-center text-[10px] py-2 ">{lama.name}</p>
+      <p className="text-center text-[10px] py-2 font-poppins">{lama.name}</p>
     </div>
   );
 }

@@ -61,7 +61,12 @@ function TranslationSwitcher() {
                   }`}
                   role="menuitem"
                 >
-                  <span className="truncate leading-[normal]">
+                  <span
+                    className="truncate leading-[normal]"
+                    style={{
+                      fontSize: language.code === "en_US" ? "16px" : "18px",
+                    }}
+                  >
                     {language.name}
                   </span>
                 </button>

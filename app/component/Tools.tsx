@@ -14,7 +14,10 @@ function Tools() {
     <main>
       <div className="md:pt-[40px]">
         <div className="text-center max-w-7xl mx-auto">
-          <div className=" px-3 mb-20 leading-[normal] text-[2rem] ">
+          <div
+            className=" px-3 mb-20 leading-[normal] "
+            style={{ fontSize: locale === "en_US" ? "2rem" : "2.7rem" }}
+          >
             {translation.homepageHeading}
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mx-10">
@@ -43,9 +46,19 @@ function EachModel({ model }: EachProps) {
         >
           {icon}
         </div>
-        <div className="flex flex-col justify-between flex-1 gap-10">
-          <h2 className="text-[1.6rem] content-start">{translation[name]}</h2>
-          <p className="text-gray-400 ">{translation[desc]}</p>
+        <div className="flex flex-col justify-between flex-1 gap-5">
+          <h2
+            className=" content-start"
+            style={{ fontSize: locale === "en_US" ? "1.6rem" : "2.3rem" }}
+          >
+            {translation[name]}
+          </h2>
+          <p
+            className="text-gray-400 "
+            style={{ fontSize: locale === "en_US" ? "1rem" : "1.2rem" }}
+          >
+            {translation[desc]}
+          </p>
         </div>
       </motion.div>
     </Link>

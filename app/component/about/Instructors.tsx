@@ -10,10 +10,13 @@ function Instructor() {
         {isEnglish ? "Advisors" : "ཆེད་ལས་སློབ་སྟོན་པ།"}
       </h2>
 
-      <div className="flex flex-wrap gap-2 justify-center">
+      <div className="flex flex-wrap gap-4 justify-center">
         {instructors.map((instructor) => {
           return (
-            <div className="h-fit w-24  md:w-28  md:my-4" key={instructor.name}>
+            <div
+              className="h-fit w-24  md:w-28  md:my-4 font-poppins"
+              key={instructor.name}
+            >
               <img
                 src={instructor.image}
                 alt={instructor.name}
