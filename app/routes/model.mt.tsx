@@ -17,6 +17,7 @@ import { readDocxFile, readTextFile } from "~/component/utils/readers";
 import { FaFile } from "react-icons/fa";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import DownloadDocument from "~/component/DownloadDocument";
+import Speak from "~/component/Speak";
 
 const langLabels = {
   bo: "བོད་སྐད།",
@@ -83,6 +84,7 @@ export default function Index() {
 
   function getTextToCopy() {
     let nodes = targetRef.current?.childNodes;
+    if (!nodes) return "";
     const textContentArray = Array.from(nodes).map((p) => p.textContent);
     let textToCopy = textContentArray.join("\n ");
     return textToCopy;
@@ -210,6 +212,7 @@ export default function Index() {
                 disabled={false}
                 onClick={handleCopy}
               />
+              <Speak getText={getTextToCopy} text={null} />
             </div>
           </div>
         </Card>

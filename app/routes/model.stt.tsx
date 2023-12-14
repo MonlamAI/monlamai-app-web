@@ -236,9 +236,12 @@ export default function Index() {
             </Card>
           ) : (
             <Card className="w-full  h-[60vh] flex">
-              <Label value={isEnglish} className="text-lg text-gray-500" />
+              {text && (
+                <div className="flex justify-end">
+                  <Speak text={text} />
+                </div>
+              )}
               <div className="w-full h-[25vh] lg:h-[50vh] p-3 text-black bg-slate-100 dark:text-gray-200 dark:bg-slate-700 rounded-lg overflow-auto">
-                {text && <Speak text={text} />}
                 {isLoading ? (
                   <div className="h-full flex justify-center items-center">
                     <Spinner />
