@@ -24,22 +24,6 @@ export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   return [{ title: "Monlam | སྒྲ་འཛིན་རིག་ནུས།" }, ...parentMeta];
 };
 
-export const loader: LoaderFunction = async ({ request }) => {
-  const apiUrl = process.env.STT_API_URL as string;
-  const headers = {
-    Authorization: process.env.MODEL_API_AUTH_TOKEN as string,
-    "Content-Type": "audio/flac",
-  };
-  await auth.isAuthenticated(request, {
-    failureRedirect: "/login",
-  });
-
-  return {
-    apiUrl,
-    headers,
-  };
-};
-
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();
   const apiUrl = process.env.STT_API_URL as string;
@@ -68,8 +52,8 @@ export const action: ActionFunction = async ({ request }) => {
 export default function Index() {
   const fetcher = useFetcher();
   const [audioChunks, setAudioChunks] = useState([]);
-  const [selectedTool, setSelectedTool] = useState<"recording" | "file">(
-    "recording"
+  const [selectedTool, setSelectedTool] = useState<"Recording" | "File">(
+    "Recording"
   );
   const [audio, setAudio] = useState<Blob | null>(null);
   const [audioURL, setAudioURL] = useState<string | null>(null);
@@ -205,15 +189,15 @@ export default function Index() {
       <main className="mx-auto w-11/12 md:w-4/5">
         <div className="flex flex-col lg:flex-row  gap-3">
           {!text ? (
-            <Card className="w-full flex ">
+            <Card className="w-full flex   h-[60vh]">
               <div className="flex flex-col gap-2 flex-1 ">
                 <ListInput
                   selectedTool={selectedTool}
                   setSelectedTool={setSelectedTool}
-                  options={["recording", "file"]}
+                  options={["Recording", "File"]}
                 />
-                {selectedTool === "recording" && (
-                  <div className="flex flex-col items-center gap-5 flex-1 justify-center">
+                {selectedTool === "Recording" && (
+                  <div className="flex flex-col items-center gap-5 flex-1 justify-center min-h-[40dvh]">
                     {recording &&
                       mediaRecorder.current &&
                       getBrowser() !== "Safari" && (
@@ -234,7 +218,7 @@ export default function Index() {
                     )}
                   </div>
                 )}
-                {selectedTool === "file" && (
+                {selectedTool === "File" && (
                   <HandleAudioFile handleFileChange={handleFileChange} />
                 )}
 
@@ -250,7 +234,7 @@ export default function Index() {
               </div>
             </Card>
           ) : (
-            <Card className="w-full  max-h-[60vh] flex">
+            <Card className="w-full  h-[60vh] flex">
               <Label value={isEnglish} className="text-lg text-gray-500" />
               <div className="w-full h-[25vh] lg:h-[50vh] p-3 text-black bg-slate-100 dark:text-gray-200 dark:bg-slate-700 rounded-lg overflow-auto">
                 {isLoading ? (
@@ -279,14 +263,13 @@ export default function Index() {
                 >
                   {likefetcher?.data?.message}
                 </div>
-                <div className="flex">
+                <div className="flex gap-2">
                   <ReactionButtons
                     fetcher={likefetcher}
                     output={text}
                     sourceText={audioBase64 ? audioBase64 : null}
                     model="stt"
                   />
-
                   <CopyToClipboard textToCopy={text} disabled={!text} />
                   <Button
                     disabled={!text || text === ""}
@@ -365,10 +348,10 @@ function HandleAudioFile({ handleFileChange }) {
             <p>Drop the files here ...</p>
           </>
         ) : (
-          <div className="flex flex-col gap-2">
-            <p className="flex-1 flex flex-col justify-center items-center  rounded text-slate-300 p-3">
+          <div className="flex flex-1 flex-col gap-2 hover:border-dotted hover:border-2 hover:border-gray-300">
+            <p className=" flex flex-col justify-center items-center  rounded text-slate-300 p-3">
               <img
-                className="w-1/2 "
+                className="h-32 "
                 src="//ssl.gstatic.com/translate/drag_and_drop.png"
               />
               click to select .mp3 or .wav files

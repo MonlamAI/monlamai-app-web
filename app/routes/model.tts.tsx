@@ -15,13 +15,9 @@ import { useDropzone } from "react-dropzone";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import { FaFile } from "react-icons/fa6";
 import ListInput from "~/component/ListInput";
+import { FaRedo } from "react-icons/fa";
+import Speak from "~/component/Speak";
 const charLimit = 2000;
-export async function loader({ request }: LoaderFunctionArgs) {
-  let userdata = await auth.isAuthenticated(request, {
-    failureRedirect: "/login",
-  });
-  return { user: userdata };
-}
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -121,109 +117,108 @@ export default function Index() {
     <ToolWraper title="TTS">
       <main className="mx-auto w-11/12 md:w-4/5">
         <div className="flex flex-col  lg:flex-row gap-3 lg:h-[60vh]">
-          <Card className="w-full lg:w-1/2 min-h-[20vh] lg:min-h-[40vh] lg:h-auto flex">
-            <div className="flex flex-col gap-2 flex-1 ">
-              <ListInput
-                selectedTool={selectedTool}
-                setSelectedTool={setSelectedTool}
-                options={["text", "document"]}
-              />
-              <div className="w-full flex-1 max-h-[50vh] ">
-                {selectedTool === "text" && (
-                  <TextComponent
-                    setSourceText={setSourceText}
-                    sourceText={sourceText}
+          {!sourceUrl ? (
+            <Card className="w-full min-h-[20vh] lg:min-h-[40vh] lg:h-auto flex">
+              <div className="flex flex-col  gap-2 flex-1 ">
+                <div className="flex justify-between">
+                  <ListInput
+                    selectedTool={selectedTool}
+                    setSelectedTool={setSelectedTool}
+                    options={["text", "document"]}
                   />
+                  {sourceText && sourceText !== "" && (
+                    <Speak text={sourceText} />
+                  )}
+                </div>
+
+                <div className="flex flex-col flex-1  justify-center max-h-[50vh] ">
+                  {selectedTool === "text" && (
+                    <TextComponent
+                      setSourceText={setSourceText}
+                      sourceText={sourceText}
+                    />
+                  )}
+                  {selectedTool === "document" && (
+                    <DocumentComponent
+                      setSourceText={setSourceText}
+                      sourceText={sourceText}
+                    />
+                  )}
+                </div>
+                <div className="flex justify-between items-center">
+                  <div className="text-gray-400 text-xs">
+                    {charCount} / {charLimit}
+                  </div>
+                  <Button
+                    type="submit"
+                    form="ttsForm"
+                    isProcessing={isLoading}
+                    onClick={submitHandler}
+                    disabled={!sourceText || sourceText === ""}
+                  >
+                    {translation.submit}
+                  </Button>
+                </div>
+              </div>
+            </Card>
+          ) : (
+            <Card className="w-full  max-h-[60vh] flex">
+              <div className="w-full flex-1">
+                {data && (
+                  <div className="flex justify-between mx-2">
+                    <div className="flex items-center gap-3">
+                      <span className="text-gray-400">སྒྲ་ཤུགས་ཆེ་ཆུང་།</span>
+                      <input
+                        type="range"
+                        min={1}
+                        max={10}
+                        step={0.01}
+                        value={volume}
+                        onChange={handleVolumeChange}
+                      />{" "}
+                    </div>
+                  </div>
                 )}
-                {selectedTool === "document" && (
-                  <DocumentComponent
-                    setSourceText={setSourceText}
-                    sourceText={sourceText}
-                  />
+                {isLoading ? (
+                  <Spinner />
+                ) : (
+                  <div className="flex-1 h-full flex justify-center items-center">
+                    {data?.error ? (
+                      <div className="text-red-400">{data?.error}</div>
+                    ) : (
+                      <AudioPlayer ref={audioRef} sourceUrl={sourceUrl} />
+                    )}
+                  </div>
                 )}
               </div>
-              <div className="flex justify-between items-center">
+              <div className="flex justify-between">
+                <div
+                  className={
+                    !likeFetcher.data?.liked ? "text-red-400" : "text-green-400"
+                  }
+                >
+                  {likeFetcher.data?.message}
+                </div>
+                <ReactionButtons
+                  fetcher={likeFetcher}
+                  output={data ? `data:audio/wav;base64,${data}` : null}
+                  sourceText={sourceText}
+                  model="tts"
+                />
                 <Button
-                  type="reset"
-                  form="ttsForm"
                   color="gray"
                   className="text-slate-500"
                   onClick={handleReset}
-                  disabled={true}
+                  title={translation.reset}
                 >
-                  {translation.reset}
-                </Button>
-                <div className="text-gray-400 text-xs">
-                  {charCount} / {charLimit}
-                </div>
-                <Button
-                  type="submit"
-                  form="ttsForm"
-                  isProcessing={isLoading}
-                  onClick={submitHandler}
-                  disabled={!sourceText || sourceText === ""}
-                >
-                  {translation.submit}
+                  <FaRedo size={20} color="gray" />
                 </Button>
               </div>
-            </div>
-          </Card>
-          <Card className="w-full lg:w-1/2 max-h-[60vh] flex">
-            <div className="w-full flex-1">
-              {data && (
-                <div className="flex justify-between mx-2">
-                  <div className="flex items-center gap-3">
-                    <span className="text-gray-400">སྒྲ་ཤུགས་ཆེ་ཆུང་།</span>
-                    <input
-                      type="range"
-                      min={1}
-                      max={10}
-                      step={0.01}
-                      value={volume}
-                      onChange={handleVolumeChange}
-                    />{" "}
-                  </div>
-                </div>
-              )}
-              {isLoading ? (
-                <Spinner />
-              ) : (
-                <div className="flex-1 h-full flex justify-center items-center">
-                  {data?.error ? (
-                    <div className="text-red-400">{data?.error}</div>
-                  ) : (
-                    <AudioPlayer ref={audioRef} sourceUrl={sourceUrl} />
-                  )}
-                </div>
-              )}
-            </div>
-            <div className="flex justify-between">
-              <div
-                className={
-                  !likeFetcher.data?.liked ? "text-red-400" : "text-green-400"
-                }
-              >
-                {likeFetcher.data?.message}
-              </div>
-              <ReactionButtons
-                fetcher={likeFetcher}
-                output={data ? `data:audio/wav;base64,${data}` : null}
-                sourceText={sourceText}
-                model="tts"
-              />
-            </div>
-          </Card>
+            </Card>
+          )}
         </div>
       </main>
     </ToolWraper>
-  );
-}
-
-export function ErrorBoundary({ error }) {
-  return (
-    <>
-      <ErrorMessage error={error} />
-    </>
   );
 }
 
@@ -280,7 +275,12 @@ function DocumentComponent({ sourceText, setSourceText }) {
       <div className="bg-gray-200 p-5 rounded-lg shadow-md flex justify-between items-center">
         <div className="flex gap-4">
           <FaFile size="20px" />
-          {acceptedFiles.map((item) => item.name)}{" "}
+          {acceptedFiles.map((item) => (
+            <div key={item.name}>
+              {item.name}
+              <p>{item.size} B</p>
+            </div>
+          ))}
         </div>
         <Button size="sm" className="" pill onClick={reset}>
           X
