@@ -208,7 +208,7 @@ export default function Index() {
                 model="mt"
               />
               <CopyToClipboard
-                textToCopy={"textToCopy"}
+                textToCopy={""}
                 disabled={false}
                 onClick={handleCopy}
               />
