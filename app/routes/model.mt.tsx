@@ -81,6 +81,11 @@ export default function Index() {
     let textToCopy = textContentArray.join("\n ");
     navigator.clipboard.writeText(textToCopy);
   }
+
+  useEffect(() => {
+    setSourceText("");
+  }, [selectedTool]);
+
   return (
     <ToolWraper title="MT">
       <div className="flex justify-between items-center">
@@ -118,7 +123,7 @@ export default function Index() {
             selectedTool={selectedTool}
             setSelectedTool={setSelectedTool}
           />
-          <div className="w-full flex flex-col gap-2 min-h-[20vh] md:min-h-[40vh] flex-1 overflow-hidden">
+          <div className="w-full flex flex-col justify-center gap-2 min-h-[20vh] md:min-h-[40vh] flex-1 overflow-hidden">
             {selectedTool === "text" && (
               <TextComponent
                 sourceText={sourceText}
@@ -264,6 +269,7 @@ function DocumentComponent({ sourceText, setSourceText, setFileType }) {
       accept: {
         "text/html": [".txt", ".docx"],
       },
+      multiple: false,
     });
   function reset() {
     acceptedFiles.splice(0, acceptedFiles.length);
@@ -278,7 +284,12 @@ function DocumentComponent({ sourceText, setSourceText, setFileType }) {
       <div className="bg-gray-200 p-4 rounded-lg shadow-md flex justify-between items-center">
         <div className="flex gap-4">
           <FaFile size="20px" />
-          {acceptedFiles.map((item) => item.name)}{" "}
+          {acceptedFiles.map((item) => (
+            <div key={item.name}>
+              {item.name}
+              <p>{item?.size}</p>
+            </div>
+          ))}
         </div>
         <Button size="sm" className="" pill onClick={reset}>
           X

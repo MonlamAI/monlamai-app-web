@@ -68,19 +68,29 @@ function DownloadDocument({
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
               >
-                <Button
-                  className="p-5 rounded-lg shadow-md"
-                  onClick={() =>
-                    fileType === "txt"
-                      ? downloadTxtFile(res?.translation)
-                      : downloadDocxFile(res?.translation)
-                  }
-                >
-                  <div className="flex gap-4">
-                    <IoMdDownload size="20px" />
-                    Download translation
-                  </div>
-                </Button>
+                {res?.translation.slice(0, 100)}...
+                <div className="flex flex-col gap-4 mt-4 text-center">
+                  <Button
+                    size="sm"
+                    className="rounded-lg shadow-md"
+                    onClick={() => downloadTxtFile(res?.translation)}
+                  >
+                    <div className="flex gap-4">
+                      <IoMdDownload size="20px" />
+                      Download as .txt
+                    </div>
+                  </Button>
+                  <Button
+                    size="sm"
+                    className="rounded-lg shadow-md"
+                    onClick={() => downloadDocxFile(res?.translation)}
+                  >
+                    <div className="flex gap-4">
+                      <IoMdDownload size="20px" />
+                      Download as .docx
+                    </div>
+                  </Button>
+                </div>
               </motion.div>
             );
           }
