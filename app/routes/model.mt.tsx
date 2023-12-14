@@ -16,6 +16,7 @@ import { useDropzone } from "react-dropzone";
 import { readDocxFile, readTextFile } from "~/component/utils/readers";
 import { FaFile } from "react-icons/fa";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
+import DownloadDocument from "~/component/DownloadDocument";
 
 const langLabels = {
   bo: "བོད་སྐད།",
@@ -42,6 +43,7 @@ export default function Index() {
   const [targetLang, setTargetLang] = useLocalStorage("outputLang", "bo");
   const [sourceText, setSourceText] = useState("");
   const [isRotated, setIsRotated] = useState(false);
+  const [fileType, setFileType] = useState<"txt" | "docx" | null>(null);
   const [selectedTool, setSelectedTool] = useLocalStorage<"text" | "document">(
     "mt_selected_input",
     "text"
@@ -112,10 +114,10 @@ export default function Index() {
 
       <div className="mt-3 flex flex-col md:flex-row md:h-[55vh] gap-5">
         <Card className="md:w-1/2">
-          {/* <ListInput
+          <ListInput
             selectedTool={selectedTool}
             setSelectedTool={setSelectedTool}
-          /> */}
+          />
           <div className="w-full flex flex-col gap-2 min-h-[20vh] md:min-h-[40vh] flex-1 overflow-hidden">
             {selectedTool === "text" && (
               <TextComponent
@@ -128,7 +130,7 @@ export default function Index() {
               <DocumentComponent
                 sourceText={sourceText}
                 setSourceText={setSourceText}
-                sourceLang={sourceLang}
+                setFileType={setFileType}
               />
             )}
           </div>
@@ -158,26 +160,27 @@ export default function Index() {
                   : "font-Inter"
               }`}
             >
-              {/* {selectedTool === "text" && (
-                <> */}
-              {text_array.map((text, index) => {
-                if (text === "" || text === "\n") return null;
-                return (
-                  <EachParagraph
-                    key={"returndata_" + index}
-                    lang={sourceLang}
-                    source={text}
-                  />
-                );
-              })}
-              {/* </>
-              )} */}
-              {/* {selectedTool === "document" && text_array.length !== 0 && (
+              {selectedTool === "text" && (
+                <>
+                  {text_array.map((text, index) => {
+                    if (text === "" || text === "\n") return null;
+                    return (
+                      <EachParagraph
+                        key={"returndata_" + index}
+                        lang={sourceLang}
+                        source={text}
+                      />
+                    );
+                  })}
+                </>
+              )}
+              {selectedTool === "document" && text_array.length !== 0 && (
                 <DownloadDocument
-                  textArray={text_array}
-                  sourceLang={sourceLang}
+                  source={sourceText}
+                  lang={sourceLang}
+                  fileType={fileType}
                 />
-              )} */}
+              )}
             </div>
           </div>
           <div className="flex justify-between">
@@ -222,7 +225,7 @@ function TextComponent({ sourceText, setSourceText, sourceLang }) {
       placeholder="ཡི་གེ་གཏག་རོགས།..."
       className={`w-full bg-slate-50 min-h-full flex-1 p-2 border-0 focus:outline-none focus:ring-transparent  caret-slate-500 placeholder:text-slate-300 placeholder:font-monlam placeholder:text-lg ${
         sourceLang == "en" && "font-poppins text-xl"
-      } ${sourceLang == "bo" && "text-lg leading-loose font-monlam "}`}
+      } ${sourceLang == "bo" && "text-lg leading-loose font-monlam"}`}
       required
       value={sourceText}
       onInput={(e) => {
@@ -237,7 +240,7 @@ function TextComponent({ sourceText, setSourceText, sourceLang }) {
   );
 }
 
-function DocumentComponent({ sourceText, setSourceText, sourceLang }) {
+function DocumentComponent({ sourceText, setSourceText, setFileType }) {
   const onDrop = useCallback((acceptedFiles) => {
     // Do something with the files
     var file = acceptedFiles[0];
@@ -246,8 +249,10 @@ function DocumentComponent({ sourceText, setSourceText, sourceLang }) {
     }
 
     if (file.name.endsWith(".txt")) {
+      setFileType("txt");
       readTextFile(file, setSourceText);
     } else if (file.name.endsWith(".docx")) {
+      setFileType("docx");
       readDocxFile(file, setSourceText);
     } else {
       console.log("Unsupported file type.");
@@ -270,7 +275,7 @@ function DocumentComponent({ sourceText, setSourceText, sourceLang }) {
 
   if (acceptedFiles.length > 0)
     return (
-      <div className="bg-gray-200 p-5 rounded-lg shadow-md flex justify-between items-center">
+      <div className="bg-gray-200 p-4 rounded-lg shadow-md flex justify-between items-center">
         <div className="flex gap-4">
           <FaFile size="20px" />
           {acceptedFiles.map((item) => item.name)}{" "}
@@ -315,7 +320,7 @@ function ListInput({ selectedTool, setSelectedTool }) {
         Text
       </Button>
       <Button
-        disabled={true}
+        // disabled={true}
         color={isDocumentSelected ? "blue" : "gray"}
         size={"xs"}
         onClick={() => setSelectedTool("document")}
@@ -323,32 +328,5 @@ function ListInput({ selectedTool, setSelectedTool }) {
         Document
       </Button>
     </div>
-  );
-}
-
-function DownloadDocument({ textArray, sourceLang }) {
-  const downloadTxtFile = () => {
-    // Join the array of strings into a single string with new lines
-    const fileContent = textArray.join("\n");
-    // Create a Blob from the content
-    const blob = new Blob([fileContent], { type: "text/plain" });
-    // Create a URL for the Blob
-    const fileUrl = URL.createObjectURL(blob);
-    // Create a temporary anchor element and trigger the download
-    const downloadLink = document.createElement("a");
-    downloadLink.href = fileUrl;
-    downloadLink.download = "download.txt";
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-    document.body.removeChild(downloadLink);
-
-    // Free up the Blob URL memory
-    URL.revokeObjectURL(fileUrl);
-  };
-
-  return (
-    <>
-      <button onClick={downloadTxtFile}>Download as TXT</button>
-    </>
   );
 }
