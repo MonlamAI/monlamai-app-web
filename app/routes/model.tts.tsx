@@ -20,6 +20,7 @@ import { readDocxFile, readTextFile } from "~/component/utils/readers";
 import { useDropzone } from "react-dropzone";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import { FaFile } from "react-icons/fa6";
+import ListInput from "~/component/ListInput";
 const charLimit = 2000;
 export async function loader({ request }: LoaderFunctionArgs) {
   let userdata = await auth.isAuthenticated(request, {
@@ -91,6 +92,10 @@ export default function Index() {
       }
     );
   };
+  useEffect(() => {
+    setSourceText("");
+  }, [selectedTool]);
+
   let charCount = sourceText?.length;
   let likeFetcher = useFetcher();
   useEffect(() => {
@@ -127,6 +132,7 @@ export default function Index() {
               <ListInput
                 selectedTool={selectedTool}
                 setSelectedTool={setSelectedTool}
+                options={["text", "document"]}
               />
               <div className="w-full flex-1 max-h-[50vh] ">
                 {selectedTool === "text" && (
@@ -300,34 +306,10 @@ function DocumentComponent({ sourceText, setSourceText }) {
               className="w-1/2 "
               src="//ssl.gstatic.com/translate/drag_and_drop.png"
             />
-            Drag 'n' drop some files here, or click to select files
+            click to select some .txt or .docx file here
           </p>
         </>
       )}
-    </div>
-  );
-}
-
-function ListInput({ selectedTool, setSelectedTool }) {
-  const isTextSelected = selectedTool === "text";
-  const isDocumentSelected = selectedTool === "document";
-
-  return (
-    <div className="flex gap-2">
-      <Button
-        color={isTextSelected ? "blue" : "gray"}
-        size={"xs"}
-        onClick={() => setSelectedTool("text")}
-      >
-        Text
-      </Button>
-      <Button
-        color={isDocumentSelected ? "blue" : "gray"}
-        size={"xs"}
-        onClick={() => setSelectedTool("document")}
-      >
-        Document
-      </Button>
     </div>
   );
 }

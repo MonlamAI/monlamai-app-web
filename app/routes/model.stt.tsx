@@ -13,6 +13,9 @@ import ToolWraper from "~/component/ToolWraper";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import { useDropzone } from "react-dropzone";
 import { FaFile } from "react-icons/fa6";
+import { DownloadTxt } from "~/component/Download";
+import ListInput from "~/component/ListInput";
+import { FaRedo } from "react-icons/fa";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -65,7 +68,7 @@ export const action: ActionFunction = async ({ request }) => {
 export default function Index() {
   const fetcher = useFetcher();
   const [audioChunks, setAudioChunks] = useState([]);
-  const [selectedTool, setSelectedTool] = useState<"recording" | "audiofile">(
+  const [selectedTool, setSelectedTool] = useState<"recording" | "file">(
     "recording"
   );
   const [audio, setAudio] = useState<Blob | null>(null);
@@ -99,6 +102,13 @@ export default function Index() {
     // reset the audio element and the transcript
     setAudio(null);
     setAudioURL(null);
+    fetcher.submit(
+      {},
+      {
+        method: "POST",
+        action: "/api/reset_actiondata",
+      }
+    );
   };
   const toggleRecording = () => {
     if (!recording) {
@@ -189,100 +199,108 @@ export default function Index() {
   let { translation, label } = uselitteraTranlation();
   let isEnglish = label === "en_US";
   let isDisabled = !audioURL;
+  let text = fetcher.data?.text;
   return (
     <ToolWraper title="STT">
       <main className="mx-auto w-11/12 md:w-4/5">
         <div className="flex flex-col lg:flex-row  gap-3">
-          <Card className="w-full lg:w-1/2 flex ">
-            <div className="flex flex-col w-full h-[25vh] lg:h-[50vh] justify-center  gap-4">
-              <ListInput
-                selectedTool={selectedTool}
-                setSelectedTool={setSelectedTool}
-              />
-              {selectedTool === "recording" && (
-                <div className="flex flex-col items-center gap-5 flex-1 justify-center">
-                  {recording &&
-                    mediaRecorder.current &&
-                    getBrowser() !== "Safari" && (
-                      <LiveAudioVisualizer
-                        mediaRecorder={mediaRecorder.current}
-                        width={200}
-                        height={75}
-                      />
+          {!text ? (
+            <Card className="w-full flex ">
+              <div className="flex flex-col gap-2 flex-1 ">
+                <ListInput
+                  selectedTool={selectedTool}
+                  setSelectedTool={setSelectedTool}
+                  options={["recording", "file"]}
+                />
+                {selectedTool === "recording" && (
+                  <div className="flex flex-col items-center gap-5 flex-1 justify-center">
+                    {recording &&
+                      mediaRecorder.current &&
+                      getBrowser() !== "Safari" && (
+                        <LiveAudioVisualizer
+                          mediaRecorder={mediaRecorder.current}
+                          width={200}
+                          height={75}
+                        />
+                      )}
+                    <Button size="xl" onClick={toggleRecording}>
+                      {recording ? <BsFillStopFill /> : <BsFillMicFill />}
+                    </Button>
+                    {audioURL && (
+                      <audio controls>
+                        <source src={audioURL} type="audio/mpeg"></source>
+                        <source src={audioURL} type="audio/ogg"></source>
+                      </audio>
                     )}
-                  <Button size="xl" onClick={toggleRecording}>
-                    {recording ? <BsFillStopFill /> : <BsFillMicFill />}
-                  </Button>
-                  {audioURL && (
-                    <audio controls>
-                      <source src={audioURL} type="audio/mpeg"></source>
-                      <source src={audioURL} type="audio/ogg"></source>
-                    </audio>
-                  )}
-                </div>
-              )}
-              {selectedTool === "audiofile" && (
-                <HandleAudioFile handleFileChange={handleFileChange} />
-              )}
+                  </div>
+                )}
+                {selectedTool === "file" && (
+                  <HandleAudioFile handleFileChange={handleFileChange} />
+                )}
 
-              <div className="flex justify-between h-10">
-                <Button
-                  color="gray"
-                  className="text-slate-500"
-                  onClick={handleReset}
-                >
-                  {translation.reset}
-                </Button>
-                <Button onClick={handleSubmit} disabled={isDisabled}>
-                  {translation.submit}
-                </Button>
-              </div>
-            </div>
-          </Card>
-          <Card className="w-full lg:w-1/2 max-h-[60vh] flex">
-            <Label value={isEnglish} className="text-lg text-gray-500" />
-            <div className="w-full h-[25vh] lg:h-[50vh] p-3 text-black bg-slate-100 dark:text-gray-200 dark:bg-slate-700 rounded-lg overflow-auto">
-              {isLoading ? (
-                <div className="h-full flex justify-center items-center">
-                  <Spinner />
-                </div>
-              ) : (
-                fetcher?.data?.text && (
-                  <p
-                    className="font-monlam text-2xl"
-                    style={{ lineHeight: "1.8" }}
+                <div className="flex flex-end h-10">
+                  <Button
+                    onClick={handleSubmit}
+                    disabled={isDisabled}
+                    isProcessing={fetcher.state !== "idle"}
                   >
-                    {fetcher?.data?.text}
-                  </p>
-                )
-              )}
-              {errorMessage && (
-                <div className="text-red-400">{errorMessage}</div>
-              )}
-            </div>
-            <div className="flex justify-between">
-              <div
-                className={
-                  !likefetcher.data?.liked ? "text-red-400" : "text-green-400"
-                }
-              >
-                {likefetcher?.data?.message}
+                    {translation.submit}
+                  </Button>
+                </div>
               </div>
-              <div className="flex">
-                <ReactionButtons
-                  fetcher={likefetcher}
-                  output={fetcher?.data?.text}
-                  sourceText={audioBase64 ? audioBase64 : null}
-                  model="stt"
-                />
+            </Card>
+          ) : (
+            <Card className="w-full  max-h-[60vh] flex">
+              <Label value={isEnglish} className="text-lg text-gray-500" />
+              <div className="w-full h-[25vh] lg:h-[50vh] p-3 text-black bg-slate-100 dark:text-gray-200 dark:bg-slate-700 rounded-lg overflow-auto">
+                {isLoading ? (
+                  <div className="h-full flex justify-center items-center">
+                    <Spinner />
+                  </div>
+                ) : (
+                  text && (
+                    <p
+                      className="font-monlam text-2xl"
+                      style={{ lineHeight: "1.8" }}
+                    >
+                      {text}
+                    </p>
+                  )
+                )}
+                {errorMessage && (
+                  <div className="text-red-400">{errorMessage}</div>
+                )}
+              </div>
+              <div className="flex justify-between">
+                <div
+                  className={
+                    !likefetcher.data?.liked ? "text-red-400" : "text-green-400"
+                  }
+                >
+                  {likefetcher?.data?.message}
+                </div>
+                <div className="flex">
+                  <ReactionButtons
+                    fetcher={likefetcher}
+                    output={text}
+                    sourceText={audioBase64 ? audioBase64 : null}
+                    model="stt"
+                  />
 
-                <CopyToClipboard
-                  textToCopy={fetcher?.data?.text}
-                  disabled={!fetcher?.data?.text}
-                />
+                  <CopyToClipboard textToCopy={text} disabled={!text} />
+                  <DownloadTxt content={text} />
+                  <Button
+                    color="gray"
+                    className="text-slate-500"
+                    onClick={handleReset}
+                    title={translation.reset}
+                  >
+                    <FaRedo size={20} color="gray" />
+                  </Button>
+                </div>
               </div>
-            </div>
-          </Card>
+            </Card>
+          )}
         </div>
       </main>
     </ToolWraper>
@@ -294,30 +312,6 @@ export function ErrorBoundary({ error }) {
     <>
       <ErrorMessage error={error} />
     </>
-  );
-}
-
-function ListInput({ selectedTool, setSelectedTool }) {
-  const isTextSelected = selectedTool === "recording";
-  const isDocumentSelected = selectedTool === "audiofile";
-
-  return (
-    <div className="flex gap-2 mt-2">
-      <Button
-        color={isTextSelected ? "blue" : "gray"}
-        size={"xs"}
-        onClick={() => setSelectedTool("recording")}
-      >
-        Recording
-      </Button>
-      <Button
-        color={isDocumentSelected ? "blue" : "gray"}
-        size={"xs"}
-        onClick={() => setSelectedTool("audiofile")}
-      >
-        File
-      </Button>
-    </div>
   );
 }
 
@@ -336,14 +330,14 @@ function HandleAudioFile({ handleFileChange }) {
     setMyFiles(null);
   };
 
-  let { getRootProps, getInputProps, isDragActive, acceptedFiles } =
-    useDropzone({
-      onDrop,
-      accept: {
-        "audio/*": [".mp3", ".wav"],
-      },
-      multiple: false,
-    });
+  let { getRootProps, getInputProps, isDragActive, open } = useDropzone({
+    onDrop,
+    accept: {
+      "audio/*": [".mp3", ".wav"],
+    },
+    multiple: false,
+    noClick: true,
+  });
 
   if (myFiles)
     return (
@@ -362,17 +356,26 @@ function HandleAudioFile({ handleFileChange }) {
       <form className=" flex-1 flex cursor-pointer" {...getRootProps()}>
         <input {...getInputProps()} />
         {isDragActive ? (
-          <p>Drop the files here ...</p>
-        ) : (
           <>
-            <p className="flex-1 flex flex-col justify-center items-center border-blue-400 border-2 rounded text-slate-300 p-3">
+            <p>Drop the files here ...</p>
+          </>
+        ) : (
+          <div className="flex flex-col gap-2">
+            <p className="flex-1 flex flex-col justify-center items-center  rounded text-slate-300 p-3">
               <img
                 className="w-1/2 "
                 src="//ssl.gstatic.com/translate/drag_and_drop.png"
               />
-              Drag 'n' drop some files here, or click to select files
+              click to select .mp3 or .wav files
             </p>
-          </>
+            <Button
+              onClick={open}
+              color="gray"
+              className="block max-w-xs text-center m-auto"
+            >
+              open file browser
+            </Button>
+          </div>
         )}
       </form>
     </>
