@@ -1,13 +1,11 @@
 import { Button, Card, Spinner, Textarea } from "flowbite-react";
 import { MetaFunction, useFetcher } from "@remix-run/react";
-import { LoaderFunctionArgs, type ActionFunction } from "@remix-run/node";
+import { type ActionFunction } from "@remix-run/node";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { auth } from "~/services/auth.server";
 import ReactionButtons from "~/component/ReactionButtons";
 import inputReplace from "~/component/utils/ttsReplace.server";
 import { amplifyMedia } from "~/component/utils/audioGain";
 import useLocalStorage from "~/component/hooks/useLocaleStorage";
-import ErrorMessage from "~/component/ErrorMessage";
 import AudioPlayer from "~/component/AudioPlayer";
 import ToolWraper from "~/component/ToolWraper";
 import { readDocxFile, readTextFile } from "~/component/utils/readers";
@@ -19,7 +17,7 @@ import { FaRedo } from "react-icons/fa";
 import Speak from "~/component/Speak";
 const charLimit = 2000;
 
-export const meta: MetaFunction<typeof loader> = ({ matches }) => {
+export const meta: MetaFunction = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
   parentMeta.shift(1);
 
@@ -52,6 +50,7 @@ export const action: ActionFunction = async ({ request }) => {
     };
   }
 };
+
 export default function Index() {
   const [sourceText, setSourceText] = useState("");
   const [selectedTool, setSelectedTool] = useLocalStorage(

@@ -75,11 +75,17 @@ export default function Index() {
   let text_array = debouncedSearchTerm
     ?.split(/\r\n|\r|\n/)
     .filter((item) => item !== "");
+
   function handleCopy() {
+    let textToCopy = getTextToCopy();
+    navigator.clipboard.writeText(textToCopy);
+  }
+
+  function getTextToCopy() {
     let nodes = targetRef.current?.childNodes;
     const textContentArray = Array.from(nodes).map((p) => p.textContent);
     let textToCopy = textContentArray.join("\n ");
-    navigator.clipboard.writeText(textToCopy);
+    return textToCopy;
   }
 
   useEffect(() => {
@@ -195,7 +201,7 @@ export default function Index() {
             <div className="flex justify-end">
               <ReactionButtons
                 fetcher={likefetcher}
-                output={"textToCopy"}
+                output={getTextToCopy()}
                 sourceText={sourceText}
                 model="mt"
               />

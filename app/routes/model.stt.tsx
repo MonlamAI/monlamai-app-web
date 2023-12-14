@@ -16,6 +16,7 @@ import { FaDownload, FaFile } from "react-icons/fa6";
 import { downloadTxtFile } from "~/component/utils/download";
 import ListInput from "~/component/ListInput";
 import { FaRedo } from "react-icons/fa";
+import Speak from "~/component/Speak";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -237,6 +238,7 @@ export default function Index() {
             <Card className="w-full  h-[60vh] flex">
               <Label value={isEnglish} className="text-lg text-gray-500" />
               <div className="w-full h-[25vh] lg:h-[50vh] p-3 text-black bg-slate-100 dark:text-gray-200 dark:bg-slate-700 rounded-lg overflow-auto">
+                {text && <Speak text={text} />}
                 {isLoading ? (
                   <div className="h-full flex justify-center items-center">
                     <Spinner />
@@ -329,14 +331,19 @@ function HandleAudioFile({ handleFileChange }) {
 
   if (myFiles)
     return (
-      <div className="bg-gray-200 flex-1 max-w-full p-5 rounded-lg shadow-md flex justify-between items-center">
-        <div className="flex gap-4">
-          <FaFile size="20px" />
-          {myFiles?.name}
+      <div className="flex flex-1 w-full items-center">
+        <div className="bg-gray-200 py-2 w-full h-16 p-5 rounded-lg shadow-md inline-flex justify-between items-center">
+          <div className="flex items-center gap-4">
+            <FaFile size="20px" />
+            <div className="flex flex-col">
+              {myFiles?.name}
+              <p>{myFiles?.size}</p>
+            </div>
+          </div>
+          <Button size="sm" className="" pill onClick={removeFile}>
+            X
+          </Button>
         </div>
-        <Button size="sm" className="" pill onClick={removeFile}>
-          X
-        </Button>
       </div>
     );
   return (

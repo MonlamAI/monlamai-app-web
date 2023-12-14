@@ -17,7 +17,6 @@ function Speak({ text }: { text: string }) {
   };
   useEffect(() => {
     if (fetcher.data) {
-      console.log("fetcher.data", fetcher.data);
       audioRef.current?.play();
     }
   }, [fetcher.data]);
