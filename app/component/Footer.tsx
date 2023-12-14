@@ -38,46 +38,44 @@ function Footer() {
   }
 
   return (
-    <div className="w-full p-4">
-      <footer
-        className={`p-4 ${!isAboutPage ? "lg:fixed" : ""} bottom-0 w-full`}
-        style={{
-          fontFamily: isEnglish ? "Inter" : "monlam",
-          lineHeight: "normal",
-        }}
-      >
-        <div className=" mx-auto max-w-screen-xl p-4 flex flex-col md:flex-row items-center md:justify-between">
-          <div className="text-sm text-gray-400 sm:text-center">
-            <div className="hover:underline text-[1rem] cursor-default leading-relaxed text-center">
-              {isEnglish
-                ? "Web © Monlam AI 2023"
-                : "བདག་དབང་། © སྨོན་ལམ་བརྡ་འཕྲིན་ཞིབ་འཇུག་ཁང་། ༢༠༢༣"}
-            </div>
-          </div>
-          <div className="flex flex-wrap items-center mt-3 sm:mt-2">
-            {logos.map((logo) => {
-              return (
-                <a
-                  key={logo.name}
-                  href={logo.link}
-                  target="_blank"
-                  rel="noreferrer"
-                  className={`mr-2 hover:underline md:mr-3 transition-all duration-500 `}
-                  style={{ color: logo.color, fontSize: 26 }}
-                >
-                  {logo.icon}
-                </a>
-              );
-            })}
-            <div onClick={handleClick}>
-              <Flowbite>
-                <DarkThemeToggle />
-              </Flowbite>
-            </div>
+    <footer
+      className={` ${!isAboutPage ? "lg:fixed" : ""} bottom-0 w-full`}
+      style={{
+        fontFamily: isEnglish ? "Inter" : "monlam",
+        lineHeight: "normal",
+      }}
+    >
+      <div className=" mx-auto max-w-screen-xl flex flex-col md:flex-row items-center md:justify-between">
+        <div className="text-sm text-gray-400 sm:text-center">
+          <div className="hover:underline text-[1rem] cursor-default leading-relaxed text-center">
+            {isEnglish
+              ? "Web © Monlam AI 2023"
+              : "བདག་དབང་། © སྨོན་ལམ་བརྡ་འཕྲིན་ཞིབ་འཇུག་ཁང་། ༢༠༢༣"}
           </div>
         </div>
-      </footer>
-    </div>
+        <div className="flex flex-wrap items-center mt-3 sm:mt-2">
+          {logos.map((logo) => {
+            return (
+              <a
+                key={logo.name}
+                href={logo.link}
+                target="_blank"
+                rel="noreferrer"
+                className={`mr-2 hover:underline md:mr-3 transition-all duration-500 `}
+                style={{ color: logo.color, fontSize: 26 }}
+              >
+                {logo.icon}
+              </a>
+            );
+          })}
+          <div onClick={handleClick}>
+            <Flowbite>
+              <DarkThemeToggle />
+            </Flowbite>
+          </div>
+        </div>
+      </div>
+    </footer>
   );
 }
 

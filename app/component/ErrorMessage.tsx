@@ -5,7 +5,7 @@ function ErrorMessage({ error }: { error: any }) {
     <>
       <div className="relative  flex flex-col mt-20 items-center  m-auto w-[90%] md:w-[80%]">
         <img
-          src="/assets/about.jpg"
+          src="/assets/buddha.png"
           alt="monlam"
           className="w-[80%] opacity-40 md:w-[60%] lg:w-[40%] border-[#dddcdc] rounded-lg shadow-sm hover:scale-95 transition-all duration-500"
         />

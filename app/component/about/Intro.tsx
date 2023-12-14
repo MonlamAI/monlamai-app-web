@@ -2,13 +2,13 @@ export function TibetanIntro() {
   return (
     <div className=" flex flex-col  mb-20 justify-center items-center gap-10 px-4 lg:flex-row">
       <img
-        src="/assets/about.jpg"
+        src="/assets/buddha.png"
         alt="monlam"
         className="w-[80%] md:w-[60%] lg:w-[40%] border-[#dddcdc] rounded-lg shadow-sm hover:scale-105 transition-all duration-500"
       />
-      <div className="leading-8">
+      <div className="leading-8 text-md">
         <h4 className="text-2xl mb-4 text-center">ངོ་སྤྲོད།</h4>
-        <p className="text-md">
+        <p>
           དེང་སྐབས་འཛམ་གླིང་ཁྱོན་ཡོངས་སུ་ཚན་རྩལ་འཕྲུལ་རིག་ཆེས་ཆེར་དར་ཞིང་།
           ལྷག་པར་ཉེ་བའི་ལོ་འདི་འགར་ཀུན་གྱིས་ཚ་ཚ་འུར་འུར་དུ་གླེང་བཞིན་པའི་མིས་བཟོས་རིག་ནུས་(Artificial
           intelligence)ཞེས་པ་བརྡ་འཕྲིན་འཕྲུལ་རིག་ཁྲོད་ཚད་གཞི་ཆེས་མཐོ་ཤོས་སུ་གྱུར་ཡོད་ལ།
@@ -16,7 +16,7 @@ export function TibetanIntro() {
           ལས་ཆོད་མཐོར་འདེགས་གཏོང་ཐུབ་པར་མ་ཟད།
           ང་ཚོ་བོད་མི་རིགས་ལྟ་བུའི་ཤེས་རིག་རྒྱ་ཆེ་ཡང་སྤྱོད་མཁན་གྲངས་ཉུང་བའི་རིགས་ལ་ཕན་ཐོགས་རྒྱ་ཆེར་འབྱུང་ངེས།
         </p>
-        <p className="text-md">
+        <p>
           ལས་གཞི་འདི་རིགས་སྤྱིར་བཏང་གི་ལས་གཞི་ཆུང་ཆུང་ཞིག་མིན་པར་གློག་ཀླད་ཆེད་ལས་པ་དང་།
           ལས་མི་བརྒྱ་ཕྲག་མང་པོ་མཉམ་རུབ་མ་བྱས་ན་ཧ་ཅང་འགྲུབ་དཀའ་བར་བརྟེན།
           འདི་ག་སྨོན་ལམ་བོད་ཀྱི་བརྡ་འཕྲིན་ཞིབ་འཇུག་ཁང་གིས་སྤྱི་སྒེར་གྱི་ཚོགས་སྡེ་ཁག་མང་པོ་དང་མཉམ་འབྲེལ་གྱིས་རིག་ནུས་ཀྱི་དཔེ་མཚོན་ནམ་སྦྱོང་བརྡར་རྒྱུ་ཆ་སྟོང་ཕྲག་མང་པོ་མཁོ་སྒྲུབ་བྱེད་ཐུབ་ཡོད། 
@@ -31,7 +31,7 @@ export function EnglishIntro() {
     <div className=" flex flex-col  mb-20 justify-center items-center gap-10 px-4 lg:flex-row">
       <div>
         <img
-          src="/assets/about.jpg"
+          src="/assets/buddha.png"
           alt="monlam"
           className="w-[80%] float-left my-2 mx-4 md:w-[60%] lg:w-[40%] border-[#dddcdc] rounded-lg shadow-sm hover:scale-95 transition-all duration-500"
         />
