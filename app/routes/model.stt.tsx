@@ -12,8 +12,8 @@ import ErrorMessage from "~/component/ErrorMessage";
 import ToolWraper from "~/component/ToolWraper";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import { useDropzone } from "react-dropzone";
-import { FaFile } from "react-icons/fa6";
-import { DownloadTxt } from "~/component/Download";
+import { FaDownload, FaFile } from "react-icons/fa6";
+import { downloadTxtFile } from "~/component/utils/download";
 import ListInput from "~/component/ListInput";
 import { FaRedo } from "react-icons/fa";
 
@@ -288,7 +288,12 @@ export default function Index() {
                   />
 
                   <CopyToClipboard textToCopy={text} disabled={!text} />
-                  <DownloadTxt content={text} />
+                  <Button
+                    disabled={!text || text === ""}
+                    onClick={() => downloadTxtFile(text)}
+                  >
+                    <FaDownload />
+                  </Button>
                   <Button
                     color="gray"
                     className="text-slate-500"

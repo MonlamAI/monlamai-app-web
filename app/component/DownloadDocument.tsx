@@ -3,8 +3,7 @@ import { Suspense, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { IoMdDownload } from "react-icons/io";
 import { Button } from "flowbite-react";
-import { saveAs } from "file-saver";
-import { Document, Packer, Paragraph } from "docx";
+import { downloadDocxFile, downloadTxtFile } from "./utils/download";
 
 function DownloadDocument({
   source,
@@ -36,36 +35,6 @@ function DownloadDocument({
       setIsLoading(false);
     }
   }, [data]);
-
-  const downloadTxtFile = (translation: string) => {
-    console.log("translation", translation);
-    // Create a Blob from the content
-    const blob = new Blob([translation], { type: "text/plain" });
-    saveAs(blob, "download.txt");
-  };
-
-  const downloadDocxFile = async (translation: string) => {
-    console.log("translation", translation);
-    const doc = new Document({
-      creator: "User name",
-      description: "My document",
-      title: "My Document",
-      sections: [
-        {
-          properties: {},
-          children: [
-            new Paragraph({
-              text: translation,
-            }),
-          ],
-        },
-      ],
-    });
-
-    Packer.toBlob(doc).then((blob) => {
-      saveAs(blob, "download.docx");
-    });
-  };
 
   if (isloading || !data)
     return (
