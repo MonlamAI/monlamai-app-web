@@ -12,10 +12,10 @@ function Tools() {
   let { translation, locale } = uselitteraTranlation();
   return (
     <main>
-      <div className="md:pt-[40px]">
+      <div className="py-5 md:pt-[40px]">
         <div className="text-center max-w-7xl mx-auto">
           <div
-            className=" px-3 mb-20 leading-[normal] "
+            className="px-3 mb-10 md:mb-20 leading-[normal] "
             style={{ fontSize: locale === "en_US" ? "2rem" : "2.7rem" }}
           >
             {translation.homepageHeading}
