@@ -7,6 +7,7 @@ import { RxCross1 } from "react-icons/rx";
 import { motion, AnimatePresence } from "framer-motion";
 import uselitteraTranlation from "../hooks/useLitteraTranslation";
 import TranslationSwitcher from "../TranslationSwitcher";
+import { IconContext } from "react-icons";
 function Header() {
   const { user } = useLoaderData();
   const [showMenu, setShowMenu] = useState(false);
@@ -43,7 +44,9 @@ function Header() {
           className="block lg:hidden"
           onClick={() => setShowMenu((p) => !p)}
         >
-          {showMenu ? <RxCross1 /> : <GiHamburgerMenu />}
+          <IconContext.Provider value={{ size: "1.5em" }}>
+            {showMenu ? <RxCross1 /> : <GiHamburgerMenu />}
+          </IconContext.Provider>
         </button>
         <div className="hidden lg:flex gap-2 ml-8 flex-1 justify-between bg-white dark:bg-slate-700 dark:text-gray-200">
           <div className="flex items-center gap-8 text-sm ml-4">
@@ -99,7 +102,7 @@ function Header() {
       {/* mobile view */}
       {showMenu && (
         <div
-          className="lg:hidden flex justify-between flex-1 items-center px-5 pb-2 right-0 w-full shadow-sm
+          className="lg:hidden flex justify-between flex-1 items-center px-5 pb-5 right-0 w-full shadow-sm
 "
         >
           <Link to="/about" onClick={() => setShowMenu(false)}>
