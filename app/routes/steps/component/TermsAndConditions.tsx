@@ -2,7 +2,7 @@ import { Link, useLocation } from "@remix-run/react";
 export default function Index() {
   let location = useLocation();
   let isForm = location.pathname.includes("steps");
-  let isTac = location.pathname.includes("tac");
+  let isTac = location.pathname.includes("terms");
   return (
     <div
       className={`text-slate-900  ${

@@ -1,13 +1,12 @@
-import { Fetcher } from "@remix-run/react";
 import { Button, Spinner } from "flowbite-react";
 import { FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa";
-import { ModelType } from "~/modal/feedback";
+import { modelType } from "~/modal/feedback";
 import React from "react";
 interface ReactionButtonsProps {
-  fetcher: Fetcher;
+  fetcher: any;
   output: string | null;
   sourceText: string | null;
-  model: ModelType;
+  model: modelType;
 }
 
 const API_ENDPOINT = "/api/feedback";
@@ -52,7 +51,19 @@ function ReactionButtons({
   );
 }
 
-function ReactionButton({ enabled, active, icon, onClick }) {
+type ReactionButtonProps = {
+  enabled: boolean;
+  active: boolean;
+  icon: React.ReactElement;
+  onClick: () => void;
+};
+
+function ReactionButton({
+  enabled,
+  active,
+  icon,
+  onClick,
+}: ReactionButtonProps) {
   return (
     <Button color="white" disabled={!enabled} onClick={onClick}>
       {React.cloneElement(icon, {

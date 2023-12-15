@@ -1,6 +1,6 @@
 import { ActionFunction, LinksFunction, LoaderFunction } from "@remix-run/node";
 import React from "react";
-import StepWizard from "~/component/StepWizard";
+import StepWizard from "~/routes/steps/component/StepWizard";
 import wizardStyle from "react-form-wizard-component/dist/style.css";
 import { getUserAboutData, updateUserAboutData } from "~/modal/aboutUser";
 import { auth } from "~/services/auth.server";

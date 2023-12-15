@@ -1,8 +1,8 @@
 import { Label, Select, TextInput } from "flowbite-react";
 import { useState, useId, useEffect } from "react";
-import { feedback_options } from "../helper/feedbackOptions";
-import useLocalStorage from "./hooks/useLocaleStorage";
-import uselitteraTranlation from "./hooks/useLitteraTranslation";
+import { feedback_options } from "../../../helper/feedbackOptions";
+import useLocalStorage from "../../../component/hooks/useLocaleStorage";
+import uselitteraTranlation from "../../../component/hooks/useLitteraTranslation";
 
 type optionProps = {
   option: "q1" | "q2" | "q3" | "q4";

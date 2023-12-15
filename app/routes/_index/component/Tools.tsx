@@ -1,8 +1,8 @@
 import { Link } from "@remix-run/react";
 
 import { motion } from "framer-motion";
+import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import { ModalType, models } from "~/helper/models";
-import uselitteraTranlation from "./hooks/useLitteraTranslation";
 
 type EachProps = {
   model: ModalType;

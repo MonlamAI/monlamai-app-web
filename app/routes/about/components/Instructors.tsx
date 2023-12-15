@@ -1,5 +1,5 @@
-import { instructors } from "~/helper/instructors";
-import uselitteraTranlation from "../hooks/useLitteraTranslation";
+import { instructors } from "~/routes/about/data/instructors";
+import uselitteraTranlation from "../../../component/hooks/useLitteraTranslation";
 
 function Instructor() {
   let { locale } = uselitteraTranlation();

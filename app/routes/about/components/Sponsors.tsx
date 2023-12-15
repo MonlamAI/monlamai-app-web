@@ -1,5 +1,5 @@
-import { sponsors as sponsor_list } from "~/helper/sponsors";
-import uselitteraTranlation from "../hooks/useLitteraTranslation";
+import { sponsors as sponsor_list } from "~/routes/about/data/sponsors";
+import uselitteraTranlation from "../../../component/hooks/useLitteraTranslation";
 function Sponsors() {
   let { locale } = uselitteraTranlation();
   let isEnglish = locale === "en_US";

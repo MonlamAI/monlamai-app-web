@@ -1,7 +1,7 @@
-import { lamas } from "~/helper/lama";
+import { lamas } from "~/routes/about/data/lama";
 import { Blurhash } from "react-blurhash";
 import { useState, useRef, useEffect } from "react";
-import uselitteraTranlation from "../hooks/useLitteraTranslation";
+import uselitteraTranlation from "../../../component/hooks/useLitteraTranslation";
 function Lamas() {
   let { locale } = uselitteraTranlation();
   let isEnglish = locale === "en_US";

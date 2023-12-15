@@ -2,9 +2,9 @@ import { useFetcher } from "@remix-run/react";
 import { Button, Label, TextInput } from "flowbite-react";
 import React from "react";
 import FormWizard from "react-form-wizard-component";
-import TermsAndContitions from "~/component/TermsAndConditions";
-import Questions from "./Questions";
-import uselitteraTranlation from "./hooks/useLitteraTranslation";
+import Questions from "~/routes/steps/component/Questions";
+import TermsAndContitions from "~/routes/steps/component/TermsAndConditions";
+import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 
 function StepWizard() {
   const [organization, setOrganization] = React.useState("");

@@ -15,8 +15,8 @@ import {
   useLoaderData,
   useLocation,
 } from "@remix-run/react";
-import Footer from "./component/Footer";
-import Header from "./component/Header";
+import Footer from "./component/layout/Footer";
+import Header from "./component/layout/Header";
 import globalStyle from "./styles/global.css";
 import tailwindStyle from "./styles/tailwind.css";
 import { LitteraProvider } from "@assembless/react-littera";
@@ -24,7 +24,7 @@ import { getUserSession } from "~/services/session.server";
 import { getUser } from "./modal/user";
 import ErrorMessage from "./component/ErrorMessage";
 import uselitteraTranlation from "./component/hooks/useLitteraTranslation";
-import StepWizard from "./component/StepWizard";
+import StepWizard from "./routes/steps/component/StepWizard";
 export const loader: LoaderFunction = async ({ request }) => {
   let userdata = await getUserSession(request);
   return json(

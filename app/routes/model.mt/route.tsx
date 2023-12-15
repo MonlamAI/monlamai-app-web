@@ -6,7 +6,7 @@ import { FaArrowRightArrowLeft } from "react-icons/fa6";
 import CopyToClipboard from "~/component/CopyToClipboard";
 import { auth } from "~/services/auth.server";
 import ReactionButtons from "~/component/ReactionButtons";
-import EachParagraph from "~/component/EachParagraph";
+import EachParagraph from "~/routes/model.mt/components/EachParagraph";
 import useDebounce from "~/component/hooks/useDebounceState";
 import { motion } from "framer-motion";
 import useLocalStorage from "~/component/hooks/useLocaleStorage";
@@ -16,7 +16,7 @@ import { useDropzone } from "react-dropzone";
 import { readDocxFile, readTextFile } from "~/component/utils/readers";
 import { FaFile } from "react-icons/fa";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
-import DownloadDocument from "~/component/DownloadDocument";
+import DownloadDocument from "~/routes/model.mt/components/DownloadDocument";
 import Speak from "~/component/Speak";
 
 const langLabels = {

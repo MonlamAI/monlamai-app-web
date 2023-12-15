@@ -3,7 +3,10 @@ import { Suspense, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { IoMdDownload } from "react-icons/io";
 import { Button } from "flowbite-react";
-import { downloadDocxFile, downloadTxtFile } from "./utils/download";
+import {
+  downloadDocxFile,
+  downloadTxtFile,
+} from "../../../component/utils/download";
 
 function DownloadDocument({
   source,

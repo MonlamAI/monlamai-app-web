@@ -1,8 +1,8 @@
 import { type LoaderFunction } from "@remix-run/node";
-import Instructor from "~/component/about/Instructors";
-import { EnglishIntro, TibetanIntro } from "~/component/about/Intro";
-import Lamas from "~/component/about/Lama";
-import Sponsors from "~/component/about/Sponsors";
+import Instructor from "~/routes/about/components/Instructors";
+import { EnglishIntro, TibetanIntro } from "~/routes/about/components/Intro";
+import Lamas from "~/routes/about/components/Lama";
+import Sponsors from "~/routes/about/components/Sponsors";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import { auth } from "~/services/auth.server";
 

@@ -1,6 +1,6 @@
 import { type LoaderFunction, redirect, json } from "@remix-run/node";
 import ErrorMessage from "~/component/ErrorMessage";
-import Tools from "~/component/Tools";
+import Tools from "~/routes/_index/component/Tools";
 import { getUserAboutData } from "~/modal/aboutUser";
 import { getUser } from "~/modal/user";
 import { auth } from "~/services/auth.server";

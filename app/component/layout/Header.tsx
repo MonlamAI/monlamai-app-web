@@ -5,8 +5,8 @@ import { HiLogout } from "react-icons/hi";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { RxCross1 } from "react-icons/rx";
 import { motion, AnimatePresence } from "framer-motion";
-import TranslationSwitcher from "./TranslationSwitcher";
-import uselitteraTranlation from "./hooks/useLitteraTranslation";
+import uselitteraTranlation from "../hooks/useLitteraTranslation";
+import TranslationSwitcher from "../TranslationSwitcher";
 function Header() {
   const { user } = useLoaderData();
   const [showMenu, setShowMenu] = useState(false);

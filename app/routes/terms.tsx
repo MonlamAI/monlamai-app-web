@@ -1,4 +1,4 @@
-import TermsAndConditions from "~/component/TermsAndConditions";
+import TermsAndConditions from "~/routes/steps/component/TermsAndConditions";
 
 export default function Index() {
   return (

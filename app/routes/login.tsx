@@ -88,7 +88,7 @@ function login() {
           </div>
           <Link
             className="py-3 text-xs text-gray-400 hover:text-gray-500"
-            to="/tac"
+            to="/terms"
           >
             Terms of use
           </Link>

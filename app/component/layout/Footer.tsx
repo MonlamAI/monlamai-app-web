@@ -3,8 +3,8 @@ import { DarkThemeToggle, Flowbite } from "flowbite-react";
 import { AiFillFacebook } from "react-icons/ai";
 import { AiFillTwitterCircle } from "react-icons/ai";
 import instasvg from "~/styles/instagram.svg";
-import useLocalStorage from "./hooks/useLocaleStorage";
-import uselitteraTranlation from "./hooks/useLitteraTranslation";
+import useLocalStorage from "../hooks/useLocaleStorage";
+import uselitteraTranlation from "../hooks/useLitteraTranslation";
 function Footer() {
   let location = useLocation();
   let [isDarkMode, setIsDarkMode] = useLocalStorage("Darktheme", false);
