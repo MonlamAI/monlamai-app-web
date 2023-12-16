@@ -39,7 +39,7 @@ function Footer() {
 
   return (
     <footer
-      className={` ${!isAboutPage ? "lg:fixed" : ""} bottom-0 w-full`}
+      className={` ${!isAboutPage ? "lg:fixed" : ""} bottom-0 w-full py-5`}
       style={{
         fontFamily: isEnglish ? "Inter" : "monlam",
         lineHeight: "normal",

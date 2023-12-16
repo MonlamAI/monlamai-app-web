@@ -212,7 +212,9 @@ export default function Index() {
                 disabled={false}
                 onClick={handleCopy}
               />
-              <Speak getText={getTextToCopy} text={null} />
+              {sourceText !== "" && (
+                <Speak getText={getTextToCopy} text={null} />
+              )}
             </div>
           </div>
         </Card>
