@@ -127,7 +127,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     try {
       source = await fetchGPTData(prompt);
     } catch (e) {
-      console.log(e);
+      console.log("chatGPT Error", e);
     }
   }
   if (lang === "bo") {
@@ -136,7 +136,6 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
   if (source) {
     let result = translate(source, lang, targetLang);
-
     return defer({
       translation: result,
     });

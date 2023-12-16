@@ -37,22 +37,18 @@ function EachParagraph({
       </div>
     );
   return (
-    <div className="font-monlam text-2xl" style={{ lineHeight: "1.8" }}>
+    <div className="font-monlam text-xl" style={{ lineHeight: "1.8" }}>
       <Suspense fallback={<p>Loading package location...</p>}>
         <Await
           resolve={data?.translation}
           errorElement={<p>Error loading package location!</p>}
         >
           {(res) => {
-            if (res?.error)
+            if (res?.error) {
               return (
-                <div
-                  className="text-red-400  "
-                  onClick={() => setRetry(retry + 1)}
-                >
-                  ཡང་བསྐྱར་མཚོལ་
-                </div>
+                <Retry error={res.error} setRetry={setRetry} retry={retry} />
               );
+            }
             return (
               <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                 {res?.translation}
@@ -66,3 +62,29 @@ function EachParagraph({
 }
 
 export default EachParagraph;
+
+function Retry({
+  setRetry,
+  error,
+  retry,
+}: {
+  retry: any;
+  setRetry: any;
+  error: string | undefined;
+}) {
+  useEffect(() => {
+    let timer;
+    if (error) {
+      if (retry < 2)
+        timer = setTimeout(() => {
+          setRetry(retry + 1);
+          console.log(retry);
+        }, 4000);
+    }
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [error]);
+
+  return <div />;
+}
