@@ -37,7 +37,7 @@ function EachParagraph({
       </div>
     );
   return (
-    <div className="font-monlam text-xl" style={{ lineHeight: "1.8" }}>
+    <div className="font-monlam text-[1.2rem]" style={{ lineHeight: "1.8" }}>
       <Suspense fallback={<p>Loading package location...</p>}>
         <Await
           resolve={data?.translation}
