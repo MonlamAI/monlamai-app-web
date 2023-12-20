@@ -105,30 +105,33 @@ function Header() {
           <Link to="/about" onClick={() => setShowMenu(false)}>
             {translation.aboutUs}
           </Link>
-          <Dropdown
-            label={user?.email}
-            dismissOnClick={false}
-            renderTrigger={() => (
-              <img
-                className="h-8 w-8 rounded-full cursor-pointer"
-                src={user?.picture}
-                title={user?.email}
-                alt={user?.email}
-              />
-            )}
-          >
-            <Dropdown.Header>
-              <span className="block text-sm">{user?.username}</span>
-              <span className="block truncate text-sm font-medium">
-                {user?.email}
-              </span>
-            </Dropdown.Header>
-            <Dropdown.Item>
-              <Form method="post" action="/logout">
-                <button>{translation.logout}</button>
-              </Form>
-            </Dropdown.Item>
-          </Dropdown>
+          <div className="flex gap-4">
+            <TranslationSwitcher />
+            <Dropdown
+              label={user?.email}
+              dismissOnClick={false}
+              renderTrigger={() => (
+                <img
+                  className="h-8 w-8 rounded-full cursor-pointer"
+                  src={user?.picture}
+                  title={user?.email}
+                  alt={user?.email}
+                />
+              )}
+            >
+              <Dropdown.Header>
+                <span className="block text-sm">{user?.username}</span>
+                <span className="block truncate text-sm font-medium">
+                  {user?.email}
+                </span>
+              </Dropdown.Header>
+              <Dropdown.Item>
+                <Form method="post" action="/logout">
+                  <button>{translation.logout}</button>
+                </Form>
+              </Dropdown.Item>
+            </Dropdown>
+          </div>
         </div>
       )}
     </nav>
