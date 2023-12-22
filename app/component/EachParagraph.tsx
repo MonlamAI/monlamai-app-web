@@ -1,6 +1,8 @@
 import { Await, useFetcher } from "@remix-run/react";
 import { Suspense, useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { toast } from "react-toastify";
+
 function EachParagraph({
   source,
   lang,
@@ -19,11 +21,15 @@ function EachParagraph({
     }
   }, [source, lang, retry]);
   let data = fetcher?.data;
+  let error = data?.error;
   useEffect(() => {
     if (!data) {
       setIsLoading(true);
     } else {
       setIsLoading(false);
+      if (error) {
+        toast(error + " Try after sometime!");
+      }
     }
   }, [data]);
 

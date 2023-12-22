@@ -135,9 +135,14 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   }
 
   if (source) {
-    let result = translate(source, lang, targetLang);
-    return defer({
-      translation: result,
-    });
+    try {
+      let result = translate(source, lang, targetLang);
+      return defer({
+        translation: result,
+      });
+    } catch (e) {
+      console.log(e);
+      return { error: "API is under maintenance right now " };
+    }
   }
 };
