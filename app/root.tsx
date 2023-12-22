@@ -24,7 +24,8 @@ import { getUserSession } from "~/services/session.server";
 import { getUser } from "./modal/user";
 import ErrorMessage from "./component/ErrorMessage";
 import uselitteraTranlation from "./component/hooks/useLitteraTranslation";
-import StepWizard from "./routes/steps/component/StepWizard";
+import toastStyle from "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 export const loader: LoaderFunction = async ({ request }) => {
   let userdata = await getUserSession(request);
   return json(
@@ -41,6 +42,7 @@ export const headers = ({ loaderHeaders, parentHeaders }: HeadersArgs) => {
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: tailwindStyle },
   { rel: "stylesheet", href: globalStyle },
+  { rel: "stylesheet", href: toastStyle },
   {
     rel: "icon",
     type: "image/png",
@@ -108,6 +110,7 @@ export default function App() {
         </div>
         {user && !isSteps && <Footer />}
       </LitteraProvider>
+      <ToastContainer />
     </Document>
   );
 }
