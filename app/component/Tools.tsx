@@ -45,10 +45,10 @@ function EachModel({ model }: EachProps) {
         >
           {icon}
         </div>
-        <div className="flex flex-col justify-between flex-1 gap-5">
+        <div className="flex flex-col justify-between flex-1 gap-5 text-[1.25rem] md:text-[2.2rem] ">
           <h2
             className=" content-start"
-            style={{ fontSize: locale === "en_US" ? "1.6rem" : "2.3rem" }}
+            style={{ fontSize: locale === "en_US" ? "1em" : "1.6em" }}
           >
             {translation[name]}
           </h2>
