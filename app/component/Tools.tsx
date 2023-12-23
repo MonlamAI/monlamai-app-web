@@ -15,7 +15,7 @@ function Tools() {
       <div className="md:pt-[40px]">
         <div className="text-center max-w-7xl mx-auto">
           <div
-            className=" px-3 mb-20 leading-[normal] text-["1.25rem"] "
+            className=" px-3 mb-20 leading-[normal] text-['1.25rem'] "
           >
             {translation.homepageHeading}
           </div>
