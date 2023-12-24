@@ -15,6 +15,8 @@ import { FaFile } from "react-icons/fa6";
 import ListInput from "~/component/ListInput";
 import { FaRedo } from "react-icons/fa";
 import Speak from "~/component/Speak";
+import { toast } from "react-toastify";
+import ErrorMessage from "~/component/ErrorMessage";
 const charLimit = 2000;
 
 export const meta: MetaFunction = ({ matches }) => {
@@ -218,6 +220,19 @@ export default function Index() {
         </div>
       </main>
     </ToolWraper>
+  );
+}
+
+export function ErrorBoundary({ error }) {
+  useEffect(() => {
+    toast("འདིར་དཀའ་ངལ་འདུག [error with api, try after sometime]", {
+      position: toast.POSITION.BOTTOM_RIGHT,
+    });
+  }, []);
+  return (
+    <>
+      <ErrorMessage error={error} />
+    </>
   );
 }
 

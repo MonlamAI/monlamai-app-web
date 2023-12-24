@@ -133,7 +133,6 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   if (lang === "bo") {
     source = bo_en_tibetan_replaces(source!);
   }
-
   if (source) {
     try {
       let result = translate(source, lang, targetLang);

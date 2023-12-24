@@ -3,7 +3,7 @@ import type {
   LoaderFunction,
   HeadersArgs,
 } from "@remix-run/node";
-import { json } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
 import {
   Links,
   LiveReload,
@@ -26,6 +26,7 @@ import ErrorMessage from "./component/ErrorMessage";
 import uselitteraTranlation from "./component/hooks/useLitteraTranslation";
 import toastStyle from "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import { useEffect } from "react";
 export const loader: LoaderFunction = async ({ request }) => {
   let userdata = await getUserSession(request);
   return json(
@@ -111,14 +112,6 @@ export default function App() {
         {user && !isSteps && <Footer />}
       </LitteraProvider>
       <ToastContainer />
-    </Document>
-  );
-}
-
-export function ErrorBoundary({ error }) {
-  return (
-    <Document>
-      <ErrorMessage error={error} />
     </Document>
   );
 }

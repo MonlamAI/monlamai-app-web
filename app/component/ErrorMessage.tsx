@@ -1,9 +1,16 @@
-import { Link } from "@remix-run/react";
+import { redirect } from "@remix-run/node";
+import { Link, useLocation, useNavigate } from "@remix-run/react";
+import { useEffect } from "react";
+import { toast } from "react-toastify";
 
-function ErrorMessage({ error }: { error: any }) {
+function ErrorMessage(error: any) {
+  const navigate = useNavigate();
+  useEffect(() => {
+    navigate(".", { replace: true });
+  }, []);
   return (
     <>
-      <div className="relative  flex flex-col mt-20 items-center  m-auto w-[90%] md:w-[80%]">
+      {/* <div className="relative  flex flex-col mt-20 items-center  m-auto w-[90%] md:w-[80%]">
         <img
           src="/assets/buddha.png"
           alt="monlam"
@@ -21,7 +28,7 @@ function ErrorMessage({ error }: { error: any }) {
         >
           འདིར་ནོན།
         </Link>
-      </div>
+      </div> */}
     </>
   );
 }

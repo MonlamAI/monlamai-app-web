@@ -10,13 +10,19 @@ type EachProps = {
 
 function Tools() {
   let { translation, locale } = uselitteraTranlation();
+  let isEnglish = locale === "en_US";
   return (
     <main>
       <div className="py-5 md:pt-[40px]">
         <div className="text-center max-w-7xl mx-auto">
           <div
-            className="px-3 mb-10 md:mb-20 leading-[normal] "
-            style={{ fontSize: locale === "en_US" ? "2rem" : "2.7rem" }}
+            className={`
+            px-3 mb-20 mt-10 leading-[normal] ${
+              !isEnglish
+                ? "text-[2.25em] md:text-[3rem]"
+                : "text-[1.25rem] md:text-[2.4rem]"
+            }
+          `}
           >
             {translation.homepageHeading}
           </div>
@@ -38,18 +44,18 @@ function EachModel({ model }: EachProps) {
     <Link prefetch="intent" to={"/model/" + link}>
       <motion.div
         whileHover={{ scale: 0.95 }}
-        className="rounded-lg flex flex-col border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800 shadow-lg hover:border-blue-600 hover:border-2 h-full gap-5 p-6 cursor-pointer"
+        className="rounded-lg flex flex-col border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800 shadow-lg hover:border-blue-600 hover:border-2 h-full gap-1 md:gap-5 p-2 md:p-6 cursor-pointer"
       >
         <div
           style={{ fontSize: 35, color: color }}
-          className="flex justify-center dark:mix-blend-exclusion dark:rounded-lg h-32"
+          className="flex justify-center dark:mix-blend-exclusion dark:rounded-lg h-20 md:h-32"
         >
           {icon}
         </div>
-        <div className="flex flex-col justify-between flex-1 gap-5">
+        <div className="flex flex-col justify-between flex-1 gap-5 text-[1.25rem] md:text-[2.2rem] ">
           <h2
             className=" content-start"
-            style={{ fontSize: locale === "en_US" ? "1.6rem" : "2.3rem" }}
+            style={{ fontSize: locale === "en_US" ? "1rem" : "1.6rem" }}
           >
             {translation[name]}
           </h2>
