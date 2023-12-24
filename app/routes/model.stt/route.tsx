@@ -17,6 +17,7 @@ import { downloadTxtFile } from "~/component/utils/download";
 import ListInput from "~/component/ListInput";
 import { FaRedo } from "react-icons/fa";
 import Speak from "~/component/Speak";
+import { toast } from "react-toastify";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -301,6 +302,11 @@ export default function Index() {
 }
 
 export function ErrorBoundary({ error }) {
+  useEffect(() => {
+    toast("འདིར་དཀའ་ངལ་འདུག [error with api, try after sometime]", {
+      position: toast.POSITION.BOTTOM_RIGHT,
+    });
+  }, []);
   return (
     <>
       <ErrorMessage error={error} />
