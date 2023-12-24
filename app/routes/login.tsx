@@ -65,8 +65,12 @@ function login() {
               <motion.div whileHover={{ scale: 1.1 }}>
                 <Button type="submit">
                   <span
-                    className=" leading-[normal] relative"
-                    style={{ top: locale === "en_US" ? "-2px" : "-4px" }}
+                    className={` leading-[normal] relative 
+                    ${
+                      locale === "en_US"
+                        ? "font-poppins text-[1.4rem]"
+                        : "font-monlam text-[1.2rem]"
+                    }`}
                   >
                     {translation.login}
                   </span>
