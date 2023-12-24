@@ -16,6 +16,7 @@ import { useDropzone } from "react-dropzone";
 import { readDocxFile, readTextFile } from "~/component/utils/readers";
 import { FaFile } from "react-icons/fa";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
+import { toast } from "react-toastify";
 
 const langLabels = {
   bo: "བོད་སྐད།",
@@ -208,6 +209,12 @@ export default function Index() {
 }
 
 export function ErrorBoundary({ error }) {
+  useEffect(() => {
+    toast("འདིར་དཀའ་ངལ་འདུག [error with api, try after sometime]", {
+      position: toast.POSITION.BOTTOM_RIGHT,
+    });
+  }, []);
+
   return (
     <>
       <ErrorMessage error={error} />

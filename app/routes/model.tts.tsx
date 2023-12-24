@@ -20,6 +20,7 @@ import { readDocxFile, readTextFile } from "~/component/utils/readers";
 import { useDropzone } from "react-dropzone";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import { FaFile } from "react-icons/fa6";
+import { toast } from "react-toastify";
 const charLimit = 2000;
 export async function loader({ request }: LoaderFunctionArgs) {
   let userdata = await auth.isAuthenticated(request, {
@@ -220,6 +221,11 @@ export default function Index() {
 }
 
 export function ErrorBoundary({ error }) {
+  useEffect(() => {
+    toast("འདིར་དཀའ་ངལ་འདུག [error with api, try after sometime]", {
+      position: toast.POSITION.BOTTOM_RIGHT,
+    });
+  }, []);
   return (
     <>
       <ErrorMessage error={error} />

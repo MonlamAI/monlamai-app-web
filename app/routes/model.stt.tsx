@@ -1,6 +1,6 @@
 import { Button, Card, Label, Spinner } from "flowbite-react";
 import { BsFillStopFill, BsFillMicFill } from "react-icons/bs";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { type LoaderFunction, ActionFunction, json } from "@remix-run/node";
 import { MetaFunction, useFetcher } from "@remix-run/react";
 import { LiveAudioVisualizer } from "react-audio-visualize";
@@ -11,6 +11,7 @@ import { getBrowser } from "~/component/utils/getBrowserDetail";
 import ErrorMessage from "~/component/ErrorMessage";
 import ToolWraper from "~/component/ToolWraper";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
+import { toast } from "react-toastify";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -285,6 +286,11 @@ export default function Index() {
 }
 
 export function ErrorBoundary({ error }) {
+  useEffect(() => {
+    toast("འདིར་དཀའ་ངལ་འདུག [error with api, try after sometime]", {
+      position: toast.POSITION.BOTTOM_RIGHT,
+    });
+  }, []);
   return (
     <>
       <ErrorMessage error={error} />
