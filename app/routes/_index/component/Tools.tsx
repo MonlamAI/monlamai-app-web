@@ -16,17 +16,15 @@ function Tools() {
       <div className="py-5 md:pt-[40px]">
         <div className="text-center max-w-7xl mx-auto">
           <div
-            className={`
-            px-3 mb-20 mt-10 leading-[normal] ${
-              !isEnglish
-                ? "text-[2.25em] md:text-[3rem]"
-                : "text-[1.25rem] md:text-[2.4rem]"
+            className={` 
+            px-3 mb-20 mt-10 leading-[normal] text-[1.25rem] ${
+              !isEnglish ? "font-monlam md:text-[2rem]" : " md:text-[2.4rem]"
             }
           `}
           >
             {translation.homepageHeading}
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mx-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mx-10 mb-7">
             {models.map((model, index) => (
               <EachModel key={model.name} model={model} />
             ))}
@@ -40,6 +38,7 @@ function Tools() {
 function EachModel({ model }: EachProps) {
   const { name, desc, icon, link, color } = model;
   const { translation, locale } = uselitteraTranlation();
+  const isEnglish = locale === "en_US";
   return (
     <Link prefetch="intent" to={"/model/" + link}>
       <motion.div
@@ -52,16 +51,21 @@ function EachModel({ model }: EachProps) {
         >
           {icon}
         </div>
-        <div className="flex flex-col justify-between flex-1 gap-5 text-[1.25rem] md:text-[2.2rem] ">
+        <div
+          className={`flex flex-col justify-between flex-1 gap-5 text-[1.25rem] md:text-[2.2rem] 
+        ${isEnglish ? "" : "font-monlam"}`}
+        >
           <h2
-            className=" content-start"
-            style={{ fontSize: locale === "en_US" ? "1rem" : "1.6rem" }}
+            className={`${
+              isEnglish ? "text-[1rem]" : "text-[1.2rem]"
+            } md:text-[1.4rem]`}
           >
             {translation[name]}
           </h2>
           <p
-            className="text-gray-400 "
-            style={{ fontSize: locale === "en_US" ? "1rem" : "1.2rem" }}
+            className={`text-gray-400 ${
+              isEnglish ? "text-[0.7rem]" : "text-[0.7rem]"
+            } md:text-[0.7rem]`}
           >
             {translation[desc]}
           </p>
