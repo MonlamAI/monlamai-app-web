@@ -1,7 +1,8 @@
 import { useLocation } from "@remix-run/react";
 import { AiFillFacebook } from "react-icons/ai";
-import { AiFillTwitterCircle } from "react-icons/ai";
 import instasvg from "~/styles/instagram.svg";
+import twittersvg from "~/styles/twitter.svg";
+
 import uselitteraTranlation from "../hooks/useLitteraTranslation";
 function Footer() {
   let location = useLocation();
@@ -19,13 +20,15 @@ function Footer() {
     {
       name: "instagram",
       link: "https://www.instagram.com/monlam_ai/",
-      icon: <img src={instasvg} height={45} width={45} />,
+      icon: <img src={instasvg} style={{ height: 26, objectFit: "contain" }} />,
       color: "#e4405f",
     },
     {
       name: "twitter",
       link: "https://twitter.com/Monlam_AI",
-      icon: <AiFillTwitterCircle />,
+      icon: (
+        <img src={twittersvg} style={{ height: 26, objectFit: "contain" }} />
+      ),
       color: "#55acee",
     },
   ];
