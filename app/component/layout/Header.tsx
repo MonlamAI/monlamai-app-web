@@ -1,6 +1,6 @@
 import { Form, Link, NavLink, useLoaderData } from "@remix-run/react";
 import { DarkThemeToggle, Dropdown, Flowbite } from "flowbite-react";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { HiLogout } from "react-icons/hi";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { RxCross1 } from "react-icons/rx";
@@ -8,11 +8,20 @@ import { motion, AnimatePresence } from "framer-motion";
 import uselitteraTranlation from "../hooks/useLitteraTranslation";
 import TranslationSwitcher from "../TranslationSwitcher";
 import { IconContext } from "react-icons";
+import useLocalStorage from "../hooks/useLocaleStorage";
+import { IoMdGlobe } from "react-icons/io";
+
 function Header() {
   const { user } = useLoaderData();
+  const togglerRef = useRef(null);
   const [showMenu, setShowMenu] = useState(false);
+  let [isDarkMode, setIsDarkMode] = useLocalStorage("Darktheme", false);
   const { translation, locale } = uselitteraTranlation();
   let isEnglish = locale === "en_US";
+
+  function handleClick() {
+    setIsDarkMode(!isDarkMode);
+  }
 
   return (
     <nav
@@ -59,9 +68,17 @@ function Header() {
             >
               {translation.aboutUs}
             </NavLink>
+            <NavLink
+              to="/jobs"
+              className={({ isActive, isPending }) =>
+                isActive ? "text-gray-300" : ""
+              }
+              prefetch="intent"
+            >
+              {translation.jobs}
+            </NavLink>
           </div>
           <div className="flex items-center gap-4 mr-7">
-            <TranslationSwitcher />
             <Dropdown
               label={user.email}
               dismissOnClick={false}
@@ -87,6 +104,20 @@ function Header() {
                       {user.email}
                     </span>
                   </Dropdown.Header>
+                  <Dropdown.Item icon={IoMdGlobe}>
+                    <TranslationSwitcher />
+                  </Dropdown.Item>
+                  <hr />
+                  <div
+                    onClick={handleClick}
+                    className="flex flex-1 gap-2 p-1 text-center items-center  hover:bg-gray-100 dark:hover:bg-slate-600 cursor-pointer"
+                  >
+                    <Flowbite>
+                      <DarkThemeToggle className="w-full p-0 justify-center text-center flex "></DarkThemeToggle>
+                    </Flowbite>
+                  </div>
+                  <hr />
+
                   <Dropdown.Item icon={HiLogout}>
                     <Form method="post" action="/logout">
                       <button>{translation.logout}</button>
@@ -109,7 +140,6 @@ function Header() {
             {translation.aboutUs}
           </Link>
           <div className="flex gap-4">
-            <TranslationSwitcher />
             <Dropdown
               label={user?.email}
               dismissOnClick={false}
@@ -128,6 +158,9 @@ function Header() {
                   {user?.email}
                 </span>
               </Dropdown.Header>
+              <Dropdown.Item icon={IoMdGlobe}>
+                <TranslationSwitcher />
+              </Dropdown.Item>
               <Dropdown.Item>
                 <Form method="post" action="/logout">
                   <button>{translation.logout}</button>

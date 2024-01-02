@@ -1,13 +1,10 @@
 import { useLocation } from "@remix-run/react";
-import { DarkThemeToggle, Flowbite } from "flowbite-react";
 import { AiFillFacebook } from "react-icons/ai";
 import { AiFillTwitterCircle } from "react-icons/ai";
 import instasvg from "~/styles/instagram.svg";
-import useLocalStorage from "../hooks/useLocaleStorage";
 import uselitteraTranlation from "../hooks/useLitteraTranslation";
 function Footer() {
   let location = useLocation();
-  let [isDarkMode, setIsDarkMode] = useLocalStorage("Darktheme", false);
   let isAboutPage = location.pathname.includes("about");
   const { translation, locale } = uselitteraTranlation();
   let isEnglish = locale === "en_US";
@@ -32,10 +29,6 @@ function Footer() {
       color: "#55acee",
     },
   ];
-
-  function handleClick() {
-    setIsDarkMode(!isDarkMode);
-  }
 
   return (
     <footer
@@ -68,11 +61,6 @@ function Footer() {
               </a>
             );
           })}
-          <div onClick={handleClick}>
-            <Flowbite>
-              <DarkThemeToggle />
-            </Flowbite>
-          </div>
         </div>
       </div>
     </footer>

@@ -190,111 +190,108 @@ export default function Index() {
     <ToolWraper title="STT">
       <main className="mx-auto w-11/12 md:w-4/5">
         <div className="flex flex-col lg:flex-row  gap-3">
-          {!text ? (
-            <Card className="w-full flex   h-[60vh]">
-              <div className="flex flex-col gap-2 flex-1 ">
-                <ListInput
-                  selectedTool={selectedTool}
-                  setSelectedTool={setSelectedTool}
-                  options={["Recording", "File"]}
-                />
-                {selectedTool === "Recording" && (
-                  <div className="flex flex-col items-center gap-5 flex-1 justify-center min-h-[40dvh]">
-                    {recording &&
-                      mediaRecorder.current &&
-                      getBrowser() !== "Safari" && (
-                        <LiveAudioVisualizer
-                          mediaRecorder={mediaRecorder.current}
-                          width={200}
-                          height={75}
-                        />
-                      )}
-                    <Button size="xl" onClick={toggleRecording}>
-                      {recording ? <BsFillStopFill /> : <BsFillMicFill />}
-                    </Button>
-                    {audioURL && (
-                      <audio controls>
-                        <source src={audioURL} type="audio/mpeg"></source>
-                        <source src={audioURL} type="audio/ogg"></source>
-                      </audio>
+          <Card className="w-full flex   h-[60vh]">
+            <div className="flex flex-col gap-2 flex-1 ">
+              <ListInput
+                selectedTool={selectedTool}
+                setSelectedTool={setSelectedTool}
+                options={["Recording", "File"]}
+              />
+              {selectedTool === "Recording" && (
+                <div className="flex flex-col items-center gap-5 flex-1 justify-center min-h-[40dvh]">
+                  {recording &&
+                    mediaRecorder.current &&
+                    getBrowser() !== "Safari" && (
+                      <LiveAudioVisualizer
+                        mediaRecorder={mediaRecorder.current}
+                        width={200}
+                        height={75}
+                      />
                     )}
-                  </div>
-                )}
-                {selectedTool === "File" && (
-                  <HandleAudioFile handleFileChange={handleFileChange} />
-                )}
-
-                <div className="flex flex-end h-10">
-                  <Button
-                    onClick={handleSubmit}
-                    disabled={isDisabled}
-                    isProcessing={fetcher.state !== "idle"}
-                  >
-                    {translation.submit}
+                  <Button size="xl" onClick={toggleRecording}>
+                    {recording ? <BsFillStopFill /> : <BsFillMicFill />}
                   </Button>
-                </div>
-              </div>
-            </Card>
-          ) : (
-            <Card className="w-full  h-[60vh] flex">
-              {text && (
-                <div className="flex justify-end">
-                  <Speak text={text} />
+                  {audioURL && (
+                    <audio controls>
+                      <source src={audioURL} type="audio/mpeg"></source>
+                      <source src={audioURL} type="audio/ogg"></source>
+                    </audio>
+                  )}
                 </div>
               )}
-              <div className="w-full h-[25vh] lg:h-[50vh] p-3 text-black bg-slate-100 dark:text-gray-200 dark:bg-slate-700 rounded-lg overflow-auto">
-                {isLoading ? (
-                  <div className="h-full flex justify-center items-center">
-                    <Spinner />
-                  </div>
-                ) : (
-                  text && (
-                    <p
-                      className="font-monlam text-2xl"
-                      style={{ lineHeight: "1.8" }}
-                    >
-                      {text}
-                    </p>
-                  )
-                )}
-                {errorMessage && (
-                  <div className="text-red-400">{errorMessage}</div>
-                )}
-              </div>
-              <div className="flex justify-between">
-                <div
-                  className={
-                    !likefetcher.data?.liked ? "text-red-400" : "text-green-400"
-                  }
+              {selectedTool === "File" && (
+                <HandleAudioFile handleFileChange={handleFileChange} />
+              )}
+
+              <div className="flex flex-end h-10">
+                <Button
+                  onClick={handleSubmit}
+                  disabled={isDisabled}
+                  isProcessing={fetcher.state !== "idle"}
                 >
-                  {likefetcher?.data?.message}
-                </div>
-                <div className="flex gap-2">
-                  <ReactionButtons
-                    fetcher={likefetcher}
-                    output={text}
-                    sourceText={audioBase64 ? audioBase64 : null}
-                    model="stt"
-                  />
-                  <CopyToClipboard textToCopy={text} disabled={!text} />
-                  <Button
-                    disabled={!text || text === ""}
-                    onClick={() => downloadTxtFile(text)}
-                  >
-                    <FaDownload />
-                  </Button>
-                  <Button
-                    color="gray"
-                    className="text-slate-500"
-                    onClick={handleReset}
-                    title={translation.reset}
-                  >
-                    <FaRedo size={20} color="gray" />
-                  </Button>
-                </div>
+                  {translation.submit}
+                </Button>
               </div>
-            </Card>
-          )}
+            </div>
+          </Card>
+          <Card className="w-full  h-[60vh] flex">
+            {text && (
+              <div className="flex justify-end">
+                <Speak text={text} />
+              </div>
+            )}
+            <div className="w-full h-[25vh] lg:h-[50vh] p-3 text-black bg-slate-100 dark:text-gray-200 dark:bg-slate-700 rounded-lg overflow-auto">
+              {isLoading ? (
+                <div className="h-full flex justify-center items-center">
+                  <Spinner />
+                </div>
+              ) : (
+                text && (
+                  <p
+                    className="font-monlam text-2xl"
+                    style={{ lineHeight: "1.8" }}
+                  >
+                    {text}
+                  </p>
+                )
+              )}
+              {errorMessage && (
+                <div className="text-red-400">{errorMessage}</div>
+              )}
+            </div>
+            <div className="flex justify-between">
+              <div
+                className={
+                  !likefetcher.data?.liked ? "text-red-400" : "text-green-400"
+                }
+              >
+                {likefetcher?.data?.message}
+              </div>
+              <div className="flex gap-2">
+                <ReactionButtons
+                  fetcher={likefetcher}
+                  output={text}
+                  sourceText={audioBase64 ? audioBase64 : null}
+                  model="stt"
+                />
+                <CopyToClipboard textToCopy={text} disabled={!text} />
+                <Button
+                  disabled={!text || text === ""}
+                  onClick={() => downloadTxtFile(text)}
+                >
+                  <FaDownload />
+                </Button>
+                <Button
+                  color="gray"
+                  className="text-slate-500"
+                  onClick={handleReset}
+                  title={translation.reset}
+                >
+                  <FaRedo size={20} color="gray" />
+                </Button>
+              </div>
+            </div>
+          </Card>
         </div>
       </main>
     </ToolWraper>

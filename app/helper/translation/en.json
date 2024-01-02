@@ -29,5 +29,6 @@
   "TTS_description": "Have our AI speak Tibetan text",
   "OCR_description": "Convert an image into text with AI",
   "reset": "Reset",
-  "submit": "Submit"
+  "submit": "Submit",
+  "jobs": "Jobs"
 }
