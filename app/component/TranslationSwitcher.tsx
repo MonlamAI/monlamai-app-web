@@ -32,7 +32,7 @@ function TranslationSwitcher() {
         <span className="font-monlam rounded-full ">བོདཡིག</span>
       )}
       {current === "bo_TI" && (
-        <span className="font-inter rounded-full ">English</span>
+        <span className="font-Inter rounded-full ">English</span>
       )}
     </div>
   );

@@ -99,8 +99,7 @@ function Header() {
                   exit={{ opacity: 0 }}
                 >
                   <Dropdown.Header>
-                    <span className="block text-sm">{user.username}</span>
-                    <span className="block truncate text-xs font-medium">
+                    <span className="block truncate text-xs font-medium font-Inter">
                       {user.email}
                     </span>
                   </Dropdown.Header>
@@ -120,7 +119,11 @@ function Header() {
 
                   <Dropdown.Item icon={HiLogout}>
                     <Form method="post" action="/logout">
-                      <button>{translation.logout}</button>
+                      <button
+                        className={isEnglish ? "font-Inter" : "font-monlam"}
+                      >
+                        {translation.logout}
+                      </button>
                     </Form>
                   </Dropdown.Item>
                 </motion.div>

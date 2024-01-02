@@ -20,7 +20,7 @@ function Footer() {
     {
       name: "instagram",
       link: "https://www.instagram.com/monlam_ai/",
-      icon: <img src={instasvg} style={{ height: 26, objectFit: "contain" }} />,
+      icon: <img src={instasvg} style={{ height: 34, objectFit: "contain" }} />,
       color: "#e4405f",
     },
     {
