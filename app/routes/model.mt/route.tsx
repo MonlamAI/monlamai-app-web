@@ -171,7 +171,7 @@ export default function Index() {
               className={`text-lg ${
                 targetLang === "bo"
                   ? "tracking-wide leading-loose"
-                  : "font-Inter"
+                  : "font-poppins"
               }`}
             >
               {selectedTool === "text" && (

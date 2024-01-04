@@ -53,7 +53,7 @@ export default function Index() {
 
       <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
 
-      <div className="space-y-8 [&>*]:font-Inter">
+      <div className="space-y-8 [&>*]:font-poppins">
         <h1 className="text-3xl font-semibold text-center text-gray-700">
           Terms and Conditions
         </h1>

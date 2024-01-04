@@ -95,7 +95,7 @@ export default function Index() {
                 content="Please ensure that the image is of high quality and that it includes a lengthy text that is easily readable."
                 animation="duration-500"
                 placement="left"
-                className="w-[200px] md:w-[400px] font-inter text-xs"
+                className="w-[200px] md:w-[400px] font-poppins text-xs"
                 style="light"
               >
                 <BiQuestionMark />
