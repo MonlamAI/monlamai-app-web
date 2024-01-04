@@ -26,6 +26,7 @@ const langLabels = {
 };
 
 const charLimit = 2000;
+const MAX_SIZE_SUPPORT = 20;
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -46,7 +47,7 @@ export default function Index() {
   const [sourceText, setSourceText] = useState("");
   const [isRotated, setIsRotated] = useState(false);
   const [fileType, setFileType] = useState<"txt" | "docx" | null>(null);
-  const [selectedTool, setSelectedTool] = useLocalStorage<"text" | "document">(
+  const [selectedTool, setSelectedTool] = useLocalStorage(
     "mt_selected_input",
     "text"
   );
@@ -97,9 +98,9 @@ export default function Index() {
 
   return (
     <ToolWraper title="MT">
-      <div className="flex justify-between items-center">
+      <div className="flex justify-center items-center gap-2">
         <div
-          className={`inline-block w-32 text-lg text-gray-500 dark:text-gray-300 ${
+          className={`inline-block text-lg text-gray-500 dark:text-gray-300 ${
             sourceLang == "en" && "font-poppins text-xl"
           } ${sourceLang == "bo" && "text-lg leading-loose font-monlam"}`}
         >
@@ -107,7 +108,7 @@ export default function Index() {
         </div>
 
         <motion.button
-          className="group flex items-center justify-center p-0.5 text-center font-medium relative focus:z-10 focus:outline-none text-white bg-cyan-700 border border-transparent enabled:hover:bg-cyan-800 focus:ring-cyan-300 dark:bg-cyan-600 dark:enabled:hover:bg-cyan-700 dark:focus:ring-cyan-800 rounded-full focus:ring-2 py-1 px-3"
+          className="group flex items-center justify-center text-center font-medium relative focus:z-10 focus:outline-none text-white bg-primary border border-transparent enabled:hover:bg-primary-hover focus:ring-primary dark:bg-primary dark:enabled:hover:bg-primary-hover dark:focus:ring-primary rounded-full focus:ring-2 px-2"
           onClick={handleLangSwitch}
           initial={{ rotate: 0 }}
           animate={{ rotate: isRotated ? 180 : 0 }}
@@ -117,7 +118,7 @@ export default function Index() {
         </motion.button>
 
         <div
-          className={`inline-block w-32 text-lg text-right text-gray-500 dark:text-gray-300
+          className={`inline-block text-lg text-right text-gray-500 dark:text-gray-300
           ${sourceLang != "en" && "font-poppins text-xl"} ${
             sourceLang != "bo" && "text-lg leading-loose font-monlam"
           }`}
@@ -155,10 +156,14 @@ export default function Index() {
           >
             {translation.reset}
           </Button>
-          <div className="md:mt-5 flex justify-between items-end">
-            {sourceLang && (
+          <div className="md:mt-2 md:mb-3 flex justify-between items-end">
+            {selectedTool === "text" ? (
               <div className="text-gray-400 text-xs">
                 {charCount} / {charLimit}
+              </div>
+            ) : (
+              <div className="text-gray-400 text-xs">
+                max size: {MAX_SIZE_SUPPORT}KB
               </div>
             )}
           </div>
@@ -242,11 +247,13 @@ export function ErrorBoundary({ error }) {
 }
 
 function TextComponent({ sourceText, setSourceText, sourceLang }) {
+  let { translation, locale } = uselitteraTranlation();
+  let isEnglish = locale === "en_US";
   return (
     <Textarea
       name="sourceText"
-      placeholder="ཡི་གེ་གཏག་རོགས།..."
-      className={`w-full bg-slate-50 min-h-full flex-1 p-2 border-0 focus:outline-none focus:ring-transparent  caret-slate-500 placeholder:text-slate-300 placeholder:font-monlam placeholder:text-lg ${
+      placeholder={!isEnglish ? "ཡི་གེ་གཏག་རོགས།..." : "Enter text here..."}
+      className={`w-full resize-none bg-slate-50 min-h-full flex-1 p-2 border-0 focus:outline-none focus:ring-transparent  caret-slate-500 placeholder:text-slate-300 placeholder:font-monlam placeholder:text-lg ${
         sourceLang == "en" && "font-poppins text-xl"
       } ${sourceLang == "bo" && "text-lg leading-loose font-monlam"}`}
       required
@@ -264,10 +271,16 @@ function TextComponent({ sourceText, setSourceText, sourceLang }) {
 }
 
 function DocumentComponent({ sourceText, setSourceText, setFileType }) {
+  const [myFiles, setMyFiles] = useState([]);
   const onDrop = useCallback((acceptedFiles) => {
     // Do something with the files
+    setMyFiles([...myFiles, ...acceptedFiles]);
     var file = acceptedFiles[0];
     if (!file) {
+      return;
+    }
+    if (file.size > MAX_SIZE_SUPPORT * 1024) {
+      toast("File size is too big.");
       return;
     }
 
@@ -289,27 +302,34 @@ function DocumentComponent({ sourceText, setSourceText, setFileType }) {
       },
       multiple: false,
     });
-  function reset() {
-    acceptedFiles.splice(0, acceptedFiles.length);
+  const reset = (file) => () => {
+    setFileType(null);
+    const newFiles = [...myFiles];
+    newFiles.splice(newFiles.indexOf(file), 1);
+    setMyFiles(newFiles);
     if (sourceText !== "") setSourceText("");
-  }
+  };
+  const removeAll = () => {
+    setMyFiles([]);
+    if (sourceText !== "") setSourceText("");
+  };
   useEffect(() => {
-    if (sourceText === "") reset();
+    if (sourceText === "") removeAll();
   }, [sourceText]);
 
-  if (acceptedFiles.length > 0)
+  if (myFiles.length > 0)
     return (
       <div className="bg-gray-200 p-4 rounded-lg shadow-md flex justify-between items-center">
         <div className="flex gap-4">
           <FaFile size="20px" />
-          {acceptedFiles.map((item) => (
+          {myFiles?.map((item) => (
             <div key={item.name}>
               {item.name}
               <p>{item?.size}</p>
             </div>
           ))}
         </div>
-        <Button size="sm" className="" pill onClick={reset}>
+        <Button size="sm" className="" pill onClick={removeAll}>
           X
         </Button>
       </div>

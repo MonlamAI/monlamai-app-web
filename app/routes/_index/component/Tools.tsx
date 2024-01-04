@@ -43,7 +43,7 @@ function EachModel({ model }: EachProps) {
     <Link prefetch="intent" to={"/model/" + link}>
       <motion.div
         whileHover={{ scale: 0.95 }}
-        className="rounded-lg flex flex-col border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800 shadow-lg hover:border-blue-600 hover:border-2 h-full gap-1 md:gap-5 p-2 md:p-6 cursor-pointer"
+        className="rounded-lg flex md:flex-col border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800 shadow-lg hover:border-blue-600 hover:border-2 h-full gap-1 md:gap-5 p-2 md:p-6 cursor-pointer"
       >
         <div
           style={{ fontSize: 35, color: color }}
@@ -52,8 +52,8 @@ function EachModel({ model }: EachProps) {
           {icon}
         </div>
         <div
-          className={`flex flex-col justify-between flex-1 gap-5 text-[1.25rem] md:text-[2.2rem] 
-        ${isEnglish ? "" : "font-monlam"}`}
+          className={`flex flex-col justify-around flex-1 md:gap-5 text-[1.25rem] md:text-[2.2rem] 
+        ${isEnglish ? "font-poppins" : "font-monlam"}`}
         >
           <h2
             className={`${

@@ -58,7 +58,7 @@ function DownloadDocument({
           if (res?.error) {
             return (
               <div
-                className="text-red-400 text-sm pt-5"
+                className="text-red-400 text-sm pt-5 font-monlam cursor-pointer"
                 onClick={() => setRetry(retry + 1)}
               >
                 ཡང་བསྐྱར་མཚོལ་

@@ -236,7 +236,7 @@ function TextComponent({ sourceText, setSourceText }) {
     <Textarea
       name="sourceText"
       placeholder="ཡི་གེ་གཏག་རོགས།..."
-      className={`w-full bg-slate-50 min-h-full flex-1 p-2 border-0 focus:outline-none focus:ring-transparent  caret-slate-500 placeholder:text-slate-300 placeholder:font-monlam placeholder:text-lg text-lg leading-loose`}
+      className={`w-full resize-none bg-slate-50 min-h-full flex-1 p-2 border-0 focus:outline-none focus:ring-transparent  caret-slate-500 placeholder:text-slate-300 placeholder:font-monlam placeholder:text-lg text-lg leading-loose`}
       required
       value={sourceText}
       onInput={(e) => {

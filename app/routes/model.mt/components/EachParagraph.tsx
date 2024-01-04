@@ -21,7 +21,7 @@ function EachParagraph({
     }
   }, [source, lang, retry]);
   let data = fetcher?.data;
-  let error = data?.error;
+  let error = data?.translation?.error;
   useEffect(() => {
     if (!data) {
       setIsLoading(true);
