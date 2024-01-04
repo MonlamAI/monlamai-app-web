@@ -27,12 +27,12 @@ function TranslationSwitcher() {
   };
 
   return (
-    <div onClick={SwitchLanguage}>
+    <div onClick={SwitchLanguage} className="cursor-pointer">
       {current === "en_US" && (
         <span className="font-monlam rounded-full ">བོདཡིག</span>
       )}
       {current === "bo_TI" && (
-        <span className="font-Inter rounded-full ">English</span>
+        <span className="font-poppins rounded-full ">English</span>
       )}
     </div>
   );

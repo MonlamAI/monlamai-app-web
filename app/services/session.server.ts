@@ -9,6 +9,7 @@ export let sessionStorage = createCookieSessionStorage({
     httpOnly: true, // for security reasons, make this cookie http only
     secrets: ["seecret"], // replace this with an actual secret
     secure: process.env.NODE_ENV === "production", // enable this in prod only
+    expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7), // 7 days
   },
 });
 

@@ -63,7 +63,13 @@ function login() {
           <div className="flex-col justify-center items-center ">
             <Form method="post" action="/auth0">
               <motion.div whileHover={{ scale: 1.1 }}>
-                <Button type="submit">
+                <Button
+                  type="submit"
+                  gradientDuoTone="purpleToBlue"
+                  outline
+                  pill
+                  size="xs"
+                >
                   <span
                     className={` leading-[normal] relative 
                     ${

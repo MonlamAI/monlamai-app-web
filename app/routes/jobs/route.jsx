@@ -30,7 +30,7 @@ function Jobs() {
   return (
     <div className="flex flex-1 md:max-w-6xl m-auto mt-16">
       <div className=" flex-1 p-5">
-        <h3 className="leading-[24px] font-Inter font-medium text-[24px] my-10">
+        <h3 className="leading-[24px] font-poppins font-medium text-[24px] my-10">
           Jobs
         </h3>
         <ol>
@@ -38,24 +38,24 @@ function Jobs() {
             <>
               <li
                 onClick={() => setSelectedJob(index + 1)}
-                className="my-2 flex items-center gap-2 cursor-pointer font-Inter leading-normal"
+                className="my-2 flex items-center gap-2 cursor-pointer font-poppins leading-normal"
                 style={{
                   transition: "all 0.2s ease-in-out",
                   opacity: selectedJob === index + 1 ? 1 : 0.5,
                 }}
               >
-                <span className="flex justify-center items-center bg-blue-400 p-2 h-5 text-white w-5 rounded-full text-sm">
+                <span className="flex justify-center items-center bg-primary p-2 h-5 text-white w-5 rounded-full text-sm">
                   {index + 1}
                 </span>{" "}
                 {job.title}
               </li>
               {selectedJob === index + 1 && (
                 <p className="text-sm text-gray-500 md:hidden">
-                  <h5 className="font-Inter leading-normal">
+                  <h5 className="font-poppins leading-normal">
                     {job.description}
                   </h5>
                   <a href={jobList[selectedJob - 1].link}>
-                    <Button className="bg-blue-400 hover:bg-blue-500 mt-4">
+                    <Button className="bg-primary hover:bg-blue-500 mt-4">
                       Apply
                     </Button>
                   </a>
@@ -67,15 +67,15 @@ function Jobs() {
       </div>
       {selectedJob && (
         <div className="flex-1 hidden md:flex flex-col p-5">
-          <h3 className="leading-[24px] font-Inter font-medium text-[24px] my-10">
+          <h3 className="leading-[24px] font-poppins font-medium text-[24px] my-10">
             Description
           </h3>
-          <h5 className="font-Inter leading-normal">
+          <h5 className="font-poppins leading-normal">
             {jobList[selectedJob - 1].description}
           </h5>
           <p className="mt-5">Skills : {jobList[selectedJob - 1].skill}</p>
           <a href={jobList[selectedJob - 1].link}>
-            <Button className="bg-blue-400 hover:bg-blue-500 mt-10 w-full">
+            <Button className="bg-primary hover:bg-blue-500 mt-10 w-full">
               Apply
             </Button>
           </a>
