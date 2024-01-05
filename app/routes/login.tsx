@@ -59,7 +59,7 @@ function login() {
           <TranslationSwitcher />
         </div>
         <div className="flex grow w-4/5 flex-col gap-8 justify-center items-center">
-          <img src="/assets/buddha.png" alt="monalm" loading="lazy" />
+          <img src="/assets/buddhalogo.png" alt="monalm" loading="lazy" />
           <div className="flex-col justify-center items-center ">
             <Form method="post" action="/auth0">
               <motion.div whileHover={{ scale: 1.1 }}>

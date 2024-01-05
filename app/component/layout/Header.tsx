@@ -1,26 +1,19 @@
-import { Form, Link, NavLink, useLoaderData } from "@remix-run/react";
-import { DarkThemeToggle, Dropdown, Flowbite } from "flowbite-react";
-import { useState, useRef } from "react";
+import { Form, NavLink, useLoaderData } from "@remix-run/react";
+import { Dropdown } from "flowbite-react";
+import { useState } from "react";
 import { HiLogout } from "react-icons/hi";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { RxCross1 } from "react-icons/rx";
 import uselitteraTranlation from "../hooks/useLitteraTranslation";
 import TranslationSwitcher from "../TranslationSwitcher";
 import { IconContext } from "react-icons";
-import useLocalStorage from "../hooks/useLocaleStorage";
 import { IoMdGlobe } from "react-icons/io";
+import DarkModeSwitcher from "../DarkModeSwitcher";
 
 function Header() {
-  const { user } = useLoaderData();
-  const togglerRef = useRef(null);
   const [showMenu, setShowMenu] = useState(false);
-  let [isDarkMode, setIsDarkMode] = useLocalStorage("Darktheme", false);
   const { translation, locale } = uselitteraTranlation();
   let isEnglish = locale === "en_US";
-
-  function handleClick() {
-    setIsDarkMode(!isDarkMode);
-  }
 
   return (
     <nav
@@ -61,7 +54,7 @@ function Header() {
             <NavLink
               to="/about"
               className={({ isActive, isPending }) =>
-                !isActive ? "text-gray-300" : ""
+                !isActive ? "text-gray-500" : ""
               }
               prefetch="intent"
             >
@@ -70,7 +63,7 @@ function Header() {
             <NavLink
               to="/jobs"
               className={({ isActive, isPending }) =>
-                !isActive ? "text-gray-300" : ""
+                !isActive ? "text-gray-500" : ""
               }
               prefetch="intent"
             >
@@ -78,7 +71,7 @@ function Header() {
             </NavLink>
           </div>
           <div className="flex items-center gap-4 mr-7">
-            <Menu handleClick={handleClick} />
+            <Menu />
           </div>
         </div>
       </div>
@@ -110,7 +103,7 @@ function Header() {
             </NavLink>
           </div>
           <div className="flex gap-4">
-            <Menu handleClick={handleClick} />
+            <Menu />
           </div>
         </div>
       )}
@@ -120,14 +113,11 @@ function Header() {
 
 export default Header;
 
-type MenuProps = {
-  handleClick: () => void;
-};
-
-function Menu({ handleClick }: MenuProps) {
+function Menu() {
   const { user } = useLoaderData();
   const { translation, locale } = uselitteraTranlation();
   let isEnglish = locale === "en_US";
+  if (!user) return null;
   return (
     <Dropdown
       label={user.email}
@@ -136,30 +126,20 @@ function Menu({ handleClick }: MenuProps) {
       renderTrigger={() => (
         <img
           className="h-8 w-8 rounded-full cursor-pointer"
-          src={user?.picture}
-          title={user?.email}
-          alt={user?.email}
+          src={user.picture}
+          title={user.email}
+          alt={user.email}
         />
       )}
     >
       <Dropdown.Header>
-        <span className="block text-sm">{user?.username}</span>
-        <span className="block truncate text-sm font-medium">
-          {user?.email}
-        </span>
+        <span className="block truncate text-sm font-medium">{user.email}</span>
       </Dropdown.Header>
       <Dropdown.Item icon={IoMdGlobe}>
         <TranslationSwitcher />
       </Dropdown.Item>
       <hr />
-      <div
-        onClick={handleClick}
-        className="flex flex-1 gap-2 p-1 text-center items-center  hover:bg-gray-100 dark:hover:bg-slate-600 cursor-pointer"
-      >
-        <Flowbite>
-          <DarkThemeToggle className="w-full p-0 justify-center text-center flex "></DarkThemeToggle>
-        </Flowbite>
-      </div>
+      <DarkModeSwitcher />
       <hr />
 
       <Dropdown.Item icon={HiLogout}>
