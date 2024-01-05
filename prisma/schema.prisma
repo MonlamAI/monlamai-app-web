@@ -32,7 +32,7 @@ model AboutUser {
   userId       Int    @unique
 }
 
-model Feedback {
+model Vote {
   id          Int       @id @default(autoincrement())
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
@@ -64,7 +64,7 @@ model Inference {
   input        String
   output       String
   responseTime Int?
-  feedback     Feedback? @relation("feedback")
+  vote     Vote? @relation("feedback")
   edited       String?
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt

@@ -1,8 +1,7 @@
 import { LoaderFunction } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import { Button } from "flowbite-react";
-import React from "react";
-import { FaArrowRightArrowLeft, FaUniregistry } from "react-icons/fa6";
+import { FaUniregistry } from "react-icons/fa6";
 import { auth } from "~/services/auth.server";
 
 export const loader: LoaderFunction = async ({ request, params }) => {
@@ -17,11 +16,6 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     target: "bo",
   };
   return { id, data, user: userdata };
-};
-
-const langLabels = {
-  bo: "བོད་སྐད།",
-  en: "English",
 };
 
 function route() {
