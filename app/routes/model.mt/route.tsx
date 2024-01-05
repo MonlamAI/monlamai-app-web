@@ -1,7 +1,11 @@
-import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
-import { useFetcher } from "@remix-run/react";
+import type {
+  ActionFunction,
+  LoaderFunctionArgs,
+  MetaFunction,
+} from "@remix-run/node";
+import { Await, useFetcher } from "@remix-run/react";
 import { Button, Card, Textarea } from "flowbite-react";
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useRef, useCallback, useEffect, Suspense } from "react";
 import { FaArrowRightArrowLeft } from "react-icons/fa6";
 import CopyToClipboard from "~/component/CopyToClipboard";
 import { auth } from "~/services/auth.server";
@@ -19,6 +23,7 @@ import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import DownloadDocument from "~/routes/model.mt/components/DownloadDocument";
 import Speak from "~/component/Speak";
 import { toast } from "react-toastify";
+import { translate } from "../api.translation";
 
 const langLabels = {
   bo: "བོད་སྐད།",
@@ -33,6 +38,7 @@ export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   parentMeta.shift(1);
   return [{ title: "Monlam | ཡིག་སྒྱུར་རིག་ནུས།" }, ...parentMeta];
 };
+
 export async function loader({ request }: LoaderFunctionArgs) {
   let userdata = await auth.isAuthenticated(request, {
     failureRedirect: "/login",
@@ -42,6 +48,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 export default function Index() {
+  const fetcher = useFetcher();
   const [sourceLang, setSourceLang] = useLocalStorage("inputLang", "en");
   const [targetLang, setTargetLang] = useLocalStorage("outputLang", "bo");
   const [sourceText, setSourceText] = useState("");
@@ -75,10 +82,6 @@ export default function Index() {
   let { translation } = uselitteraTranlation();
   let liked = likefetcher.data?.liked;
   let message = likefetcher.data?.message;
-  let text_array = debouncedSearchTerm
-    ?.split(/\r\n|\r|\n/)
-    .filter((item) => item !== "");
-
   function handleCopy() {
     let textToCopy = getTextToCopy();
     navigator.clipboard.writeText(textToCopy);
@@ -95,6 +98,17 @@ export default function Index() {
   useEffect(() => {
     setSourceText("");
   }, [selectedTool]);
+
+  useEffect(() => {
+    if (debouncedSearchTerm === "") return;
+    let url =
+      "/api/translation?q=" + debouncedSearchTerm + "&lang=" + sourceLang;
+    fetcher.load(url);
+  }, [debouncedSearchTerm]);
+
+  let data = fetcher?.data;
+  let error = data?.translation?.error;
+  let isloading = fetcher.state !== "idle";
 
   return (
     <ToolWraper title="MT">
@@ -179,18 +193,38 @@ export default function Index() {
                   : "font-poppins"
               }`}
             >
-              {selectedTool === "text" && (
+              {selectedTool === "text" && isloading && (
+                <div role="status" className="max-w-sm animate-pulse">
+                  <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4"></div>
+                  <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
+                  <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                  <span className="sr-only">Loading...</span>
+                </div>
+              )}
+              {selectedTool === "text" && !isloading && (
                 <>
-                  {text_array.map((text, index) => {
-                    if (text === "" || text === "\n") return null;
-                    return (
-                      <EachParagraph
-                        key={"returndata_" + index}
-                        lang={sourceLang}
-                        source={text}
-                      />
-                    );
-                  })}
+                  <div
+                    className="font-monlam text-[1.2rem]"
+                    style={{ lineHeight: "1.8" }}
+                  >
+                    <Suspense fallback={<p>Loading package location...</p>}>
+                      <Await
+                        resolve={data?.translation}
+                        errorElement={<p>Error loading package location!</p>}
+                      >
+                        {(res) => {
+                          return (
+                            <motion.p
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                            >
+                              {res?.translation}
+                            </motion.p>
+                          );
+                        }}
+                      </Await>
+                    </Suspense>
+                  </div>
                 </>
               )}
               {selectedTool === "document" && text_array.length !== 0 && (

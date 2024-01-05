@@ -5,10 +5,16 @@ import {
   en_bo_english_replaces,
   en_bo_tibetan_replaces,
 } from "~/component/utils/replace.server";
+import { getUser } from "~/modal/user";
+import { auth } from "~/services/auth.server";
 import { fetchGPTData } from "~/services/fetchGPTData.server";
 type Lang = "bo" | "en";
 
-async function translate(text: String, sourceLang: Lang, targetLang: Lang) {
+export async function translate(
+  text: String,
+  sourceLang: Lang,
+  targetLang: Lang
+) {
   const url =
     "https://rvx0i2sheyjtydoh.us-east-1.aws.endpoints.huggingface.cloud/";
 
@@ -20,6 +26,8 @@ async function translate(text: String, sourceLang: Lang, targetLang: Lang) {
   }
   const data = { inputs: text };
   let response;
+  const startTime = Date.now(); // Start time for measuring response time
+
   try {
     response = await fetch(url, {
       method: "POST",
@@ -38,6 +46,9 @@ async function translate(text: String, sourceLang: Lang, targetLang: Lang) {
 
   const responseData = await response?.json();
   const translation = responseData[0]?.generated_text;
+
+  const responseTime = Date.now() - startTime; // Calculate response time
+
   const disclaimer = "";
 
   return {
@@ -46,10 +57,17 @@ async function translate(text: String, sourceLang: Lang, targetLang: Lang) {
         ? en_bo_tibetan_replaces(translation)
         : bo_en_english_replaces(translation),
     disclaimer,
+    responseTime: `${responseTime} ms`, // Include response time in milliseconds
   };
 }
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
+  let userdata = await auth.isAuthenticated(request, {
+    failureRedirect: "/login",
+  });
+
+  let user = await getUser(userdata?._json.email);
+
   const url = new URL(request.url);
   const lang = url.searchParams.get("lang") as "bo" | "en";
   let source = url.searchParams.get("q");
@@ -69,7 +87,11 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   }
   if (source) {
     try {
-      let result = translate(source, lang, targetLang);
+      let result = await translate(source, lang, targetLang);
+      let responseTime = result.responseTime;
+      console.log("responseTime", responseTime);
+      // if (result.translation) console.log(result.translation);
+      // save the data to the database
       return defer({
         translation: result,
       });
