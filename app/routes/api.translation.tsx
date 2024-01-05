@@ -7,82 +7,25 @@ import {
 } from "~/component/utils/replace.server";
 import { fetchGPTData } from "~/services/fetchGPTData.server";
 type Lang = "bo" | "en";
-function parseWhenEnglishResponse(responseText: string) {
-  let result = responseText.split("\n");
-
-  result = result.map((item) => {
-    let result = item.replaceAll("event: message", "");
-    result = result.replaceAll("data: ", "");
-    result = result.replaceAll(/(^\'|\'$)/g, "");
-    result = result.replaceAll("<unk>", "");
-    return result;
-  });
-  // let finalResult = result.filter((item) => item !== "");
-
-  return result.join("");
-}
-function parseWhenTibetanResponse(responseText: string) {
-  let result = responseText.split("\n");
-
-  result = result.map((item) => {
-    let result = item.replaceAll("event: message", "");
-    result = result.replaceAll("data: ", "");
-    result = result.replaceAll(/(^\'|\'$)/g, "");
-    return result;
-  });
-  // let finalResult = result.filter((item) => item !== "");
-
-  return result.join("");
-}
-
-function parseApiResponse(apiResponse: String) {
-  const translationStartIndex = apiResponse.indexOf("data: ") + 7;
-  const translationEndIndex = apiResponse.indexOf(
-    "<br /><br />",
-    translationStartIndex
-  );
-
-  if (translationStartIndex !== -1 && translationEndIndex !== -1) {
-    const translationOutput = apiResponse.substring(
-      translationStartIndex,
-      translationEndIndex
-    );
-    const disclaimerStartIndex = translationEndIndex + 12; // Skip "<br /><br /><small><i>"
-    const disclaimerEndIndex = apiResponse.indexOf(
-      "</i></small>",
-      disclaimerStartIndex
-    );
-
-    if (disclaimerStartIndex !== -1 && disclaimerEndIndex !== -1) {
-      const disclaimer = apiResponse.substring(
-        disclaimerStartIndex,
-        disclaimerEndIndex
-      );
-      return {
-        translation: translationOutput.trim(),
-        disclaimer: disclaimer.trim(),
-      };
-    }
-  }
-
-  // Handle invalid response format
-  return null;
-}
 
 async function translate(text: String, sourceLang: Lang, targetLang: Lang) {
-  const url = "https://dharmamitra.org/api/translation/";
-  const data = {
-    input_sentence: text,
-    level_of_explanation: 0,
-    language: `${sourceLang}-${targetLang}`,
-    model: "NO",
-  };
+  const url =
+    "https://rvx0i2sheyjtydoh.us-east-1.aws.endpoints.huggingface.cloud/";
+
+  if (sourceLang === "bo") {
+    text = "<2en>" + text;
+  }
+  if (sourceLang === "en") {
+    text = "<2bo>" + text;
+  }
+  const data = { inputs: text };
   let response;
   try {
     response = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: "Bearer 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",
       },
       body: JSON.stringify(data),
     });
@@ -93,24 +36,15 @@ async function translate(text: String, sourceLang: Lang, targetLang: Lang) {
     return { error: `API Error Try after sometime` };
   }
 
-  const responseData = await response?.text();
-  const parsedResponse = parseApiResponse(responseData!);
+  const responseData = await response?.json();
+  const translation = responseData[0]?.generated_text;
+  const disclaimer = "";
 
-  if (!parsedResponse) {
-    return { error: "api responce couldnot be parsed" };
-  }
-  const { translation, disclaimer } = parsedResponse;
-
-  let parseEnglishRes = parseWhenEnglishResponse(translation);
-  let parseTibetanRes = parseWhenTibetanResponse(translation);
-  if (parseEnglishRes.includes("Your request is a little bit too short.")) {
-    return { error: "ནང་འཇུག་ཡི་གེ་ཉུང་དྲག་འདུག" };
-  }
   return {
     translation:
       sourceLang === "en"
-        ? en_bo_tibetan_replaces(parseTibetanRes)
-        : bo_en_english_replaces(parseEnglishRes),
+        ? en_bo_tibetan_replaces(translation)
+        : bo_en_english_replaces(translation),
     disclaimer,
   };
 }
