@@ -45,7 +45,7 @@ function Header() {
             width="40px"
             alt="Monalm AI"
             className="relative -top-1"
-          />{" "}
+          />
           {translation.monlamAI}
         </NavLink>
         <button

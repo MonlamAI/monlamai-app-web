@@ -1,19 +1,26 @@
 import { db } from "~/services/db.server";
 
-export async function getOrCreateUser(session) {
+export async function getOrCreateUser(userdata: any) {
+  let email = userdata?._json.email;
+  let picture = userdata?._json.picture;
+  let username = userdata?._json.given_name;
+
   try {
-    let user = await db.user.findFirst({
-      where: { username: session?.name },
+    let user = await db.user.upsert({
+      where: {
+        email,
+      },
+      create: {
+        picture,
+        username,
+        email,
+      },
+      update: {
+        picture,
+        username,
+        email,
+      },
     });
-    if (!user) {
-      user = await db.user.create({
-        data: {
-          username: session?.name,
-          email: session?.email,
-          picture: session?.picture,
-        },
-      });
-    }
     return user;
   } catch (e) {
     throw new Error(e + "user not found");

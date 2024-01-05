@@ -87,7 +87,6 @@ export default function Index() {
     setSourceText("");
   }, [selectedTool]);
 
-  let charCount = sourceText?.length;
   let likeFetcher = useFetcher();
   useEffect(() => {
     if (audioRef.current && !setting.current && data) {
@@ -144,9 +143,14 @@ export default function Index() {
                 )}
               </div>
               <div className="flex justify-between items-center">
-                <div className="text-gray-400 text-xs">
-                  {charCount} / {charLimit}
-                </div>
+                <Button
+                  type="reset"
+                  form="ttsForm"
+                  onClick={handleReset}
+                  disabled={!sourceText || sourceText === ""}
+                >
+                  {translation.reset}
+                </Button>
                 <Button
                   type="submit"
                   form="ttsForm"
@@ -232,22 +236,29 @@ export function ErrorBoundary({ error }) {
 }
 
 function TextComponent({ sourceText, setSourceText }) {
+  let charCount = sourceText?.length;
+
   return (
-    <Textarea
-      name="sourceText"
-      placeholder="ཡི་གེ་གཏག་རོགས།..."
-      className={`w-full resize-none bg-slate-50 min-h-full flex-1 p-2 border-0 focus:outline-none focus:ring-transparent  caret-slate-500 placeholder:text-slate-300 placeholder:font-monlam placeholder:text-lg text-lg leading-loose`}
-      required
-      value={sourceText}
-      onInput={(e) => {
-        setSourceText((prev) => {
-          let value = e.target.value;
-          if (value?.length <= charLimit) return value;
-          return prev;
-        });
-      }}
-      autoFocus
-    />
+    <div className=" min-h-full flex-1 bg-slate-50 caret-slate-500">
+      <Textarea
+        name="sourceText"
+        placeholder="ཡི་གེ་གཏག་རོགས།..."
+        className={`w-full resize-none h-full  p-2 border-0   placeholder:text-slate-300 placeholder:font-monlam placeholder:text-lg text-lg leading-loose`}
+        required
+        value={sourceText}
+        onInput={(e) => {
+          setSourceText((prev) => {
+            let value = e.target.value;
+            if (value?.length <= charLimit) return value;
+            return prev;
+          });
+        }}
+        autoFocus
+      />
+      <div className="text-gray-400 text-xs">
+        {charCount} / {charLimit}
+      </div>
+    </div>
   );
 }
 
