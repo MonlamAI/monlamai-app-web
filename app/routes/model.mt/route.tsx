@@ -227,7 +227,7 @@ export default function Index() {
                   </div>
                 </>
               )}
-              {selectedTool === "document" && text_array.length !== 0 && (
+              {selectedTool === "document" && (
                 <DownloadDocument
                   source={sourceText}
                   lang={sourceLang}
