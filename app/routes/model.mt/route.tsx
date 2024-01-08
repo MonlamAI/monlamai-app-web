@@ -24,6 +24,7 @@ import DownloadDocument from "~/routes/model.mt/components/DownloadDocument";
 import Speak from "~/component/Speak";
 import { toast } from "react-toastify";
 import { translate } from "../api.translation";
+import ShareLink from "~/component/ShareLink";
 
 const langLabels = {
   bo: "བོད་སྐད།",
@@ -248,12 +249,14 @@ export default function Index() {
                 model="mt"
               />
               <CopyToClipboard
-                textToCopy={""}
-                disabled={false}
+                textToCopy={getTextToCopy()}
                 onClick={handleCopy}
               />
-              {sourceText !== "" && (
-                <Speak getText={getTextToCopy} text={null} />
+              {getTextToCopy() !== "" && (
+                <>
+                  <Speak getText={getTextToCopy} text={null} />
+                  <ShareLink link={""} />
+                </>
               )}
             </div>
           </div>

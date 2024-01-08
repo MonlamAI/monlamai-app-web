@@ -1,20 +1,16 @@
 import { Button } from "flowbite-react";
 import { useEffect, useState } from "react";
-import { FaRegCopy } from "react-icons/fa6";
+import { LuCopyCheck } from "react-icons/lu";
+import { LuCopy } from "react-icons/lu";
 
 let timer: any;
 
 type CopyToClipboardProps = {
   textToCopy: string;
-  disabled: boolean;
   onClick?: () => void;
 };
 
-const CopyToClipboard = ({
-  textToCopy,
-  disabled,
-  onClick,
-}: CopyToClipboardProps) => {
+const CopyToClipboard = ({ textToCopy, onClick }: CopyToClipboardProps) => {
   const [isCopied, setIsCopied] = useState(false);
 
   useEffect(() => {
@@ -42,13 +38,13 @@ const CopyToClipboard = ({
       color="white"
       id="copyBtn"
       onClick={handleCopy}
-      disabled={disabled}
+      disabled={textToCopy === ""}
       title="copy"
     >
-      {isCopied ? (
-        <span className="text-gray-500">པར་བཤུ་བྱས་ཟིན།</span>
+      {!isCopied ? (
+        <LuCopy color="gray" size="20px" />
       ) : (
-        <FaRegCopy color="gray" size="20px" />
+        <LuCopyCheck color="green" size="20px" />
       )}
     </Button>
   );
