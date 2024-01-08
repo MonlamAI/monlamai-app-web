@@ -14,40 +14,58 @@ function ShareLink({ link }: ShareProps) {
     if (isOpen) {
       const timer = setTimeout(() => {
         setIsOpen(false);
-      }, 2000);
+      }, 3000);
       return () => clearTimeout(timer);
     }
   }, [isOpen]);
 
-  if (!isOpen)
-    return (
-      <Button onClick={() => setIsOpen(true)}>
-        <FaShare />
-      </Button>
-    );
-
   const link_url = "https://monlam.ai";
 
   return (
-    <dialog open={isOpen} className="absolute  bottom-20">
-      <Card className="w-[50vw] md:max-w-[20vw]">
-        <div className="flex gap-2">
-          <TextInput type="text" value="link" readOnly></TextInput>
-          <CopyToClipboard textToCopy={link_url} disabled={false} />
-        </div>
-        <div className="flex justify-around">
-          <Button color="gray" onClick={() => shareFacebook(link_url)}>
-            <FaFacebook />
-          </Button>
-          <Button color="gray" onClick={() => shareTwitter(link_url)}>
-            <FaTwitter />
-          </Button>
-          <Button color="gray" onClick={() => shareWhatsapp(link_url)}>
-            <FaWhatsapp />
-          </Button>
-        </div>
-      </Card>
-    </dialog>
+    <div className="relative">
+      {!isOpen && (
+        <Button onClick={() => setIsOpen(true)}>
+          <FaShare />
+        </Button>
+      )}
+      <dialog open={isOpen} className="absolute left-[-20vw] top-full">
+        <Card className="w-[50vw] md:max-w-[20vw]">
+          <div className="flex gap-2">
+            <TextInput type="text" value={link_url} readOnly></TextInput>
+            <CopyToClipboard textToCopy={link_url} />
+          </div>
+          <div className="flex justify-around">
+            <Button
+              color="gray"
+              onClick={() => {
+                shareFacebook(link_url);
+                setIsOpen(false);
+              }}
+            >
+              <FaFacebook />
+            </Button>
+            <Button
+              color="gray"
+              onClick={() => {
+                shareTwitter(link_url);
+                setIsOpen(false);
+              }}
+            >
+              <FaTwitter />
+            </Button>
+            <Button
+              color="gray"
+              onClick={() => {
+                shareWhatsapp(link_url);
+                setIsOpen(false);
+              }}
+            >
+              <FaWhatsapp />
+            </Button>
+          </div>
+        </Card>
+      </dialog>
+    </div>
   );
 }
 
