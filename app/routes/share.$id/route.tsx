@@ -1,12 +1,25 @@
 import { LoaderFunction } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import { Button, Card } from "flowbite-react";
-import { FaUniregistry } from "react-icons/fa6";
+import { FaArrowRightArrowLeft, FaUniregistry } from "react-icons/fa6";
 import { auth } from "~/services/auth.server";
 import { db } from "~/services/db.server";
 
+const langLabels = {
+  bo: "བོད་སྐད།",
+  en: "English",
+};
+
 export const loader: LoaderFunction = async ({ request, params }) => {
   let userdata = await auth.isAuthenticated(request);
+
+  function isEnglish(text: string | undefined) {
+    if (!text) return false;
+    // Regular expression for English characters and common punctuation
+    const englishRegex = /^[A-Za-z0-9 .,;:'"?!()-]*$/;
+
+    return englishRegex.test(text);
+  }
 
   let id = params.id as string;
 
@@ -14,11 +27,20 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     where: { id: parseInt(id) },
   });
 
-  return { id, data, user: userdata };
+  const isEng = isEnglish(data?.input);
+  let langDir;
+  // You can add more logic here to handle different language codes
+  if (isEng) {
+    langDir = "en2bo";
+  } else {
+    langDir = "bo2en";
+  }
+  return { id, data, user: userdata, langDir };
 };
 
 function route() {
-  let { id, data, user } = useLoaderData();
+  let { id, data, user, langDir } = useLoaderData();
+
   if (!data)
     return (
       <div className=" flex gap-2 flex-col text-center capitalize">
@@ -31,8 +53,10 @@ function route() {
         </Link>
       </div>
     );
+  let sourceLang = langDir === "en2bo" ? "en" : "bo";
+  let targetLang = langDir === "en2bo" ? "bo" : "en";
   return (
-    <div className=" flex flex-col">
+    <div className=" flex flex-col z-20">
       {!user && (
         <header>
           <div className="text-2xl  flex gap-3 p-4  justify-center font-medium text-gray-700 text-center dark:text-gray-200">
@@ -48,6 +72,36 @@ function route() {
       )}
 
       <div className="flex flex-col mt-5 md:mx-auto gap-3  justify-between  md:mt-20">
+        {langDir && (
+          <div className="w-full text-center">
+            <div className="flex justify-center items-center gap-2">
+              <div
+                className={`inline-block text-lg text-gray-500 dark:text-gray-300 ${
+                  sourceLang == "en" && "font-poppins text-xl"
+                } ${sourceLang == "bo" && "text-lg leading-loose font-monlam"}`}
+              >
+                {langLabels[sourceLang]}
+              </div>
+
+              <button
+                disabled
+                className="group flex items-center justify-center text-center font-medium relative focus:z-10 focus:outline-none text-white bg-primary border border-transparent enabled:hover:bg-primary-hover focus:ring-primary dark:bg-primary dark:enabled:hover:bg-primary-hover dark:focus:ring-primary rounded-full focus:ring-2 px-2"
+              >
+                <FaArrowRightArrowLeft size="20px" />
+              </button>
+
+              <div
+                className={`inline-block text-lg text-right text-gray-500 dark:text-gray-300
+          ${sourceLang != "en" && "font-poppins text-xl"} ${
+                  sourceLang != "bo" && "text-lg leading-loose font-monlam"
+                }`}
+              >
+                {langLabels[targetLang]}
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="flex flex-col md:flex-row h-[50vh] gap-3">
           <Card>
             <div className="h-full">

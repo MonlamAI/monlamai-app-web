@@ -2,6 +2,7 @@ import { Button, Card, TextInput } from "flowbite-react";
 import React, { useEffect } from "react";
 import { FaFacebook, FaShare, FaTwitter, FaWhatsapp } from "react-icons/fa6";
 import CopyToClipboard from "./CopyToClipboard";
+import { useLocation, useNavigation } from "@remix-run/react";
 
 type ShareProps = {
   link: string;
@@ -9,7 +10,6 @@ type ShareProps = {
 
 function ShareLink({ link }: ShareProps) {
   const [isOpen, setIsOpen] = React.useState(false);
-
   useEffect(() => {
     if (isOpen) {
       const timer = setTimeout(() => {
@@ -19,16 +19,16 @@ function ShareLink({ link }: ShareProps) {
     }
   }, [isOpen]);
 
-  const link_url = "https://monlam.ai";
+  const link_url = window?.location?.origin + link;
 
   return (
-    <div className="relative">
+    <div className="relative z-20">
       {!isOpen && (
         <Button onClick={() => setIsOpen(true)}>
           <FaShare />
         </Button>
       )}
-      <dialog open={isOpen} className="absolute left-[-20vw] top-full">
+      <dialog open={isOpen} className="absolute z-20 left-[-20vw] top-full">
         <Card className="w-[50vw] md:max-w-[20vw]">
           <div className="flex gap-2">
             <TextInput type="text" value={link_url} readOnly></TextInput>

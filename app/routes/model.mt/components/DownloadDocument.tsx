@@ -7,6 +7,7 @@ import {
   downloadDocxFile,
   downloadTxtFile,
 } from "../../../component/utils/download";
+import { toast } from "react-toastify";
 
 function DownloadDocument({
   source,
@@ -18,28 +19,26 @@ function DownloadDocument({
   fileType: "txt" | "docx" | null;
 }) {
   let fetcher = useFetcher();
-  const [isloading, setIsLoading] = useState(false);
   const [retry, setRetry] = useState(0);
 
   useEffect(() => {
     if (source) {
-      console.log("source", source, fileType);
-      setIsLoading(true);
-      let url = "/api/translation?q=" + source + "&lang=" + lang;
-      fetcher.load(url);
+      fetcher.submit(
+        {
+          input: source,
+          lang: lang,
+        },
+        {
+          action: "/api/translation",
+          method: "POST",
+        }
+      );
     }
-  }, [source, lang, retry]);
+  }, [source, lang]);
 
   let data = fetcher?.data;
-  useEffect(() => {
-    if (!data) {
-      setIsLoading(true);
-    } else {
-      setIsLoading(false);
-    }
-  }, [data]);
-
-  if (isloading || !data)
+  let isloading = fetcher.state !== "idle";
+  if (isloading)
     return (
       <div role="status" className="max-w-sm animate-pulse pt-5">
         <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4"></div>
@@ -48,6 +47,7 @@ function DownloadDocument({
         <span className="sr-only">Loading...</span>
       </div>
     );
+  if (!data) return null;
   return (
     <Suspense fallback={<p>Loading package location...</p>}>
       <Await
@@ -56,14 +56,8 @@ function DownloadDocument({
       >
         {(res) => {
           if (res?.error) {
-            return (
-              <div
-                className="text-red-400 text-sm pt-5 font-monlam cursor-pointer"
-                onClick={() => setRetry(retry + 1)}
-              >
-                ཡང་བསྐྱར་མཚོལ་
-              </div>
-            );
+            toast("error api");
+            return null;
           } else {
             return (
               <motion.div

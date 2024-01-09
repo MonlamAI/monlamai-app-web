@@ -146,6 +146,10 @@ export default function Index() {
     setEdit(false);
     setShowLike(false);
   }
+  function handleCancelEdit() {
+    setEdit(false);
+    setShowLike(false);
+  }
   return (
     <ToolWraper title="MT">
       <ListInput
@@ -277,7 +281,7 @@ export default function Index() {
           )}
           {edit && (
             <div className="flex justify-between">
-              <Button color="gray" onClick={() => setEdit(false)}>
+              <Button color="gray" onClick={handleCancelEdit}>
                 cancel
               </Button>
               <Button
@@ -295,37 +299,43 @@ export default function Index() {
                 {message}
               </div>
               <div className="flex relative justify-end items-center">
-                <Button
-                  className="border-none"
-                  color="gray"
-                  onClick={() => setShowLike((p) => !p)}
-                  disabled={!getTextToCopy()}
-                >
-                  <LikeDislike />
-                </Button>
-                {showLike && (
-                  <div className=" rounded shadow-md bg-white flex flex-col items-center gap-1 absolute top-[100%] left-0 p-1 z-10">
-                    <div>
-                      <ReactionButtons
-                        fetcher={likefetcher}
-                        output={getTextToCopy()}
-                        sourceText={sourceText}
-                        model="mt"
-                        inferenceId={inferenceId}
-                      />
-                    </div>
-                    <Button onClick={() => setEdit((p) => !p)}>suggest</Button>
-                  </div>
+                {selectedTool === "text" && (
+                  <>
+                    {" "}
+                    <Button
+                      className="border-none"
+                      color="gray"
+                      onClick={() => setShowLike((p) => !p)}
+                      disabled={!getTextToCopy()}
+                    >
+                      <LikeDislike />
+                    </Button>
+                    {showLike && (
+                      <div className=" rounded shadow-md bg-white flex flex-col items-center gap-1 absolute top-[100%] left-0 p-1 z-10">
+                        <div>
+                          <ReactionButtons
+                            fetcher={likefetcher}
+                            output={getTextToCopy()}
+                            sourceText={sourceText}
+                            model="mt"
+                            inferenceId={inferenceId}
+                          />
+                        </div>
+                        <Button onClick={() => setEdit((p) => !p)}>
+                          suggest
+                        </Button>
+                      </div>
+                    )}
+                    <CopyToClipboard
+                      textToCopy={getTextToCopy()}
+                      onClick={handleCopy}
+                    />
+                  </>
                 )}
-
-                <CopyToClipboard
-                  textToCopy={getTextToCopy()}
-                  onClick={handleCopy}
-                />
-                {getTextToCopy() !== "" && (
+                {getTextToCopy() !== "" && selectedTool === "text" && (
                   <>
                     <Speak getText={getTextToCopy} text={null} />
-                    <ShareLink link={""} />
+                    <ShareLink link={`/share/${inferenceId}`} />
                   </>
                 )}
               </div>
