@@ -191,11 +191,11 @@ export default function Index() {
         </div>
       </div> */}
       <div className="flex flex-col md:flex-row gap-2 ">
-        <span className="mt-2">Translate below to </span>
+        <span className="mt-2">Translate into </span>
         <input
           value={direction}
           onChange={(e) => setDirection(e.target.value)}
-          placeholder="eg.. fr"
+          placeholder="eg. fr"
           className=" border-2 border-gray-300 pl-2"
         />
       </div>
