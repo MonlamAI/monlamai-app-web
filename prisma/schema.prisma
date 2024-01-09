@@ -61,6 +61,8 @@ model Inference {
   userId       Int
   model        models
   modelVersion String?
+  inputLang    String?
+  outputLang   String?
   input        String
   output       String
   responseTime Int?

@@ -12,29 +12,14 @@ const langLabels = {
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   let userdata = await auth.isAuthenticated(request);
-
-  function isEnglish(text: string | undefined) {
-    if (!text) return false;
-    // Regular expression for English characters and common punctuation
-    const englishRegex = /^[A-Za-z0-9 .,;:'"?!()-]*$/;
-
-    return englishRegex.test(text);
-  }
-
   let id = params.id as string;
-
   let data = await db.inference.findUnique({
     where: { id: parseInt(id) },
   });
 
-  const isEng = isEnglish(data?.input);
-  let langDir;
+  let langDir = data?.inputLang === "en" ? "en2bo" : "bo2en";
   // You can add more logic here to handle different language codes
-  if (isEng) {
-    langDir = "en2bo";
-  } else {
-    langDir = "bo2en";
-  }
+
   return { id, data, user: userdata, langDir };
 };
 

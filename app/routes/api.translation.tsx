@@ -95,13 +95,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     try {
       let result = await translate(source, lang, targetLang);
       let responseTime = result.responseTime;
-      console.log(
-        "inference data",
-        user?.id,
-        source,
-        result.translation,
-        responseTime
-      );
+
       // if (result.translation) console.log(result.translation);
       // save the data to the database
       const inferenceData = await saveInference({
@@ -110,6 +104,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
         input: source,
         output: result.translation,
         responseTime: responseTime,
+        inputLang: lang,
+        outputLang: targetLang,
       });
       return json({
         translation: result,

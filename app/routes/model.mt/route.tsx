@@ -335,7 +335,9 @@ export default function Index() {
                 {getTextToCopy() !== "" && selectedTool === "text" && (
                   <>
                     <Speak getText={getTextToCopy} text={null} />
-                    <ShareLink link={`/share/${inferenceId}`} />
+                    <ShareLink
+                      link={window.location.origin + `/share/${inferenceId}`}
+                    />
                   </>
                 )}
               </div>

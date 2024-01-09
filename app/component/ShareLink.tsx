@@ -1,25 +1,53 @@
+import React, { useState, useEffect } from "react";
 import { Button, Card, TextInput } from "flowbite-react";
-import React, { useEffect } from "react";
 import { FaFacebook, FaShare, FaTwitter, FaWhatsapp } from "react-icons/fa6";
 import CopyToClipboard from "./CopyToClipboard";
-import { useLocation, useNavigation } from "@remix-run/react";
 
-type ShareProps = {
-  link: string;
-};
+// Custom hook for getting share URLs
+function useShareUrl(link: string) {
+  const baseShareUrl = link;
+  const shareText = "Visit this link ";
 
-function ShareLink({ link }: ShareProps) {
-  const [isOpen, setIsOpen] = React.useState(false);
+  const getPlatformShareUrl = (platformUrl: string) =>
+    platformUrl
+      .replace("{url}", encodeURIComponent(baseShareUrl))
+      .replace("{text}", encodeURIComponent(shareText));
+
+  return {
+    whatsappUrl: getPlatformShareUrl(`whatsapp://send?text={text}%20{url}`),
+    twitterUrl: getPlatformShareUrl(
+      `https://twitter.com/share?url={url}&text={text}`
+    ),
+    facebookUrl: getPlatformShareUrl(
+      `https://www.facebook.com/sharer/sharer.php?u={url}&t={text}`
+    ),
+  };
+}
+
+function SocialShareButton({ icon, onClick }) {
+  return (
+    <Button color="gray" onClick={onClick}>
+      {icon}
+    </Button>
+  );
+}
+
+function ShareLink({ link }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const { whatsappUrl, twitterUrl, facebookUrl } = useShareUrl(link);
+
   useEffect(() => {
+    let timer;
     if (isOpen) {
-      const timer = setTimeout(() => {
-        setIsOpen(false);
-      }, 3000);
-      return () => clearTimeout(timer);
+      timer = setTimeout(() => setIsOpen(false), 3000);
     }
+    return () => clearTimeout(timer);
   }, [isOpen]);
 
-  const link_url = window?.location?.origin + link;
+  const openShareWindow = (url) => {
+    window.open(url, "_blank");
+    setIsOpen(false);
+  };
 
   return (
     <div className="relative z-20">
@@ -31,37 +59,22 @@ function ShareLink({ link }: ShareProps) {
       <dialog open={isOpen} className="absolute z-20 left-[-20vw] top-full">
         <Card className="w-[50vw] md:max-w-[20vw]">
           <div className="flex gap-2">
-            <TextInput type="text" value={link_url} readOnly></TextInput>
-            <CopyToClipboard textToCopy={link_url} />
+            <TextInput type="text" value={link} readOnly />
+            <CopyToClipboard textToCopy={link} />
           </div>
           <div className="flex justify-around">
-            <Button
-              color="gray"
-              onClick={() => {
-                shareFacebook(link_url);
-                setIsOpen(false);
-              }}
-            >
-              <FaFacebook />
-            </Button>
-            <Button
-              color="gray"
-              onClick={() => {
-                shareTwitter(link_url);
-                setIsOpen(false);
-              }}
-            >
-              <FaTwitter />
-            </Button>
-            <Button
-              color="gray"
-              onClick={() => {
-                shareWhatsapp(link_url);
-                setIsOpen(false);
-              }}
-            >
-              <FaWhatsapp />
-            </Button>
+            <SocialShareButton
+              icon={<FaFacebook />}
+              onClick={() => openShareWindow(facebookUrl)}
+            />
+            <SocialShareButton
+              icon={<FaTwitter />}
+              onClick={() => openShareWindow(twitterUrl)}
+            />
+            <SocialShareButton
+              icon={<FaWhatsapp />}
+              onClick={() => openShareWindow(whatsappUrl)}
+            />
           </div>
         </Card>
       </dialog>
@@ -70,29 +83,3 @@ function ShareLink({ link }: ShareProps) {
 }
 
 export default ShareLink;
-
-function shareWhatsapp(shareUrl: string) {
-  const shareText = "visit this link ";
-  const whatsappUrl = `whatsapp://send?text=${encodeURIComponent(
-    shareText
-  )}%20${encodeURIComponent(shareUrl)}`;
-  // Open WhatsApp with the share URL
-  return window.open(whatsappUrl, "_blank");
-}
-
-function shareTwitter(shareUrl: string) {
-  const shareText = "visit this link ";
-  const twitterUrl = `https://twitter.com/share?url=${encodeURIComponent(
-    shareUrl
-  )}&text=${encodeURIComponent(shareText)}`;
-  // Open Twitter with the share URL
-  return window.open(twitterUrl, "_blank");
-}
-function shareFacebook(shareUrl: string) {
-  const shareText = "visit this link ";
-  const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-    shareUrl
-  )}&t=${encodeURIComponent(shareText)}`;
-  // Open Facebook with the share URL
-  return window.open(facebookUrl, "_blank");
-}
