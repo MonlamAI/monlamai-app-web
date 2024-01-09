@@ -12,8 +12,8 @@ export const loader: LoaderFunction = async ({ request }) => {
   let user = await getUser(userdata?._json.email);
 
   //check if all questions are answered
-  let aboutUser = await getUserAboutData(user?.id);
-  if (!aboutUser) return redirect("/steps");
+  // let aboutUser = await getUserAboutData(user?.id);
+  // if (!aboutUser) return redirect("/steps");
   return json({
     user,
   });
