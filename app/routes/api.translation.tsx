@@ -5,6 +5,7 @@ import {
   en_bo_english_replaces,
   en_bo_tibetan_replaces,
 } from "~/component/utils/replace.server";
+import { saveInference } from "~/modal/inference";
 import { getUser } from "~/modal/user";
 import { auth } from "~/services/auth.server";
 import { fetchGPTData } from "~/services/fetchGPTData.server";
@@ -57,7 +58,7 @@ export async function translate(
         ? en_bo_tibetan_replaces(translation)
         : bo_en_english_replaces(translation),
     disclaimer,
-    responseTime: `${responseTime} ms`, // Include response time in milliseconds
+    responseTime: responseTime, // Include response time in milliseconds
   };
 }
 
@@ -89,11 +90,25 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     try {
       let result = await translate(source, lang, targetLang);
       let responseTime = result.responseTime;
-      console.log("responseTime", responseTime);
+      console.log(
+        "inference data",
+        user?.id,
+        source,
+        result.translation,
+        responseTime
+      );
       // if (result.translation) console.log(result.translation);
       // save the data to the database
+      const inferenceData = await saveInference({
+        userId: user?.id,
+        model: "mt",
+        input: source,
+        output: result.translation,
+        responseTime: responseTime,
+      });
       return defer({
         translation: result,
+        inferenceData: inferenceData,
       });
     } catch (e) {
       console.log(e);

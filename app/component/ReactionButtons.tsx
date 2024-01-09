@@ -7,6 +7,7 @@ interface ReactionButtonsProps {
   output: string | null;
   sourceText: string | null;
   model: modelType;
+  inferenceId: number;
 }
 
 const API_ENDPOINT = "/api/feedback";
@@ -17,16 +18,17 @@ function ReactionButtons({
   output,
   sourceText,
   model,
+  inferenceId,
 }: ReactionButtonsProps) {
   const { liked, disliked } = fetcher.data || {};
   const isLoading =
-    fetcher.state !== IDLE_STATE && fetcher.formData?.get("_action");
+    fetcher.state !== IDLE_STATE && fetcher.formData?.get("action");
 
-  const handleReaction = (action: "liked" | "disliked") => {
+  const handleReaction = async (action: "liked" | "disliked") => {
     if (!output || !sourceText) return;
 
     fetcher.submit(
-      { source: sourceText, output, _action: action, model },
+      { inferenceId, action },
       { method: "POST", action: API_ENDPOINT }
     );
   };
@@ -36,13 +38,13 @@ function ReactionButtons({
   return (
     <div className="flex justify-end">
       <ReactionButton
-        enabled={output && !isLoading}
+        enabled={!!output}
         active={liked}
         icon={<FaRegThumbsUp />}
         onClick={() => handleReaction("liked")}
       />
       <ReactionButton
-        enabled={output && !isLoading}
+        enabled={!!output}
         active={disliked}
         icon={<FaRegThumbsDown />}
         onClick={() => handleReaction("disliked")}

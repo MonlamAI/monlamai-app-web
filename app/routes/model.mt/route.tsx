@@ -97,11 +97,13 @@ export default function Index() {
   }
 
   useEffect(() => {
+    console.log("change in selected tool", selectedTool);
     setSourceText("");
   }, [selectedTool]);
 
   useEffect(() => {
     if (debouncedSearchTerm === "") return;
+    console.log("change in debouncedSearchTerm:::", debouncedSearchTerm);
     let url =
       "/api/translation?q=" + debouncedSearchTerm + "&lang=" + sourceLang;
     fetcher.load(url);
@@ -110,6 +112,7 @@ export default function Index() {
   let data = fetcher?.data;
   let error = data?.translation?.error;
   let isloading = fetcher.state !== "idle";
+  let inferenceId = data?.inferenceData?.id;
 
   return (
     <ToolWraper title="MT">
@@ -247,6 +250,7 @@ export default function Index() {
                 output={getTextToCopy()}
                 sourceText={sourceText}
                 model="mt"
+                inferenceId={inferenceId}
               />
               <CopyToClipboard
                 textToCopy={getTextToCopy()}
