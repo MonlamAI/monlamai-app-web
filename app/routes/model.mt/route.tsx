@@ -190,7 +190,7 @@ export default function Index() {
           {langLabels[targetLang]}
         </div>
       </div> */}
-      <div className="flex flex-col md:flex-row gap-2 ">
+      <div className="flex flex-col md:flex-row gap-2 mt-2 ">
         <span className="mt-2">Translate into </span>
         <input
           value={direction}
