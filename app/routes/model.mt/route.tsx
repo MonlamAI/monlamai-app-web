@@ -25,6 +25,7 @@ import Speak from "~/component/Speak";
 import { toast } from "react-toastify";
 import { translate } from "../api.translation";
 import ShareLink from "~/component/ShareLink";
+import { updateEdit } from "~/modal/inference";
 
 const langLabels = {
   bo: "བོད་སྐད།",
@@ -48,6 +49,15 @@ export async function loader({ request }: LoaderFunctionArgs) {
   return { user: userdata };
 }
 
+export const action: ActionFunction = async ({ request }) => {
+  let formdata = await request.formData();
+  let edited = formdata.get("edited") as string;
+  let inferenceId = formdata.get("inferenceId") as string;
+  let updated = await updateEdit(inferenceId, edited);
+
+  return updated;
+};
+
 export default function Index() {
   const fetcher = useFetcher();
   const [sourceLang, setSourceLang] = useLocalStorage("inputLang", "en");
@@ -63,6 +73,8 @@ export default function Index() {
   const [edit, setEdit] = useState(false);
   const debouncedSearchTerm = useDebounce(sourceText, 1000);
   const likefetcher = useFetcher();
+  const editfetcher = useFetcher();
+  const editRef = useRef(null);
 
   const targetRef = useRef<HTMLDivElement>(null);
 
@@ -118,7 +130,22 @@ export default function Index() {
   let data = fetcher?.data;
   let isloading = fetcher.state !== "idle";
   let inferenceId = data?.inferenceData?.id;
+  let translated = data?.translation;
 
+  function handleEditSubmit() {
+    let edited = editRef.current?.value;
+    editfetcher.submit(
+      {
+        inferenceId,
+        edited,
+      },
+      {
+        method: "POST",
+      }
+    );
+    setEdit(false);
+    setShowLike(false);
+  }
   return (
     <ToolWraper title="MT">
       <ListInput
@@ -192,11 +219,11 @@ export default function Index() {
           </div>
         </Card>
 
-        <Card className="md:w-1/2">
-          <div className="w-full min-h-[20vh] md:min-h-[40vh] p-2 dark:text-gray-200 dark:bg-slate-500 rounded-lg overflow-auto">
+        <Card className="md:w-1/2 ">
+          <div className="w-full flex flex-col justify-center gap-2 min-h-[20vh] md:min-h-[30vh] flex-1 overflow-hidden">
             <div
               ref={targetRef}
-              className={`text-lg ${
+              className={`h-full text-lg ${
                 targetLang === "bo"
                   ? "tracking-wide leading-loose"
                   : "font-poppins"
@@ -212,28 +239,26 @@ export default function Index() {
               )}
               {selectedTool === "text" && !isloading && (
                 <>
-                  <div
-                    className="font-monlam text-[1.2rem]"
-                    style={{ lineHeight: "1.8" }}
-                  >
-                    <Suspense fallback={<p>Loading package location...</p>}>
-                      <Await
-                        resolve={data?.translation}
-                        errorElement={<p>Error loading package location!</p>}
+                  {!edit && (
+                    <div
+                      className="font-monlam text-[1.2rem]"
+                      style={{ lineHeight: "1.8" }}
+                    >
+                      <motion.p
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
                       >
-                        {(res) => {
-                          return (
-                            <motion.p
-                              initial={{ opacity: 0 }}
-                              animate={{ opacity: 1 }}
-                            >
-                              {res?.translation}
-                            </motion.p>
-                          );
-                        }}
-                      </Await>
-                    </Suspense>
-                  </div>
+                        {translated?.translation}
+                      </motion.p>
+                    </div>
+                  )}
+                  {edit && (
+                    <Textarea
+                      defaultValue={translated?.translation}
+                      ref={editRef}
+                      className="w-full h-full resize-none  bg-transparent font-monlam ring-0  flex-1"
+                    />
+                  )}
                 </>
               )}
               {selectedTool === "document" && (
@@ -245,6 +270,25 @@ export default function Index() {
               )}
             </div>
           </div>
+          {edit && (
+            <p className="px-2 py-1 bg-[#F5F6B0] rounded-md text-sm">
+              Your contribution will be used to improve translation quality.
+            </p>
+          )}
+          {edit && (
+            <div className="flex justify-between">
+              <Button color="gray" onClick={() => setEdit(false)}>
+                cancel
+              </Button>
+              <Button
+                color="blue"
+                onClick={handleEditSubmit}
+                isProcessing={editfetcher.state !== "idle"}
+              >
+                submit
+              </Button>
+            </div>
+          )}
           {!edit && (
             <div className="flex justify-between">
               <div className={!liked ? "text-red-400" : "text-green-400"}>
@@ -260,7 +304,7 @@ export default function Index() {
                   <LikeDislike />
                 </Button>
                 {showLike && (
-                  <Card className="absolute top-[100%] left-0">
+                  <div className=" rounded shadow-md bg-white flex flex-col items-center gap-1 absolute top-[100%] left-0 p-1 z-10">
                     <div>
                       <ReactionButtons
                         fetcher={likefetcher}
@@ -271,7 +315,7 @@ export default function Index() {
                       />
                     </div>
                     <Button onClick={() => setEdit((p) => !p)}>suggest</Button>
-                  </Card>
+                  </div>
                 )}
 
                 <CopyToClipboard

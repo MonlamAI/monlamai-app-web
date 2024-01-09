@@ -7,3 +7,12 @@ export async function saveInference(inference: any) {
     data: inference,
   });
 }
+
+export async function updateEdit(inferenceId: string, edited: string) {
+  return await db.inference.update({
+    where: { id: parseInt(inferenceId) },
+    data: {
+      edited,
+    },
+  });
+}
