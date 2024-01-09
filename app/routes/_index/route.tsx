@@ -13,8 +13,8 @@ export const loader: LoaderFunction = async ({ request }) => {
   let user = await getOrCreateUser(userdata);
 
   //check if all questions are answered
-  let aboutUser = await getUserAboutData(user?.id);
-  if (!aboutUser) return redirect("/steps");
+  // let aboutUser = await getUserAboutData(user?.id);
+  // if (!aboutUser) return redirect("/steps");
   return json({
     user,
   });
