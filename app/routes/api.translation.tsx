@@ -20,12 +20,14 @@ async function translate(text: String, sourceLang: Lang, targetLang: Lang) {
   }
   const data = { inputs: text };
   let response;
+  let modelToken = process.env?.MT_MODEL_TOKEN;
+  if (!modelToken) return { error: "MT API TOKEN MISSING" };
   try {
     response = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer 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",
+        Authorization: modelToken,
       },
       body: JSON.stringify(data),
     });
@@ -54,7 +56,6 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const lang = url.searchParams.get("lang") as "bo" | "en";
   let source = url.searchParams.get("q");
   let targetLang: Lang = lang === "en" ? "bo" : "en";
-
   if (lang === "en") {
     source = en_bo_english_replaces(source!);
     let prompt = `replace all the abbreviations with full form and preserve newlines, "${source}"  `;
