@@ -1,4 +1,9 @@
-import { LoaderFunctionArgs, defer } from "@remix-run/node";
+import {
+  ActionFunctionArgs,
+  LoaderFunctionArgs,
+  defer,
+  json,
+} from "@remix-run/node";
 import {
   bo_en_english_replaces,
   bo_en_tibetan_replaces,
@@ -62,16 +67,15 @@ export async function translate(
   };
 }
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
+export const action = async ({ request }: ActionFunctionArgs) => {
   let userdata = await auth.isAuthenticated(request, {
     failureRedirect: "/login",
   });
 
   let user = await getUser(userdata?._json.email);
-
-  const url = new URL(request.url);
-  const lang = url.searchParams.get("lang") as "bo" | "en";
-  let source = url.searchParams.get("q");
+  let formdata = await request.formData();
+  const lang = formdata.get("lang") as "bo" | "en";
+  let source = formdata.get("input") as string | null;
   let targetLang: Lang = lang === "en" ? "bo" : "en";
 
   if (lang === "en") {
@@ -106,7 +110,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
         output: result.translation,
         responseTime: responseTime,
       });
-      return defer({
+      return json({
         translation: result,
         inferenceData: inferenceData,
       });

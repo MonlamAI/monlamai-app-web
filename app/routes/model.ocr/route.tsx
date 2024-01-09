@@ -13,6 +13,7 @@ import ErrorMessage from "~/component/ErrorMessage";
 import { dummydata } from "~/helper/dummy";
 import ToolWraper from "~/component/ToolWraper";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
+import InferenceWrapper from "~/component/layout/InferenceWrapper";
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
   parentMeta.shift(1);
@@ -72,64 +73,62 @@ export default function Index() {
   let text = selection?.text?.replaceAll("\n", "<br />");
   return (
     <ToolWraper title="OCR">
-      <main className="mx-auto w-11/12 lg:w-4/5">
-        <div className="mt-1 flex flex-col md:flex-row  lg:h-[55vh] items-strech gap-5">
-          <Card className="md:w-1/2 relative">
-            {selection ? (
-              <>
-                <img src={selection?.image} />
-                <Button onClick={() => setSelection(null)}>
-                  {translation.reset}
-                </Button>
-              </>
-            ) : (
-              <div className="overflow-y-scroll flex flex-col gap-2">
-                {dummydata?.map((item, index) => {
-                  return (
-                    <div className="flex gap-1">
-                      <div className="flex items-center">{item.id}.</div>
-                      <Card
-                        onClick={() => setSelection(item)}
-                        key={item.id + index}
-                      >
-                        <img src={item.image} alt={item.image} />
-                      </Card>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </Card>
+      <InferenceWrapper>
+        <Card className="md:w-1/2 relative">
+          {selection ? (
+            <>
+              <img src={selection?.image} />
+              <Button onClick={() => setSelection(null)}>
+                {translation.reset}
+              </Button>
+            </>
+          ) : (
+            <div className="overflow-y-scroll flex flex-col gap-2">
+              {dummydata?.map((item, index) => {
+                return (
+                  <div className="flex gap-1">
+                    <div className="flex items-center">{item.id}.</div>
+                    <Card
+                      onClick={() => setSelection(item)}
+                      key={item.id + index}
+                    >
+                      <img src={item.image} alt={item.image} />
+                    </Card>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </Card>
 
-          <Card className="md:w-1/2">
-            <div className="w-full min-h-[20vh] md:min-h-[40vh] leading-6 p-3 text-black bg-slate-50 dark:text-gray-200 dark:bg-slate-700 rounded-lg overflow-auto">
-              <div className="h-full flex justify-center items-center">
-                {loading ? (
-                  <Spinner size="lg" hidden={!selection?.text} />
-                ) : (
-                  <div
-                    className="h-full text-sm font-monlam md:text-2xl "
-                    style={{ lineHeight: "1.8" }}
-                    dangerouslySetInnerHTML={{ __html: text }}
-                  ></div>
-                )}
-              </div>
+        <Card className="md:w-1/2">
+          <div className="w-full min-h-[20vh] md:min-h-[40vh] leading-6 p-3 text-black bg-slate-50 dark:text-gray-200 dark:bg-slate-700 rounded-lg overflow-auto">
+            <div className="h-full flex justify-center items-center">
+              {loading ? (
+                <Spinner size="lg" hidden={!selection?.text} />
+              ) : (
+                <div
+                  className="h-full text-sm font-monlam md:text-2xl "
+                  style={{ lineHeight: "1.8" }}
+                  dangerouslySetInnerHTML={{ __html: text }}
+                ></div>
+              )}
             </div>
-            <div className="flex justify-end">
-              <Button color="white" disabled={true}>
-                <FaRegThumbsUp color="gray" size="20px" />
-              </Button>
-              <Button color="white" disabled={true}>
-                <FaRegThumbsDown color="gray" size="20px" />
-              </Button>
-              <CopyToClipboard
-                textToCopy={selection?.text ?? ""}
-                disabled={false}
-              />
-            </div>
-          </Card>
-        </div>
-      </main>
+          </div>
+          <div className="flex justify-end">
+            <Button color="white" disabled={true}>
+              <FaRegThumbsUp color="gray" size="20px" />
+            </Button>
+            <Button color="white" disabled={true}>
+              <FaRegThumbsDown color="gray" size="20px" />
+            </Button>
+            <CopyToClipboard
+              textToCopy={selection?.text ?? ""}
+              disabled={false}
+            />
+          </div>
+        </Card>
+      </InferenceWrapper>
     </ToolWraper>
   );
 }

@@ -10,7 +10,7 @@ import { FaArrowRightArrowLeft } from "react-icons/fa6";
 import CopyToClipboard from "~/component/CopyToClipboard";
 import { auth } from "~/services/auth.server";
 import ReactionButtons from "~/component/ReactionButtons";
-import EachParagraph from "~/routes/model.mt/components/EachParagraph";
+import LikeDislike from "~/styles/LikeDislike";
 import useDebounce from "~/component/hooks/useDebounceState";
 import { motion } from "framer-motion";
 import useLocalStorage from "~/component/hooks/useLocaleStorage";
@@ -59,7 +59,7 @@ export default function Index() {
     "mt_selected_input",
     "text"
   );
-
+  const [showLike, setShowLike] = useState(false);
   const debouncedSearchTerm = useDebounce(sourceText, 1000);
   const likefetcher = useFetcher();
 
@@ -97,25 +97,33 @@ export default function Index() {
   }
 
   useEffect(() => {
-    console.log("change in selected tool", selectedTool);
     setSourceText("");
   }, [selectedTool]);
 
   useEffect(() => {
-    if (debouncedSearchTerm === "") return;
-    console.log("change in debouncedSearchTerm:::", debouncedSearchTerm);
-    let url =
-      "/api/translation?q=" + debouncedSearchTerm + "&lang=" + sourceLang;
-    fetcher.load(url);
+    if (debouncedSearchTerm === "" || !debouncedSearchTerm) return;
+    fetcher.submit(
+      {
+        input: debouncedSearchTerm,
+        lang: sourceLang,
+      },
+      {
+        action: "/api/translation",
+        method: "POST",
+      }
+    );
   }, [debouncedSearchTerm]);
 
   let data = fetcher?.data;
-  let error = data?.translation?.error;
   let isloading = fetcher.state !== "idle";
   let inferenceId = data?.inferenceData?.id;
 
   return (
     <ToolWraper title="MT">
+      <ListInput
+        selectedTool={selectedTool}
+        setSelectedTool={setSelectedTool}
+      />
       <div className="flex justify-center items-center gap-2">
         <div
           className={`inline-block text-lg text-gray-500 dark:text-gray-300 ${
@@ -147,10 +155,6 @@ export default function Index() {
 
       <div className="mt-3 flex flex-col md:flex-row md:h-[55vh] gap-5">
         <Card className="md:w-1/2">
-          <ListInput
-            selectedTool={selectedTool}
-            setSelectedTool={setSelectedTool}
-          />
           <div className="w-full flex flex-col justify-center gap-2 min-h-[20vh] md:min-h-[40vh] flex-1 overflow-hidden">
             {selectedTool === "text" && (
               <TextComponent
@@ -244,14 +248,24 @@ export default function Index() {
             <div className={!liked ? "text-red-400" : "text-green-400"}>
               {message}
             </div>
-            <div className="flex justify-end">
-              <ReactionButtons
+            <div className="flex relative justify-end items-center">
+              <Button
+                className="border-none"
+                color="gray"
+                onClick={() => setShowLike(true)}
+              >
+                <LikeDislike />
+              </Button>
+              {showLike && (
+                <div className="absolute top-[100%] left-[100%]">hi</div>
+              )}
+              {/* <ReactionButtons
                 fetcher={likefetcher}
                 output={getTextToCopy()}
                 sourceText={sourceText}
                 model="mt"
                 inferenceId={inferenceId}
-              />
+              /> */}
               <CopyToClipboard
                 textToCopy={getTextToCopy()}
                 onClick={handleCopy}
