@@ -191,15 +191,13 @@ export default function Index() {
         </div>
       </div>
       <div className="flex flex-col md:flex-row gap-2 ">
+        <span className="mt-2">Translate below to </span>
         <input
           value={direction}
           onChange={(e) => setDirection(e.target.value)}
           placeholder="eg.. fr"
-          className=" border-2 border-gray-300"
+          className=" border-2 border-gray-300 pl-2"
         />
-        <span className="mt-2">
-          eg. {"fr"},please leave it blank to get default en2bo translation
-        </span>
       </div>
       <div className="mt-3 flex flex-col md:flex-row md:h-[55vh] gap-5">
         <Card className="md:w-1/2">
