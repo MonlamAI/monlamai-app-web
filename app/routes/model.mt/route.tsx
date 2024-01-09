@@ -60,6 +60,7 @@ export default function Index() {
     "text"
   );
   const [showLike, setShowLike] = useState(false);
+  const [edit, setEdit] = useState(false);
   const debouncedSearchTerm = useDebounce(sourceText, 1000);
   const likefetcher = useFetcher();
 
@@ -244,40 +245,48 @@ export default function Index() {
               )}
             </div>
           </div>
-          <div className="flex justify-between">
-            <div className={!liked ? "text-red-400" : "text-green-400"}>
-              {message}
+          {!edit && (
+            <div className="flex justify-between">
+              <div className={!liked ? "text-red-400" : "text-green-400"}>
+                {message}
+              </div>
+              <div className="flex relative justify-end items-center">
+                <Button
+                  className="border-none"
+                  color="gray"
+                  onClick={() => setShowLike((p) => !p)}
+                  disabled={!getTextToCopy()}
+                >
+                  <LikeDislike />
+                </Button>
+                {showLike && (
+                  <Card className="absolute top-[100%] left-0">
+                    <div>
+                      <ReactionButtons
+                        fetcher={likefetcher}
+                        output={getTextToCopy()}
+                        sourceText={sourceText}
+                        model="mt"
+                        inferenceId={inferenceId}
+                      />
+                    </div>
+                    <Button onClick={() => setEdit((p) => !p)}>suggest</Button>
+                  </Card>
+                )}
+
+                <CopyToClipboard
+                  textToCopy={getTextToCopy()}
+                  onClick={handleCopy}
+                />
+                {getTextToCopy() !== "" && (
+                  <>
+                    <Speak getText={getTextToCopy} text={null} />
+                    <ShareLink link={""} />
+                  </>
+                )}
+              </div>
             </div>
-            <div className="flex relative justify-end items-center">
-              <Button
-                className="border-none"
-                color="gray"
-                onClick={() => setShowLike(true)}
-              >
-                <LikeDislike />
-              </Button>
-              {showLike && (
-                <div className="absolute top-[100%] left-[100%]">hi</div>
-              )}
-              {/* <ReactionButtons
-                fetcher={likefetcher}
-                output={getTextToCopy()}
-                sourceText={sourceText}
-                model="mt"
-                inferenceId={inferenceId}
-              /> */}
-              <CopyToClipboard
-                textToCopy={getTextToCopy()}
-                onClick={handleCopy}
-              />
-              {getTextToCopy() !== "" && (
-                <>
-                  <Speak getText={getTextToCopy} text={null} />
-                  <ShareLink link={""} />
-                </>
-              )}
-            </div>
-          </div>
+          )}
         </Card>
       </div>
       <div className="w-full text-center md:w-fit md:float-right text-xs mt-3 text-slate-400 text-[0.7rem]">
