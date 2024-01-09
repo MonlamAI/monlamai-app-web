@@ -75,6 +75,7 @@ export default function Index() {
   const [direction, setDirection] = useState("");
 
   const debouncedSearchTerm = useDebounce(sourceText, 1000);
+  const debouncedDirection = useDebounce(direction, 1000);
   const likefetcher = useFetcher();
   const editfetcher = useFetcher();
   const editRef = useRef(null);
@@ -130,7 +131,7 @@ export default function Index() {
         method: "POST",
       }
     );
-  }, [debouncedSearchTerm]);
+  }, [debouncedSearchTerm, debouncedDirection]);
 
   let data = fetcher?.data;
   let isloading = fetcher.state !== "idle";
@@ -189,15 +190,15 @@ export default function Index() {
           {langLabels[targetLang]}
         </div>
       </div>
-      <div className="flex gap-2">
+      <div className="flex flex-col md:flex-row gap-2 ">
         <input
           value={direction}
           onChange={(e) => setDirection(e.target.value)}
-          placeholder="eg.. <2bo>"
+          placeholder="eg.. fr"
           className=" border-2 border-gray-300"
         />
         <span className="mt-2">
-          eg. {"<2fr>"},please leave it blank to get default en2bo translation
+          eg. {"fr"},please leave it blank to get default en2bo translation
         </span>
       </div>
       <div className="mt-3 flex flex-col md:flex-row md:h-[55vh] gap-5">
