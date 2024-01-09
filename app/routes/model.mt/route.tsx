@@ -71,6 +71,9 @@ export default function Index() {
   );
   const [showLike, setShowLike] = useState(false);
   const [edit, setEdit] = useState(false);
+
+  const [direction, setDirection] = useState("");
+
   const debouncedSearchTerm = useDebounce(sourceText, 1000);
   const likefetcher = useFetcher();
   const editfetcher = useFetcher();
@@ -115,10 +118,12 @@ export default function Index() {
 
   useEffect(() => {
     if (debouncedSearchTerm === "" || !debouncedSearchTerm) return;
+
     fetcher.submit(
       {
         input: debouncedSearchTerm,
         lang: sourceLang,
+        direction,
       },
       {
         action: "/api/translation",
@@ -184,7 +189,17 @@ export default function Index() {
           {langLabels[targetLang]}
         </div>
       </div>
-
+      <div className="flex gap-2">
+        <input
+          value={direction}
+          onChange={(e) => setDirection(e.target.value)}
+          placeholder="eg.. <2bo>"
+          className=" border-2 border-gray-300"
+        />
+        <span className="mt-2">
+          eg. {"<2fr>"},please leave it blank to get default en2bo translation
+        </span>
+      </div>
       <div className="mt-3 flex flex-col md:flex-row md:h-[55vh] gap-5">
         <Card className="md:w-1/2">
           <div className="w-full flex flex-col justify-center gap-2 min-h-[20vh] md:min-h-[40vh] flex-1 overflow-hidden">

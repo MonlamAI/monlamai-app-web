@@ -19,17 +19,19 @@ type Lang = "bo" | "en";
 export async function translate(
   text: String,
   sourceLang: Lang,
-  targetLang: Lang
+  targetLang: Lang,
+  direction: string
 ) {
   const url =
     "https://rvx0i2sheyjtydoh.us-east-1.aws.endpoints.huggingface.cloud/";
-
-  if (sourceLang === "bo") {
+  if (direction !== "" && direction) {
+    text = direction + text;
+  } else if (sourceLang === "bo") {
     text = "<2en>" + text;
-  }
-  if (sourceLang === "en") {
+  } else if (sourceLang === "en") {
     text = "<2bo>" + text;
   }
+  console.log(text);
   const data = { inputs: text };
   let response;
   const startTime = Date.now(); // Start time for measuring response time
@@ -78,6 +80,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   let formdata = await request.formData();
   const lang = formdata.get("lang") as "bo" | "en";
   let source = formdata.get("input") as string | null;
+  let direction = formdata.get("direction") as string;
+  let original_source = source;
   let targetLang: Lang = lang === "en" ? "bo" : "en";
   if (lang === "en") {
     source = en_bo_english_replaces(source!);
@@ -93,7 +97,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   }
   if (source) {
     try {
-      let result = await translate(source, lang, targetLang);
+      let result = await translate(source, lang, targetLang, direction);
       let responseTime = result.responseTime;
 
       // if (result.translation) console.log(result.translation);
@@ -101,7 +105,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       const inferenceData = await saveInference({
         userId: user?.id,
         model: "mt",
-        input: source,
+        input: original_source,
         output: result.translation,
         responseTime: responseTime,
         inputLang: lang,
