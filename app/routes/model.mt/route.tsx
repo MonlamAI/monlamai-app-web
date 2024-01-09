@@ -162,7 +162,7 @@ export default function Index() {
         selectedTool={selectedTool}
         setSelectedTool={setSelectedTool}
       />
-      <div className="flex justify-center items-center gap-2">
+      {/* <div className="flex justify-center items-center gap-2">
         <div
           className={`inline-block text-lg text-gray-500 dark:text-gray-300 ${
             sourceLang == "en" && "font-poppins text-xl"
@@ -189,7 +189,7 @@ export default function Index() {
         >
           {langLabels[targetLang]}
         </div>
-      </div>
+      </div> */}
       <div className="flex flex-col md:flex-row gap-2 ">
         <span className="mt-2">Translate below to </span>
         <input
