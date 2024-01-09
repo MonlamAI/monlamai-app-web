@@ -12,16 +12,18 @@ function EachParagraph({
 }) {
   let fetcher = useFetcher();
   const [isloading, setIsLoading] = useState(false);
-  const [retry, setRetry] = useState(0);
+
   useEffect(() => {
     if (source) {
       setIsLoading(true);
       let url = "/api/translation?q=" + source + "&lang=" + lang;
       fetcher.load(url);
     }
-  }, [source, lang, retry]);
+  }, [source, lang]);
+
   let data = fetcher?.data;
   let error = data?.error;
+
   useEffect(() => {
     if (!data) {
       setIsLoading(true);
@@ -51,9 +53,8 @@ function EachParagraph({
         >
           {(res) => {
             if (res?.error) {
-              return (
-                <Retry error={res.error} setRetry={setRetry} retry={retry} />
-              );
+              console.log(res?.error);
+              return null;
             }
             return (
               <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
@@ -68,29 +69,3 @@ function EachParagraph({
 }
 
 export default EachParagraph;
-
-function Retry({
-  setRetry,
-  error,
-  retry,
-}: {
-  retry: any;
-  setRetry: any;
-  error: string | undefined;
-}) {
-  useEffect(() => {
-    let timer;
-    if (error) {
-      if (retry < 2)
-        timer = setTimeout(() => {
-          setRetry(retry + 1);
-          console.log(retry);
-        }, 4000);
-    }
-    return () => {
-      if (timer) clearTimeout(timer);
-    };
-  }, [error]);
-
-  return <div />;
-}
