@@ -34,12 +34,14 @@ export async function translate(
   let response;
   const startTime = Date.now(); // Start time for measuring response time
 
+  let modelToken = process.env?.MT_MODEL_TOKEN;
+  if (!modelToken) return { error: "MT API TOKEN MISSING" };
   try {
     response = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer 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",
+        Authorization: modelToken,
       },
       body: JSON.stringify(data),
     });
@@ -77,7 +79,6 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const lang = formdata.get("lang") as "bo" | "en";
   let source = formdata.get("input") as string | null;
   let targetLang: Lang = lang === "en" ? "bo" : "en";
-
   if (lang === "en") {
     source = en_bo_english_replaces(source!);
     let prompt = `replace all the abbreviations with full form and preserve newlines, "${source}"  `;
