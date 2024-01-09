@@ -25,7 +25,7 @@ export async function translate(
   const url =
     "https://rvx0i2sheyjtydoh.us-east-1.aws.endpoints.huggingface.cloud/";
   if (direction !== "" && direction) {
-    let newdirection = "<2" + direction + ">";
+    let newdirection = "<2" + direction.toLowerCase()+ ">";
     text = newdirection + text;
   } else if (sourceLang === "bo") {
     text = "<2en>" + text;
