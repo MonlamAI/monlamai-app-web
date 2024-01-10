@@ -18,6 +18,7 @@ export default function ListInput({
           color={option === selectedTool ? "blue" : "gray"}
           size={"xs"}
           onClick={() => setSelectedTool(option)}
+          className="capitalize"
         >
           {option}
         </Button>
