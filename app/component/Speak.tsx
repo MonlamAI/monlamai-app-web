@@ -67,13 +67,13 @@ function Speak({
           <RxSpeakerLoud />
         </Button>
       )}
-      {/* {fetcher.data && ( */}
-      <audio
-        src={audioSourceUrl}
-        ref={audioRef}
-        onEnded={() => pauseAudio()}
-      ></audio>
-      {/* )} */}
+      {fetcher.data && (
+        <audio
+          src={audioSourceUrl}
+          ref={audioRef}
+          onEnded={() => pauseAudio()}
+        ></audio>
+      )}
     </>
   );
 }

@@ -9,49 +9,47 @@ import Speak from "~/component/Speak";
 import LikeDislike from "~/styles/LikeDislike";
 
 type NonEditModeActionsProps = {
-  liked: boolean;
   selectedTool: string;
   setShowLike: (p: boolean) => void;
   showLike: boolean;
   likefetcher: any;
-  getTextToCopy: () => string;
   sourceText: string;
   inferenceId: string;
   setEdit: (p: boolean) => void;
   setEditText: (p: string) => void;
-  translated: any;
+  text: any;
   handleCopy: () => void;
 };
 
 export function NonEditModeActions({
-  liked,
   selectedTool,
   setShowLike,
   showLike,
   likefetcher,
-  getTextToCopy,
   sourceText,
   inferenceId,
   setEdit,
   setEditText,
-  translated,
+  text,
   handleCopy,
 }: NonEditModeActionsProps) {
+  let isSelected = selectedTool === "text" || selectedTool === "recording";
+  let isOutputNull = !text || text === "";
   return (
     <div className="flex justify-between">
-      {getTextToCopy() !== "" && selectedTool === "text" ? (
-        <Speak getText={getTextToCopy} text={null} />
+      {isOutputNull && isSelected ? (
+        <Speak getText={text} text={null} />
       ) : (
         <div />
       )}
       <div className="flex relative justify-end items-center">
-        {selectedTool === "text" && (
+        {isSelected && (
           <>
             <Button
               className="border-none"
               color="gray"
               onClick={() => setShowLike((p) => !p)}
-              disabled={!getTextToCopy()}
+              disabled={!text}
             >
               <LikeDislike />
             </Button>
@@ -61,7 +59,7 @@ export function NonEditModeActions({
                   <p>Rate this translation</p>
                   <ReactionButtons
                     fetcher={likefetcher}
-                    output={getTextToCopy()}
+                    output={text}
                     sourceText={sourceText}
                     inferenceId={inferenceId}
                   />
@@ -69,7 +67,7 @@ export function NonEditModeActions({
                 <Button
                   onClick={() => {
                     setEdit((p) => !p);
-                    setEditText(translated?.translation);
+                    setEditText(text);
                   }}
                 >
                   <GoPencil className="mr-2" />
@@ -77,19 +75,10 @@ export function NonEditModeActions({
                 </Button>
               </div>
             )}
-            <CopyToClipboard
-              textToCopy={getTextToCopy()}
-              onClick={handleCopy}
-            />
+            <CopyToClipboard textToCopy={text} onClick={handleCopy} />
           </>
         )}
-        {getTextToCopy() !== "" && selectedTool === "text" && (
-          <>
-            <ShareLink
-              link={window.location.origin + `/share/${inferenceId}`}
-            />
-          </>
-        )}
+        {!isOutputNull && isSelected && <ShareLink inferenceId={inferenceId} />}
       </div>
     </div>
   );

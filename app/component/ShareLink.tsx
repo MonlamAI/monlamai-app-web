@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Button, Card, TextInput } from "flowbite-react";
 import { FaFacebook, FaShare, FaTwitter, FaWhatsapp } from "react-icons/fa6";
 import CopyToClipboard from "./CopyToClipboard";
@@ -32,10 +32,15 @@ function SocialShareButton({ icon, onClick }) {
   );
 }
 
-function ShareLink({ link }) {
+function ShareLink({ inferenceId }) {
   const [isOpen, setIsOpen] = useState(false);
+  const link = useMemo(() => {
+    if (inferenceId) {
+      return `${window.location.origin}/share/${inferenceId}`;
+    }
+    return "";
+  }, [inferenceId]);
   const { whatsappUrl, twitterUrl, facebookUrl } = useShareUrl(link);
-
   useEffect(() => {
     let timer;
     if (isOpen) {
@@ -56,15 +61,11 @@ function ShareLink({ link }) {
           <FaShare />
         </Button>
       )}
-      <dialog open={isOpen} className="absolute z-20 left-[-20vw] top-full">
+      <dialog open={isOpen} className="absolute z-20 left-[-20vw] bottom-full">
         <Card className="w-[50vw] md:max-w-[20vw]">
           <div className="flex gap-2">
-            <TextInput
-              type="text"
-              value={window.location.origin + link}
-              readOnly
-            />
-            <CopyToClipboard textToCopy={window.location.origin + link} />
+            <TextInput type="text" value={link} readOnly />
+            <CopyToClipboard textToCopy={link} />
           </div>
           <div className="flex justify-around">
             <SocialShareButton

@@ -25,7 +25,7 @@ import {
   TextOrDocumentComponent,
   TranslationDisplay,
 } from "./components/UtilityComponent";
-import { NonEditModeActions } from "./components/ActionButtons";
+import { NonEditModeActions } from "~/component/ActionButtons";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -77,16 +77,8 @@ export default function Index() {
   let { translation } = uselitteraTranlation();
   let liked = likefetcher.data?.liked;
   function handleCopy() {
-    let textToCopy = getTextToCopy();
+    let textToCopy = translated?.translation;
     navigator.clipboard.writeText(textToCopy);
-  }
-
-  function getTextToCopy() {
-    let nodes = targetRef.current?.childNodes;
-    if (!nodes) return "";
-    const textContentArray = Array.from(nodes).map((p) => p.textContent);
-    let textToCopy = textContentArray.join("\n ");
-    return textToCopy;
   }
 
   useEffect(() => {
@@ -224,16 +216,14 @@ export default function Index() {
           />
           {!edit && (
             <NonEditModeActions
-              liked={liked}
               selectedTool={selectedTool}
               setShowLike={setShowLike}
               showLike={showLike}
               likefetcher={likefetcher}
-              getTextToCopy={getTextToCopy}
               sourceText={sourceText}
               inferenceId={inferenceId}
               setEdit={setEdit}
-              translated={translated}
+              text={translated?.translation}
               handleCopy={handleCopy}
               setEditText={setEditText}
             />
