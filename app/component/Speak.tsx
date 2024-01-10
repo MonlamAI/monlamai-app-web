@@ -1,35 +1,14 @@
 import { useFetcher } from "@remix-run/react";
 import { Button } from "flowbite-react";
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState, useRef } from "react";
 import { BiPause } from "react-icons/bi";
 import { RxSpeakerLoud } from "react-icons/rx";
 
-function Speak({
-  text,
-  getText,
-}: {
-  text: string | null;
-  getText?: () => string;
-}) {
-  const fetcher = useFetcher();
-  const [isPlaying, setIsPlaying] = React.useState(false);
-  const audioRef = React.useRef<HTMLAudioElement>(null);
-  const pauseClick = () => {
-    audioRef.current?.pause();
-    setIsPlaying(false);
-  };
-  const handleClick = () => {
-    let url = "/model/tts";
-    let sourceText = getText ? getText() : text;
-    fetcher.submit(
-      {
-        sourceText,
-      },
-      { action: url, method: "POST" }
-    );
-  };
+function useAudioPlayer(audioRef, fetcherData) {
+  const [isPlaying, setIsPlaying] = useState(false);
+
   useEffect(() => {
-    if (fetcher.data) {
+    if (fetcherData) {
       audioRef.current?.play();
       setIsPlaying(true);
     }
@@ -39,35 +18,62 @@ function Speak({
         setIsPlaying(false);
       }
     };
+  }, [fetcherData, audioRef]);
+
+  const pauseAudio = () => {
+    audioRef.current?.pause();
+    setIsPlaying(false);
+  };
+
+  return { isPlaying, pauseAudio };
+}
+
+function Speak({
+  text,
+  getText,
+}: {
+  text: string | null;
+  getText?: () => string;
+}) {
+  const fetcher = useFetcher();
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  const { isPlaying, pauseAudio } = useAudioPlayer(audioRef, fetcher.data);
+
+  const handlePlayClick = () => {
+    const url = "/api/tts";
+    const sourceText = getText ? getText() : text;
+    fetcher.submit({ sourceText }, { action: url, method: "POST" });
+  };
+
+  const audioSourceUrl = useMemo(() => {
+    return fetcher.data
+      ? `data:audio/wav;base64,${fetcher.data?.data}`
+      : undefined;
   }, [fetcher.data]);
-  let data = fetcher?.data;
-  let sourceUrl = useMemo(() => {
-    return data ? `data:audio/wav;base64,${data}` : undefined;
-  }, [data]);
+
   return (
     <>
       {isPlaying ? (
-        <Button onClick={pauseClick}>
+        <Button onClick={pauseAudio}>
           <BiPause />
         </Button>
       ) : (
         <Button
           color="white"
-          onClick={handleClick}
+          onClick={handlePlayClick}
           isProcessing={fetcher.state !== "idle"}
         >
           <RxSpeakerLoud />
         </Button>
       )}
-      {fetcher.data && (
-        <audio
-          id="audio"
-          src={sourceUrl}
-          hidden
-          ref={audioRef}
-          onEnded={() => setIsPlaying(false)}
-        />
-      )}
+      {/* {fetcher.data && ( */}
+      <audio
+        src={audioSourceUrl}
+        ref={audioRef}
+        onEnded={() => pauseAudio()}
+      ></audio>
+      {/* )} */}
     </>
   );
 }

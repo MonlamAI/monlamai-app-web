@@ -2,3 +2,7 @@
 
 export const CHAR_LIMIT = 2000;
 export const MAX_SIZE_SUPPORT = 20; //KB
+
+// Const used in TTS
+
+export const CHAR_LIMIT_TTS = 5000;

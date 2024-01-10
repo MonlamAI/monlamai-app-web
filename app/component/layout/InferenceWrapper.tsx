@@ -8,7 +8,7 @@ function InferenceWrapper({
   options,
 }) {
   return (
-    <main className="mx-auto w-11/12 md:w-4/5">
+    <main className="mx-auto w-11/12 ">
       {selectedTool && (
         <div className="flex justify-between mb-3">
           <ListInput

@@ -19,6 +19,7 @@ import { FaRedo } from "react-icons/fa";
 import Speak from "~/component/Speak";
 import { toast } from "react-toastify";
 import InferenceWrapper from "~/component/layout/InferenceWrapper";
+import { verifyDomain } from "~/component/utils/verifyDomain";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -28,6 +29,11 @@ export const meta: MetaFunction<typeof loader> = ({ matches }) => {
 };
 
 export const action: ActionFunction = async ({ request }) => {
+  const { referer, isDomainAllowed } = verifyDomain(request);
+  if (!referer || !isDomainAllowed) {
+    // If the referer is not from the expected domain, return a forbidden response
+    return json({ message: "Access forbidden" }, { status: 403 });
+  }
   const formData = await request.formData();
   const apiUrl = process.env.STT_API_URL as string;
   const headers = {

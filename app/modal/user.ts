@@ -34,13 +34,12 @@ export async function getUser(email: string) {
 }
 
 export async function getUsers(value: string) {
-  if (!value && value === "") {
-    return await db.user.findMany();
-  }
-
-  return await db.user.findMany({
+  const totalCount = await db.user.count();
+  const list = await db.user.findMany({
     where: {
       OR: [{ username: { contains: value } }, { email: { contains: value } }],
     },
+    take: 30,
   });
+  return { list, totalCount };
 }

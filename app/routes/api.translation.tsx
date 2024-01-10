@@ -10,6 +10,7 @@ import {
   en_bo_english_replaces,
   en_bo_tibetan_replaces,
 } from "~/component/utils/replace.server";
+import { verifyDomain } from "~/component/utils/verifyDomain";
 import { saveInference } from "~/modal/inference";
 import { getUser } from "~/modal/user";
 import { auth } from "~/services/auth.server";
@@ -19,20 +20,18 @@ type Lang = "bo" | "en";
 export async function translate(
   text: String,
   sourceLang: Lang,
-  targetLang: Lang,
   direction: string
 ) {
   const url =
     "https://rvx0i2sheyjtydoh.us-east-1.aws.endpoints.huggingface.cloud/";
   if (direction !== "" && direction) {
-    let newdirection = "<2" + direction.toLowerCase()+ ">";
+    let newdirection = "<2" + direction.toLowerCase() + ">";
     text = newdirection + text;
   } else if (sourceLang === "bo") {
     text = "<2en>" + text;
   } else if (sourceLang === "en") {
     text = "<2bo>" + text;
   }
-  console.log(text);
   const data = { inputs: text };
   let response;
   const startTime = Date.now(); // Start time for measuring response time
@@ -76,7 +75,11 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   let userdata = await auth.isAuthenticated(request, {
     failureRedirect: "/login",
   });
-
+  const { referer, isDomainAllowed } = verifyDomain(request);
+  if (!referer || !isDomainAllowed) {
+    // If the referer is not from the expected domain, return a forbidden response
+    return json({ message: "Access forbidden" }, { status: 403 });
+  }
   let user = await getUser(userdata?._json.email);
   let formdata = await request.formData();
   const lang = formdata.get("lang") as "bo" | "en";
@@ -98,7 +101,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   }
   if (source) {
     try {
-      let result = await translate(source, lang, targetLang, direction);
+      let result = await translate(source, lang, direction);
       let responseTime = result.responseTime;
 
       // if (result.translation) console.log(result.translation);

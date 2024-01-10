@@ -40,7 +40,25 @@ function Header({ user }) {
   ) : null;
 }
 
-function TranslationCard({ title, content, className }) {
+function InputCard({ title, content, className, model }) {
+  if (model === "stt") {
+    return (
+      <Card>
+        <div className="h-full">
+          <div className="text-gray-400 text-xl">{title}:</div>
+          <div className={`md:w-[600px] ${className} mt-4`}>
+            <audio controls>
+              <source
+                src={`data:audio/wav;base64,${content}`}
+                type="audio/wav"
+              />
+              Your browser does not support the audio element.
+            </audio>
+          </div>
+        </div>
+      </Card>
+    );
+  }
   return (
     <Card>
       <div className="h-full">
@@ -50,7 +68,34 @@ function TranslationCard({ title, content, className }) {
     </Card>
   );
 }
-
+function OutputCard({ title, content, className, model }) {
+  if (model === "tts") {
+    return (
+      <Card>
+        <div className="h-full">
+          <div className="text-gray-400 text-xl">{title}:</div>
+          <div className={`md:w-[600px] ${className} mt-4`}>
+            <audio controls>
+              <source
+                src={`data:audio/wav;base64,${content}`}
+                type="audio/wav"
+              />
+              Your browser does not support the audio element.
+            </audio>
+          </div>
+        </div>
+      </Card>
+    );
+  }
+  return (
+    <Card>
+      <div className="h-full">
+        <div className="text-gray-400 text-xl">{title}:</div>
+        <div className={`md:w-[600px] ${className} mt-4`}>{content}</div>
+      </div>
+    </Card>
+  );
+}
 function TranslationRoute() {
   const { id, data, user, langDir, model } = useLoaderData();
 
@@ -76,15 +121,17 @@ function TranslationRoute() {
         <ShareToolWraper title={model?.toUpperCase()}>
           <LanguageSwitcher sourceLang={sourceLang} targetLang={targetLang} />
           <div className="flex flex-col md:flex-row h-[50vh] gap-3">
-            <TranslationCard
+            <InputCard
               title="User"
               content={data.input}
               className="font-poppins"
+              model={model}
             />
-            <TranslationCard
+            <OutputCard
               title="Translation"
               content={data.output}
               className="font-monlam"
+              model={model}
             />
           </div>
           <div className="self-end mt-4">

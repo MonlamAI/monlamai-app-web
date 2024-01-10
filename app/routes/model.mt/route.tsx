@@ -6,22 +6,15 @@ import type {
 import { useFetcher } from "@remix-run/react";
 import { Button, Card, Textarea } from "flowbite-react";
 import { useState, useRef, useEffect } from "react";
-import CopyToClipboard from "~/component/CopyToClipboard";
 import { auth } from "~/services/auth.server";
-import ReactionButtons from "~/component/ReactionButtons";
-import LikeDislike from "~/styles/LikeDislike";
 import useDebounce from "~/component/hooks/useDebounceState";
-import { motion } from "framer-motion";
 import useLocalStorage from "~/component/hooks/useLocaleStorage";
 import ErrorMessage from "~/component/ErrorMessage";
 import ToolWraper from "~/component/ToolWraper";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import DownloadDocument from "~/routes/model.mt/components/DownloadDocument";
-import Speak from "~/component/Speak";
 import { toast } from "react-toastify";
-import ShareLink from "~/component/ShareLink";
 import { updateEdit } from "~/modal/inference";
-import { GoPencil } from "react-icons/go";
 import ListInput from "~/component/ListInput";
 import { CHAR_LIMIT, MAX_SIZE_SUPPORT } from "~/helper/const";
 import LanguageSwitcher from "./components/LanguageSwitcher";
@@ -33,11 +26,6 @@ import {
   TranslationDisplay,
 } from "./components/UtilityComponent";
 import { NonEditModeActions } from "./components/ActionButtons";
-
-const langLabels = {
-  bo: "བོད་སྐད།",
-  en: "English",
-};
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -75,10 +63,10 @@ export default function Index() {
   const [showLike, setShowLike] = useState(false);
   const [edit, setEdit] = useState(false);
   const [editText, setEditText] = useState("");
-  const [direction, setDirection] = useState("");
+  const [direction, setDirection] = useState("bo");
 
   const debouncedSearchTerm = useDebounce(sourceText, 1000);
-  const debouncedDirection = useDebounce(direction, 1000);
+  const debouncedDirection = useDebounce(direction, 2000);
   const likefetcher = useFetcher();
   const editfetcher = useFetcher();
 
@@ -88,7 +76,6 @@ export default function Index() {
   let charCount = sourceText?.length;
   let { translation } = uselitteraTranlation();
   let liked = likefetcher.data?.liked;
-  let message = likefetcher.data?.message;
   function handleCopy() {
     let textToCopy = getTextToCopy();
     navigator.clipboard.writeText(textToCopy);
@@ -167,7 +154,7 @@ export default function Index() {
           value={direction}
           onChange={(e) => setDirection(e.target.value)}
           placeholder="eg. fr"
-          className=" border-2 border-gray-300 pl-2"
+          className=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         />
       </div>
       <div className="mt-3 flex flex-col md:flex-row md:h-[55vh] gap-5">
@@ -238,7 +225,6 @@ export default function Index() {
           {!edit && (
             <NonEditModeActions
               liked={liked}
-              message={message}
               selectedTool={selectedTool}
               setShowLike={setShowLike}
               showLike={showLike}

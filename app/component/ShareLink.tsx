@@ -59,8 +59,12 @@ function ShareLink({ link }) {
       <dialog open={isOpen} className="absolute z-20 left-[-20vw] top-full">
         <Card className="w-[50vw] md:max-w-[20vw]">
           <div className="flex gap-2">
-            <TextInput type="text" value={link} readOnly />
-            <CopyToClipboard textToCopy={link} />
+            <TextInput
+              type="text"
+              value={window.location.origin + link}
+              readOnly
+            />
+            <CopyToClipboard textToCopy={window.location.origin + link} />
           </div>
           <div className="flex justify-around">
             <SocialShareButton

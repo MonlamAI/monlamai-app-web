@@ -1,9 +1,7 @@
 import { Button, Card, Spinner, Textarea } from "flowbite-react";
 import { MetaFunction, useFetcher } from "@remix-run/react";
-import { type ActionFunction } from "@remix-run/node";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import ReactionButtons from "~/component/ReactionButtons";
-import inputReplace from "~/component/utils/ttsReplace.server";
 import { amplifyMedia } from "~/component/utils/audioGain";
 import useLocalStorage from "~/component/hooks/useLocaleStorage";
 import AudioPlayer from "~/component/AudioPlayer";
@@ -12,46 +10,18 @@ import { readDocxFile, readTextFile } from "~/component/utils/readers";
 import { useDropzone } from "react-dropzone";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import { FaFile } from "react-icons/fa6";
-import ListInput from "~/component/ListInput";
 import { FaRedo } from "react-icons/fa";
-import Speak from "~/component/Speak";
 import { toast } from "react-toastify";
 import ErrorMessage from "~/component/ErrorMessage";
 import InferenceWrapper from "~/component/layout/InferenceWrapper";
-const charLimit = 2000;
+import { CHAR_LIMIT_TTS } from "~/helper/const";
+import ShareLink from "~/component/ShareLink";
 
 export const meta: MetaFunction = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
   parentMeta.shift(1);
 
   return [{ title: "Monlam | ཀློག་འདོན་རིག་ནུས།" }, ...parentMeta];
-};
-
-export const action: ActionFunction = async ({ request }) => {
-  const formdata = await request.formData();
-  // const voiceType = formdata.get("voice") as string;
-  const userInput = formdata.get("sourceText") as string;
-  const API_URL = process.env.TTS_API_URL as string;
-  const headers = {
-    Authorization: process.env.MODEL_API_AUTH_TOKEN as string,
-    "Content-Type": "application/json",
-  };
-  try {
-    const response = await fetch(API_URL, {
-      method: "POST",
-      headers,
-      body: JSON.stringify({
-        inputs: inputReplace(userInput),
-      }),
-    });
-    const data = await response.json();
-    const { audio_base64 } = data;
-    return audio_base64;
-  } catch (e) {
-    return {
-      error: "There was a problem with the API :" + e,
-    };
-  }
 };
 
 export default function Index() {
@@ -63,7 +33,8 @@ export default function Index() {
   const [volume, setVolume] = useLocalStorage("volume", 1);
   const fetcher = useFetcher();
   const isLoading = fetcher.state !== "idle";
-  const data = fetcher.data;
+  const data = fetcher.data?.data;
+  const inferenceId = fetcher.data?.inferenceData?.id;
   let sourceUrl = useMemo(() => {
     return data ? `data:audio/wav;base64,${data}` : null;
   }, [data]);
@@ -109,6 +80,7 @@ export default function Index() {
       },
       {
         method: "POST",
+        action: "/api/tts",
       }
     );
   }
@@ -187,29 +159,28 @@ export default function Index() {
               </div>
             )}
           </div>
-          <div className="flex justify-between">
-            <div
-              className={
-                !likeFetcher.data?.liked ? "text-red-400" : "text-green-400"
-              }
-            >
-              {likeFetcher.data?.message}
-            </div>
+          <div className="flex justify-end">
             <div className="flex gap-2">
               <ReactionButtons
                 fetcher={likeFetcher}
                 output={data ? `data:audio/wav;base64,${data}` : null}
                 sourceText={sourceText}
-                model="tts"
+                inferenceId={inferenceId}
               />
-              <Button
-                color="gray"
-                className="text-slate-500"
-                onClick={handleReset}
-                title={translation.reset}
-              >
-                <FaRedo size={20} color="gray" />
-              </Button>
+
+              {inferenceId && (
+                <>
+                  <Button
+                    color="gray"
+                    className="text-slate-500"
+                    onClick={handleReset}
+                    title={translation.reset}
+                  >
+                    <FaRedo size={20} color="gray" />
+                  </Button>
+                  <ShareLink link={"/share/" + inferenceId} />
+                </>
+              )}
             </div>
           </div>
         </Card>
@@ -245,14 +216,14 @@ function TextComponent({ sourceText, setSourceText }) {
         onInput={(e) => {
           setSourceText((prev) => {
             let value = e.target.value;
-            if (value?.length <= charLimit) return value;
+            if (value?.length <= CHAR_LIMIT_TTS) return value;
             return prev;
           });
         }}
         autoFocus
       />
       <div className="text-gray-400 self-end mr-3 text-xs">
-        {charCount} / {charLimit}
+        {charCount} / {CHAR_LIMIT_TTS}
       </div>
     </div>
   );

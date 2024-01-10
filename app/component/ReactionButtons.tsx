@@ -1,13 +1,13 @@
 import { Button, Spinner } from "flowbite-react";
 import { FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa";
 import { modelType } from "~/modal/feedback";
-import React from "react";
+import React, { useEffect } from "react";
+import { toast } from "react-toastify";
 interface ReactionButtonsProps {
   fetcher: any;
   output: string | null;
   sourceText: string | null;
-  model: modelType;
-  inferenceId: number;
+  inferenceId: string;
 }
 
 const API_ENDPOINT = "/api/feedback";
@@ -17,7 +17,6 @@ function ReactionButtons({
   fetcher,
   output,
   sourceText,
-  model,
   inferenceId,
 }: ReactionButtonsProps) {
   const { liked, disliked } = fetcher.data || {};
@@ -34,6 +33,13 @@ function ReactionButtons({
   };
 
   if (isLoading) return <Spinner />;
+  let message = fetcher.data?.message;
+
+  useEffect(() => {
+    if (message && message !== "") {
+      toast(message);
+    }
+  }, [message]);
 
   return (
     <div className="flex justify-center">

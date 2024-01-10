@@ -10,7 +10,6 @@ import LikeDislike from "~/styles/LikeDislike";
 
 type NonEditModeActionsProps = {
   liked: boolean;
-  message: string;
   selectedTool: string;
   setShowLike: (p: boolean) => void;
   showLike: boolean;
@@ -26,7 +25,6 @@ type NonEditModeActionsProps = {
 
 export function NonEditModeActions({
   liked,
-  message,
   selectedTool,
   setShowLike,
   showLike,
@@ -39,14 +37,13 @@ export function NonEditModeActions({
   translated,
   handleCopy,
 }: NonEditModeActionsProps) {
-  useEffect(() => {
-    if (message && message !== "") {
-      toast(message);
-    }
-  }, [message]);
-
   return (
-    <div className="flex justify-end">
+    <div className="flex justify-between">
+      {getTextToCopy() !== "" && selectedTool === "text" ? (
+        <Speak getText={getTextToCopy} text={null} />
+      ) : (
+        <div />
+      )}
       <div className="flex relative justify-end items-center">
         {selectedTool === "text" && (
           <>
@@ -66,7 +63,6 @@ export function NonEditModeActions({
                     fetcher={likefetcher}
                     output={getTextToCopy()}
                     sourceText={sourceText}
-                    model="mt"
                     inferenceId={inferenceId}
                   />
                 </div>
@@ -89,7 +85,6 @@ export function NonEditModeActions({
         )}
         {getTextToCopy() !== "" && selectedTool === "text" && (
           <>
-            <Speak getText={getTextToCopy} text={null} />
             <ShareLink
               link={window.location.origin + `/share/${inferenceId}`}
             />

@@ -38,7 +38,7 @@ model Vote {
   updatedAt   DateTime  @updatedAt
   liked       Boolean?
   disliked    Boolean?
-  inference   Inference @relation("feedback", fields: [inferenceId], references: [id])
+  inference   Inference @relation("feedback", fields: [inferenceId], references: [id],onDelete: Cascade)
   inferenceId Int       @unique
 }
 
