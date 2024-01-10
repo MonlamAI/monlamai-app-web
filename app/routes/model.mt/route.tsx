@@ -23,9 +23,9 @@ import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import DownloadDocument from "~/routes/model.mt/components/DownloadDocument";
 import Speak from "~/component/Speak";
 import { toast } from "react-toastify";
-import { translate } from "../api.translation";
 import ShareLink from "~/component/ShareLink";
 import { updateEdit } from "~/modal/inference";
+import { GoPencil } from "react-icons/go";
 
 const langLabels = {
   bo: "བོད་སྐད།",
@@ -71,14 +71,13 @@ export default function Index() {
   );
   const [showLike, setShowLike] = useState(false);
   const [edit, setEdit] = useState(false);
-
+  const [editText, setEditText] = useState("");
   const [direction, setDirection] = useState("");
 
   const debouncedSearchTerm = useDebounce(sourceText, 1000);
   const debouncedDirection = useDebounce(direction, 1000);
   const likefetcher = useFetcher();
   const editfetcher = useFetcher();
-  const editRef = useRef(null);
 
   const targetRef = useRef<HTMLDivElement>(null);
 
@@ -139,7 +138,7 @@ export default function Index() {
   let translated = data?.translation;
 
   function handleEditSubmit() {
-    let edited = editRef.current?.value;
+    let edited = editText;
     editfetcher.submit(
       {
         inferenceId,
@@ -155,6 +154,7 @@ export default function Index() {
   function handleCancelEdit() {
     setEdit(false);
     setShowLike(false);
+    setEditText("");
   }
   return (
     <ToolWraper title="MT">
@@ -272,8 +272,8 @@ export default function Index() {
                   )}
                   {edit && (
                     <Textarea
-                      defaultValue={translated?.translation}
-                      ref={editRef}
+                      value={editText}
+                      onChange={(e) => setEditText(e.target.value)}
                       className="w-full h-full resize-none  bg-transparent font-monlam ring-0  flex-1"
                     />
                   )}
@@ -302,6 +302,7 @@ export default function Index() {
                 color="blue"
                 onClick={handleEditSubmit}
                 isProcessing={editfetcher.state !== "idle"}
+                disabled={editText === translated?.translation}
               >
                 submit
               </Button>
@@ -325,8 +326,9 @@ export default function Index() {
                       <LikeDislike />
                     </Button>
                     {showLike && (
-                      <div className=" rounded shadow-md bg-white flex flex-col items-center gap-1 absolute top-[100%] left-0 p-1 z-10">
-                        <div>
+                      <div className=" rounded shadow-md bg-white flex flex-col items-center gap-1 absolute top-[100%] left-0 p-4 z-10">
+                        <div className="flex flex-col gap-2">
+                          <p>Rate this translation</p>
                           <ReactionButtons
                             fetcher={likefetcher}
                             output={getTextToCopy()}
@@ -335,8 +337,14 @@ export default function Index() {
                             inferenceId={inferenceId}
                           />
                         </div>
-                        <Button onClick={() => setEdit((p) => !p)}>
-                          suggest
+                        <Button
+                          onClick={() => {
+                            setEdit((p) => !p);
+                            setEditText(translated?.translation);
+                          }}
+                        >
+                          <GoPencil className="mr-2" />
+                          Suggest an edit
                         </Button>
                       </div>
                     )}

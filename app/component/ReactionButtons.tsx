@@ -36,7 +36,7 @@ function ReactionButtons({
   if (isLoading) return <Spinner />;
 
   return (
-    <div className="flex justify-end">
+    <div className="flex justify-center">
       <ReactionButton
         enabled={!!output}
         active={liked}
