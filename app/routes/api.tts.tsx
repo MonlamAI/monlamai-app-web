@@ -6,8 +6,8 @@ import { getUser } from "~/modal/user";
 import { auth } from "~/services/auth.server";
 
 export const action: ActionFunction = async ({ request }) => {
-  const { referer, isDomainAllowed } = verifyDomain(request);
-  if (!referer || !isDomainAllowed) {
+  const isDomainAllowed = verifyDomain(request);
+  if (!isDomainAllowed) {
     // If the referer is not from the expected domain, return a forbidden response
     return json({ message: "Access forbidden" }, { status: 403 });
   }

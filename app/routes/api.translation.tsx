@@ -75,8 +75,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   let userdata = await auth.isAuthenticated(request, {
     failureRedirect: "/login",
   });
-  const { referer, isDomainAllowed } = verifyDomain(request);
-  if (!referer || !isDomainAllowed) {
+  const isDomainAllowed = verifyDomain(request);
+  if (!isDomainAllowed) {
     // If the referer is not from the expected domain, return a forbidden response
     return json({ message: "Access forbidden" }, { status: 403 });
   }

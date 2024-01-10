@@ -14,7 +14,6 @@ import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import { useDropzone } from "react-dropzone";
 import { FaDownload, FaFile } from "react-icons/fa6";
 import { downloadTxtFile } from "~/component/utils/download";
-import ListInput from "~/component/ListInput";
 import { FaRedo } from "react-icons/fa";
 import Speak from "~/component/Speak";
 import { toast } from "react-toastify";
@@ -29,8 +28,8 @@ export const meta: MetaFunction<typeof loader> = ({ matches }) => {
 };
 
 export const action: ActionFunction = async ({ request }) => {
-  const { referer, isDomainAllowed } = verifyDomain(request);
-  if (!referer || !isDomainAllowed) {
+  const isDomainAllowed = verifyDomain(request);
+  if (!isDomainAllowed) {
     // If the referer is not from the expected domain, return a forbidden response
     return json({ message: "Access forbidden" }, { status: 403 });
   }
