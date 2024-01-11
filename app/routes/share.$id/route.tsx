@@ -119,7 +119,9 @@ function TranslationRoute() {
       <Header user={user} />
       <div className="flex flex-col  md:mx-auto gap-3 justify-between ">
         <ShareToolWraper title={model?.toUpperCase()}>
-          <LanguageSwitcher sourceLang={sourceLang} targetLang={targetLang} />
+          {model === "mt" && (
+            <LanguageSwitcher sourceLang={sourceLang} targetLang={targetLang} />
+          )}
           <div className="flex flex-col md:flex-row h-[50vh] gap-3">
             <InputCard
               title="User"

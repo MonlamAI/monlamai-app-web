@@ -178,7 +178,7 @@ export default function Index() {
                   >
                     <FaRedo size={20} color="gray" />
                   </Button>
-                  <ShareLink link={"/share/" + inferenceId} />
+                  <ShareLink inferenceId={inferenceId} />
                 </>
               )}
             </div>

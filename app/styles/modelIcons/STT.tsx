@@ -138,7 +138,7 @@ function STT() {
         fill="#ffffff"
         y="-37.499999"
         height="449.999989"
-        fill-opacity="1"
+        fillOpacity="1"
       />
       <rect
         x="-37.5"
@@ -146,15 +146,15 @@ function STT() {
         fill="#ffffff"
         y="-37.499999"
         height="449.999989"
-        fill-opacity="1"
+        fillOpacity="1"
       />
       <g clip-path="url(#f7e32f4b29)">
         <g clip-path="url(#ed3f4139c0)">
           <path
             fill="#000000"
             d="M 84.078125 259.785156 L 107.054688 259.785156 L 107.054688 312.183594 L 84.078125 312.183594 Z M 84.078125 259.785156 "
-            fill-opacity="1"
-            fill-rule="nonzero"
+            fillOpacity="1"
+            fillRule="nonzero"
           />
         </g>
       </g>
@@ -163,8 +163,8 @@ function STT() {
           <path
             fill="#000000"
             d="M 53.039062 285.574219 L 136.839844 285.574219 L 136.839844 325.863281 L 53.039062 325.863281 Z M 53.039062 285.574219 "
-            fill-opacity="1"
-            fill-rule="nonzero"
+            fillOpacity="1"
+            fillRule="nonzero"
           />
         </g>
       </g>
@@ -173,8 +173,8 @@ function STT() {
           <path
             fill="#cdebff"
             d="M 141.765625 37.5 L 358.703125 37.5 L 358.703125 215.0625 L 141.765625 215.0625 Z M 141.765625 37.5 "
-            fill-opacity="1"
-            fill-rule="nonzero"
+            fillOpacity="1"
+            fillRule="nonzero"
           />
         </g>
       </g>
@@ -198,8 +198,8 @@ function STT() {
           <path
             fill="#737373"
             d="M 195.867188 67.117188 L 319 67.117188 L 319 87.183594 L 195.867188 87.183594 Z M 195.867188 67.117188 "
-            fill-opacity="1"
-            fill-rule="nonzero"
+            fillOpacity="1"
+            fillRule="nonzero"
           />
         </g>
       </g>
@@ -208,8 +208,8 @@ function STT() {
           <path
             fill="#000000"
             d="M 36.191406 312.183594 L 153.6875 312.183594 L 153.6875 339.542969 L 36.191406 339.542969 Z M 36.191406 312.183594 "
-            fill-opacity="1"
-            fill-rule="nonzero"
+            fillOpacity="1"
+            fillRule="nonzero"
           />
         </g>
       </g>
@@ -218,8 +218,8 @@ function STT() {
           <path
             fill="#737373"
             d="M 195.867188 97.433594 L 324.632812 97.433594 L 324.632812 117.5 L 195.867188 117.5 Z M 195.867188 97.433594 "
-            fill-opacity="1"
-            fill-rule="nonzero"
+            fillOpacity="1"
+            fillRule="nonzero"
           />
         </g>
       </g>
@@ -228,8 +228,8 @@ function STT() {
           <path
             fill="#737373"
             d="M 195.867188 127.75 L 291.765625 127.75 L 291.765625 147.816406 L 195.867188 147.816406 Z M 195.867188 127.75 "
-            fill-opacity="1"
-            fill-rule="nonzero"
+            fillOpacity="1"
+            fillRule="nonzero"
           />
         </g>
       </g>
@@ -253,8 +253,8 @@ function STT() {
           <path
             fill="#000000"
             d="M 56.84375 91.566406 L 133.035156 91.566406 L 133.035156 237.246094 L 56.84375 237.246094 Z M 56.84375 91.566406 "
-            fill-opacity="1"
-            fill-rule="nonzero"
+            fillOpacity="1"
+            fillRule="nonzero"
           />
         </g>
       </g>

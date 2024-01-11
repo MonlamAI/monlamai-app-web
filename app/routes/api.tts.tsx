@@ -43,7 +43,8 @@ export const action: ActionFunction = async ({ request }) => {
       "tts",
       user?.id
     );
-    if (!checkifModelExist) {
+
+    if (!checkifModelExist && audio_base64) {
       const inferenceData = await saveInference({
         userId: user?.id,
         model: "tts",
@@ -53,7 +54,7 @@ export const action: ActionFunction = async ({ request }) => {
       });
       return { data: audio_base64, inferenceData };
     } else {
-      return { data: audio_base64 };
+      return { data: audio_base64, inferenceData: checkifModelExist };
     }
   } catch (e) {
     return {

@@ -26,6 +26,7 @@ import {
   TranslationDisplay,
 } from "./components/UtilityComponent";
 import { NonEditModeActions } from "~/component/ActionButtons";
+import EditDisplay from "~/component/EditDisplay";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -87,7 +88,14 @@ export default function Index() {
 
   useEffect(() => {
     if (debouncedSearchTerm === "" || !debouncedSearchTerm) return;
-
+    setEdit(false);
+    editfetcher.submit(
+      {},
+      {
+        method: "POST",
+        action: "/api/reset_actiondata",
+      }
+    );
     fetcher.submit(
       {
         input: debouncedSearchTerm,
@@ -105,6 +113,7 @@ export default function Index() {
   let isloading = fetcher.state !== "idle";
   let inferenceId = data?.inferenceData?.id;
   let translated = data?.translation;
+  let TextSelected = selectedTool === "text";
 
   function handleEditSubmit() {
     let edited = editText;
@@ -187,8 +196,11 @@ export default function Index() {
                   : "font-poppins"
               }`}
             >
-              {selectedTool === "text" && isloading && <LoadingAnimation />}
-              {selectedTool === "text" && !isloading && (
+              {TextSelected && isloading && <LoadingAnimation />}
+              {TextSelected && edit && (
+                <EditDisplay editText={editText} setEditText={setEditText} />
+              )}
+              {TextSelected && !isloading && (
                 <TranslationDisplay
                   edit={edit}
                   editData={editData}

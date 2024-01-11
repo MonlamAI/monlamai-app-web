@@ -2,6 +2,7 @@ import { Button, Textarea } from "flowbite-react";
 import DocumentComponent from "./DocumentComponent";
 import TextComponent from "./TextComponent";
 import { motion } from "framer-motion";
+import EditDisplay from "~/component/EditDisplay";
 type TextOrDocumentComponentProps = {
   selectedTool: string;
   sourceText: string;
@@ -97,18 +98,8 @@ export function TranslationDisplay({
   edit,
   editData,
   translated,
-  editText,
-  setEditText,
 }: TranslationDisplayProps) {
-  if (edit) {
-    return (
-      <Textarea
-        value={editText}
-        onChange={(e) => setEditText(e.target.value)}
-        className="w-full h-full resize-none bg-transparent font-monlam ring-0 flex-1"
-      />
-    );
-  }
+  if (edit) return null;
 
   return (
     <div className="font-monlam text-[1.2rem]" style={{ lineHeight: "1.8" }}>

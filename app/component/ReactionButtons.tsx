@@ -73,7 +73,12 @@ function ReactionButton({
   onClick,
 }: ReactionButtonProps) {
   return (
-    <Button color="white" disabled={!enabled} onClick={onClick}>
+    <Button
+      color="white"
+      disabled={!enabled}
+      onClick={onClick}
+      className="focus:outline-none"
+    >
       {React.cloneElement(icon, {
         color: active ? (icon === FaRegThumbsUp ? "green" : "red") : "gray",
         size: "20px",

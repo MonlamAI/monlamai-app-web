@@ -1,4 +1,4 @@
-import { Button } from "flowbite-react";
+import { Button, Dropdown } from "flowbite-react";
 import { useEffect } from "react";
 import { GoPencil } from "react-icons/go";
 import { toast } from "react-toastify";
@@ -37,44 +37,40 @@ export function NonEditModeActions({
   let isOutputNull = !text || text === "";
   return (
     <div className="flex justify-between">
-      {isOutputNull && isSelected ? (
-        <Speak getText={text} text={null} />
-      ) : (
-        <div />
-      )}
+      {!isOutputNull && isSelected ? <Speak text={text} /> : <div />}
       <div className="flex relative justify-end items-center">
         {isSelected && (
           <>
-            <Button
-              className="border-none"
-              color="gray"
-              onClick={() => setShowLike((p) => !p)}
-              disabled={!text}
-            >
-              <LikeDislike />
-            </Button>
-            {showLike && (
-              <div className="rounded shadow-md bg-white flex flex-col items-center gap-1 absolute top-[100%] left-0 p-4 z-10">
-                <div className="flex flex-col gap-2">
-                  <p>Rate this translation</p>
-                  <ReactionButtons
-                    fetcher={likefetcher}
-                    output={text}
-                    sourceText={sourceText}
-                    inferenceId={inferenceId}
-                  />
-                </div>
-                <Button
-                  onClick={() => {
-                    setEdit((p) => !p);
-                    setEditText(text);
-                  }}
-                >
-                  <GoPencil className="mr-2" />
-                  Suggest an edit
+            <Dropdown
+              label="likeDislikeEdit"
+              dismissOnClick={true}
+              renderTrigger={() => (
+                <Button className="border-none" color="gray" disabled={!text}>
+                  <LikeDislike />
                 </Button>
+              )}
+              size="lg"
+            >
+              <Dropdown.Header>Satisfied?</Dropdown.Header>
+              <div className="flex flex-col gap-2 ">
+                <ReactionButtons
+                  fetcher={likefetcher}
+                  output={text}
+                  sourceText={sourceText}
+                  inferenceId={inferenceId}
+                />
               </div>
-            )}
+              <hr />
+              <Dropdown.Item
+                onClick={() => {
+                  setEditText(text);
+                  setEdit(true);
+                }}
+                icon={GoPencil}
+              >
+                Suggest an edit
+              </Dropdown.Item>
+            </Dropdown>
             <CopyToClipboard textToCopy={text} onClick={handleCopy} />
           </>
         )}
