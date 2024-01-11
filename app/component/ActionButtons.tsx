@@ -33,7 +33,7 @@ export function NonEditModeActions({
   text,
   handleCopy,
 }: NonEditModeActionsProps) {
-  let isSelected = selectedTool === "text" || selectedTool === "recording";
+  let isSelected = selectedTool === "text" || selectedTool === "Recording";
   let isOutputNull = !text || text === "";
   return (
     <div className="flex justify-between">

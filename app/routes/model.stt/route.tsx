@@ -19,6 +19,13 @@ import Speak from "~/component/Speak";
 import { toast } from "react-toastify";
 import InferenceWrapper from "~/component/layout/InferenceWrapper";
 import { verifyDomain } from "~/component/utils/verifyDomain";
+import {
+  EditActionButtons,
+  TranslationDisplay,
+} from "../model.mt/components/UtilityComponent";
+import { NonEditModeActions } from "~/component/ActionButtons";
+import { saveInference, updateEdit } from "~/modal/inference";
+import EditDisplay from "~/component/EditDisplay";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -28,35 +35,14 @@ export const meta: MetaFunction<typeof loader> = ({ matches }) => {
 };
 
 export const action: ActionFunction = async ({ request }) => {
-  const isDomainAllowed = verifyDomain(request);
-  if (!isDomainAllowed) {
-    // If the referer is not from the expected domain, return a forbidden response
-    return json({ message: "Access forbidden" }, { status: 403 });
-  }
-  const formData = await request.formData();
-  const apiUrl = process.env.STT_API_URL as string;
-  const headers = {
-    Authorization: process.env.MODEL_API_AUTH_TOKEN as string,
-    "Content-Type": "audio/flac",
-  };
-  try {
-    let audio = formData.get("audio") as string;
-    const blob = await fetch(audio).then((res) => res.blob());
-    const response = await fetch(apiUrl, {
-      method: "POST",
-      headers: headers,
-      body: blob,
-    });
-    if (response.ok) {
-      const data = await response.json();
-      return json({ text: data?.text });
-    } else {
-      return json({ error_message: "Failed to send the audio to the server" });
-    }
-  } catch (error) {
-    return { error_message: "Error during submission:" + error };
-  }
+  let formdata = await request.formData();
+  let edited = formdata.get("edited") as string;
+  let inferenceId = formdata.get("inferenceId") as string;
+  let updated = await updateEdit(inferenceId, edited);
+
+  return updated;
 };
+
 export default function Index() {
   const fetcher = useFetcher();
   const [audioChunks, setAudioChunks] = useState([]);
@@ -68,7 +54,20 @@ export default function Index() {
   let mediaRecorder: any = useRef();
   const [audioBase64, setBase64] = useState<string | null>(null);
   const [recording, setRecording] = useState(false);
+  const [showLike, setShowLike] = useState(false);
+  const [edit, setEdit] = useState(false);
+  const [editText, setEditText] = useState("");
+
   let likefetcher = useFetcher();
+  const editfetcher = useFetcher();
+
+  let editData = editfetcher.data?.edited;
+  let liked = likefetcher.data?.liked;
+  function handleCopy() {
+    let textToCopy = text;
+    navigator.clipboard.writeText(textToCopy);
+  }
+
   useEffect(() => {
     setAudioURL(null);
   }, [selectedTool]);
@@ -81,10 +80,17 @@ export default function Index() {
       () => {
         if (typeof reader.result === "string") {
           form.append("audio", reader.result);
-          fetcher.submit(form, { method: "post" });
+          fetcher.submit(form, { method: "POST", action: "/api/stt" });
         }
       },
       { once: true }
+    );
+    editfetcher.submit(
+      {},
+      {
+        method: "POST",
+        action: "/api/reset_actiondata",
+      }
     );
   };
   const isLoading = fetcher.state !== "idle";
@@ -94,6 +100,14 @@ export default function Index() {
     // reset the audio element and the transcript
     setAudio(null);
     setAudioURL(null);
+    setEdit(false);
+    editfetcher.submit(
+      {},
+      {
+        method: "POST",
+        action: "/api/reset_actiondata",
+      }
+    );
     fetcher.submit(
       {},
       {
@@ -102,6 +116,7 @@ export default function Index() {
       }
     );
   };
+
   const toggleRecording = () => {
     if (!recording) {
       startRecording();
@@ -192,6 +207,29 @@ export default function Index() {
   let isEnglish = label === "en_US";
   let isDisabled = !audioURL;
   let text = fetcher.data?.text;
+  let inferenceId = fetcher.data?.inferenceId;
+  let RecordingSelected = selectedTool === "Recording";
+
+  function handleEditSubmit() {
+    let edited = editText;
+    editfetcher.submit(
+      {
+        inferenceId,
+        edited,
+      },
+      {
+        method: "POST",
+      }
+    );
+    setEdit(false);
+    setShowLike(false);
+  }
+  function handleCancelEdit() {
+    setEdit(false);
+    setShowLike(false);
+    setEditText("");
+  }
+
   return (
     <ToolWraper title="STT">
       <InferenceWrapper
@@ -227,7 +265,19 @@ export default function Index() {
               <HandleAudioFile handleFileChange={handleFileChange} />
             )}
 
-            <div className="flex flex-end h-10">
+            <div className="flex justify-between flex-end h-10">
+              {audioURL ? (
+                <Button
+                  color="gray"
+                  className="text-slate-500"
+                  onClick={handleReset}
+                  title={translation.reset}
+                >
+                  <FaRedo size={20} color="gray" />
+                </Button>
+              ) : (
+                <div />
+              )}
               <Button
                 onClick={handleSubmit}
                 disabled={isDisabled}
@@ -239,60 +289,48 @@ export default function Index() {
           </div>
         </Card>
         <Card className="w-full  h-[60vh] flex">
-          {text && (
-            <div className="flex justify-end">
-              <Speak text={text} />
-            </div>
-          )}
           <div className="w-full h-[25vh] lg:h-[50vh] p-3 text-black bg-slate-100 dark:text-gray-200 dark:bg-slate-700 rounded-lg overflow-auto">
-            {isLoading ? (
+            {RecordingSelected && isLoading && (
               <div className="h-full flex justify-center items-center">
                 <Spinner />
               </div>
-            ) : (
-              text && (
-                <p
-                  className="font-monlam text-2xl"
-                  style={{ lineHeight: "1.8" }}
-                >
-                  {text}
-                </p>
-              )
+            )}
+            {RecordingSelected && edit && (
+              <EditDisplay editText={editText} setEditText={setEditText} />
+            )}
+            {RecordingSelected && !isLoading && (
+              <TranslationDisplay
+                edit={edit}
+                editData={editData}
+                translated={text}
+                editText={editText}
+                setEditText={setEditText}
+              />
             )}
             {errorMessage && <div className="text-red-400">{errorMessage}</div>}
           </div>
-          <div className="flex justify-between">
-            <div
-              className={
-                !likefetcher.data?.liked ? "text-red-400" : "text-green-400"
-              }
-            >
-              {likefetcher?.data?.message}
-            </div>
-            <div className="flex gap-2">
-              <ReactionButtons
-                fetcher={likefetcher}
-                output={text}
-                sourceText={audioBase64 ? audioBase64 : null}
-                model="stt"
-              />
-              <CopyToClipboard textToCopy={text} disabled={!text} />
-              <Button
-                disabled={!text || text === ""}
-                onClick={() => downloadTxtFile(text)}
-              >
-                <FaDownload />
-              </Button>
-              <Button
-                color="gray"
-                className="text-slate-500"
-                onClick={handleReset}
-                title={translation.reset}
-              >
-                <FaRedo size={20} color="gray" />
-              </Button>
-            </div>
-          </div>
+          <EditActionButtons
+            edit={edit}
+            handleCancelEdit={handleCancelEdit}
+            handleEditSubmit={handleEditSubmit}
+            editfetcher={editfetcher}
+            editText={editText}
+            translated={text}
+          />
+          {!edit && (
+            <NonEditModeActions
+              selectedTool={selectedTool}
+              setShowLike={setShowLike}
+              showLike={showLike}
+              likefetcher={likefetcher}
+              sourceText={audioBase64 || ""}
+              inferenceId={inferenceId}
+              setEdit={setEdit}
+              text={text}
+              handleCopy={handleCopy}
+              setEditText={setEditText}
+            />
+          )}
         </Card>
       </InferenceWrapper>
     </ToolWraper>

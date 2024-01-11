@@ -104,7 +104,7 @@ export function TranslationDisplay({
   return (
     <div className="font-monlam text-[1.2rem]" style={{ lineHeight: "1.8" }}>
       <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-        {editData ? editData : translated?.translation}
+        {editData ? editData : translated?.translation || translated}
       </motion.p>
     </div>
   );
