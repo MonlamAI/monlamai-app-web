@@ -19,6 +19,7 @@ function ReactionButtons({
   sourceText,
   inferenceId,
 }: ReactionButtonsProps) {
+  if (!inferenceId) return null;
   const { liked, disliked } = fetcher.data || {};
   const isLoading =
     fetcher.state !== IDLE_STATE && fetcher.formData?.get("action");
@@ -37,12 +38,12 @@ function ReactionButtons({
 
   useEffect(() => {
     if (message && message !== "") {
-      toast(message);
+      toast.success(message);
     }
   }, [message]);
 
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center gap-6 my-2">
       <ReactionButton
         enabled={!!output}
         active={liked}
@@ -66,24 +67,17 @@ type ReactionButtonProps = {
   onClick: () => void;
 };
 
-function ReactionButton({
-  enabled,
-  active,
-  icon,
-  onClick,
-}: ReactionButtonProps) {
+function ReactionButton({ active, icon, onClick }: ReactionButtonProps) {
   return (
-    <Button
+    <div
       color="white"
-      disabled={!enabled}
       onClick={onClick}
-      className="focus:outline-none"
+      className="focus:outline-none cursor-pointer text-gray-500 hover:text-green-400"
     >
       {React.cloneElement(icon, {
-        color: active ? (icon === FaRegThumbsUp ? "green" : "red") : "gray",
         size: "20px",
       })}
-    </Button>
+    </div>
   );
 }
 

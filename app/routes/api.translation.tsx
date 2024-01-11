@@ -11,6 +11,7 @@ import {
   en_bo_tibetan_replaces,
 } from "~/component/utils/replace.server";
 import { verifyDomain } from "~/component/utils/verifyDomain";
+import { API_ERROR_MESSAGE } from "~/helper/const";
 import { saveInference } from "~/modal/inference";
 import { getUser } from "~/modal/user";
 import { auth } from "~/services/auth.server";
@@ -37,7 +38,7 @@ export async function translate(
   const startTime = Date.now(); // Start time for measuring response time
 
   let modelToken = process.env?.MT_MODEL_TOKEN;
-  if (!modelToken) return { error: "MT API TOKEN MISSING" };
+  if (!modelToken) throw new Error(API_ERROR_MESSAGE);
   try {
     response = await fetch(url, {
       method: "POST",
@@ -48,10 +49,10 @@ export async function translate(
       body: JSON.stringify(data),
     });
     if (!response.ok) {
-      return { error: `API Error Try after sometime` };
+      throw new Error(API_ERROR_MESSAGE);
     }
   } catch (e) {
-    return { error: `API Error Try after sometime` };
+    throw new Error(API_ERROR_MESSAGE);
   }
 
   const responseData = await response?.json();
@@ -100,28 +101,28 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     source = bo_en_tibetan_replaces(source!);
   }
   if (source) {
+    let result;
     try {
-      let result = await translate(source, lang, direction);
-      let responseTime = result.responseTime;
-
-      // if (result.translation) console.log(result.translation);
-      // save the data to the database
-      const inferenceData = await saveInference({
-        userId: user?.id,
-        model: "mt",
-        input: original_source,
-        output: result.translation,
-        responseTime: responseTime,
-        inputLang: lang,
-        outputLang: targetLang,
-      });
-      return json({
-        translation: result,
-        inferenceData: inferenceData,
-      });
+      result = await translate(source, lang, direction);
     } catch (e) {
-      console.log(e);
-      return { error: "API is under maintenance right now " };
+      return { error: e.message };
     }
+    let responseTime = result.responseTime;
+
+    // if (result.translation) console.log(result.translation);
+    // save the data to the database
+    const inferenceData = await saveInference({
+      userId: user?.id,
+      model: "mt",
+      input: original_source,
+      output: result.translation,
+      responseTime: responseTime,
+      inputLang: lang,
+      outputLang: targetLang,
+    });
+    return json({
+      translation: result,
+      inferenceData: inferenceData,
+    });
   }
 };

@@ -3,7 +3,12 @@ import type {
   LoaderFunctionArgs,
   MetaFunction,
 } from "@remix-run/node";
-import { useFetcher } from "@remix-run/react";
+import {
+  isRouteErrorResponse,
+  useFetcher,
+  useNavigate,
+  useRouteError,
+} from "@remix-run/react";
 import { Button, Card, Textarea } from "flowbite-react";
 import { useState, useRef, useEffect } from "react";
 import { auth } from "~/services/auth.server";
@@ -22,11 +27,12 @@ import {
   CharacterOrFileSizeComponent,
   EditActionButtons,
   LoadingAnimation,
+  OutputDisplay,
   TextOrDocumentComponent,
-  TranslationDisplay,
 } from "./components/UtilityComponent";
 import { NonEditModeActions } from "~/component/ActionButtons";
 import EditDisplay from "~/component/EditDisplay";
+import { resetFetcher } from "~/component/utils/resetFetcher";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -76,7 +82,6 @@ export default function Index() {
 
   let charCount = sourceText?.length;
   let { translation } = uselitteraTranlation();
-  let liked = likefetcher.data?.liked;
   function handleCopy() {
     let textToCopy = translated?.translation;
     navigator.clipboard.writeText(textToCopy);
@@ -89,13 +94,8 @@ export default function Index() {
   useEffect(() => {
     if (debouncedSearchTerm === "" || !debouncedSearchTerm) return;
     setEdit(false);
-    editfetcher.submit(
-      {},
-      {
-        method: "POST",
-        action: "/api/reset_actiondata",
-      }
-    );
+    resetFetcher(editfetcher);
+
     fetcher.submit(
       {
         input: debouncedSearchTerm,
@@ -114,6 +114,7 @@ export default function Index() {
   let inferenceId = data?.inferenceData?.id;
   let translated = data?.translation;
   let TextSelected = selectedTool === "text";
+  let actionError = data?.error as string;
 
   function handleEditSubmit() {
     let edited = editText;
@@ -141,6 +142,7 @@ export default function Index() {
         selectedTool={selectedTool}
         setSelectedTool={setSelectedTool}
       />
+      {actionError && <ErrorMessage error={actionError} />}
       {/* <LanguageSwitcher
         sourceLang={sourceLang}
         targetLang={targetLang}
@@ -158,9 +160,9 @@ export default function Index() {
           className=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         />
       </div>
-      <div className="mt-3 flex flex-col md:flex-row md:h-[55vh] gap-5">
+      <div className="mt-3 flex flex-col md:flex-row  gap-5">
         <Card className="md:w-1/2">
-          <div className="w-full flex flex-col justify-center gap-2 min-h-[20vh] md:min-h-[40vh] flex-1 overflow-hidden">
+          <div className="w-full flex flex-col justify-center gap-2 min-h-[20vh]  flex-1 ">
             <TextOrDocumentComponent
               selectedTool={selectedTool}
               sourceText={sourceText}
@@ -187,7 +189,7 @@ export default function Index() {
         </Card>
 
         <Card className="md:w-1/2 ">
-          <div className="w-full flex flex-col justify-center gap-2 min-h-[20vh] md:min-h-[30vh] flex-1 overflow-hidden">
+          <div className="w-full flex flex-col justify-center gap-2 min-h-[20vh]  flex-1 ">
             <div
               ref={targetRef}
               className={`h-full text-lg ${
@@ -201,10 +203,10 @@ export default function Index() {
                 <EditDisplay editText={editText} setEditText={setEditText} />
               )}
               {TextSelected && !isloading && (
-                <TranslationDisplay
+                <OutputDisplay
                   edit={edit}
                   editData={editData}
-                  translated={translated}
+                  output={translated?.translation ?? ""}
                   editText={editText}
                   setEditText={setEditText}
                 />
@@ -249,16 +251,21 @@ export default function Index() {
   );
 }
 
-export function ErrorBoundary({ error }) {
+export function ErrorBoundary() {
+  const error = useRouteError();
+  let isRouteError = isRouteErrorResponse(error);
+  const navigate = useNavigate();
+
+  console.log(isRouteError);
   useEffect(() => {
-    toast("འདིར་དཀའ་ངལ་འདུག [error with api, try after sometime]", {
-      position: toast.POSITION.BOTTOM_RIGHT,
+    toast.warn("འདིར་དཀའ་ངལ་འདུག [error with api, try after sometime]", {
+      position: toast.POSITION.TOP_RIGHT,
+      style: {
+        top: "5rem",
+      },
     });
+    navigate(".", { replace: true });
   }, []);
 
-  return (
-    <>
-      <ErrorMessage error={error} />
-    </>
-  );
+  return <>{/* <ErrorMessage error={"error"} /> */}</>;
 }

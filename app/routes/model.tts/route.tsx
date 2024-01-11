@@ -16,6 +16,7 @@ import ErrorMessage from "~/component/ErrorMessage";
 import InferenceWrapper from "~/component/layout/InferenceWrapper";
 import { CHAR_LIMIT_TTS } from "~/helper/const";
 import ShareLink from "~/component/ShareLink";
+import { resetFetcher } from "~/component/utils/resetFetcher";
 
 export const meta: MetaFunction = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -47,13 +48,7 @@ export default function Index() {
   };
   const handleReset = () => {
     setSourceText("");
-    fetcher.submit(
-      {},
-      {
-        method: "POST",
-        action: "/api/reset_actiondata",
-      }
-    );
+    resetFetcher(fetcher);
   };
   useEffect(() => {
     setSourceText("");

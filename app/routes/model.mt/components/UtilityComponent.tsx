@@ -27,10 +27,10 @@ type EditActionButtonsProps = {
   translated: any;
 };
 
-type TranslationDisplayProps = {
+type OutputDisplayProps = {
   edit: boolean;
   editData: string;
-  translated: any;
+  output: string;
   editText: string;
   setEditText: (p: string) => void;
 };
@@ -94,17 +94,13 @@ export function LoadingAnimation() {
   );
 }
 
-export function TranslationDisplay({
-  edit,
-  editData,
-  translated,
-}: TranslationDisplayProps) {
+export function OutputDisplay({ edit, editData, output }: OutputDisplayProps) {
   if (edit) return null;
 
   return (
     <div className="font-monlam text-[1.2rem]" style={{ lineHeight: "1.8" }}>
       <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-        {editData ? editData : translated?.translation || translated}
+        {editData ? editData : output}
       </motion.p>
     </div>
   );

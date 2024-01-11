@@ -15,6 +15,7 @@ import { Tooltip } from "flowbite-react";
 import ErrorMessage from "~/component/ErrorMessage";
 import ToolWraper from "~/component/ToolWraper";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
+import { resetFetcher } from "~/component/utils/resetFetcher";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -76,13 +77,7 @@ export default function Index() {
   isEmptyData = isEmptyData || data?.text?.join("") === "";
   const handleFormClear = () => {
     setImageUrl(null);
-    fetcher.submit(
-      {},
-      {
-        method: "POST",
-        action: "/api/reset_actiondata",
-      }
-    );
+    resetFetcher(fetcher);
   };
   let { translation } = uselitteraTranlation();
   return (

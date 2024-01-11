@@ -8,7 +8,7 @@ function ToolWraper({ title, children }) {
   let isEnglish = locale === "en_US";
   return (
     <>
-      <div className="mx-auto w-11/12 md:w-4/5">
+      <div className="mx-auto w-11/12 md:w-4/5 mb-[20vh] ">
         <h1
           className={`text-lg ${
             isEnglish

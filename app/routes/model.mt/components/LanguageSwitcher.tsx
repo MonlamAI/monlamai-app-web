@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { FaArrowRightArrowLeft } from "react-icons/fa6";
+import { resetFetcher } from "~/component/utils/resetFetcher";
 
 const langLabels = {
   bo: "བོད་སྐད།",
@@ -18,12 +19,7 @@ function LanguageSwitcher({
   const [isRotated, setIsRotated] = useState(false);
 
   const handleLangSwitch = () => {
-    likefetcher.submit(
-      {},
-      {
-        action: "/api/reset_actiondata",
-      }
-    );
+    resetFetcher(likefetcher);
     const temp = sourceLang;
     setSourceLang(targetLang);
     setTargetLang(temp);

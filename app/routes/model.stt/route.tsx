@@ -21,11 +21,12 @@ import InferenceWrapper from "~/component/layout/InferenceWrapper";
 import { verifyDomain } from "~/component/utils/verifyDomain";
 import {
   EditActionButtons,
-  TranslationDisplay,
+  OutputDisplay,
 } from "../model.mt/components/UtilityComponent";
 import { NonEditModeActions } from "~/component/ActionButtons";
 import { saveInference, updateEdit } from "~/modal/inference";
 import EditDisplay from "~/component/EditDisplay";
+import { resetFetcher } from "~/component/utils/resetFetcher";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -85,13 +86,7 @@ export default function Index() {
       },
       { once: true }
     );
-    editfetcher.submit(
-      {},
-      {
-        method: "POST",
-        action: "/api/reset_actiondata",
-      }
-    );
+    resetFetcher(editfetcher);
   };
   const isLoading = fetcher.state !== "idle";
   const errorMessage = fetcher.data?.error_message;
@@ -101,20 +96,8 @@ export default function Index() {
     setAudio(null);
     setAudioURL(null);
     setEdit(false);
-    editfetcher.submit(
-      {},
-      {
-        method: "POST",
-        action: "/api/reset_actiondata",
-      }
-    );
-    fetcher.submit(
-      {},
-      {
-        method: "POST",
-        action: "/api/reset_actiondata",
-      }
-    );
+    resetFetcher(editfetcher);
+    resetFetcher(fetcher);
   };
 
   const toggleRecording = () => {
@@ -299,10 +282,10 @@ export default function Index() {
               <EditDisplay editText={editText} setEditText={setEditText} />
             )}
             {RecordingSelected && !isLoading && (
-              <TranslationDisplay
+              <OutputDisplay
                 edit={edit}
                 editData={editData}
-                translated={text}
+                output={text}
                 editText={editText}
                 setEditText={setEditText}
               />
