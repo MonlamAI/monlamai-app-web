@@ -7,7 +7,7 @@ import { formatBytes } from "~/component/utils/formatSize";
 import { readDocxFile, readTextFile } from "~/component/utils/readers";
 import { MAX_SIZE_SUPPORT } from "~/helper/const";
 
-function FileUpload({ sourceText, setSourceText }) {
+function FileUpload({ sourceText, setSourceText, reset }) {
   const [myFiles, setMyFiles] = useState([]);
   const onDrop = useCallback((acceptedFiles) => {
     // Do something with the files
@@ -37,13 +37,9 @@ function FileUpload({ sourceText, setSourceText }) {
       },
       multiple: false,
     });
-  const reset = (file) => () => {
-    const newFiles = [...myFiles];
-    newFiles.splice(newFiles.indexOf(file), 1);
-    setMyFiles(newFiles);
-    if (sourceText !== "") setSourceText("");
-  };
+
   const removeAll = () => {
+    reset();
     setMyFiles([]);
     if (sourceText !== "") setSourceText("");
   };

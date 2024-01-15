@@ -49,7 +49,13 @@ export function TextOrDocumentComponent({
       />
     );
   } else if (selectedTool === "document") {
-    return <FileUpload sourceText={sourceText} setSourceText={setSourceText} />;
+    return (
+      <FileUpload
+        sourceText={sourceText}
+        setSourceText={setSourceText}
+        reset={() => {}}
+      />
+    );
   }
   return null;
 }

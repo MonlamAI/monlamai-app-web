@@ -108,14 +108,17 @@ export default function Index() {
                 <FileUpload
                   setSourceText={setSourceText}
                   sourceText={sourceText}
+                  reset={handleReset}
                 />
               )}
-              <CancelButton
-                onClick={handleReset}
-                hidden={!sourceText || sourceText === ""}
-              >
-                <RxCross2 />
-              </CancelButton>
+              {selectedTool === "text" && (
+                <CancelButton
+                  onClick={handleReset}
+                  hidden={!sourceText || sourceText === ""}
+                >
+                  <RxCross2 />
+                </CancelButton>
+              )}
             </div>
             <div className="flex justify-between items-center">
               <CharacterOrFileSizeComponent
