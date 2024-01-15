@@ -20,6 +20,7 @@ import { toast } from "react-toastify";
 import InferenceWrapper from "~/component/layout/InferenceWrapper";
 import { verifyDomain } from "~/component/utils/verifyDomain";
 import {
+  CharacterOrFileSizeComponent,
   EditActionButtons,
   LoadingAnimation,
   OutputDisplay,
@@ -32,6 +33,7 @@ import { RxCross2 } from "react-icons/rx";
 import { CancelButton, SubmitButton } from "~/component/Buttons";
 import { formatBytes } from "~/component/utils/formatSize";
 import { useLocale } from "~/component/hooks/useLocale";
+import { MAX_SIZE_SUPPORT_AUDIO } from "~/helper/const";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -256,7 +258,13 @@ export default function Index() {
               <RxCross2 />
             </CancelButton>
 
-            <div className="flex justify-end">
+            <div className="flex justify-between">
+              <CharacterOrFileSizeComponent
+                selectedTool={selectedTool}
+                charCount={0}
+                CHAR_LIMIT={undefined}
+                MAX_SIZE_SUPPORT={MAX_SIZE_SUPPORT_AUDIO}
+              />
               <SubmitButton
                 onClick={handleSubmit}
                 disabled={isDisabled}

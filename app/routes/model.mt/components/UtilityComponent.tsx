@@ -3,6 +3,7 @@ import TextComponent from "../../../component/TextComponent";
 import { motion } from "framer-motion";
 import EditDisplay from "~/component/EditDisplay";
 import FileUpload from "~/component/FileUpload";
+import { MAX_SIZE_SUPPORT_AUDIO } from "~/helper/const";
 type TextOrDocumentComponentProps = {
   selectedTool: string;
   sourceText: string;
@@ -13,7 +14,7 @@ type TextOrDocumentComponentProps = {
 type CharacterOrFileSizeComponentProps = {
   selectedTool: string;
   charCount: number;
-  CHAR_LIMIT: number;
+  CHAR_LIMIT: number | undefined;
   MAX_SIZE_SUPPORT: number;
 };
 
@@ -59,6 +60,7 @@ export function CharacterOrFileSizeComponent({
   CHAR_LIMIT,
   MAX_SIZE_SUPPORT,
 }: CharacterOrFileSizeComponentProps) {
+  if (selectedTool === "Recording") return <div />;
   if (selectedTool === "text") {
     return (
       <div className="text-gray-400 text-xs">

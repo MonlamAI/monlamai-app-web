@@ -14,7 +14,7 @@ import { FaRedo } from "react-icons/fa";
 import { toast } from "react-toastify";
 import ErrorMessage from "~/component/ErrorMessage";
 import InferenceWrapper from "~/component/layout/InferenceWrapper";
-import { CHAR_LIMIT_TTS } from "~/helper/const";
+import { CHAR_LIMIT, CHAR_LIMIT_TTS, MAX_SIZE_SUPPORT } from "~/helper/const";
 import ShareLink from "~/component/ShareLink";
 import { resetFetcher } from "~/component/utils/resetFetcher";
 import { RxCross2 } from "react-icons/rx";
@@ -22,6 +22,7 @@ import { CancelButton, SubmitButton } from "~/component/Buttons";
 import { formatBytes } from "~/component/utils/formatSize";
 import FileUpload from "~/component/FileUpload";
 import TextComponent from "~/component/TextComponent";
+import { CharacterOrFileSizeComponent } from "../model.mt/components/UtilityComponent";
 
 export const meta: MetaFunction = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -116,7 +117,13 @@ export default function Index() {
                 <RxCross2 />
               </CancelButton>
             </div>
-            <div className="flex self-end">
+            <div className="flex justify-between">
+              <CharacterOrFileSizeComponent
+                selectedTool={selectedTool}
+                charCount={sourceText.length}
+                CHAR_LIMIT={CHAR_LIMIT}
+                MAX_SIZE_SUPPORT={MAX_SIZE_SUPPORT}
+              />
               <SubmitButton
                 type="submit"
                 form="ttsForm"
