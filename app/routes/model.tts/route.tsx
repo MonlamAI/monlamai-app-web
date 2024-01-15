@@ -19,6 +19,7 @@ import ShareLink from "~/component/ShareLink";
 import { resetFetcher } from "~/component/utils/resetFetcher";
 import { RxCross2 } from "react-icons/rx";
 import { CancelButton, SubmitButton } from "~/component/Buttons";
+import { formatBytes } from "~/component/utils/formatSize";
 
 export const meta: MetaFunction = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -260,7 +261,7 @@ function DocumentComponent({ sourceText, setSourceText }) {
           {acceptedFiles.map((item) => (
             <div key={item.name}>
               {item.name}
-              <p>{item.size}</p>
+              <p>{formatBytes(item.size)}</p>
             </div>
           ))}
         </div>

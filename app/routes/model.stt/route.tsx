@@ -29,6 +29,7 @@ import EditDisplay from "~/component/EditDisplay";
 import { resetFetcher } from "~/component/utils/resetFetcher";
 import { RxCross2 } from "react-icons/rx";
 import { CancelButton, SubmitButton } from "~/component/Buttons";
+import { formatBytes } from "~/component/utils/formatSize";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -359,7 +360,7 @@ function HandleAudioFile({ handleFileChange }) {
             <FaFile size="20px" />
             <div className="flex flex-col">
               {myFiles?.name}
-              <p>{myFiles?.size}</p>
+              <p>{formatBytes(myFiles?.size)}</p>
             </div>
           </div>
           <Button size="sm" className="" pill onClick={removeFile}>
