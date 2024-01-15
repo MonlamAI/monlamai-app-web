@@ -172,7 +172,6 @@ export default function Index() {
       reader.onload = function () {
         const base64String = reader.result;
         setBase64(base64String);
-        console.log(base64String);
       };
 
       // Read the Blob as a data URL (Base64)
@@ -253,10 +252,11 @@ export default function Index() {
             {selectedTool === "File" && (
               <HandleAudioFile handleFileChange={handleFileChange} />
             )}
-
-            <CancelButton onClick={handleReset} hidden={!audioURL}>
-              <RxCross2 />
-            </CancelButton>
+            {selectedTool === "Recording" && (
+              <CancelButton onClick={handleReset} hidden={!audioURL}>
+                <RxCross2 />
+              </CancelButton>
+            )}
 
             <div className="flex justify-between">
               <CharacterOrFileSizeComponent
@@ -365,7 +365,7 @@ function HandleAudioFile({ handleFileChange }) {
           <div className="flex items-center gap-4">
             <FaFile size="20px" />
             <div className="flex flex-col">
-              {myFiles?.name}
+              {myFiles?.name.slice(0, 20) + "..."}
               <p>{formatBytes(myFiles?.size)}</p>
             </div>
           </div>
