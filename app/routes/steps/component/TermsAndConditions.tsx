@@ -9,7 +9,7 @@ export default function Index() {
         !isTac ? "h-[50vh] overflow-y-scroll max-w-3xl" : ""
       } mx-auto `}
     >
-      <div className="space-y-8 text-lg leading-loose">
+      <div className="space-y-8 text-lg leading-loose font-monlam">
         <h1 className="text-3xl font-semibold text-center text-gray-700 pt-4">
           བཀོལ་སྤྱོད་ཆ་རྐྱེན།
         </h1>

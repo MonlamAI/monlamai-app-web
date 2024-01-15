@@ -19,12 +19,11 @@ import Footer from "./component/layout/Footer";
 import Header from "./component/layout/Header";
 import globalStyle from "./styles/global.css";
 import tailwindStyle from "./styles/tailwind.css";
-import { LitteraProvider } from "@assembless/react-littera";
+import { LitteraProvider, useLitteraMethods } from "@assembless/react-littera";
 import { getUserSession } from "~/services/session.server";
 import { getUser } from "./modal/user.server";
 import toastStyle from "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
-import ShareLink from "./component/ShareLink";
 export const loader: LoaderFunction = async ({ request }) => {
   let userdata = await getUserSession(request);
   return json(

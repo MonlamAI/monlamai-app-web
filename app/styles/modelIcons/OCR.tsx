@@ -42,7 +42,6 @@ function OCR() {
         fill="#ffffff"
         y="-37.499999"
         height="449.999989"
-        fillOpastrokeOpacity="1"
       />
       <rect
         x="-37.5"
@@ -50,20 +49,18 @@ function OCR() {
         fill="#ffffff"
         y="-37.499999"
         height="449.999989"
-        fillOpastrokeOpacity="1"
       />
-      <g clip-path="url(#846fd1c597)">
-        <g clip-path="url(#d97ae9263d)">
+      <g clipPath="url(#846fd1c597)">
+        <g clipPath="url(#d97ae9263d)">
           <path
             fill="#cdebff"
             d="M 87.1875 76.363281 L 299.953125 76.363281 L 299.953125 307.785156 L 87.1875 307.785156 Z M 87.1875 76.363281 "
-            fillOpastrokeOpacity="1"
             fillRule="nonzero"
           />
         </g>
       </g>
-      <g clip-path="url(#161798f2b2)">
-        <g clip-path="url(#4c42b72c44)">
+      <g clipPath="url(#161798f2b2)">
+        <g clipPath="url(#4c42b72c44)">
           <path
             strokeLinecap="butt"
             transform="matrix(0.75, 0, 0, 0.75, 87.188452, 76.365223)"
@@ -91,7 +88,6 @@ function OCR() {
       <path
         strokeLinecap="round"
         transform="matrix(0.75, 0, 0, 0.75, 37.500002, 173.207449)"
-        fillOpastrokeOpacity="1"
         fill="#ff5757"
         fillRule="nonzero"
         strokeLinejoin="round"
@@ -104,7 +100,6 @@ function OCR() {
       <path
         strokeLinecap="round"
         transform="matrix(0.75, 0, 0, 0.75, 37.500002, 173.207449)"
-        fillOpastrokeOpacity="1"
         fill="#ff5757"
         fillRule="nonzero"
         strokeLinejoin="round"

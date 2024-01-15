@@ -46,9 +46,7 @@ function Header() {
           className="block lg:hidden"
           onClick={() => setShowMenu((p) => !p)}
         >
-          <IconContext.Provider value={{ size: "1.5em" }}>
-            {showMenu ? <RxCross1 /> : <GiHamburgerMenu />}
-          </IconContext.Provider>
+          {showMenu ? <RxCross1 /> : <GiHamburgerMenu />}
         </button>
         <div className="hidden lg:flex gap-2 ml-8 flex-1 justify-between bg-white dark:bg-slate-700 dark:text-gray-200">
           <div className="flex items-center gap-8 text-sm ml-4">
