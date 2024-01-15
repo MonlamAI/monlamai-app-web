@@ -201,11 +201,11 @@ function TextComponent({ sourceText, setSourceText }) {
   let charCount = sourceText?.length;
 
   return (
-    <div className=" flex flex-col min-h-full flex-1 bg-slate-50 caret-slate-500">
+    <div className=" flex flex-col min-h-full flex-1  caret-slate-500">
       <Textarea
         name="sourceText"
         placeholder="ཡི་གེ་གཏག་རོགས།..."
-        className={`w-full resize-none flex-1  p-2 border-0  focus:ring-transparent placeholder:text-slate-300 placeholder:font-monlam placeholder:text-lg text-lg leading-loose`}
+        className={`w-full resize-none flex-1 bg-transparent p-2 border-0  focus:ring-transparent placeholder:text-slate-300 placeholder:font-monlam placeholder:text-lg text-lg leading-loose`}
         required
         value={sourceText}
         onInput={(e) => {
@@ -260,7 +260,7 @@ function DocumentComponent({ sourceText, setSourceText }) {
           {acceptedFiles.map((item) => (
             <div key={item.name}>
               {item.name}
-              <p>{item.size} B</p>
+              <p>{item.size}</p>
             </div>
           ))}
         </div>

@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { FaFile } from "react-icons/fa6";
 import { toast } from "react-toastify";
+import { formatBytes } from "~/component/utils/formatSize";
 import { readDocxFile, readTextFile } from "~/component/utils/readers";
 import { MAX_SIZE_SUPPORT } from "~/helper/const";
 
@@ -92,15 +93,3 @@ function DocumentComponent({ sourceText, setSourceText, setFileType }) {
 }
 
 export default DocumentComponent;
-
-function formatBytes(bytes, decimals = 2) {
-  if (bytes === 0) return "0 Bytes";
-
-  const k = 1024;
-  const dm = decimals < 0 ? 0 : decimals;
-  const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
-
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
-}
