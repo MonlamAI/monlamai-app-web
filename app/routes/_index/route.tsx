@@ -3,9 +3,6 @@ import ErrorMessage from "~/component/ErrorMessage";
 import Tools from "~/routes/_index/component/Tools";
 import { getOrCreateUser } from "~/modal/user.server";
 import { auth } from "~/services/auth.server";
-import { useLocale } from "~/component/hooks/useLocale";
-import { useLitteraMethods } from "@assembless/react-littera";
-import { useEffect } from "react";
 export const loader: LoaderFunction = async ({ request }) => {
   let userdata = await auth.isAuthenticated(request, {
     failureRedirect: "/login",
@@ -22,19 +19,6 @@ export const loader: LoaderFunction = async ({ request }) => {
 };
 
 export default function Index() {
-  const { isEnglish } = useLocale();
-  const methods = useLitteraMethods();
-
-  useEffect(() => {
-    var root = document.querySelector(":root");
-    let fontsize = isEnglish ? "16px" : "15px";
-    root.style.setProperty("--fontsize", fontsize);
-    if (isEnglish) {
-      methods.setLocale("en_US");
-    } else {
-      methods.setLocale("bo_TI");
-    }
-  }, []);
   return <Tools />;
 }
 

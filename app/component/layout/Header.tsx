@@ -9,27 +9,21 @@ import TranslationSwitcher from "../TranslationSwitcher";
 import { IconContext } from "react-icons";
 import { IoMdGlobe } from "react-icons/io";
 import DarkModeSwitcher from "../DarkModeSwitcher";
+import { useLocale } from "../hooks/useLocale";
 
 function Header() {
   const [showMenu, setShowMenu] = useState(false);
-  const { translation, locale } = uselitteraTranlation();
-  let isEnglish = locale === "en_US";
+  const { isEnglish, translation } = useLocale();
 
   return (
     <nav
-      className={`flex flex-col lg:flex-row  `}
-      style={{
-        fontFamily: isEnglish ? "Poppins" : "monlam",
-        lineHeight: "normal",
-      }}
+      className={`flex flex-col lg:flex-row  ${
+        isEnglish ? "font-poppins" : "font-monlam"
+      }`}
     >
       <div className="flex p-3 items-center justify-between  w-full bg-white dark:bg-slate-700 dark:text-gray-200 ">
         <NavLink
-          className={({ isActive, isPending }) =>
-            `flex items-center gap-2 text-[1.25rem] ${
-              isPending && "text-gray-300"
-            }`
-          }
+          className="flex items-center gap-2 text-xl"
           prefetch="intent"
           unstable_viewTransition
           to="/"
@@ -100,7 +94,9 @@ function Menu() {
       )}
     >
       <Dropdown.Header>
-        <span className="block truncate text-sm font-medium">{user.email}</span>
+        <span className="block truncate text-sm font-medium font-poppins">
+          {user.email}
+        </span>
       </Dropdown.Header>
       <Dropdown.Item icon={IoMdGlobe}>
         <TranslationSwitcher />
@@ -122,13 +118,10 @@ function Menu() {
 
 function JobLink() {
   const { translation, locale } = uselitteraTranlation();
-  let isEnglish = locale === "en_US";
   return (
     <NavLink
       to="/jobs"
-      className={({ isActive, isPending }) => {
-        return `${isEnglish ? "text-[1rem]" : "text-[0.9rem]"}  `;
-      }}
+      className="text-base"
       prefetch="intent"
       unstable_viewTransition
     >
@@ -139,13 +132,10 @@ function JobLink() {
 
 function AboutLink() {
   const { translation, locale } = uselitteraTranlation();
-  let isEnglish = locale === "en_US";
   return (
     <NavLink
       to="/about"
-      className={({ isActive, isPending }) => {
-        return `${isEnglish ? "text-[1rem]" : "text-[0.9rem]"}  `;
-      }}
+      className="text-base"
       prefetch="intent"
       unstable_viewTransition
     >

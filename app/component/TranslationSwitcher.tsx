@@ -16,11 +16,7 @@ function TranslationSwitcher() {
     const isTibetan = current === "bo_TI";
     const code = isTibetan ? "en_US" : "bo_TI";
     setCurrent(code);
-    setCurrent(code);
     methods.setLocale(code);
-    var root = document.querySelector(":root");
-    let fontsize = isTibetan ? "16px" : "15px";
-    root.style.setProperty("--fontsize", fontsize);
   };
 
   return (

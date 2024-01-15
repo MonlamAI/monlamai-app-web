@@ -24,7 +24,7 @@ function Tools() {
           >
             {translation.homepageHeading}
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mx-10 mb-7 px-[5vw]">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mx-10 mb-7 ">
             {models.map((model, index) => (
               <EachModel key={model.name} model={model} />
             ))}
@@ -44,7 +44,7 @@ function EachModel({ model }: EachProps) {
       {({ isTransitioning }) => (
         <motion.div
           whileHover={{ scale: 0.95 }}
-          className="rounded-lg flex md:flex-col border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800 shadow-lg hover:border-blue-600 hover:border-2 h-full gap-1 md:gap-5 p-2 md:py-2 cursor-pointer"
+          className="rounded-lg flex  md:flex-col border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800 shadow-lg hover:border-blue-600 hover:border-2 h-full gap-1 md:gap-5 p-2 md:py-5 cursor-pointer"
         >
           <div
             className="flex justify-center dark:mix-blend-exclusion dark:rounded-lg  "
