@@ -19,7 +19,7 @@ import ToolWraper from "~/component/ToolWraper";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import DownloadDocument from "~/routes/model.mt/components/DownloadDocument";
 import { toast } from "react-toastify";
-import { updateEdit } from "~/modal/inference";
+import { updateEdit } from "~/modal/inference.server";
 import ListInput from "~/component/ListInput";
 import { CHAR_LIMIT, MAX_SIZE_SUPPORT } from "~/helper/const";
 import LanguageSwitcher from "./components/LanguageSwitcher";
@@ -67,7 +67,6 @@ export default function Index() {
     "mt_selected_input",
     "text"
   );
-  const [showLike, setShowLike] = useState(false);
   const [edit, setEdit] = useState(false);
   const [editText, setEditText] = useState("");
   const [direction, setDirection] = useState("bo");
@@ -128,11 +127,9 @@ export default function Index() {
       }
     );
     setEdit(false);
-    setShowLike(false);
   }
   function handleCancelEdit() {
     setEdit(false);
-    setShowLike(false);
     setEditText("");
   }
   return (
@@ -220,19 +217,18 @@ export default function Index() {
               )}
             </div>
           </div>
-          <EditActionButtons
-            edit={edit}
-            handleCancelEdit={handleCancelEdit}
-            handleEditSubmit={handleEditSubmit}
-            editfetcher={editfetcher}
-            editText={editText}
-            translated={translated}
-          />
+          {edit && (
+            <EditActionButtons
+              handleCancelEdit={handleCancelEdit}
+              handleEditSubmit={handleEditSubmit}
+              editfetcher={editfetcher}
+              editText={editText}
+              translated={translated}
+            />
+          )}
           {!edit && (
             <NonEditModeActions
               selectedTool={selectedTool}
-              setShowLike={setShowLike}
-              showLike={showLike}
               likefetcher={likefetcher}
               sourceText={sourceText}
               inferenceId={inferenceId}

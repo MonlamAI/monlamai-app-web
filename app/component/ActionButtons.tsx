@@ -10,8 +10,6 @@ import LikeDislike from "~/styles/LikeDislike";
 
 type NonEditModeActionsProps = {
   selectedTool: string;
-  setShowLike: (p: boolean) => void;
-  showLike: boolean;
   likefetcher: any;
   sourceText: string;
   inferenceId: string;
@@ -23,8 +21,6 @@ type NonEditModeActionsProps = {
 
 export function NonEditModeActions({
   selectedTool,
-  setShowLike,
-  showLike,
   likefetcher,
   sourceText,
   inferenceId,
@@ -35,46 +31,43 @@ export function NonEditModeActions({
 }: NonEditModeActionsProps) {
   let isSelected = selectedTool === "text" || selectedTool === "Recording";
   let isOutputNull = !text || text === "";
+  if (isOutputNull || !isSelected) return null;
   return (
     <div className="flex justify-between">
-      {!isOutputNull && isSelected ? <Speak text={text} /> : <div />}
+      <Speak text={text} />
       <div className="flex relative justify-end items-center">
-        {isSelected && (
-          <>
-            <Dropdown
-              label="likeDislikeEdit"
-              dismissOnClick={true}
-              renderTrigger={() => (
-                <Button className="border-none" color="gray" disabled={!text}>
-                  <LikeDislike />
-                </Button>
-              )}
-              size="lg"
-            >
-              <Dropdown.Header>Satisfied?</Dropdown.Header>
-              <div className="flex flex-col gap-2 ">
-                <ReactionButtons
-                  fetcher={likefetcher}
-                  output={text}
-                  sourceText={sourceText}
-                  inferenceId={inferenceId}
-                />
-              </div>
-              <hr />
-              <Dropdown.Item
-                onClick={() => {
-                  setEditText(text);
-                  setEdit(true);
-                }}
-                icon={GoPencil}
-              >
-                Suggest an edit
-              </Dropdown.Item>
-            </Dropdown>
-            <CopyToClipboard textToCopy={text} onClick={handleCopy} />
-          </>
-        )}
-        {!isOutputNull && isSelected && <ShareLink inferenceId={inferenceId} />}
+        <Dropdown
+          label="likeDislikeEdit"
+          dismissOnClick={true}
+          renderTrigger={() => (
+            <Button className="border-none" color="gray" disabled={!text}>
+              <LikeDislike />
+            </Button>
+          )}
+          size="lg"
+        >
+          <Dropdown.Header>Satisfied?</Dropdown.Header>
+          <div className="flex flex-col gap-2 ">
+            <ReactionButtons
+              fetcher={likefetcher}
+              output={text}
+              sourceText={sourceText}
+              inferenceId={inferenceId}
+            />
+          </div>
+          <hr />
+          <Dropdown.Item
+            onClick={() => {
+              setEditText(text);
+              setEdit(true);
+            }}
+            icon={GoPencil}
+          >
+            Suggest an edit
+          </Dropdown.Item>
+        </Dropdown>
+        <CopyToClipboard textToCopy={text} onClick={handleCopy} />
+        <ShareLink inferenceId={inferenceId} />
       </div>
     </div>
   );

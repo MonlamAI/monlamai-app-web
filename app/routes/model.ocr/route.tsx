@@ -73,8 +73,8 @@ export default function Index() {
   let text = selection?.text?.replaceAll("\n", "<br />");
   return (
     <ToolWraper title="OCR">
-      <InferenceWrapper>
-        <Card className="md:w-1/2 relative">
+      <div className="flex flex-col md:flex-row gap-2">
+        <Card className="md:w-1/2 relative overflow-auto max-h-[50vh]">
           {selection ? (
             <>
               <img src={selection?.image} />
@@ -101,7 +101,7 @@ export default function Index() {
           )}
         </Card>
 
-        <Card className="md:w-1/2">
+        <Card className="md:w-1/2 overflow-auto max-h-[50vh]">
           <div className="w-full min-h-[20vh] md:min-h-[40vh] leading-6 p-3 text-black bg-slate-50 dark:text-gray-200 dark:bg-slate-700 rounded-lg overflow-auto">
             <div className="h-full flex justify-center items-center">
               {loading ? (
@@ -128,7 +128,7 @@ export default function Index() {
             />
           </div>
         </Card>
-      </InferenceWrapper>
+      </div>
     </ToolWraper>
   );
 }

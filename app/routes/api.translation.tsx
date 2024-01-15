@@ -12,8 +12,8 @@ import {
 } from "~/component/utils/replace.server";
 import { verifyDomain } from "~/component/utils/verifyDomain";
 import { API_ERROR_MESSAGE } from "~/helper/const";
-import { saveInference } from "~/modal/inference";
-import { getUser } from "~/modal/user";
+import { saveInference } from "~/modal/inference.server";
+import { getUser } from "~/modal/user.server";
 import { auth } from "~/services/auth.server";
 import { fetchGPTData } from "~/services/fetchGPTData.server";
 type Lang = "bo" | "en";
@@ -61,7 +61,6 @@ export async function translate(
   const responseTime = Date.now() - startTime; // Calculate response time
 
   const disclaimer = "";
-
   return {
     translation:
       sourceLang === "en"
@@ -105,7 +104,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     try {
       result = await translate(source, lang, direction);
     } catch (e) {
-      return { error: e.message };
+      return { error: e?.message };
     }
     let responseTime = result.responseTime;
 

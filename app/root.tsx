@@ -21,10 +21,10 @@ import globalStyle from "./styles/global.css";
 import tailwindStyle from "./styles/tailwind.css";
 import { LitteraProvider } from "@assembless/react-littera";
 import { getUserSession } from "~/services/session.server";
-import { getUser } from "./modal/user";
-import uselitteraTranlation from "./component/hooks/useLitteraTranslation";
+import { getUser } from "./modal/user.server";
 import toastStyle from "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import ShareLink from "./component/ShareLink";
 export const loader: LoaderFunction = async ({ request }) => {
   let userdata = await getUserSession(request);
   return json(
@@ -92,21 +92,13 @@ function Document({ children }: { children: React.ReactNode }) {
 export default function App() {
   let { user } = useLoaderData();
   let location = useLocation();
-  let { locale } = uselitteraTranlation();
   let isSteps = location.pathname.includes("steps");
-  let isEnglish = locale === "en_US";
 
   return (
     <Document>
       <LitteraProvider locales={["en_US", "bo_TI"]}>
         {user && <Header />}
-        <div
-          className={`${
-            isEnglish ? "font-poppins" : "font-monlam"
-          } leading-[normal]`}
-        >
-          <Outlet />
-        </div>
+        <Outlet />
         {user && !isSteps && <Footer />}
       </LitteraProvider>
       <ToastContainer />

@@ -13,10 +13,11 @@ export default function ListInput({
 }: ListInputProps) {
   return (
     <div className="flex gap-2 mt-2">
-      {options.map((option) => (
+      {options.map((option, index) => (
         <Button
           color={option === selectedTool ? "blue" : "gray"}
           size={"xs"}
+          key={option + index}
           onClick={() => setSelectedTool(option)}
           className="capitalize"
         >

@@ -5,8 +5,8 @@ import {
   useSearchParams,
 } from "@remix-run/react";
 import React, { useEffect, useState } from "react";
-import { getUserAboutData } from "~/modal/aboutUser";
-import { getUser, getUsers } from "~/modal/user";
+import { getUserAboutData } from "~/modal/aboutUser.server";
+import { getUser, getUsers } from "~/modal/user.server";
 import { auth } from "~/services/auth.server";
 import { Card, Spinner, Table, TextInput } from "flowbite-react";
 import useDebounce from "~/component/hooks/useDebounceState";

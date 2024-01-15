@@ -11,8 +11,9 @@ function TextComponent({ sourceText, setSourceText, sourceLang }) {
     let el = textRef.current;
     if (!el) return;
     el.style.minHeight =
-      el.scrollHeight > el.clientHeight ? el.scrollHeight + "px" : "60px";
-    window.scrollTo(0, 0);
+      el.scrollHeight > el.clientHeight
+        ? el.scrollHeight + "px"
+        : el.clientHeight + "px";
   }
   return (
     <Textarea
@@ -24,13 +25,13 @@ function TextComponent({ sourceText, setSourceText, sourceLang }) {
       required
       value={sourceText}
       onInput={(e) => {
-        adjustHeight();
         setSourceText((prev) => {
           let value = e.target?.value;
           if (value?.length <= CHAR_LIMIT) return value;
           return prev;
         });
       }}
+      onChange={adjustHeight}
       autoFocus
       ref={textRef}
     />

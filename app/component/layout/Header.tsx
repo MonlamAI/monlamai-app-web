@@ -31,6 +31,7 @@ function Header() {
             }`
           }
           prefetch="intent"
+          unstable_viewTransition
           to="/"
         >
           <img
@@ -51,24 +52,8 @@ function Header() {
         </button>
         <div className="hidden lg:flex gap-2 ml-8 flex-1 justify-between bg-white dark:bg-slate-700 dark:text-gray-200">
           <div className="flex items-center gap-8 text-sm ml-4">
-            <NavLink
-              to="/about"
-              className={({ isActive, isPending }) =>
-                !isActive ? "text-gray-500" : ""
-              }
-              prefetch="intent"
-            >
-              {translation.aboutUs}
-            </NavLink>
-            <NavLink
-              to="/jobs"
-              className={({ isActive, isPending }) =>
-                !isActive ? "text-gray-500" : ""
-              }
-              prefetch="intent"
-            >
-              {translation.jobs}
-            </NavLink>
+            <AboutLink />
+            <JobLink />
           </div>
           <div className="flex items-center gap-4 mr-7">
             <Menu />
@@ -82,25 +67,9 @@ function Header() {
           className="lg:hidden flex justify-between flex-1 items-center px-5 pb-5 right-0 w-full shadow-sm
 "
         >
-          <div className="flex gap-4">
-            <NavLink
-              to="/about"
-              className={({ isActive, isPending }) =>
-                !isActive ? "text-gray-300" : ""
-              }
-              prefetch="intent"
-            >
-              {translation.aboutUs}
-            </NavLink>
-            <NavLink
-              to="/jobs"
-              className={({ isActive, isPending }) =>
-                !isActive ? "text-gray-300" : ""
-              }
-              prefetch="intent"
-            >
-              {translation.jobs}
-            </NavLink>
+          <div className="flex flex-col gap-4">
+            <AboutLink />
+            <JobLink />
           </div>
           <div className="flex gap-4">
             <Menu />
@@ -150,5 +119,43 @@ function Menu() {
         </Form>
       </Dropdown.Item>
     </Dropdown>
+  );
+}
+
+function JobLink() {
+  const { translation, locale } = uselitteraTranlation();
+  let isEnglish = locale === "en_US";
+  return (
+    <NavLink
+      to="/jobs"
+      className={({ isActive, isPending }) => {
+        return `${isEnglish ? "text-[1rem]" : "text-[0.9rem]"}  ${
+          !isActive ? "text-gray-300 " : ""
+        }`;
+      }}
+      prefetch="intent"
+      unstable_viewTransition
+    >
+      {translation.jobs}
+    </NavLink>
+  );
+}
+
+function AboutLink() {
+  const { translation, locale } = uselitteraTranlation();
+  let isEnglish = locale === "en_US";
+  return (
+    <NavLink
+      to="/about"
+      className={({ isActive, isPending }) => {
+        return `${isEnglish ? "text-[1rem]" : "text-[0.9rem]"}  ${
+          !isActive ? "text-gray-300 " : ""
+        }`;
+      }}
+      prefetch="intent"
+      unstable_viewTransition
+    >
+      {translation.aboutUs}
+    </NavLink>
   );
 }

@@ -16,7 +16,14 @@ function ToolWraper({ title, children }) {
               : "font-monlam md:text-[2.7rem]"
           } flex gap-4 justify-center items-center mb-2 text-center text-slate-700 dark:text-gray-200 `}
         >
-          <div className="dark:mix-blend-multiply ">{model?.icon}</div>
+          <div
+            className="dark:mix-blend-multiply "
+            style={{
+              viewTransitionName: "icon-transition",
+            }}
+          >
+            {model?.icon}
+          </div>
           {translation[title]}
         </h1>
         {children}

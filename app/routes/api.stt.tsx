@@ -1,7 +1,7 @@
 import { ActionFunction, json } from "@remix-run/node";
 import { verifyDomain } from "~/component/utils/verifyDomain";
-import { saveInference } from "~/modal/inference";
-import { getUser } from "~/modal/user";
+import { saveInference } from "~/modal/inference.server";
+import { getUser } from "~/modal/user.server";
 import { auth } from "~/services/auth.server";
 
 export const action: ActionFunction = async ({ request }) => {

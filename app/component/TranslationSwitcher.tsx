@@ -1,13 +1,6 @@
 import { useLitteraMethods } from "@assembless/react-littera";
 import React, { useEffect } from "react";
-import { IoMdGlobe } from "react-icons/io";
-import { translationCodes } from "./hooks/useLitteraTranslation";
 import useLocalStorage from "./hooks/useLocaleStorage";
-
-type LanguageType = {
-  code: string;
-  name: string;
-};
 
 function TranslationSwitcher() {
   const [current, setCurrent] = useLocalStorage("language", "bo_TI");
@@ -24,6 +17,9 @@ function TranslationSwitcher() {
     setCurrent(code);
     setCurrent(code);
     methods.setLocale(code);
+    var root = document.querySelector(":root");
+    let fontsize = current === "bo_TI" ? "15px" : "18px";
+    root.style.setProperty("--fontsize", fontsize);
   };
 
   return (

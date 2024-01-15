@@ -90,7 +90,7 @@ export default function Index() {
       >
         <Card className="w-full min-h-[20vh] lg:min-h-[40vh] lg:h-auto flex">
           <div className="flex flex-col  gap-2 flex-1 ">
-            <div className="flex flex-col flex-1  justify-center max-h-[50vh] ">
+            <div className="flex flex-col flex-1  justify-center ">
               {selectedTool === "text" && (
                 <TextComponent
                   setSourceText={setSourceText}

@@ -19,7 +19,6 @@ type CharacterOrFileSizeComponentProps = {
 };
 
 type EditActionButtonsProps = {
-  edit: boolean;
   handleCancelEdit: () => void;
   handleEditSubmit: () => void;
   editfetcher: any;
@@ -107,33 +106,30 @@ export function OutputDisplay({ edit, editData, output }: OutputDisplayProps) {
 }
 
 export function EditActionButtons({
-  edit,
   handleCancelEdit,
   handleEditSubmit,
   editfetcher,
   editText,
   translated,
 }: EditActionButtonsProps) {
-  if (edit) {
-    return (
-      <>
-        <p className="px-2 py-1 bg-[#F5F6B0] rounded-md text-sm">
-          Your contribution will be used to improve translation quality.
-        </p>
-        <div className="flex justify-between">
-          <Button color="gray" onClick={handleCancelEdit}>
-            cancel
-          </Button>
-          <Button
-            color="blue"
-            onClick={handleEditSubmit}
-            isProcessing={editfetcher.state !== "idle"}
-            disabled={editText === translated?.translation}
-          >
-            submit
-          </Button>
-        </div>
-      </>
-    );
-  }
+  return (
+    <>
+      <p className="px-2 py-1 bg-[#F5F6B0] rounded-md text-sm">
+        Your contribution will be used to improve translation quality.
+      </p>
+      <div className="flex justify-between">
+        <Button color="gray" onClick={handleCancelEdit}>
+          cancel
+        </Button>
+        <Button
+          color="blue"
+          onClick={handleEditSubmit}
+          isProcessing={editfetcher.state !== "idle"}
+          disabled={editText === translated?.translation}
+        >
+          submit
+        </Button>
+      </div>
+    </>
+  );
 }

@@ -1,6 +1,6 @@
 import { Button, Spinner } from "flowbite-react";
 import { FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa";
-import { modelType } from "~/modal/feedback";
+import { modelType } from "~/modal/feedback.server";
 import React, { useEffect } from "react";
 import { toast } from "react-toastify";
 interface ReactionButtonsProps {

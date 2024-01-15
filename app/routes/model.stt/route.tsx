@@ -24,7 +24,7 @@ import {
   OutputDisplay,
 } from "../model.mt/components/UtilityComponent";
 import { NonEditModeActions } from "~/component/ActionButtons";
-import { saveInference, updateEdit } from "~/modal/inference";
+import { saveInference, updateEdit } from "~/modal/inference.server";
 import EditDisplay from "~/component/EditDisplay";
 import { resetFetcher } from "~/component/utils/resetFetcher";
 
@@ -55,7 +55,6 @@ export default function Index() {
   let mediaRecorder: any = useRef();
   const [audioBase64, setBase64] = useState<string | null>(null);
   const [recording, setRecording] = useState(false);
-  const [showLike, setShowLike] = useState(false);
   const [edit, setEdit] = useState(false);
   const [editText, setEditText] = useState("");
 
@@ -205,11 +204,9 @@ export default function Index() {
       }
     );
     setEdit(false);
-    setShowLike(false);
   }
   function handleCancelEdit() {
     setEdit(false);
-    setShowLike(false);
     setEditText("");
   }
 
@@ -220,10 +217,10 @@ export default function Index() {
         setSelectedTool={setSelectedTool}
         options={["Recording", "File"]}
       >
-        <Card className="w-full flex   h-[60vh]">
+        <Card className="w-full flex  ">
           <div className="flex flex-col gap-2 flex-1 ">
             {selectedTool === "Recording" && (
-              <div className="flex flex-col items-center gap-5 flex-1 justify-center min-h-[40dvh]">
+              <div className="flex flex-col items-center gap-5 flex-1 justify-center min-h-[30vh]">
                 {recording &&
                   mediaRecorder.current &&
                   getBrowser() !== "Safari" && (
@@ -271,8 +268,8 @@ export default function Index() {
             </div>
           </div>
         </Card>
-        <Card className="w-full  h-[60vh] flex">
-          <div className="w-full h-[25vh] lg:h-[50vh] p-3 text-black bg-slate-100 dark:text-gray-200 dark:bg-slate-700 rounded-lg overflow-auto">
+        <Card className="w-full flex">
+          <div className="w-full  lp-3 text-black bg-slate-100 dark:text-gray-200 dark:bg-slate-700 rounded-lg overflow-auto">
             {RecordingSelected && isLoading && (
               <div className="h-full flex justify-center items-center">
                 <Spinner />
@@ -292,19 +289,18 @@ export default function Index() {
             )}
             {errorMessage && <div className="text-red-400">{errorMessage}</div>}
           </div>
-          <EditActionButtons
-            edit={edit}
-            handleCancelEdit={handleCancelEdit}
-            handleEditSubmit={handleEditSubmit}
-            editfetcher={editfetcher}
-            editText={editText}
-            translated={text}
-          />
+          {edit && (
+            <EditActionButtons
+              handleCancelEdit={handleCancelEdit}
+              handleEditSubmit={handleEditSubmit}
+              editfetcher={editfetcher}
+              editText={editText}
+              translated={text}
+            />
+          )}
           {!edit && (
             <NonEditModeActions
               selectedTool={selectedTool}
-              setShowLike={setShowLike}
-              showLike={showLike}
               likefetcher={likefetcher}
               sourceText={audioBase64 || ""}
               inferenceId={inferenceId}

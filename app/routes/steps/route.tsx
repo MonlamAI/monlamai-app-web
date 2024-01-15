@@ -2,9 +2,12 @@ import { ActionFunction, LinksFunction, LoaderFunction } from "@remix-run/node";
 import React from "react";
 import StepWizard from "~/routes/steps/component/StepWizard";
 import wizardStyle from "react-form-wizard-component/dist/style.css";
-import { getUserAboutData, updateUserAboutData } from "~/modal/aboutUser";
+import {
+  getUserAboutData,
+  updateUserAboutData,
+} from "~/modal/aboutUser.server";
 import { auth } from "~/services/auth.server";
-import { getUser } from "~/modal/user";
+import { getUser } from "~/modal/user.server";
 import { redirect } from "react-router";
 
 export const loader: LoaderFunction = async ({ request }) => {

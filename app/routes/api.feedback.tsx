@@ -1,5 +1,5 @@
 import type { ActionFunction } from "@remix-run/node";
-import { createVote } from "~/modal/vote";
+import { createVote } from "~/modal/vote.server";
 
 export const action: ActionFunction = async ({ request }) => {
   let formdata = await request.formData();

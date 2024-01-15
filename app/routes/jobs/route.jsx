@@ -36,7 +36,7 @@ function Jobs() {
         </h3>
         <ol>
           {jobList.map((job, index) => (
-            <>
+            <div key={job.title}>
               <li
                 onClick={() => setSelectedJob(index + 1)}
                 className="my-2 flex items-center gap-2 cursor-pointer font-poppins leading-normal"
@@ -51,7 +51,7 @@ function Jobs() {
                 {job.title}
               </li>
               {selectedJob === index + 1 && (
-                <p className="text-sm text-gray-500 md:hidden">
+                <div className="text-sm text-gray-500 md:hidden">
                   <h5 className="font-poppins leading-normal">
                     {job.description}
                   </h5>
@@ -60,9 +60,9 @@ function Jobs() {
                       Apply
                     </Button>
                   </a>
-                </p>
+                </div>
               )}
-            </>
+            </div>
           ))}
         </ol>
       </div>
