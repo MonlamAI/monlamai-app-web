@@ -1,13 +1,12 @@
 import { Button, Textarea } from "flowbite-react";
-import DocumentComponent from "./DocumentComponent";
-import TextComponent from "./TextComponent";
+import TextComponent from "../../../component/TextComponent";
 import { motion } from "framer-motion";
 import EditDisplay from "~/component/EditDisplay";
+import FileUpload from "~/component/FileUpload";
 type TextOrDocumentComponentProps = {
   selectedTool: string;
   sourceText: string;
   setSourceText: (text: string) => void;
-  setFileType: (type: "txt" | "docx" | null) => void;
   sourceLang: string;
 };
 
@@ -38,7 +37,6 @@ export function TextOrDocumentComponent({
   selectedTool,
   sourceText,
   setSourceText,
-  setFileType,
   sourceLang,
 }: TextOrDocumentComponentProps) {
   if (selectedTool === "text") {
@@ -50,13 +48,7 @@ export function TextOrDocumentComponent({
       />
     );
   } else if (selectedTool === "document") {
-    return (
-      <DocumentComponent
-        sourceText={sourceText}
-        setSourceText={setSourceText}
-        setFileType={setFileType}
-      />
-    );
+    return <FileUpload sourceText={sourceText} setSourceText={setSourceText} />;
   }
   return null;
 }

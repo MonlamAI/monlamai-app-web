@@ -12,11 +12,9 @@ import { toast } from "react-toastify";
 function DownloadDocument({
   source,
   lang,
-  fileType,
 }: {
   source: string;
   lang: "en" | "bo";
-  fileType: "txt" | "docx" | null;
 }) {
   let fetcher = useFetcher();
   const [retry, setRetry] = useState(0);

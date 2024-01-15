@@ -7,7 +7,7 @@ import { formatBytes } from "~/component/utils/formatSize";
 import { readDocxFile, readTextFile } from "~/component/utils/readers";
 import { MAX_SIZE_SUPPORT } from "~/helper/const";
 
-function DocumentComponent({ sourceText, setSourceText, setFileType }) {
+function FileUpload({ sourceText, setSourceText }) {
   const [myFiles, setMyFiles] = useState([]);
   const onDrop = useCallback((acceptedFiles) => {
     // Do something with the files
@@ -22,10 +22,8 @@ function DocumentComponent({ sourceText, setSourceText, setFileType }) {
     }
 
     if (file.name.endsWith(".txt")) {
-      setFileType("txt");
       readTextFile(file, setSourceText);
     } else if (file.name.endsWith(".docx")) {
-      setFileType("docx");
       readDocxFile(file, setSourceText);
     } else {
       console.log("Unsupported file type.");
@@ -40,7 +38,6 @@ function DocumentComponent({ sourceText, setSourceText, setFileType }) {
       multiple: false,
     });
   const reset = (file) => () => {
-    setFileType(null);
     const newFiles = [...myFiles];
     newFiles.splice(newFiles.indexOf(file), 1);
     setMyFiles(newFiles);
@@ -60,8 +57,8 @@ function DocumentComponent({ sourceText, setSourceText, setFileType }) {
         <div className="flex gap-4">
           <FaFile size="20px" />
           {myFiles?.map((item) => (
-            <div key={item.name}>
-              {item.name}
+            <div key={item?.name}>
+              {item?.name}
               <p>{formatBytes(item?.size)}</p>
             </div>
           ))}
@@ -92,4 +89,4 @@ function DocumentComponent({ sourceText, setSourceText, setFileType }) {
   );
 }
 
-export default DocumentComponent;
+export default FileUpload;

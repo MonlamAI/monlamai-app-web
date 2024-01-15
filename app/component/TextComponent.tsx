@@ -15,6 +15,7 @@ function TextComponent({ sourceText, setSourceText, sourceLang }) {
         ? el.scrollHeight + "px"
         : el.clientHeight + "px";
   }
+
   return (
     <Textarea
       name="sourceText"

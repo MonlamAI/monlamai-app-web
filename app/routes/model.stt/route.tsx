@@ -21,6 +21,7 @@ import InferenceWrapper from "~/component/layout/InferenceWrapper";
 import { verifyDomain } from "~/component/utils/verifyDomain";
 import {
   EditActionButtons,
+  LoadingAnimation,
   OutputDisplay,
 } from "../model.mt/components/UtilityComponent";
 import { NonEditModeActions } from "~/component/ActionButtons";
@@ -30,6 +31,7 @@ import { resetFetcher } from "~/component/utils/resetFetcher";
 import { RxCross2 } from "react-icons/rx";
 import { CancelButton, SubmitButton } from "~/component/Buttons";
 import { formatBytes } from "~/component/utils/formatSize";
+import { useLocale } from "~/component/hooks/useLocale";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -168,6 +170,7 @@ export default function Index() {
       reader.onload = function () {
         const base64String = reader.result;
         setBase64(base64String);
+        console.log(base64String);
       };
 
       // Read the Blob as a data URL (Base64)
@@ -188,8 +191,7 @@ export default function Index() {
       };
     }
   };
-  let { translation, label } = uselitteraTranlation();
-  let isEnglish = label === "en_US";
+  let { translation } = useLocale();
   let isDisabled = !audioURL;
   let text = fetcher.data?.text;
   let inferenceId = fetcher.data?.inferenceId;
@@ -223,7 +225,7 @@ export default function Index() {
         <Card className="w-full flex  ">
           <div className="flex flex-col relative gap-2 flex-1 ">
             {selectedTool === "Recording" && (
-              <div className="flex flex-col items-center gap-5 flex-1 justify-center min-h-[30vh]">
+              <div className="flex flex-col items-center gap-5 flex-1 justify-center md:min-h-[30vh]">
                 {recording &&
                   mediaRecorder.current &&
                   getBrowser() !== "Safari" && (
@@ -239,7 +241,7 @@ export default function Index() {
                   </Button>
                 )}
                 {audioURL && (
-                  <audio controls>
+                  <audio controls className="mt-4 md:mt-0">
                     <source src={audioURL} type="audio/mpeg"></source>
                     <source src={audioURL} type="audio/ogg"></source>
                   </audio>
@@ -269,11 +271,7 @@ export default function Index() {
         </Card>
         <Card className="w-full flex">
           <div className="w-full flex-1 lp-3 text-black  dark:text-gray-200 dark:bg-slate-700 rounded-lg overflow-auto">
-            {RecordingSelected && isLoading && (
-              <div className="h-full flex justify-center items-center">
-                <Spinner />
-              </div>
-            )}
+            {RecordingSelected && isLoading && <LoadingAnimation />}
             {RecordingSelected && edit && (
               <EditDisplay editText={editText} setEditText={setEditText} />
             )}

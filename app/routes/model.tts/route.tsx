@@ -20,6 +20,8 @@ import { resetFetcher } from "~/component/utils/resetFetcher";
 import { RxCross2 } from "react-icons/rx";
 import { CancelButton, SubmitButton } from "~/component/Buttons";
 import { formatBytes } from "~/component/utils/formatSize";
+import FileUpload from "~/component/FileUpload";
+import TextComponent from "~/component/TextComponent";
 
 export const meta: MetaFunction = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -98,10 +100,11 @@ export default function Index() {
                 <TextComponent
                   setSourceText={setSourceText}
                   sourceText={sourceText}
+                  sourceLang={"bo"}
                 />
               )}
               {selectedTool === "document" && (
-                <DocumentComponent
+                <FileUpload
                   setSourceText={setSourceText}
                   sourceText={sourceText}
                 />
@@ -164,19 +167,7 @@ export default function Index() {
                 inferenceId={inferenceId}
               />
 
-              {inferenceId && (
-                <>
-                  <Button
-                    color="gray"
-                    className="text-slate-500"
-                    onClick={handleReset}
-                    title={translation.reset}
-                  >
-                    <FaRedo size={20} color="gray" />
-                  </Button>
-                  <ShareLink inferenceId={inferenceId} />
-                </>
-              )}
+              {inferenceId && <ShareLink inferenceId={inferenceId} />}
             </div>
           </div>
         </Card>
@@ -195,98 +186,5 @@ export function ErrorBoundary({ error }) {
     <>
       <ErrorMessage error={error} />
     </>
-  );
-}
-
-function TextComponent({ sourceText, setSourceText }) {
-  let charCount = sourceText?.length;
-
-  return (
-    <div className=" flex flex-col min-h-full flex-1  caret-slate-500">
-      <Textarea
-        name="sourceText"
-        placeholder="ཡི་གེ་གཏག་རོགས།..."
-        className={`w-full resize-none flex-1 bg-transparent p-2 border-0  focus:ring-transparent placeholder:text-slate-300 placeholder:font-monlam placeholder:text-lg text-lg leading-loose`}
-        required
-        value={sourceText}
-        onInput={(e) => {
-          setSourceText((prev) => {
-            let value = e.target.value;
-            if (value?.length <= CHAR_LIMIT_TTS) return value;
-            return prev;
-          });
-        }}
-        autoFocus
-      />
-      <div className="text-gray-400 self-end mr-3 text-xs">
-        {charCount} / {CHAR_LIMIT_TTS}
-      </div>
-    </div>
-  );
-}
-
-function DocumentComponent({ sourceText, setSourceText }) {
-  const onDrop = useCallback((acceptedFiles) => {
-    // Do something with the files
-    var file = acceptedFiles[0];
-    if (!file) {
-      return;
-    }
-
-    if (file.name.endsWith(".txt")) {
-      readTextFile(file, setSourceText);
-    } else if (file.name.endsWith(".docx")) {
-      readDocxFile(file, setSourceText);
-    } else {
-      console.log("Unsupported file type.");
-    }
-  }, []);
-  const { getRootProps, getInputProps, isDragActive, acceptedFiles } =
-    useDropzone({
-      onDrop,
-      accept: {
-        "text/html": [".txt", ".docx"],
-      },
-    });
-  function reset() {
-    acceptedFiles.splice(0, acceptedFiles.length);
-    if (sourceText !== "") setSourceText("");
-  }
-
-  if (acceptedFiles.length > 0)
-    return (
-      <div className="bg-gray-200 p-5 rounded-lg shadow-md flex justify-between items-center">
-        <div className="flex gap-4">
-          <FaFile size="20px" />
-          {acceptedFiles.map((item) => (
-            <div key={item.name}>
-              {item.name}
-              <p>{formatBytes(item.size)}</p>
-            </div>
-          ))}
-        </div>
-        <Button size="sm" className="" pill onClick={reset}>
-          X
-        </Button>
-      </div>
-    );
-
-  return (
-    <div className="min-h-full flex-1 flex cursor-pointer" {...getRootProps()}>
-      <input {...getInputProps()} />
-      {isDragActive ? (
-        <p>Drop the files here ...</p>
-      ) : (
-        <>
-          <p className="flex-1 flex flex-col justify-center items-center  rounded text-slate-300 p-3">
-            <img
-              className="w-1/2 "
-              src="//ssl.gstatic.com/translate/drag_and_drop.png"
-            />
-            click to select some .txt or .docx file here
-          </p>
-        </>
-      )}
-    </div>
   );
 }

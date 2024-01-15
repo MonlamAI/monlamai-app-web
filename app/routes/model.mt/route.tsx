@@ -62,7 +62,6 @@ export default function Index() {
   const [sourceLang, setSourceLang] = useLocalStorage("inputLang", "en");
   const [targetLang, setTargetLang] = useLocalStorage("outputLang", "bo");
   const [sourceText, setSourceText] = useState("");
-  const [fileType, setFileType] = useState<"txt" | "docx" | null>(null);
   const [selectedTool, setSelectedTool] = useLocalStorage(
     "mt_selected_input",
     "text"
@@ -164,7 +163,6 @@ export default function Index() {
               selectedTool={selectedTool}
               sourceText={sourceText}
               setSourceText={setSourceText}
-              setFileType={setFileType}
               sourceLang={sourceLang}
             />
           </div>
@@ -209,11 +207,7 @@ export default function Index() {
                 />
               )}
               {selectedTool === "document" && (
-                <DownloadDocument
-                  source={sourceText}
-                  lang={sourceLang}
-                  fileType={fileType}
-                />
+                <DownloadDocument source={sourceText} lang={sourceLang} />
               )}
             </div>
           </div>
