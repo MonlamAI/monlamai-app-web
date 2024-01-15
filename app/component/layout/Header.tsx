@@ -127,9 +127,7 @@ function JobLink() {
     <NavLink
       to="/jobs"
       className={({ isActive, isPending }) => {
-        return `${isEnglish ? "text-[1rem]" : "text-[0.9rem]"}  ${
-          !isActive ? "text-gray-300 " : ""
-        }`;
+        return `${isEnglish ? "text-[1rem]" : "text-[0.9rem]"}  `;
       }}
       prefetch="intent"
       unstable_viewTransition
@@ -146,9 +144,7 @@ function AboutLink() {
     <NavLink
       to="/about"
       className={({ isActive, isPending }) => {
-        return `${isEnglish ? "text-[1rem]" : "text-[0.9rem]"}  ${
-          !isActive ? "text-gray-300 " : ""
-        }`;
+        return `${isEnglish ? "text-[1rem]" : "text-[0.9rem]"}  `;
       }}
       prefetch="intent"
       unstable_viewTransition

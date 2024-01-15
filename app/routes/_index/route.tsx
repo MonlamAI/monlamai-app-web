@@ -26,6 +26,9 @@ export default function Index() {
   const methods = useLitteraMethods();
 
   useEffect(() => {
+    var root = document.querySelector(":root");
+    let fontsize = isEnglish ? "16px" : "15px";
+    root.style.setProperty("--fontsize", fontsize);
     if (isEnglish) {
       methods.setLocale("en_US");
     } else {

@@ -19,7 +19,7 @@ function TranslationSwitcher() {
     setCurrent(code);
     methods.setLocale(code);
     var root = document.querySelector(":root");
-    let fontsize = isTibetan ? "18px" : "15px";
+    let fontsize = isTibetan ? "16px" : "15px";
     root.style.setProperty("--fontsize", fontsize);
   };
 
