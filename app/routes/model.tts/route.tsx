@@ -117,7 +117,7 @@ export default function Index() {
                 <RxCross2 />
               </CancelButton>
             </div>
-            <div className="flex justify-between">
+            <div className="flex justify-between items-center">
               <CharacterOrFileSizeComponent
                 selectedTool={selectedTool}
                 charCount={sourceText.length}

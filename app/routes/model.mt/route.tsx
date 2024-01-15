@@ -197,7 +197,7 @@ export default function Index() {
               {TextSelected && edit && (
                 <EditDisplay editText={editText} setEditText={setEditText} />
               )}
-              {TextSelected && !isloading && (
+              {TextSelected && !isloading && sourceText !== "" && (
                 <OutputDisplay
                   edit={edit}
                   editData={editData}
@@ -206,7 +206,7 @@ export default function Index() {
                   setEditText={setEditText}
                 />
               )}
-              {selectedTool === "document" && (
+              {selectedTool === "document" && sourceText !== "" && (
                 <DownloadDocument source={sourceText} lang={sourceLang} />
               )}
             </div>
