@@ -27,6 +27,8 @@ import { NonEditModeActions } from "~/component/ActionButtons";
 import { saveInference, updateEdit } from "~/modal/inference.server";
 import EditDisplay from "~/component/EditDisplay";
 import { resetFetcher } from "~/component/utils/resetFetcher";
+import { RxCross2 } from "react-icons/rx";
+import { CancelButton, SubmitButton } from "~/component/Buttons";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -218,7 +220,7 @@ export default function Index() {
         options={["Recording", "File"]}
       >
         <Card className="w-full flex  ">
-          <div className="flex flex-col gap-2 flex-1 ">
+          <div className="flex flex-col relative gap-2 flex-1 ">
             {selectedTool === "Recording" && (
               <div className="flex flex-col items-center gap-5 flex-1 justify-center min-h-[30vh]">
                 {recording &&
@@ -230,9 +232,11 @@ export default function Index() {
                       height={75}
                     />
                   )}
-                <Button size="xl" onClick={toggleRecording}>
-                  {recording ? <BsFillStopFill /> : <BsFillMicFill />}
-                </Button>
+                {!audioURL && (
+                  <Button size="md" color="gray" onClick={toggleRecording}>
+                    {recording ? <BsFillStopFill /> : <BsFillMicFill />}
+                  </Button>
+                )}
                 {audioURL && (
                   <audio controls>
                     <source src={audioURL} type="audio/mpeg"></source>
@@ -245,31 +249,25 @@ export default function Index() {
               <HandleAudioFile handleFileChange={handleFileChange} />
             )}
 
-            <div className="flex justify-between flex-end h-10">
-              {audioURL ? (
-                <Button
-                  color="gray"
-                  className="text-slate-500"
-                  onClick={handleReset}
-                  title={translation.reset}
-                >
-                  <FaRedo size={20} color="gray" />
-                </Button>
-              ) : (
-                <div />
-              )}
-              <Button
+            <CancelButton onClick={handleReset} hidden={!audioURL}>
+              <RxCross2 />
+            </CancelButton>
+
+            <div className="flex justify-end">
+              <SubmitButton
                 onClick={handleSubmit}
                 disabled={isDisabled}
+                outline
                 isProcessing={fetcher.state !== "idle"}
+                size="xs"
               >
                 {translation.submit}
-              </Button>
+              </SubmitButton>
             </div>
           </div>
         </Card>
         <Card className="w-full flex">
-          <div className="w-full  lp-3 text-black bg-slate-100 dark:text-gray-200 dark:bg-slate-700 rounded-lg overflow-auto">
+          <div className="w-full flex-1 lp-3 text-black  dark:text-gray-200 dark:bg-slate-700 rounded-lg overflow-auto">
             {RecordingSelected && isLoading && (
               <div className="h-full flex justify-center items-center">
                 <Spinner />

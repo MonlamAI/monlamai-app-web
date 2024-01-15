@@ -35,7 +35,12 @@ function SocialShareButton({ icon, onClick }) {
 
 function ShareLink({ inferenceId }) {
   const [isOpen, setIsOpen] = useState(false);
-  const link = inferenceId ? useHref(`share/${inferenceId}`) : "";
+  const link = inferenceId
+    ? useMemo(
+        () => window.location.origin + `/share/${inferenceId}`,
+        [inferenceId]
+      )
+    : "";
   const { whatsappUrl, twitterUrl, facebookUrl } = useShareUrl(link);
   useEffect(() => {
     let timer;
@@ -53,6 +58,7 @@ function ShareLink({ inferenceId }) {
   return (
     <Dropdown
       label="shareLink"
+      placement="top"
       dismissOnClick={true}
       renderTrigger={() => (
         <Button className="border-none" color="gray">
@@ -71,7 +77,7 @@ function ShareLink({ inferenceId }) {
           </svg>
         </Button>
       )}
-      size="lg"
+      size="sm"
     >
       <Dropdown.Header>Share</Dropdown.Header>
       <div className="w-[15vw] md:max-w-[15vw] ">

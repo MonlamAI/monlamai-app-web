@@ -9,7 +9,7 @@ export default {
     extend: {
       colors: {
         primary: "#3758F9",
-        "primary-hover": "#2F4EEC",
+        "primary-hover": "#3758a9",
       },
     },
     fontFamily: {

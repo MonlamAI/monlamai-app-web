@@ -38,6 +38,7 @@ export function NonEditModeActions({
       <div className="flex relative justify-end items-center">
         <Dropdown
           label="likeDislikeEdit"
+          placement="left"
           dismissOnClick={true}
           renderTrigger={() => (
             <Button className="border-none" color="gray" disabled={!text}>

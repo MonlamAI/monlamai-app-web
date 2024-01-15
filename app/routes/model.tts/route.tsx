@@ -17,6 +17,8 @@ import InferenceWrapper from "~/component/layout/InferenceWrapper";
 import { CHAR_LIMIT_TTS } from "~/helper/const";
 import ShareLink from "~/component/ShareLink";
 import { resetFetcher } from "~/component/utils/resetFetcher";
+import { RxCross2 } from "react-icons/rx";
+import { CancelButton, SubmitButton } from "~/component/Buttons";
 
 export const meta: MetaFunction = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -90,7 +92,7 @@ export default function Index() {
       >
         <Card className="w-full min-h-[20vh] lg:min-h-[40vh] lg:h-auto flex">
           <div className="flex flex-col  gap-2 flex-1 ">
-            <div className="flex flex-col flex-1  justify-center ">
+            <div className="flex relative flex-col flex-1  justify-center ">
               {selectedTool === "text" && (
                 <TextComponent
                   setSourceText={setSourceText}
@@ -103,17 +105,15 @@ export default function Index() {
                   sourceText={sourceText}
                 />
               )}
-            </div>
-            <div className="flex justify-between items-center">
-              <Button
-                type="reset"
-                form="ttsForm"
+              <CancelButton
                 onClick={handleReset}
-                disabled={!sourceText || sourceText === ""}
+                hidden={!sourceText || sourceText === ""}
               >
-                {translation.reset}
-              </Button>
-              <Button
+                <RxCross2 />
+              </CancelButton>
+            </div>
+            <div className="flex self-end">
+              <SubmitButton
                 type="submit"
                 form="ttsForm"
                 isProcessing={isLoading}
@@ -121,7 +121,7 @@ export default function Index() {
                 disabled={!sourceText || sourceText === ""}
               >
                 {translation.submit}
-              </Button>
+              </SubmitButton>
             </div>
           </div>
         </Card>
