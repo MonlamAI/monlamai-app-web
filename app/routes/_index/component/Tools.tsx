@@ -13,7 +13,7 @@ function Tools() {
   let isEnglish = locale === "en_US";
   return (
     <main>
-      <div className="py-5 md:pt-[40px]">
+      <div className=" absolute w-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ">
         <div className="text-center max-w-7xl mx-auto">
           <div
             className={` 
