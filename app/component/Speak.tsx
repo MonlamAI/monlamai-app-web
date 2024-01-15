@@ -55,17 +55,19 @@ function Speak({
   return (
     <>
       {isPlaying ? (
-        <Button onClick={pauseAudio}>
+        <div onClick={pauseAudio} className="flex items-center text-[20px]">
           <BiPause />
-        </Button>
+        </div>
       ) : (
-        <Button
+        <div
           color="white"
           onClick={handlePlayClick}
-          isProcessing={fetcher.state !== "idle"}
+          className={`flex items-center text-[20px] ${
+            fetcher.state !== "idle" ? "animate-pulse" : ""
+          }`}
         >
           <RxSpeakerLoud />
-        </Button>
+        </div>
       )}
       {fetcher.data && (
         <audio
