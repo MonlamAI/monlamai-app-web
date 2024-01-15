@@ -43,7 +43,7 @@ function ReactionButtons({
   }, [message]);
 
   return (
-    <div className="flex justify-center gap-6 my-2">
+    <>
       <ReactionButton
         enabled={!!output}
         active={liked}
@@ -56,7 +56,7 @@ function ReactionButtons({
         icon={<FaRegThumbsDown />}
         onClick={() => handleReaction("disliked")}
       />
-    </div>
+    </>
   );
 }
 

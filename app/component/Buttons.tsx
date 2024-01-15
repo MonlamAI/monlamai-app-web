@@ -4,7 +4,8 @@ import { useLocale } from "./hooks/useLocale";
 
 const customTheme: CustomFlowbiteTheme["button"] = {
   color: {
-    primary: "bg-blue-500 hover:bg-blue-600",
+    primary:
+      "bg-blue-500 hover:bg-blue-600 focus:bg-blue-600 hover:text-white focus:text-white",
   },
 };
 

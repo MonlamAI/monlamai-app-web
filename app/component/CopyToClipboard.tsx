@@ -34,19 +34,19 @@ const CopyToClipboard = ({ textToCopy, onClick }: CopyToClipboardProps) => {
   };
 
   return (
-    <Button
-      color="white"
+    <div
       id="copyBtn"
       onClick={handleCopy}
-      disabled={textToCopy === ""}
+      hidden={textToCopy === ""}
       title="copy"
+      className="cursor-pointer"
     >
       {!isCopied ? (
         <LuCopy color="gray" size="20px" />
       ) : (
         <LuCopyCheck color="green" size="20px" />
       )}
-    </Button>
+    </div>
   );
 };
 

@@ -35,15 +35,15 @@ export function NonEditModeActions({
   return (
     <div className="flex justify-between">
       <Speak text={text} />
-      <div className="flex relative justify-end items-center">
+      <div className="flex relative  gap-3 md:gap-5 justify-end items-center">
         <Dropdown
           label="likeDislikeEdit"
           placement="left"
           dismissOnClick={true}
           renderTrigger={() => (
-            <Button className="border-none" color="gray" disabled={!text}>
+            <div hidden={!text}>
               <LikeDislike />
-            </Button>
+            </div>
           )}
           size="lg"
         >

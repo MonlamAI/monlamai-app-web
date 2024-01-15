@@ -61,7 +61,7 @@ function ShareLink({ inferenceId }) {
       placement="top"
       dismissOnClick={true}
       renderTrigger={() => (
-        <Button className="border-none" color="gray">
+        <div className="border-none cursor-pointer">
           <svg
             width="24"
             height="24"
@@ -75,7 +75,7 @@ function ShareLink({ inferenceId }) {
               fillOpacity="0.5"
             />
           </svg>
-        </Button>
+        </div>
       )}
       size="sm"
     >

@@ -62,7 +62,7 @@ function Speak({
         <div
           color="white"
           onClick={handlePlayClick}
-          className={`flex items-center text-[20px] ${
+          className={`flex items-center cursor-pointer text-[20px] ${
             fetcher.state !== "idle" ? "animate-pulse" : ""
           }`}
         >

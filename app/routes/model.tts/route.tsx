@@ -166,7 +166,7 @@ export default function Index() {
             )}
           </div>
           <div className="flex justify-end">
-            <div className="flex gap-2">
+            <div className="flex gap-3 md:gap-5 items-center">
               <ReactionButtons
                 fetcher={likeFetcher}
                 output={data ? `data:audio/wav;base64,${data}` : null}
