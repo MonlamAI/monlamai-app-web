@@ -280,10 +280,10 @@ export default function Index() {
         <Card className="w-full flex">
           <div className="w-full flex-1 lp-3 text-black  dark:text-gray-200 dark:bg-slate-700 rounded-lg overflow-auto">
             {RecordingSelected && isLoading && <LoadingAnimation />}
-            {RecordingSelected && edit && (
+            {edit && (
               <EditDisplay editText={editText} setEditText={setEditText} />
             )}
-            {RecordingSelected && !isLoading && (
+            {!isLoading && (
               <OutputDisplay
                 edit={edit}
                 editData={editData}

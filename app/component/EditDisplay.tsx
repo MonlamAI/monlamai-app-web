@@ -10,8 +10,9 @@ function EditDisplay({ editText, setEditText }: EditDisplayProps) {
   return (
     <Textarea
       value={editText}
+      rows={5}
       onChange={(e) => setEditText(e.target.value)}
-      className="w-full h-full resize-none bg-transparent text-2xl font-monlam ring-0 flex-1"
+      className="w-full h-full resize-none bg-transparent text-xl font-monlam leading-[normal] ring-0 flex-1"
     />
   );
 }

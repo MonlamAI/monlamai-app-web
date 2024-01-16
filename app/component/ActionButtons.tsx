@@ -29,12 +29,15 @@ export function NonEditModeActions({
   text,
   handleCopy,
 }: NonEditModeActionsProps) {
-  let isSelected = selectedTool === "text" || selectedTool === "Recording";
+  let isSelected =
+    selectedTool === "text" ||
+    selectedTool === "Recording" ||
+    selectedTool === "File";
   let isOutputNull = !text || text === "";
   if (isOutputNull || !isSelected) return null;
   return (
     <div className="flex justify-between">
-      <Speak text={text} />
+      {selectedTool !== "File" && <Speak text={text} />}
       <div className="flex relative  gap-3 md:gap-5 justify-end items-center">
         <Dropdown
           label="likeDislikeEdit"
