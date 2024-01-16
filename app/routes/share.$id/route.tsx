@@ -2,6 +2,7 @@ import { LoaderFunction } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import { Button, Card } from "flowbite-react";
 import { FaArrowRightArrowLeft, FaUniregistry } from "react-icons/fa6";
+import Waveform from "~/component/AudioPlayerWithWave";
 import { ShareToolWraper } from "~/component/ToolWraper";
 import { auth } from "~/services/auth.server";
 import { db } from "~/services/db.server";
@@ -48,11 +49,7 @@ function InputCard({ title, content, className, model }) {
         <div className="h-full">
           <div className="text-gray-400 text-xl">{title}:</div>
           <div className={`md:w-[600px] ${className} mt-4`}>
-            <audio controls>
-              <source src={audioURL} type="audio/mpeg"></source>
-              <source src={audioURL} type="audio/ogg"></source>
-              Your browser does not support the audio element.
-            </audio>
+            <Waveform audio={audioURL} />
           </div>
         </div>
       </Card>

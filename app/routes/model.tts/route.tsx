@@ -23,6 +23,7 @@ import { formatBytes } from "~/component/utils/formatSize";
 import FileUpload from "~/component/FileUpload";
 import TextComponent from "~/component/TextComponent";
 import { CharacterOrFileSizeComponent } from "../model.mt/components/UtilityComponent";
+import Waveform from "~/component/AudioPlayerWithWave";
 
 export const meta: MetaFunction = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -164,6 +165,7 @@ export default function Index() {
                   <div className="text-red-400">{data?.error}</div>
                 ) : (
                   <AudioPlayer ref={audioRef} sourceUrl={sourceUrl} />
+                  // sourceUrl && <Waveform audio={sourceUrl} />
                 )}
               </div>
             )}

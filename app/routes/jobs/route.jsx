@@ -1,6 +1,6 @@
 import { Button } from "flowbite-react";
 import React, { useState } from "react";
-
+import { SubmitButton } from "~/component/Buttons";
 const jobList = [
   {
     title: "UI/UX Developer",
@@ -76,9 +76,9 @@ function Jobs() {
           </h5>
           <p className="mt-5">Skills : {jobList[selectedJob - 1].skill}</p>
           <a href={jobList[selectedJob - 1].link}>
-            <Button className="bg-primary hover:bg-blue-500 mt-10 w-full">
+            <SubmitButton size="md" className=" mt-10 w-full">
               Apply
-            </Button>
+            </SubmitButton>
           </a>
         </div>
       )}

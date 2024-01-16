@@ -44,7 +44,8 @@
     "react-toastify": "^9.1.3",
     "react-type-animation": "^3.1.0",
     "remix-auth-auth0": "^1.7.0",
-    "source-map-support": "^0.5.21"
+    "source-map-support": "^0.5.21",
+    "wavesurfer.js": "^7.6.4"
   },
   "devDependencies": {
     "@remix-run/dev": "2.5.0",
