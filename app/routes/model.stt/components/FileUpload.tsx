@@ -1,5 +1,6 @@
 import { Button } from "flowbite-react";
 import { useCallback, useState } from "react";
+import { useDropzone } from "react-dropzone";
 import { FaFile } from "react-icons/fa";
 import { formatBytes } from "~/component/utils/formatSize";
 
@@ -27,7 +28,6 @@ export function HandleAudioFile({ handleFileChange, reset }) {
     multiple: false,
     noClick: true,
   });
-
   if (myFiles)
     return (
       <div className="flex flex-1 w-full items-center">

@@ -13,6 +13,8 @@ interface ReactionButtonsProps {
 const API_ENDPOINT = "/api/feedback";
 const IDLE_STATE = "idle";
 
+let showMessage = false;
+
 function ReactionButtons({
   fetcher,
   output,
@@ -21,11 +23,13 @@ function ReactionButtons({
 }: ReactionButtonsProps) {
   if (!inferenceId) return null;
   const { liked, disliked } = fetcher.data || {};
+
   const isLoading =
     fetcher.state !== IDLE_STATE && fetcher.formData?.get("action");
 
   const handleReaction = async (action: "liked" | "disliked") => {
     if (!output || !sourceText) return;
+    showMessage = true;
     fetcher.submit(
       { inferenceId, action },
       { method: "POST", action: API_ENDPOINT }
@@ -37,9 +41,10 @@ function ReactionButtons({
 
   useEffect(() => {
     let message = data?.message;
-    if (message && message !== "") {
+    if (message && message !== "" && showMessage) {
       toast.success(message);
     }
+    showMessage = false;
   }, [data]);
 
   return (
