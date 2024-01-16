@@ -42,16 +42,15 @@ function Header({ user }) {
 
 function InputCard({ title, content, className, model }) {
   if (model === "stt") {
+    let audioURL = content;
     return (
       <Card>
         <div className="h-full">
           <div className="text-gray-400 text-xl">{title}:</div>
           <div className={`md:w-[600px] ${className} mt-4`}>
             <audio controls>
-              <source
-                src={`data:audio/wav;base64,${content}`}
-                type="audio/wav"
-              />
+              <source src={audioURL} type="audio/mpeg"></source>
+              <source src={audioURL} type="audio/ogg"></source>
               Your browser does not support the audio element.
             </audio>
           </div>
