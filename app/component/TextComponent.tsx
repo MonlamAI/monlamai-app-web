@@ -7,14 +7,6 @@ function TextComponent({ sourceText, setSourceText, sourceLang }) {
   let { translation, locale } = uselitteraTranlation();
   let isEnglish = locale === "en_US";
   let textRef = useRef<HTMLTextAreaElement>(null);
-  function adjustHeight() {
-    let el = textRef.current;
-    if (!el) return;
-    el.style.minHeight =
-      el.scrollHeight > el.clientHeight
-        ? el.scrollHeight + "px"
-        : el.clientHeight + "px";
-  }
 
   return (
     <Textarea
@@ -32,7 +24,7 @@ function TextComponent({ sourceText, setSourceText, sourceLang }) {
           return prev;
         });
       }}
-      onChange={adjustHeight}
+      rows={6}
       autoFocus
       ref={textRef}
     />
