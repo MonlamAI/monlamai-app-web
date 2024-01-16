@@ -25,6 +25,7 @@ import {
   LoadingAnimation,
   OutputDisplay,
 } from "../model.mt/components/UtilityComponent";
+import { ErrorBoundary } from "../model.mt/route";
 import { NonEditModeActions } from "~/component/ActionButtons";
 import { saveInference, updateEdit } from "~/modal/inference.server";
 import EditDisplay from "~/component/EditDisplay";
@@ -33,7 +34,7 @@ import { RxCross2 } from "react-icons/rx";
 import { CancelButton, SubmitButton } from "~/component/Buttons";
 import { formatBytes } from "~/component/utils/formatSize";
 import { useLocale } from "~/component/hooks/useLocale";
-import { MAX_SIZE_SUPPORT_AUDIO } from "~/helper/const";
+import { API_ERROR_MESSAGE, MAX_SIZE_SUPPORT_AUDIO } from "~/helper/const";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -95,7 +96,6 @@ export default function Index() {
     resetFetcher(editfetcher);
   };
   const isLoading = fetcher.state !== "idle";
-  const errorMessage = fetcher.data?.error_message;
 
   const handleReset = () => {
     // reset the audio element and the transcript
@@ -216,6 +216,8 @@ export default function Index() {
     setEditText("");
   }
 
+  const errorMessage = fetcher.data?.error_message;
+  const actionError = fetcher.data?.error ?? errorMessage;
   return (
     <ToolWraper title="STT">
       <InferenceWrapper
@@ -223,6 +225,8 @@ export default function Index() {
         setSelectedTool={setSelectedTool}
         options={["Recording", "File"]}
       >
+        {actionError && <ErrorMessage error={actionError} />}
+
         <Card className="w-full flex  ">
           <div className="flex flex-col relative gap-2 flex-1 ">
             {selectedTool === "Recording" && (
@@ -250,7 +254,10 @@ export default function Index() {
               </div>
             )}
             {selectedTool === "File" && (
-              <HandleAudioFile handleFileChange={handleFileChange} />
+              <HandleAudioFile
+                handleFileChange={handleFileChange}
+                reset={handleReset}
+              />
             )}
             {selectedTool === "Recording" && (
               <CancelButton onClick={handleReset} hidden={!audioURL}>
@@ -292,7 +299,6 @@ export default function Index() {
                 setEditText={setEditText}
               />
             )}
-            {errorMessage && <div className="text-red-400">{errorMessage}</div>}
           </div>
           {edit && (
             <EditActionButtons
@@ -321,20 +327,9 @@ export default function Index() {
   );
 }
 
-export function ErrorBoundary({ error }) {
-  useEffect(() => {
-    toast("འདིར་དཀའ་ངལ་འདུག [error with api, try after sometime]", {
-      position: toast.POSITION.BOTTOM_RIGHT,
-    });
-  }, []);
-  return (
-    <>
-      <ErrorMessage error={error} />
-    </>
-  );
-}
+export { ErrorBoundary };
 
-function HandleAudioFile({ handleFileChange }) {
+function HandleAudioFile({ handleFileChange, reset }) {
   const [myFiles, setMyFiles] = useState(null);
   const onDrop = useCallback((acceptedFiles) => {
     // Do something with the files
@@ -347,6 +342,7 @@ function HandleAudioFile({ handleFileChange }) {
   }, []);
   const removeFile = () => {
     setMyFiles(null);
+    reset();
   };
 
   let { getRootProps, getInputProps, isDragActive, open } = useDropzone({

@@ -6,13 +6,8 @@ import { amplifyMedia } from "~/component/utils/audioGain";
 import useLocalStorage from "~/component/hooks/useLocaleStorage";
 import AudioPlayer from "~/component/AudioPlayer";
 import ToolWraper from "~/component/ToolWraper";
-import { readDocxFile, readTextFile } from "~/component/utils/readers";
-import { useDropzone } from "react-dropzone";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
-import { FaFile } from "react-icons/fa6";
-import { FaRedo } from "react-icons/fa";
-import { toast } from "react-toastify";
-import ErrorMessage from "~/component/ErrorMessage";
+import { ErrorBoundary } from "../model.mt/route";
 import InferenceWrapper from "~/component/layout/InferenceWrapper";
 import { CHAR_LIMIT, CHAR_LIMIT_TTS, MAX_SIZE_SUPPORT } from "~/helper/const";
 import ShareLink from "~/component/ShareLink";
@@ -24,6 +19,7 @@ import FileUpload from "~/component/FileUpload";
 import TextComponent from "~/component/TextComponent";
 import { CharacterOrFileSizeComponent } from "../model.mt/components/UtilityComponent";
 import Waveform from "~/component/AudioPlayerWithWave";
+import ErrorMessage from "~/component/ErrorMessage";
 
 export const meta: MetaFunction = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -86,6 +82,7 @@ export default function Index() {
       }
     );
   }
+  let actionError = fetcher.data?.error as string;
 
   let { translation } = uselitteraTranlation();
   return (
@@ -95,6 +92,8 @@ export default function Index() {
         setSelectedTool={setSelectedTool}
         options={["text", "document"]}
       >
+        {actionError && <ErrorMessage error={actionError} />}
+
         <Card className="w-full min-h-[20vh] lg:min-h-[40vh] lg:h-auto flex">
           <div className="flex flex-col  gap-2 flex-1 ">
             <div className="flex relative flex-col flex-1  justify-center ">
@@ -188,15 +187,4 @@ export default function Index() {
   );
 }
 
-export function ErrorBoundary({ error }) {
-  useEffect(() => {
-    toast("འདིར་དཀའ་ངལ་འདུག [error with api, try after sometime]", {
-      position: toast.POSITION.BOTTOM_RIGHT,
-    });
-  }, []);
-  return (
-    <>
-      <ErrorMessage error={error} />
-    </>
-  );
-}
+export { ErrorBoundary };

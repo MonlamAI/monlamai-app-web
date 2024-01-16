@@ -1,6 +1,7 @@
 import { ActionFunction, json } from "@remix-run/node";
 import inputReplace from "~/component/utils/ttsReplace.server";
 import { verifyDomain } from "~/component/utils/verifyDomain";
+import { API_ERROR_MESSAGE } from "~/helper/const";
 import { checkIfInferenceExist, saveInference } from "~/modal/inference.server";
 import { getUser } from "~/modal/user.server";
 import { auth } from "~/services/auth.server";
@@ -26,6 +27,7 @@ export const action: ActionFunction = async ({ request }) => {
     Authorization: process.env.MODEL_API_AUTH_TOKEN as string,
     "Content-Type": "application/json",
   };
+  let data;
   try {
     const response = await fetch(API_URL, {
       method: "POST",
@@ -34,31 +36,31 @@ export const action: ActionFunction = async ({ request }) => {
         inputs: inputReplace(userInput),
       }),
     });
-    const data = await response.json();
-    const { audio_base64 } = data;
-
-    const responseTime = Date.now() - startTime; // Calculate response time
-    const checkifModelExist = await checkIfInferenceExist(
-      userInput,
-      "tts",
-      user?.id
-    );
-
-    if (!checkifModelExist && audio_base64) {
-      const inferenceData = await saveInference({
-        userId: user?.id,
-        model: "tts",
-        input: userInput,
-        output: audio_base64,
-        responseTime: responseTime,
-      });
-      return { data: audio_base64, inferenceData };
-    } else {
-      return { data: audio_base64, inferenceData: checkifModelExist };
-    }
+    data = await response.json();
   } catch (e) {
     return {
-      error: "There was a problem with the API :" + e,
+      error: API_ERROR_MESSAGE,
     };
+  }
+  const { audio_base64 } = data;
+
+  const responseTime = Date.now() - startTime; // Calculate response time
+  const checkifModelExist = await checkIfInferenceExist(
+    userInput,
+    "tts",
+    user?.id
+  );
+
+  if (!checkifModelExist && audio_base64) {
+    const inferenceData = await saveInference({
+      userId: user?.id,
+      model: "tts",
+      input: userInput,
+      output: audio_base64,
+      responseTime: responseTime,
+    });
+    return { data: audio_base64, inferenceData };
+  } else {
+    return { data: audio_base64, inferenceData: checkifModelExist };
   }
 };

@@ -1,5 +1,6 @@
 import { ActionFunction, json } from "@remix-run/node";
 import { verifyDomain } from "~/component/utils/verifyDomain";
+import { API_ERROR_MESSAGE } from "~/helper/const";
 import { saveInference } from "~/modal/inference.server";
 import { getUser } from "~/modal/user.server";
 import { auth } from "~/services/auth.server";
@@ -23,34 +24,34 @@ export const action: ActionFunction = async ({ request }) => {
     Authorization: process.env.MODEL_API_AUTH_TOKEN as string,
     "Content-Type": "audio/flac",
   };
+  let audio = formData.get("audio") as string;
+  let response;
+  const blob = await fetch(audio).then((res) => res.blob());
   try {
-    let audio = formData.get("audio") as string;
-    const blob = await fetch(audio).then((res) => res.blob());
-    const response = await fetch(apiUrl, {
+    response = await fetch(apiUrl, {
       method: "POST",
       headers: headers,
       body: blob,
     });
-
-    const endTime = Date.now();
-    const responseTime = endTime - startTime;
-
-    if (response.ok) {
-      const data = await response.json();
-      // save inference to db
-      const inferenceData = await saveInference({
-        userId: user?.id,
-        model: "stt",
-        modelVersion: "v3",
-        input: audio,
-        output: data?.text,
-        responseTime: responseTime,
-      });
-      return json({ text: data?.text, inferenceId: inferenceData?.id });
-    } else {
-      return json({ error_message: "Failed to send the audio to the server" });
-    }
   } catch (error) {
-    return { error_message: "Error during submission:" + error };
+    return { error: API_ERROR_MESSAGE };
+  }
+  const endTime = Date.now();
+  const responseTime = endTime - startTime;
+
+  if (response.ok) {
+    const data = await response.json();
+    // save inference to db
+    const inferenceData = await saveInference({
+      userId: user?.id,
+      model: "stt",
+      modelVersion: "v3",
+      input: audio,
+      output: data?.text,
+      responseTime: responseTime,
+    });
+    return json({ text: data?.text, inferenceId: inferenceData?.id });
+  } else {
+    return json({ error_message: "Failed to send the audio to the server" });
   }
 };

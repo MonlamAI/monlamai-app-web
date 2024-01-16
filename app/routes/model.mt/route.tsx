@@ -21,7 +21,11 @@ import DownloadDocument from "~/routes/model.mt/components/DownloadDocument";
 import { toast } from "react-toastify";
 import { updateEdit } from "~/modal/inference.server";
 import ListInput from "~/component/ListInput";
-import { CHAR_LIMIT, MAX_SIZE_SUPPORT } from "~/helper/const";
+import {
+  API_ERROR_MESSAGE,
+  CHAR_LIMIT,
+  MAX_SIZE_SUPPORT,
+} from "~/helper/const";
 import LanguageSwitcher from "./components/LanguageSwitcher";
 import {
   CharacterOrFileSizeComponent,
@@ -248,7 +252,7 @@ export function ErrorBoundary() {
 
   console.log(isRouteError);
   useEffect(() => {
-    toast.warn("འདིར་དཀའ་ངལ་འདུག [error with api, try after sometime]", {
+    toast.warn(API_ERROR_MESSAGE, {
       position: toast.POSITION.TOP_RIGHT,
       style: {
         top: "5rem",

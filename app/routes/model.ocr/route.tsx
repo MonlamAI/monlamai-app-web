@@ -9,6 +9,7 @@ import { useState, useEffect } from "react";
 import { FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa6";
 import CopyToClipboard from "~/component/CopyToClipboard";
 import { auth } from "~/services/auth.server";
+import { ErrorBoundary } from "../model.mt/route";
 import ErrorMessage from "~/component/ErrorMessage";
 import { dummydata } from "~/helper/dummy";
 import ToolWraper from "~/component/ToolWraper";
@@ -122,10 +123,7 @@ export default function Index() {
             <Button color="white" disabled={true}>
               <FaRegThumbsDown color="gray" size="20px" />
             </Button>
-            <CopyToClipboard
-              textToCopy={selection?.text ?? ""}
-              disabled={false}
-            />
+            <CopyToClipboard textToCopy={selection?.text ?? ""} />
           </div>
         </Card>
       </div>
@@ -133,10 +131,4 @@ export default function Index() {
   );
 }
 
-export function ErrorBoundary({ error }) {
-  return (
-    <>
-      <ErrorMessage error={error} />
-    </>
-  );
-}
+export { ErrorBoundary };
