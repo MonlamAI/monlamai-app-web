@@ -27,7 +27,9 @@
   align-items: center;
   margin-top: 20px;
 }
-
+:root {
+  --fontsize: 16px;
+}
 html {
   font-size: var(--fontsize);
 }

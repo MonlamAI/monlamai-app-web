@@ -9,7 +9,7 @@ import {
   useNavigate,
   useRouteError,
 } from "@remix-run/react";
-import { Button, Card, Textarea } from "flowbite-react";
+import { Button, Card } from "flowbite-react";
 import { useState, useRef, useEffect } from "react";
 import { auth } from "~/services/auth.server";
 import useDebounce from "~/component/hooks/useDebounceState";
@@ -26,7 +26,6 @@ import {
   CHAR_LIMIT,
   MAX_SIZE_SUPPORT,
 } from "~/helper/const";
-import LanguageSwitcher from "./components/LanguageSwitcher";
 import {
   CharacterOrFileSizeComponent,
   EditActionButtons,

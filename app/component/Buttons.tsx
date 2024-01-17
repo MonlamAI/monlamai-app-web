@@ -1,6 +1,6 @@
 import type { ButtonProps, CustomFlowbiteTheme } from "flowbite-react";
 import { Button } from "flowbite-react";
-import { useLocale } from "./hooks/useLocale";
+import uselitteraTranlation from "./hooks/useLitteraTranslation";
 
 const customTheme: CustomFlowbiteTheme["button"] = {
   color: {
@@ -10,7 +10,7 @@ const customTheme: CustomFlowbiteTheme["button"] = {
 };
 
 export function SubmitButton(props: ButtonProps<"button">) {
-  let { isEnglish } = useLocale();
+  let { isEnglish } = uselitteraTranlation();
   return (
     <Button
       theme={customTheme}

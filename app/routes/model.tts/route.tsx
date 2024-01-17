@@ -1,6 +1,6 @@
-import { Button, Card, Spinner, Textarea } from "flowbite-react";
+import { Card, Spinner } from "flowbite-react";
 import { MetaFunction, useFetcher } from "@remix-run/react";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import ReactionButtons from "~/component/ReactionButtons";
 import { amplifyMedia } from "~/component/utils/audioGain";
 import useLocalStorage from "~/component/hooks/useLocaleStorage";
@@ -9,16 +9,14 @@ import ToolWraper from "~/component/ToolWraper";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import { ErrorBoundary } from "../model.mt/route";
 import InferenceWrapper from "~/component/layout/InferenceWrapper";
-import { CHAR_LIMIT, CHAR_LIMIT_TTS, MAX_SIZE_SUPPORT } from "~/helper/const";
+import { CHAR_LIMIT, MAX_SIZE_SUPPORT } from "~/helper/const";
 import ShareLink from "~/component/ShareLink";
 import { resetFetcher } from "~/component/utils/resetFetcher";
 import { RxCross2 } from "react-icons/rx";
 import { CancelButton, SubmitButton } from "~/component/Buttons";
-import { formatBytes } from "~/component/utils/formatSize";
 import FileUpload from "~/component/FileUpload";
 import TextComponent from "~/component/TextComponent";
 import { CharacterOrFileSizeComponent } from "../model.mt/components/UtilityComponent";
-import Waveform from "~/component/AudioPlayerWithWave";
 import ErrorMessage from "~/component/ErrorMessage";
 
 export const meta: MetaFunction = ({ matches }) => {

@@ -6,14 +6,12 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { RxCross1 } from "react-icons/rx";
 import uselitteraTranlation from "../hooks/useLitteraTranslation";
 import TranslationSwitcher from "../TranslationSwitcher";
-import { IconContext } from "react-icons";
 import { IoMdGlobe } from "react-icons/io";
 import DarkModeSwitcher from "../DarkModeSwitcher";
-import { useLocale } from "../hooks/useLocale";
 
 function Header() {
   const [showMenu, setShowMenu] = useState(false);
-  const { isEnglish, translation } = useLocale();
+  const { isEnglish, translation } = uselitteraTranlation();
 
   return (
     <nav

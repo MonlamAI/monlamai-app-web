@@ -30,9 +30,9 @@ import { resetFetcher } from "~/component/utils/resetFetcher";
 import { RxCross2 } from "react-icons/rx";
 import { CancelButton, SubmitButton } from "~/component/Buttons";
 import { formatBytes } from "~/component/utils/formatSize";
-import { useLocale } from "~/component/hooks/useLocale";
 import { API_ERROR_MESSAGE, MAX_SIZE_SUPPORT_AUDIO } from "~/helper/const";
 import { HandleAudioFile } from "./components/FileUpload";
+import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -190,7 +190,7 @@ export default function Index() {
       };
     }
   };
-  let { translation } = useLocale();
+  let { translation } = uselitteraTranlation();
   let isDisabled = !audioURL;
   let text = fetcher.data?.text;
   let inferenceId = fetcher.data?.inferenceId;
