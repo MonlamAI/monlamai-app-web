@@ -155,7 +155,9 @@ export default function Index() {
               </div>
             )}
             {isLoading ? (
-              <Spinner />
+               <div className="h-full flex justify-center items-center">
+               <Spinner />
+             </div>
             ) : (
               <div className="flex-1 h-full flex justify-center items-center">
                 {data?.error ? (
