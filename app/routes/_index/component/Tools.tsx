@@ -76,10 +76,10 @@ function EachModel({ model }: EachProps) {
             </p>
           </div> */}
           <Card
-            className="h-full"
+            className="h-full flex flex-row md:flex-col"
             renderImage={() => (
               <div
-                className="flex justify-center py-3 dark:mix-blend-exclusion dark:rounded-lg "
+                className="flex  justify-center items-center ml-2 md:ml-0 md:py-3  dark:mix-blend-exclusion dark:rounded-lg "
                 style={
                   isTransitioning
                     ? {
