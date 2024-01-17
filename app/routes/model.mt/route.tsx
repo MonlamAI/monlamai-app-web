@@ -36,6 +36,7 @@ import {
 import { NonEditModeActions } from "~/component/ActionButtons";
 import EditDisplay from "~/component/EditDisplay";
 import { resetFetcher } from "~/component/utils/resetFetcher";
+import CardComponent from "~/component/Card";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -160,7 +161,7 @@ export default function Index() {
         />
       </div>
       <div className="mt-3 flex flex-col md:flex-row  gap-5">
-        <Card className="md:w-1/2">
+        <CardComponent className="md:w-1/2">
           <div className="w-full flex flex-col justify-center gap-2 min-h-[20vh]  flex-1 ">
             <TextOrDocumentComponent
               selectedTool={selectedTool}
@@ -176,17 +177,15 @@ export default function Index() {
           >
             {translation.reset}
           </Button>
-          <div className="md:mt-2 md:mb-3 flex justify-between items-end">
-            <CharacterOrFileSizeComponent
-              selectedTool={selectedTool}
-              charCount={charCount}
-              CHAR_LIMIT={CHAR_LIMIT}
-              MAX_SIZE_SUPPORT={MAX_SIZE_SUPPORT}
-            />
-          </div>
-        </Card>
+          <CharacterOrFileSizeComponent
+            selectedTool={selectedTool}
+            charCount={charCount}
+            CHAR_LIMIT={CHAR_LIMIT}
+            MAX_SIZE_SUPPORT={MAX_SIZE_SUPPORT}
+          />
+        </CardComponent>
 
-        <Card className="md:w-1/2 ">
+        <CardComponent className="md:w-1/2  ">
           <div className="w-full flex flex-col justify-center gap-2 min-h-[20vh]  flex-1 ">
             <div
               ref={targetRef}
@@ -235,7 +234,7 @@ export default function Index() {
               setEditText={setEditText}
             />
           )}
-        </Card>
+        </CardComponent>
       </div>
       <div className="w-full text-center md:w-fit md:float-right text-xs mt-3 text-slate-400 text-[0.7rem]">
         Monlam-MITRA ཡིག་སྒྱུར་རིག་ནུས་དཔེ་གཞི་ཐོན་རིམ་ <small>v</small>10-16

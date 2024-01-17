@@ -1,6 +1,6 @@
 import { Card, Spinner } from "flowbite-react";
 import { MetaFunction, useFetcher } from "@remix-run/react";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import ReactionButtons from "~/component/ReactionButtons";
 import { amplifyMedia } from "~/component/utils/audioGain";
 import useLocalStorage from "~/component/hooks/useLocaleStorage";
@@ -18,7 +18,7 @@ import FileUpload from "~/component/FileUpload";
 import TextComponent from "~/component/TextComponent";
 import { CharacterOrFileSizeComponent } from "../model.mt/components/UtilityComponent";
 import ErrorMessage from "~/component/ErrorMessage";
-
+import CardComponent from "~/component/Card";
 export const meta: MetaFunction = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
   parentMeta.shift(1);
@@ -92,7 +92,7 @@ export default function Index() {
       >
         {actionError && <ErrorMessage error={actionError} />}
 
-        <Card className="w-full min-h-[20vh] lg:min-h-[40vh] lg:h-auto flex">
+        <CardComponent className="w-full min-h-[20vh] lg:min-h-[40vh] lg:h-auto flex">
           <div className="flex flex-col  gap-2 flex-1 ">
             <div className="flex relative flex-col flex-1  justify-center ">
               {selectedTool === "text" && (
@@ -136,8 +136,8 @@ export default function Index() {
               </SubmitButton>
             </div>
           </div>
-        </Card>
-        <Card className="w-full  max-h-[60vh] flex">
+        </CardComponent>
+        <CardComponent className="w-full  max-h-[60vh] flex">
           <div className="w-full flex-1">
             {data && (
               <div className="flex justify-between mx-2">
@@ -179,7 +179,7 @@ export default function Index() {
               {inferenceId && <ShareLink inferenceId={inferenceId} />}
             </div>
           </div>
-        </Card>
+        </CardComponent>
       </InferenceWrapper>
     </ToolWraper>
   );

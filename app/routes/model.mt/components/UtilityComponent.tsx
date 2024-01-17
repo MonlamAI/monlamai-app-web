@@ -94,7 +94,6 @@ export function LoadingAnimation() {
 }
 
 export function OutputDisplay({ edit, editData, output }: OutputDisplayProps) {
-  console.log(edit);
   if (edit) return null;
   return (
     <div className="font-monlam text-[1.2rem]" style={{ lineHeight: "1.8" }}>

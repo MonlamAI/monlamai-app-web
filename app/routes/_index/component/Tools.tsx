@@ -1,4 +1,5 @@
 import { Link, NavLink } from "@remix-run/react";
+import { Card } from "flowbite-react";
 
 import { motion } from "framer-motion";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
@@ -42,11 +43,8 @@ function EachModel({ model }: EachProps) {
   return (
     <NavLink prefetch="intent" to={"/model/" + link} unstable_viewTransition>
       {({ isTransitioning }) => (
-        <motion.div
-          whileHover={{ scale: 0.95 }}
-          className="rounded-lg flex  md:flex-col border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800 shadow-lg hover:border-blue-600 hover:border-2 h-full gap-1 md:gap-5 p-2 md:py-5 cursor-pointer"
-        >
-          <div
+        <motion.div whileHover={{ scale: 0.95 }} className="h-full">
+          {/* <div
             className="flex justify-center dark:mix-blend-exclusion dark:rounded-lg  "
             style={
               isTransitioning
@@ -76,7 +74,44 @@ function EachModel({ model }: EachProps) {
             >
               {translation[desc]}
             </p>
-          </div>
+          </div> */}
+          <Card
+            className="h-full"
+            renderImage={() => (
+              <div
+                className="flex justify-center dark:mix-blend-exclusion dark:rounded-lg "
+                style={
+                  isTransitioning
+                    ? {
+                        viewTransitionName: "icon-transition",
+                      }
+                    : undefined
+                }
+              >
+                {icon}
+              </div>
+            )}
+          >
+            <div
+              className={`flex flex-col justify-around flex-1 md:gap-5 text-[1.25rem] md:text-[2.2rem] 
+        ${isEnglish ? "font-poppins" : "font-monlam"}`}
+            >
+              <h2
+                className={`${
+                  isEnglish ? "text-[1rem]" : "text-[1.2rem]"
+                } md:text-[1.4rem]`}
+              >
+                {translation[name]}
+              </h2>
+              <p
+                className={`text-gray-400 ${
+                  isEnglish ? "text-[0.7rem]" : "text-[0.7rem]"
+                } md:text-[0.7rem]`}
+              >
+                {translation[desc]}
+              </p>
+            </div>
+          </Card>
         </motion.div>
       )}
     </NavLink>

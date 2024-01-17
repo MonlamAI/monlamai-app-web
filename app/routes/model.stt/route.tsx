@@ -4,18 +4,11 @@ import { useState, useRef, useCallback, useEffect } from "react";
 import { type LoaderFunction, ActionFunction, json } from "@remix-run/node";
 import { MetaFunction, useFetcher } from "@remix-run/react";
 import { LiveAudioVisualizer } from "react-audio-visualize";
-import CopyToClipboard from "~/component/CopyToClipboard";
-import { auth } from "~/services/auth.server";
-import ReactionButtons from "~/component/ReactionButtons";
 import { getBrowser } from "~/component/utils/getBrowserDetail";
 import ErrorMessage from "~/component/ErrorMessage";
 import ToolWraper from "~/component/ToolWraper";
-import { downloadTxtFile } from "~/component/utils/download";
-import { FaRedo } from "react-icons/fa";
-import Speak from "~/component/Speak";
-import { toast } from "react-toastify";
+import CardComponent from "~/component/Card";
 import InferenceWrapper from "~/component/layout/InferenceWrapper";
-import { verifyDomain } from "~/component/utils/verifyDomain";
 import {
   CharacterOrFileSizeComponent,
   EditActionButtons,
@@ -225,7 +218,7 @@ export default function Index() {
       >
         {actionError && <ErrorMessage error={actionError} />}
 
-        <Card className="w-full flex  ">
+        <CardComponent className="w-full flex  ">
           <div className="flex flex-col relative gap-2 flex-1 ">
             {selectedTool === "Recording" && (
               <div className="flex flex-col items-center gap-5 flex-1 justify-center md:min-h-[30vh]">
@@ -281,8 +274,8 @@ export default function Index() {
               </SubmitButton>
             </div>
           </div>
-        </Card>
-        <Card className="w-full flex">
+        </CardComponent>
+        <CardComponent className="w-full flex">
           <div className="w-full flex-1 lp-3 text-black  dark:text-gray-200 dark:bg-slate-700 rounded-lg overflow-auto">
             {RecordingSelected && isLoading && <LoadingAnimation />}
             {edit && (
@@ -319,7 +312,7 @@ export default function Index() {
               setEditText={setEditText}
             />
           )}
-        </Card>
+        </CardComponent>
       </InferenceWrapper>
     </ToolWraper>
   );
