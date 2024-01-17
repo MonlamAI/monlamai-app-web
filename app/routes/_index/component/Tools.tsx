@@ -79,7 +79,7 @@ function EachModel({ model }: EachProps) {
             className="h-full"
             renderImage={() => (
               <div
-                className="flex justify-center dark:mix-blend-exclusion dark:rounded-lg "
+                className="flex justify-center py-3 dark:mix-blend-exclusion dark:rounded-lg "
                 style={
                   isTransitioning
                     ? {
