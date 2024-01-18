@@ -1,16 +1,18 @@
 import type { LoaderFunction } from "@remix-run/node";
-import { Form, Link } from "@remix-run/react";
+import { Form, Link, redirect } from "@remix-run/react";
 import { Button } from "flowbite-react";
 import { TypeAnimation } from "react-type-animation";
 import { auth } from "~/services/auth.server";
 import { motion } from "framer-motion";
 import TranslationSwitcher from "~/component/TranslationSwitcher";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
+import { getUserSession } from "~/services/session.server";
 export const loader: LoaderFunction = async ({ request }) => {
-  const user = await auth.isAuthenticated(request, {
-    successRedirect: "/",
-  });
-  return { user };
+  let userdata = await getUserSession(request);
+  if (userdata) {
+    return redirect("/");
+  }
+  return null;
 };
 
 let sequence = [
