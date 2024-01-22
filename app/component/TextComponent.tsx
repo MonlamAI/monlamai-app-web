@@ -12,7 +12,7 @@ function TextComponent({ sourceText, setSourceText, sourceLang }) {
     <Textarea
       name="sourceText"
       placeholder={!isEnglish ? "ཡི་གེ་གཏག་རོགས།..." : "Enter text here..."}
-      className={`w-full p-0 overflow-auto resize-none flex-1 min-h-[5em] bg-transparent  border-0 focus:outline-none focus:ring-transparent  caret-slate-500 placeholder:text-slate-300 placeholder:font-monlam placeholder:text-lg ${
+      className={`w-full p-2 overflow-auto resize-none flex-1 min-h-[5em] bg-transparent  border-0 focus:outline-none focus:ring-transparent  caret-slate-500 placeholder:text-slate-300 placeholder:font-monlam placeholder:text-lg ${
         sourceLang == "en" && "font-poppins text-xl"
       } ${sourceLang == "bo" && "text-lg leading-loose font-monlam"}`}
       required
