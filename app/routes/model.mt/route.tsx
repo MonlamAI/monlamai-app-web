@@ -204,8 +204,6 @@ export default function Index() {
                   edit={edit}
                   editData={editData}
                   output={translated?.translation ?? ""}
-                  editText={editText}
-                  setEditText={setEditText}
                 />
               )}
               {selectedTool === "document" && sourceText !== "" && (

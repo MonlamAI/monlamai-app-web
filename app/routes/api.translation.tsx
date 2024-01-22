@@ -24,7 +24,7 @@ export async function translate(
   direction: string
 ) {
   const url =
-    "https://rvx0i2sheyjtydoh.us-east-1.aws.endpoints.huggingface.cloud/";
+    "https://rvx0i2sheyjtydoh.us-east-1.aws.endpoints.huggingface.cloud/generate_stream";
   if (direction !== "" && direction) {
     let newdirection = "<2" + direction.toLowerCase() + ">";
     text = newdirection + text;
@@ -36,6 +36,7 @@ export async function translate(
   const data = { inputs: text };
   let response;
   const startTime = Date.now(); // Start time for measuring response time
+  let receivedData = "";
 
   let modelToken = process.env?.MT_MODEL_TOKEN;
   if (!modelToken) throw new Error(API_ERROR_MESSAGE);
@@ -51,13 +52,30 @@ export async function translate(
     if (!response.ok) {
       throw new Error(API_ERROR_MESSAGE);
     }
+
+    const reader = response.body?.getReader();
+
+    while (true) {
+      const { done, value } = await reader?.read();
+      if (done) {
+        break;
+      }
+
+      // Convert stream chunks to string
+      const chunkText = new TextDecoder("utf-8")
+        .decode(value)
+        .replace(/^data:/, "");
+      const chunkData = JSON.parse(chunkText);
+      if (chunkData.generated_text !== null) {
+        receivedData = chunkData.generated_text;
+      }
+    }
   } catch (e) {
     throw new Error(API_ERROR_MESSAGE);
   }
 
-  const responseData = await response?.json();
-  const translation = responseData[0]?.generated_text;
-
+  const translation = receivedData;
+  console.log(translation);
   const responseTime = Date.now() - startTime; // Calculate response time
 
   const disclaimer = "";

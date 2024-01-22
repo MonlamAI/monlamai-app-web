@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import EditDisplay from "~/component/EditDisplay";
 import FileUpload from "~/component/FileUpload";
 import { MAX_SIZE_SUPPORT_AUDIO } from "~/helper/const";
+import { useEffect, useState } from "react";
 type TextOrDocumentComponentProps = {
   selectedTool: string;
   sourceText: string;
@@ -93,12 +94,33 @@ export function LoadingAnimation() {
   );
 }
 
-export function OutputDisplay({ edit, editData, output }: OutputDisplayProps) {
+export function OutputDisplay({ edit, editData, output }) {
+  const [displayedText, setDisplayedText] = useState("");
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    if (edit) {
+      return;
+    }
+
+    const timer = setInterval(() => {
+      setDisplayedText((prev) => prev + output[currentIndex]);
+      setCurrentIndex((prevIndex) => prevIndex + 1);
+    }, 50); // adjust time interval as needed
+
+    if (currentIndex >= output.length) {
+      clearInterval(timer);
+    }
+
+    return () => clearInterval(timer);
+  }, [currentIndex, output, edit]);
+
   if (edit) return null;
+
   return (
     <div className="font-monlam text-[1.2rem]" style={{ lineHeight: "1.8" }}>
       <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-        {editData ? editData : output}
+        {editData ? editData : displayedText}
       </motion.p>
     </div>
   );
