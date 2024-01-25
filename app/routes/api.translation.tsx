@@ -53,29 +53,13 @@ export async function translate(
       throw new Error(API_ERROR_MESSAGE);
     }
 
-    const reader = response.body?.getReader();
-
-    while (true) {
-      const { done, value } = await reader?.read();
-      if (done) {
-        break;
-      }
-
-      // Convert stream chunks to string
-      const chunkText = new TextDecoder("utf-8")
-        .decode(value)
-        .replace(/^data:/, "");
-      const chunkData = JSON.parse(chunkText);
-      if (chunkData.generated_text !== null) {
-        receivedData = chunkData.generated_text;
-      }
-    }
+    let response_data = await response.json();
+    receivedData = response_data[0].generated_text;
   } catch (e) {
     throw new Error(API_ERROR_MESSAGE);
   }
 
   const translation = receivedData;
-  console.log(translation);
   const responseTime = Date.now() - startTime; // Calculate response time
 
   const disclaimer = "";
