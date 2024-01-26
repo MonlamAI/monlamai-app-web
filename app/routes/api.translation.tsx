@@ -23,8 +23,7 @@ export async function translate(
   sourceLang: Lang,
   direction: string
 ) {
-  const url =
-    "https://rvx0i2sheyjtydoh.us-east-1.aws.endpoints.huggingface.cloud/generate_stream";
+  const url = process.env?.MT_API_URL;
   if (direction !== "" && direction) {
     let newdirection = "<2" + direction.toLowerCase() + ">";
     text = newdirection + text;
@@ -38,7 +37,7 @@ export async function translate(
   const startTime = Date.now(); // Start time for measuring response time
   let receivedData = "";
 
-  let modelToken = process.env?.MT_MODEL_TOKEN;
+  let modelToken = process.env?.MODEL_API_AUTH_TOKEN;
   if (!modelToken) throw new Error(API_ERROR_MESSAGE);
   try {
     response = await fetch(url, {

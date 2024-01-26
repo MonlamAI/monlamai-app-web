@@ -282,7 +282,12 @@ export default function Index() {
               <EditDisplay editText={editText} setEditText={setEditText} />
             )}
             {!isLoading && (
-              <OutputDisplay edit={edit} editData={editData} output={text} />
+              <OutputDisplay
+                edit={edit}
+                editData={editData}
+                output={text}
+                animate={false}
+              />
             )}
           </div>
           {edit && (

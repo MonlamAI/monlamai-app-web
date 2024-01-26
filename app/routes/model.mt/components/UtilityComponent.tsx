@@ -94,7 +94,7 @@ export function LoadingAnimation() {
   );
 }
 
-export function OutputDisplay({ edit, editData, output }) {
+export function OutputDisplay({ edit, editData, output, animate }) {
   const [displayedText, setDisplayedText] = useState("");
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -103,7 +103,7 @@ export function OutputDisplay({ edit, editData, output }) {
       return;
     }
     let timer;
-    if (output) {
+    if (output && animate) {
       timer = setInterval(() => {
         setDisplayedText((prev) => prev + output[currentIndex]);
         setCurrentIndex((prevIndex) => prevIndex + 1);
@@ -115,17 +115,16 @@ export function OutputDisplay({ edit, editData, output }) {
     }
 
     return () => clearInterval(timer);
-  }, [currentIndex, output, edit]);
+  }, [currentIndex, output, edit, animate]);
 
   if (edit) return null;
-
   return (
     <div
       className="font-monlam p-2 text-[1.2rem]"
       style={{ lineHeight: "1.8" }}
     >
       <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-        {editData ? editData : displayedText}
+        {editData ? editData : animate ? displayedText : output}
       </motion.p>
     </div>
   );
