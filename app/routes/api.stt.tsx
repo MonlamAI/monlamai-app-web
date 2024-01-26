@@ -33,6 +33,7 @@ export const action: ActionFunction = async ({ request }) => {
       headers: headers,
       body: blob,
     });
+    console.log(response);
   } catch (error) {
     return { error: API_ERROR_MESSAGE };
   }

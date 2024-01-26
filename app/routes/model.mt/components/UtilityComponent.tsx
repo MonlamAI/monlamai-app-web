@@ -102,14 +102,16 @@ export function OutputDisplay({ edit, editData, output }) {
     if (edit) {
       return;
     }
+    let timer;
+    if (output) {
+      timer = setInterval(() => {
+        setDisplayedText((prev) => prev + output[currentIndex]);
+        setCurrentIndex((prevIndex) => prevIndex + 1);
+      }, 50); // adjust time interval as needed
 
-    const timer = setInterval(() => {
-      setDisplayedText((prev) => prev + output[currentIndex]);
-      setCurrentIndex((prevIndex) => prevIndex + 1);
-    }, 50); // adjust time interval as needed
-
-    if (currentIndex >= output.length) {
-      clearInterval(timer);
+      if (currentIndex >= output?.length) {
+        clearInterval(timer);
+      }
     }
 
     return () => clearInterval(timer);

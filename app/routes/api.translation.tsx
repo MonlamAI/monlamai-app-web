@@ -53,8 +53,9 @@ export async function translate(
       throw new Error(API_ERROR_MESSAGE);
     }
 
-    let response_data = await response.json();
-    receivedData = response_data[0].generated_text;
+    let response_data = await postRequestAndHandleResponse(response);
+    console.log(response_data);
+    receivedData = response_data;
   } catch (e) {
     throw new Error(API_ERROR_MESSAGE);
   }
@@ -127,3 +128,44 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     });
   }
 };
+
+async function postRequestAndHandleResponse(response) {
+  try {
+    // Make a POST request to the API
+
+    // Check the content type of the response
+    const contentType = response.headers.get("Content-Type");
+
+    if (contentType && contentType.includes("application/json")) {
+      // Handle JSON response
+      let data = await response.json();
+      return data[0].generated_text;
+    } else if (contentType && contentType.includes("text")) {
+      // Handle text stream
+      const reader = response.body.getReader();
+      let translation = "";
+
+      // Read the stream
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) {
+          break;
+        }
+        const chunkText = new TextDecoder("utf-8")
+          .decode(value)
+          .replace(/^data:/, "");
+        const chunkData = JSON.parse(chunkText);
+        if (chunkData.generated_text !== null) {
+          translation = chunkData.generated_text;
+        }
+      }
+
+      return translation;
+    } else {
+      throw new Error("Unsupported content type");
+    }
+  } catch (error) {
+    console.error("Error in postRequestAndHandleResponse:", error);
+    throw error;
+  }
+}

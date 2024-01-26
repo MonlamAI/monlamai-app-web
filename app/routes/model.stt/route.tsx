@@ -282,13 +282,7 @@ export default function Index() {
               <EditDisplay editText={editText} setEditText={setEditText} />
             )}
             {!isLoading && (
-              <OutputDisplay
-                edit={edit}
-                editData={editData}
-                output={text}
-                editText={editText}
-                setEditText={setEditText}
-              />
+              <OutputDisplay edit={edit} editData={editData} output={text} />
             )}
           </div>
           {edit && (
@@ -318,4 +312,4 @@ export default function Index() {
   );
 }
 
-export { ErrorBoundary };
+// export { ErrorBoundary };
