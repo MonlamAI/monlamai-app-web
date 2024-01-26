@@ -317,4 +317,4 @@ export default function Index() {
   );
 }
 
-// export { ErrorBoundary };
+export { ErrorBoundary };

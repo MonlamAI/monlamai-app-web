@@ -53,7 +53,6 @@ export async function translate(
     }
 
     let response_data = await postRequestAndHandleResponse(response);
-    console.log(response_data);
     receivedData = response_data;
   } catch (e) {
     throw new Error(API_ERROR_MESSAGE);
