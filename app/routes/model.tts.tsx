@@ -1,20 +1,14 @@
 import { Button, Card, Spinner, Textarea } from "flowbite-react";
 import { MetaFunction, useFetcher } from "@remix-run/react";
-import {
-  LoaderFunctionArgs,
-  type ActionFunction,
-  LinksFunction,
-} from "@remix-run/node";
+import { LoaderFunctionArgs, type ActionFunction } from "@remix-run/node";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { auth } from "~/services/auth.server";
 import ReactionButtons from "~/component/ReactionButtons";
 import inputReplace from "~/component/utils/ttsReplace.server";
 import { amplifyMedia } from "~/component/utils/audioGain";
 import useLocalStorage from "~/component/hooks/useLocaleStorage";
-import { AiOutlineCloudDownload } from "react-icons/ai";
 import ErrorMessage from "~/component/ErrorMessage";
 import AudioPlayer from "~/component/AudioPlayer";
-import { BsFillVolumeUpFill } from "react-icons/bs";
 import ToolWraper from "~/component/ToolWraper";
 import { readDocxFile, readTextFile } from "~/component/utils/readers";
 import { useDropzone } from "react-dropzone";
@@ -98,7 +92,7 @@ export default function Index() {
     if (audioRef.current && !setting.current && data) {
       setting.current = amplifyMedia(audioRef.current, volume);
     }
-  }, [data]);
+  }, [data, audioRef.current, setting.current]);
 
   function amplify(number) {
     if (setting.current) {
@@ -150,7 +144,7 @@ export default function Index() {
                   color="gray"
                   className="text-slate-500"
                   onClick={handleReset}
-                  disabled={true}
+                  disabled={!sourceText || sourceText === ""}
                 >
                   {translation.reset}
                 </Button>
@@ -178,11 +172,11 @@ export default function Index() {
                     <input
                       type="range"
                       min={1}
-                      max={10}
-                      step={0.01}
+                      max={20}
+                      step={0.1}
                       value={volume}
                       onChange={handleVolumeChange}
-                    />{" "}
+                    />
                   </div>
                 </div>
               )}
