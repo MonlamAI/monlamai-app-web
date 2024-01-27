@@ -60,7 +60,7 @@ export default function Index() {
     if (audioRef.current && !setting.current && data) {
       setting.current = amplifyMedia(audioRef.current, volume);
     }
-  }, [data]);
+  }, [data, audioRef.current, setting.current]);
 
   function amplify(number) {
     if (setting.current) {
@@ -146,8 +146,8 @@ export default function Index() {
                   <input
                     type="range"
                     min={1}
-                    max={10}
-                    step={0.01}
+                    max={20}
+                    step={0.1}
                     value={volume}
                     onChange={handleVolumeChange}
                   />{" "}
@@ -155,9 +155,9 @@ export default function Index() {
               </div>
             )}
             {isLoading ? (
-               <div className="h-full flex justify-center items-center">
-               <Spinner />
-             </div>
+              <div className="h-full flex justify-center items-center">
+                <Spinner />
+              </div>
             ) : (
               <div className="flex-1 h-full flex justify-center items-center">
                 {data?.error ? (
