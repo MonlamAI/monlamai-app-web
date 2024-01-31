@@ -1,20 +1,27 @@
-import React from "react";
 import useLocalStorage from "./hooks/useLocaleStorage";
-import { DarkThemeToggle, Flowbite } from "flowbite-react";
-
+import { MdOutlineLightMode, MdDarkMode } from "react-icons/md";
 function DarkModeSwitcher() {
   let [isDarkMode, setIsDarkMode] = useLocalStorage("Darktheme", false);
+
   function handleClick() {
+    if (
+      !isDarkMode ||
+      (!("Darktheme" in localStorage) &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches)
+    ) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
     setIsDarkMode(!isDarkMode);
   }
   return (
     <div
       onClick={handleClick}
-      className="flex flex-1 gap-2 p-1 text-center items-center  hover:bg-gray-100 dark:hover:bg-slate-600 cursor-pointer"
+      className="flex flex-1 gap-2 p-1 justify-around items-center  hover:bg-gray-100 dark:hover:bg-slate-600 cursor-pointer"
     >
-      <Flowbite>
-        <DarkThemeToggle className="w-full p-0 justify-center text-center flex "></DarkThemeToggle>
-      </Flowbite>
+      {isDarkMode ? <MdOutlineLightMode /> : <MdDarkMode />}
+      Appearance
     </div>
   );
 }

@@ -19,15 +19,18 @@ import Footer from "./component/layout/Footer";
 import Header from "./component/layout/Header";
 import globalStyle from "./styles/global.css";
 import tailwindStyle from "./styles/tailwind.css";
-import { LitteraProvider, useLitteraMethods } from "@assembless/react-littera";
+import { LitteraProvider } from "@assembless/react-littera";
 import { getUserSession } from "~/services/session.server";
 import { getUser } from "./modal/user.server";
 import toastStyle from "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import { feature } from "./services/features.server";
+import { useEffect } from "react";
+import useLocalStorage from "./component/hooks/useLocaleStorage";
 export const loader: LoaderFunction = async ({ request }) => {
   let userdata = await getUserSession(request);
   const isJobEnabled = await feature("job_link");
+
   return json(
     {
       user: userdata ? await getUser(userdata?._json?.email) : null,
@@ -95,6 +98,15 @@ export default function App() {
   let { user } = useLoaderData();
   let location = useLocation();
   let isSteps = location.pathname.includes("steps");
+  let [isDarkMode, setIsDarkMode] = useLocalStorage("Darktheme", false);
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, []);
 
   return (
     <Document>

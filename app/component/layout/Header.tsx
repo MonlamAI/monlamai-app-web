@@ -18,7 +18,6 @@ function Header() {
   const [showMenu, setShowMenu] = useState(false);
   const { isEnglish, translation } = uselitteraTranlation();
   const data = useRouteLoaderData("root");
-  console.log(data);
   return (
     <nav
       className={`flex flex-col lg:flex-row  ${
@@ -49,10 +48,10 @@ function Header() {
         <div className="hidden lg:flex gap-2 ml-8 flex-1 justify-between bg-white dark:bg-slate-700 dark:text-gray-200">
           <div className="flex items-center gap-8 text-sm ml-4">
             <AboutLink />
-
             {data?.isJobEnabled && <JobLink />}
           </div>
           <div className="flex items-center gap-4 mr-7">
+            <TranslationSwitcher />
             <Menu />
           </div>
         </div>
@@ -67,6 +66,7 @@ function Header() {
           <div className="flex flex-col gap-4">
             <AboutLink />
             <JobLink />
+            <TranslationSwitcher />
           </div>
           <div className="flex gap-4">
             <Menu />
@@ -80,7 +80,7 @@ function Header() {
 export default Header;
 
 function Menu() {
-  const { user } = useLoaderData();
+  const { user } = useRouteLoaderData("root");
   const { translation, locale } = uselitteraTranlation();
   let isEnglish = locale === "en_US";
   if (!user) return null;
@@ -103,9 +103,6 @@ function Menu() {
           {user.email}
         </span>
       </Dropdown.Header>
-      <Dropdown.Item icon={IoMdGlobe}>
-        <TranslationSwitcher />
-      </Dropdown.Item>
       <hr />
       <DarkModeSwitcher />
       <hr />
