@@ -1,0 +1,26 @@
+name: Scheduled Script Execution
+
+on:
+  schedule:
+    - cron: "0 */2 * * *" # Runs at minute 0 past every 2nd hour
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+
+      - name: Set up Python (if your script is a Python script)
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x" # Use the Python version of your choice
+
+      - name: Install dependencies (if needed)
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Run the script
+        run: python apitest.py # Replace with your script's path
