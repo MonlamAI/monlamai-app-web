@@ -28,10 +28,12 @@ import { feature } from "./services/features.server";
 export const loader: LoaderFunction = async ({ request }) => {
   let userdata = await getUserSession(request);
   const isJobEnabled = await feature("job_link");
+  const isFileUploadEnabled = await feature("feat_file_upload");
   return json(
     {
       user: userdata ? await getUser(userdata?._json?.email) : null,
       isJobEnabled: isJobEnabled.enabled,
+      isFileUploadEnabled: isFileUploadEnabled.enabled,
     },
     { status: 200, headers: { "cache-control": "no-cache" } }
   );
