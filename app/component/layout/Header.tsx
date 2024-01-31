@@ -1,4 +1,9 @@
-import { Form, NavLink, useLoaderData } from "@remix-run/react";
+import {
+  Form,
+  NavLink,
+  useRouteLoaderData,
+  useLoaderData,
+} from "@remix-run/react";
 import { Dropdown } from "flowbite-react";
 import { useState } from "react";
 import { HiLogout } from "react-icons/hi";
@@ -12,7 +17,8 @@ import DarkModeSwitcher from "../DarkModeSwitcher";
 function Header() {
   const [showMenu, setShowMenu] = useState(false);
   const { isEnglish, translation } = uselitteraTranlation();
-
+  const data = useRouteLoaderData("root");
+  console.log(data);
   return (
     <nav
       className={`flex flex-col lg:flex-row  ${
@@ -43,7 +49,8 @@ function Header() {
         <div className="hidden lg:flex gap-2 ml-8 flex-1 justify-between bg-white dark:bg-slate-700 dark:text-gray-200">
           <div className="flex items-center gap-8 text-sm ml-4">
             <AboutLink />
-            <JobLink />
+
+            {data?.isJobEnabled && <JobLink />}
           </div>
           <div className="flex items-center gap-4 mr-7">
             <Menu />

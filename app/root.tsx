@@ -24,11 +24,14 @@ import { getUserSession } from "~/services/session.server";
 import { getUser } from "./modal/user.server";
 import toastStyle from "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import { feature } from "./services/features.server";
 export const loader: LoaderFunction = async ({ request }) => {
   let userdata = await getUserSession(request);
+  const isJobEnabled = await feature("job_link");
   return json(
     {
       user: userdata ? await getUser(userdata?._json?.email) : null,
+      isJobEnabled: isJobEnabled.enabled,
     },
     { status: 200, headers: { "cache-control": "no-cache" } }
   );
