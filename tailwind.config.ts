@@ -6,10 +6,14 @@ export default {
     "./node_modules/flowbite-react/**/*.js",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        primary: "#3758F9",
+        "primary-hover": "#3758a9",
+      },
+    },
     fontFamily: {
       poppins: ["Poppins", "sans-serif"],
-      Inter: ["Inter", "sans-serif"],
       monlam: ["Monlam", "sans-serif"],
     },
   },

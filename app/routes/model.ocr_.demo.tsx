@@ -15,6 +15,7 @@ import { Tooltip } from "flowbite-react";
 import ErrorMessage from "~/component/ErrorMessage";
 import ToolWraper from "~/component/ToolWraper";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
+import { resetFetcher } from "~/component/utils/resetFetcher";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -76,13 +77,7 @@ export default function Index() {
   isEmptyData = isEmptyData || data?.text?.join("") === "";
   const handleFormClear = () => {
     setImageUrl(null);
-    fetcher.submit(
-      {},
-      {
-        method: "POST",
-        action: "/api/reset_actiondata",
-      }
-    );
+    resetFetcher(fetcher);
   };
   let { translation } = uselitteraTranlation();
   return (
@@ -95,7 +90,7 @@ export default function Index() {
                 content="Please ensure that the image is of high quality and that it includes a lengthy text that is easily readable."
                 animation="duration-500"
                 placement="left"
-                className="w-[200px] md:w-[400px] font-inter text-xs"
+                className="w-[200px] md:w-[400px] font-poppins text-xs"
                 style="light"
               >
                 <BiQuestionMark />

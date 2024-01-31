@@ -1,65 +1,88 @@
-import { Fetcher } from "@remix-run/react";
 import { Button, Spinner } from "flowbite-react";
 import { FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa";
-import { ModelType } from "~/modal/feedback";
-import React from "react";
+import { modelType } from "~/modal/feedback.server";
+import React, { useEffect, useRef } from "react";
+import { toast } from "react-toastify";
 interface ReactionButtonsProps {
-  fetcher: Fetcher;
+  fetcher: any;
   output: string | null;
   sourceText: string | null;
-  model: ModelType;
+  inferenceId: string;
 }
 
 const API_ENDPOINT = "/api/feedback";
 const IDLE_STATE = "idle";
 
+let showMessage = false;
+
 function ReactionButtons({
   fetcher,
   output,
   sourceText,
-  model,
+  inferenceId,
 }: ReactionButtonsProps) {
+  if (!inferenceId) return null;
   const { liked, disliked } = fetcher.data || {};
+
   const isLoading =
-    fetcher.state !== IDLE_STATE && fetcher.formData?.get("_action");
+    fetcher.state !== IDLE_STATE && fetcher.formData?.get("action");
 
-  const handleReaction = (action: "liked" | "disliked") => {
+  const handleReaction = async (action: "liked" | "disliked") => {
     if (!output || !sourceText) return;
-
+    showMessage = true;
     fetcher.submit(
-      { source: sourceText, output, _action: action, model },
+      { inferenceId, action },
       { method: "POST", action: API_ENDPOINT }
     );
   };
 
   if (isLoading) return <Spinner />;
+  let data = fetcher.data;
+
+  useEffect(() => {
+    let message = data?.message;
+    if (message && message !== "" && showMessage) {
+      toast.success(message);
+    }
+    showMessage = false;
+  }, [data]);
 
   return (
-    <div className="flex justify-end">
+    <>
       <ReactionButton
-        enabled={output && !isLoading}
+        enabled={!!output}
         active={liked}
         icon={<FaRegThumbsUp />}
         onClick={() => handleReaction("liked")}
       />
       <ReactionButton
-        enabled={output && !isLoading}
+        enabled={!!output}
         active={disliked}
         icon={<FaRegThumbsDown />}
         onClick={() => handleReaction("disliked")}
       />
-    </div>
+    </>
   );
 }
 
-function ReactionButton({ enabled, active, icon, onClick }) {
+type ReactionButtonProps = {
+  enabled: boolean;
+  active: boolean;
+  icon: React.ReactElement;
+  onClick: () => void;
+};
+
+function ReactionButton({ active, icon, onClick }: ReactionButtonProps) {
   return (
-    <Button color="white" disabled={!enabled} onClick={onClick}>
+    <div
+      color="white"
+      onClick={onClick}
+      className="focus:outline-none cursor-pointer text-gray-500 hover:text-green-400"
+    >
       {React.cloneElement(icon, {
-        color: active ? (icon === FaRegThumbsUp ? "green" : "red") : "gray",
         size: "20px",
       })}
-    </Button>
+    </div>
   );
 }
 

@@ -4,11 +4,11 @@ import {
   useNavigation,
   useSearchParams,
 } from "@remix-run/react";
-import React, { useEffect, useState } from "react";
-import { getUserAboutData } from "~/modal/aboutUser";
-import { getUser, getUsers } from "~/modal/user";
+import { useEffect, useState } from "react";
+import { getUserAboutData } from "~/modal/aboutUser.server";
+import { getUser, getUsers } from "~/modal/user.server";
 import { auth } from "~/services/auth.server";
-import { Spinner, Table, TextInput } from "flowbite-react";
+import { Card, Spinner, Table, TextInput } from "flowbite-react";
 import useDebounce from "~/component/hooks/useDebounceState";
 export const loader: LoaderFunction = async ({ request }) => {
   let url = new URL(request.url);
@@ -21,15 +21,15 @@ export const loader: LoaderFunction = async ({ request }) => {
   let aboutUser = await getUserAboutData(user?.id);
   if (!aboutUser) return redirect("/steps");
 
-  let users = await getUsers(query?.get("q") ?? "");
-
+  const { list, totalCount } = await getUsers(query?.get("q") ?? "");
   return json({
     user,
-    users,
+    users: list,
+    totalCount,
   });
 };
 function dashboard() {
-  let { users } = useLoaderData();
+  let { users, totalCount } = useLoaderData();
   let [searchparam, setSearchParam] = useSearchParams();
   let [input, setInput] = useState(searchparam.get("q") ?? "");
   let debounced_input = useDebounce(input, 800);
@@ -48,7 +48,9 @@ function dashboard() {
         value={input}
         onChange={(e) => setInput(e.target.value)}
       />
-
+      <Card>
+        <h1 className="text-2xl font-bold">Total Users: {totalCount}</h1>
+      </Card>
       <Table>
         <Table.Head>
           <Table.HeadCell>user</Table.HeadCell>
@@ -60,7 +62,7 @@ function dashboard() {
               <Spinner />
             </div>
           ) : (
-            users.map((user) => {
+            users?.map((user) => {
               return (
                 <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
                   <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white flex gap-2">

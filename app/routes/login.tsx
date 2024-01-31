@@ -1,35 +1,36 @@
 import type { LoaderFunction } from "@remix-run/node";
-import { Form, Link } from "@remix-run/react";
+import { Form, Link, redirect } from "@remix-run/react";
 import { Button } from "flowbite-react";
 import { TypeAnimation } from "react-type-animation";
 import { auth } from "~/services/auth.server";
 import { motion } from "framer-motion";
-import ErrorMessage from "~/component/ErrorMessage";
 import TranslationSwitcher from "~/component/TranslationSwitcher";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
+import { getUserSession } from "~/services/session.server";
 export const loader: LoaderFunction = async ({ request }) => {
-  const user = await auth.isAuthenticated(request, {
-    successRedirect: "/",
-  });
-  return { user };
+  let userdata = await getUserSession(request);
+  if (userdata) {
+    return redirect("/");
+  }
+  return null;
 };
 
-function login() {
-  let sequence = [
-    "Monlam AI",
-    2000,
-    "Neural Machine Translation",
-    2000,
-    "Text to Speech",
-    2000,
-    "OCR",
-    2000,
-    "སྨོན་ལམ་རིག་ནུས།",
-    2000,
-    "ཡིག་སྒྱུར་རིག་ནུས།",
-    2000,
-  ];
+let sequence = [
+  "Monlam AI",
+  2000,
+  "Neural Machine Translation",
+  2000,
+  "Text to Speech",
+  2000,
+  "OCR",
+  2000,
+  "སྨོན་ལམ་རིག་ནུས།",
+  2000,
+  "ཡིག་སྒྱུར་རིག་ནུས།",
+  2000,
+];
 
+function login() {
   const { translation, locale } = uselitteraTranlation();
 
   return (
@@ -39,9 +40,15 @@ function login() {
     >
       <div
         className="relative hidden md:flex flex-1 flex-col justify-center px-5 pt-8 text-white
-          md:bg-[url('/assets/back-light.gif')] bg-no-repeat bg-center bg-cover shadow-2xl"
+          bg-no-repeat bg-center bg-cover shadow-2xl"
       >
-        <div className="w-full flex-1 flex justify-center items-center flex-col">
+        <img
+          src="/assets/back-light.gif"
+          alt="monalm"
+          loading="lazy"
+          className="hidden md:block z-10 absolute inset-0 container mx-auto w-full h-full object-cover object-center"
+        />
+        <div className="w-full flex-1 z-20 flex justify-center items-center flex-col">
           <h1 className="text-center text-[40px]  md:text-[50px] max-w-[1000px] mb-2 ">
             སྨོན་ལམ་རིག་ནུས།
           </h1>
@@ -59,11 +66,17 @@ function login() {
           <TranslationSwitcher />
         </div>
         <div className="flex grow w-4/5 flex-col gap-8 justify-center items-center">
-          <img src="/assets/buddha.png" alt="monalm" loading="lazy" />
+          <img src="/assets/buddhalogo.png" alt="monalm" loading="lazy" />
           <div className="flex-col justify-center items-center ">
             <Form method="post" action="/auth0">
               <motion.div whileHover={{ scale: 1.1 }}>
-                <Button type="submit">
+                <Button
+                  type="submit"
+                  gradientDuoTone="purpleToBlue"
+                  outline
+                  pill
+                  size="xs"
+                >
                   <span
                     className={` leading-[normal] relative 
                     ${
@@ -92,7 +105,7 @@ function login() {
           </div>
           <Link
             className="py-3 text-xs text-gray-400 hover:text-gray-500"
-            to="/tac"
+            to="/terms"
           >
             Terms of use
           </Link>
@@ -103,11 +116,3 @@ function login() {
 }
 
 export default login;
-
-export function ErrorBoundary({ error }) {
-  return (
-    <>
-      <ErrorMessage error={error} />
-    </>
-  );
-}

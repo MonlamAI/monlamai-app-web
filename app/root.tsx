@@ -15,23 +15,31 @@ import {
   useLoaderData,
   useLocation,
 } from "@remix-run/react";
-import Footer from "./component/Footer";
-import Header from "./component/Header";
+import Footer from "./component/layout/Footer";
+import Header from "./component/layout/Header";
 import globalStyle from "./styles/global.css";
 import tailwindStyle from "./styles/tailwind.css";
 import { LitteraProvider } from "@assembless/react-littera";
 import { getUserSession } from "~/services/session.server";
-import { getUser } from "./modal/user";
-import ErrorMessage from "./component/ErrorMessage";
-import uselitteraTranlation from "./component/hooks/useLitteraTranslation";
+import { getUser } from "./modal/user.server";
 import toastStyle from "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import flagsmith_provider, { feature } from "./services/features.server";
 import { useEffect } from "react";
+import useLocalStorage from "./component/hooks/useLocaleStorage";
 export const loader: LoaderFunction = async ({ request }) => {
   let userdata = await getUserSession(request);
+  let fetchdata = await flagsmith_provider.getEnvironmentFlags();
+
+  const isJobEnabled = fetchdata.flags.job_link;
+  const isFileUploadEnabled = fetchdata.flags.feat_file_upload;
+  const show_mt_language_toggle = fetchdata.flags.show_mt_language_toggle;
   return json(
     {
       user: userdata ? await getUser(userdata?._json?.email) : null,
+      isJobEnabled: isJobEnabled.enabled,
+      isFileUploadEnabled: isFileUploadEnabled.enabled,
+      show_mt_language_toggle: show_mt_language_toggle.enabled,
     },
     { status: 200, headers: { "cache-control": "no-cache" } }
   );
@@ -94,21 +102,22 @@ function Document({ children }: { children: React.ReactNode }) {
 export default function App() {
   let { user } = useLoaderData();
   let location = useLocation();
-  let { locale } = uselitteraTranlation();
   let isSteps = location.pathname.includes("steps");
-  let isEnglish = locale === "en_US";
+  let [isDarkMode, setIsDarkMode] = useLocalStorage("Darktheme", false);
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, []);
 
   return (
     <Document>
       <LitteraProvider locales={["en_US", "bo_TI"]}>
         {user && <Header />}
-        <div
-          className={`${
-            isEnglish ? "font-poppins" : "font-monlam"
-          } leading-[normal]`}
-        >
-          <Outlet />
-        </div>
+        <Outlet />
         {user && !isSteps && <Footer />}
       </LitteraProvider>
       <ToastContainer />

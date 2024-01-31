@@ -43,7 +43,7 @@ function AudioPlayer(props, ref) {
       />
 
       <div className="bg-white border-slate-100  dark:bg-slate-800 transition-all duration-500 dark:border-slate-500 border-b rounded-t-xl p-4 pb-6 sm:p-10 sm:pb-8 lg:p-6 xl:p-10 xl:pb-8 space-y-6 sm:space-y-8 lg:space-y-6 xl:space-y-8">
-        <div className="space-y-2">
+        <div>
           <div className="relative">
             <div className="bg-slate-100 transition-all duration-500 dark:bg-slate-700 rounded-full overflow-hidden">
               <div
@@ -62,7 +62,7 @@ function AudioPlayer(props, ref) {
           <ProgressBar max={duration} value={currentTime} />
         </div>
       </div>
-      <div className="bg-slate-50 text-slate-500 transition-all duration-500 dark:bg-slate-600 dark:text-slate-200 rounded-b-xl flex items-center">
+      <div className="text-md bg-slate-50 text-slate-500 transition-all duration-500 dark:bg-slate-600 dark:text-slate-200 rounded-b-xl flex items-center">
         <div className="flex-auto flex items-center justify-evenly">
           <button onClick={handleStop} type="button" aria-label="stop">
             <BsFillStopFill />
@@ -71,7 +71,7 @@ function AudioPlayer(props, ref) {
         <button
           onClick={togglePause}
           type="button"
-          className="bg-white text-slate-900  dark:bg-slate-100 transition-all duration-500 dark:text-slate-700 flex-none -my-2 mx-auto w-20 h-20 rounded-full ring-1 ring-slate-900/5 shadow-md flex items-center justify-center"
+          className="bg-white text-slate-900  dark:bg-slate-100 transition-all duration-500 dark:text-slate-700 flex-none  mx-auto p-1 rounded-full ring-1 ring-slate-900/5 shadow-md flex items-center justify-center"
           aria-label="play/pause"
         >
           {playStatus === "stop" ? (

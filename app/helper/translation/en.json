@@ -2,9 +2,9 @@
   "language": "Language",
   "search": "Search",
   "searchText": "Search Text",
-  "login": "log in",
-  "signup": "sign up",
-  "logout": "log out",
+  "login": "Login",
+  "signup": "Sign up",
+  "logout": "Logout",
   "aboutUs": "About",
   "monlamAI": "Monlam AI",
   "personalInformation": "Personal Information",
@@ -29,5 +29,6 @@
   "TTS_description": "Have our AI speak Tibetan text",
   "OCR_description": "Convert an image into text with AI",
   "reset": "Reset",
-  "submit": "Submit"
+  "submit": "Submit",
+  "jobs": "Jobs"
 }

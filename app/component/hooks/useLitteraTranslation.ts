@@ -1,6 +1,8 @@
 import { useLittera, useLitteraMethods } from "@assembless/react-littera";
 import en from "~/helper/translation/en.json";
 import bo from "~/helper/translation/bo.json";
+import { useEffect } from "react";
+import useLocalStorage from "./useLocaleStorage";
 
 type translationType = {
   [key: string]: {
@@ -28,8 +30,18 @@ export function translationList() {
   return translations;
 }
 export default function uselitteraTranlation() {
+  const [current, setCurrent] = useLocalStorage("language", "bo_TI");
   let translations = translationList();
   const { locale } = useLitteraMethods();
+  const methods = useLitteraMethods();
   const translation = useLittera(translations);
-  return { translation, locale };
+
+  useEffect(() => {
+    if (current === "bo_TI") methods.setLocale("bo_TI");
+    if (current === "en_US") methods.setLocale("en_US");
+  }, []);
+
+  const isEnglish = locale === "en_US";
+  const isTibetan = locale === "bo_TI";
+  return { translation, locale, isEnglish, isTibetan };
 }
