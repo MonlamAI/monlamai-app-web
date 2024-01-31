@@ -1,8 +1,8 @@
-name: Scheduled Script Execution
+name: Scheduled and Push Triggered Script Execution
 
 on:
+  push:
   schedule:
-    - push: main
     - cron: "0 */2 * * *" # Runs at minute 0 past every 2nd hour
 
 jobs:
@@ -24,4 +24,4 @@ jobs:
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
       - name: Run the script
-        run: python apitest.py # Replace with your script's path
+        run: python your_script.py # Replace with your script's path
