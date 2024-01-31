@@ -95,28 +95,6 @@ export function LoadingAnimation() {
 }
 
 export function OutputDisplay({ edit, editData, output, animate }) {
-  const [displayedText, setDisplayedText] = useState("");
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  useEffect(() => {
-    if (edit) {
-      return;
-    }
-    let timer;
-    if (output && animate) {
-      timer = setInterval(() => {
-        setDisplayedText((prev) => prev + output[currentIndex]);
-        setCurrentIndex((prevIndex) => prevIndex + 1);
-      }, 50); // adjust time interval as needed
-
-      if (currentIndex >= output?.length) {
-        clearInterval(timer);
-      }
-    }
-
-    return () => clearInterval(timer);
-  }, [currentIndex, output, edit, animate]);
-
   if (edit) return null;
   return (
     <div
@@ -124,7 +102,10 @@ export function OutputDisplay({ edit, editData, output, animate }) {
       style={{ lineHeight: "1.8" }}
     >
       <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-        {editData ? editData : animate ? displayedText : output}
+        {!!editData && editData}
+        <div className={`${editData && "stroke-red-300 stroke-2"}`}>
+          {output}
+        </div>
       </motion.p>
     </div>
   );

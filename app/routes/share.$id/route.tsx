@@ -41,13 +41,12 @@ function Header({ user }) {
   ) : null;
 }
 
-function InputCard({ title, content, className, model }) {
+function InputCard({ content, className, model }) {
   if (model === "stt") {
     let audioURL = content;
     return (
       <Card>
         <div className="h-full">
-          <div className="text-gray-400 text-xl">{title}:</div>
           <div className={`md:w-[600px] ${className} mt-4`}>
             <Waveform audio={audioURL} />
           </div>
@@ -58,18 +57,16 @@ function InputCard({ title, content, className, model }) {
   return (
     <Card>
       <div className="h-full">
-        <div className="text-gray-400 text-xl">{title}:</div>
         <div className={`md:w-[600px] ${className} mt-4`}>{content}</div>
       </div>
     </Card>
   );
 }
-function OutputCard({ title, content, className, model }) {
+function OutputCard({ content, className, model }) {
   if (model === "tts") {
     return (
       <Card>
         <div className="h-full">
-          <div className="text-gray-400 text-xl">{title}:</div>
           <div className={`md:w-[600px] ${className} mt-4`}>
             <audio controls>
               <source
@@ -86,7 +83,6 @@ function OutputCard({ title, content, className, model }) {
   return (
     <Card>
       <div className="h-full">
-        <div className="text-gray-400 text-xl">{title}:</div>
         <div className={`md:w-[600px] ${className} mt-4`}>{content}</div>
       </div>
     </Card>
@@ -118,15 +114,13 @@ function TranslationRoute() {
           {model === "mt" && (
             <LanguageSwitcher sourceLang={sourceLang} targetLang={targetLang} />
           )}
-          <div className="flex flex-col md:flex-row h-[50vh] gap-3">
+          <div className="flex flex-col md:flex-row h-[40vh] gap-3">
             <InputCard
-              title="User"
               content={data.input}
               className="font-poppins"
               model={model}
             />
             <OutputCard
-              title="Translation"
               content={data.output}
               className="font-monlam"
               model={model}

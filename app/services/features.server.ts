@@ -5,9 +5,3 @@ const flagsmith_provider = new Flagsmith({
 });
 
 export default flagsmith_provider;
-
-export async function feature(flag: string) {
-  let fetchdata = await flagsmith_provider.getEnvironmentFlags();
-  let feature_data = fetchdata.flags[flag];
-  return feature_data;
-}

@@ -24,19 +24,22 @@ import { getUserSession } from "~/services/session.server";
 import { getUser } from "./modal/user.server";
 import toastStyle from "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
-import { feature } from "./services/features.server";
+import flagsmith_provider, { feature } from "./services/features.server";
 import { useEffect } from "react";
 import useLocalStorage from "./component/hooks/useLocaleStorage";
 export const loader: LoaderFunction = async ({ request }) => {
   let userdata = await getUserSession(request);
-  const isJobEnabled = await feature("job_link");
+  let fetchdata = await flagsmith_provider.getEnvironmentFlags();
 
-  const isFileUploadEnabled = await feature("feat_file_upload");
+  const isJobEnabled = fetchdata.flags.job_link;
+  const isFileUploadEnabled = fetchdata.flags.feat_file_upload;
+  const show_mt_language_toggle = fetchdata.flags.show_mt_language_toggle;
   return json(
     {
       user: userdata ? await getUser(userdata?._json?.email) : null,
       isJobEnabled: isJobEnabled.enabled,
       isFileUploadEnabled: isFileUploadEnabled.enabled,
+      show_mt_language_toggle: show_mt_language_toggle.enabled,
     },
     { status: 200, headers: { "cache-control": "no-cache" } }
   );

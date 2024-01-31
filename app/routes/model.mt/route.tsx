@@ -6,8 +6,10 @@ import type {
 import {
   isRouteErrorResponse,
   useFetcher,
+  useLoaderData,
   useNavigate,
   useRouteError,
+  useRouteLoaderData,
 } from "@remix-run/react";
 import { Button, Card } from "flowbite-react";
 import { useState, useRef, useEffect } from "react";
@@ -19,7 +21,7 @@ import ToolWraper from "~/component/ToolWraper";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import DownloadDocument from "~/routes/model.mt/components/DownloadDocument";
 import { toast } from "react-toastify";
-import { updateEdit } from "~/modal/inference.server";
+import { saveInference, updateEdit } from "~/modal/inference.server";
 import ListInput from "~/component/ListInput";
 import {
   API_ERROR_MESSAGE,
@@ -29,14 +31,15 @@ import {
 import {
   CharacterOrFileSizeComponent,
   EditActionButtons,
-  LoadingAnimation,
   OutputDisplay,
   TextOrDocumentComponent,
 } from "./components/UtilityComponent";
 import { NonEditModeActions } from "~/component/ActionButtons";
 import EditDisplay from "~/component/EditDisplay";
-import { resetFetcher } from "~/component/utils/resetFetcher";
 import CardComponent from "~/component/Card";
+import LanguageSwitcher from "./components/LanguageSwitcher";
+import useTranslate from "./lib/useTranslate";
+import { getUser } from "~/modal/user.server";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -48,21 +51,46 @@ export async function loader({ request }: LoaderFunctionArgs) {
   let userdata = await auth.isAuthenticated(request, {
     failureRedirect: "/login",
   });
+  const url = process.env?.MT_API_URL;
+  let modelToken = process.env?.MODEL_API_AUTH_TOKEN;
 
-  return { user: userdata };
+  return { user: userdata, url, modelToken };
 }
 
 export const action: ActionFunction = async ({ request }) => {
   let formdata = await request.formData();
-  let edited = formdata.get("edited") as string;
-  let inferenceId = formdata.get("inferenceId") as string;
-  let updated = await updateEdit(inferenceId, edited);
+  let userdata = await auth.isAuthenticated(request, {
+    failureRedirect: "/login",
+  });
+  let user = await getUser(userdata?._json.email);
 
-  return updated;
+  let method = request.method;
+  if (method === "PATCH") {
+    let edited = formdata.get("edited") as string;
+    let inferenceId = formdata.get("inferenceId") as string;
+    let updated = await updateEdit(inferenceId, edited);
+    return updated;
+  }
+  if (method === "POST") {
+    let source = formdata.get("source") as string;
+    let translation = formdata.get("translation") as string;
+    let responseTime = formdata.get("responseTime") as string;
+    let inputLang = formdata.get("inputLang") as string;
+    let outputLang = formdata.get("targetLang") as string;
+    const inferenceData = await saveInference({
+      userId: user?.id,
+      model: "mt",
+      input: source,
+      output: translation,
+      responseTime: parseInt(responseTime),
+      inputLang: inputLang,
+      outputLang: outputLang,
+    });
+    return { id: inferenceData?.id };
+  }
 };
 
 export default function Index() {
-  const fetcher = useFetcher();
   const [sourceLang, setSourceLang] = useLocalStorage("inputLang", "en");
   const [targetLang, setTargetLang] = useLocalStorage("outputLang", "bo");
   const [sourceText, setSourceText] = useState("");
@@ -70,14 +98,16 @@ export default function Index() {
     "mt_selected_input",
     "text"
   );
+  const { url, modelToken } = useLoaderData();
   const [edit, setEdit] = useState(false);
   const [editText, setEditText] = useState("");
-  const [direction, setDirection] = useState("bo");
-
+  const [direction, setDirection] = useState(targetLang);
+  let { show_mt_language_toggle } = useRouteLoaderData("root");
   const debouncedSearchTerm = useDebounce(sourceText, 1000);
   const debouncedDirection = useDebounce(direction, 2000);
   const likefetcher = useFetcher();
   const editfetcher = useFetcher();
+  const savefetcher = useFetcher();
 
   const targetRef = useRef<HTMLDivElement>(null);
   const editData = editfetcher.data?.edited;
@@ -85,39 +115,37 @@ export default function Index() {
   let charCount = sourceText?.length;
   let { translation } = uselitteraTranlation();
   function handleCopy() {
-    let textToCopy = translated?.translation;
-    navigator.clipboard.writeText(textToCopy);
+    navigator.clipboard.writeText(data);
   }
 
   useEffect(() => {
     setSourceText("");
   }, [selectedTool]);
 
+  let { data, isLoading, error, done } = useTranslate({
+    url,
+    token: modelToken,
+    target: debouncedDirection,
+    text: debouncedSearchTerm,
+  });
   useEffect(() => {
-    if (debouncedSearchTerm === "" || !debouncedSearchTerm) return;
-    setEdit(false);
-    resetFetcher(editfetcher);
-
-    fetcher.submit(
-      {
-        input: debouncedSearchTerm,
-        lang: sourceLang,
-        direction,
-      },
-      {
-        action: "/api/translation",
-        method: "POST",
-      }
-    );
-  }, [debouncedSearchTerm, debouncedDirection]);
-
-  let data = fetcher?.data;
-  let isloading = fetcher.state !== "idle";
-  let inferenceId = data?.inferenceData?.id;
-  let translated = data?.translation;
+    if (done === true && data) {
+      savefetcher.submit(
+        {
+          source: debouncedSearchTerm,
+          translation: data,
+          responseTime: 5,
+          inputLang: sourceLang,
+          outputLang: targetLang,
+        },
+        {
+          method: "POST",
+        }
+      );
+    }
+  }, [done, data]);
+  let inferenceId = savefetcher.data?.id;
   let TextSelected = selectedTool === "text";
-  let actionError = data?.error as string;
-
   function handleEditSubmit() {
     let edited = editText;
     editfetcher.submit(
@@ -126,7 +154,7 @@ export default function Index() {
         edited,
       },
       {
-        method: "POST",
+        method: "PATCH",
       }
     );
     setEdit(false);
@@ -142,24 +170,28 @@ export default function Index() {
         selectedTool={selectedTool}
         setSelectedTool={setSelectedTool}
       />
-      {actionError && <ErrorMessage error={actionError} />}
-      {/* <LanguageSwitcher
-        sourceLang={sourceLang}
-        targetLang={targetLang}
-        likefetcher={likefetcher}
-        setSourceLang={setSourceLang}
-        setSourceText={setSourceText}
-        setTargetLang={setTargetLang}
-      /> */}
-      <div className="flex flex-col md:flex-row gap-2 mt-2 ">
-        <span className="mt-2">Translate into </span>
-        <input
-          value={direction}
-          onChange={(e) => setDirection(e.target.value)}
-          placeholder="eg. fr"
-          className=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      {error && <ErrorMessage error={error} />}
+      {show_mt_language_toggle ? (
+        <LanguageSwitcher
+          sourceLang={sourceLang}
+          targetLang={targetLang}
+          likefetcher={likefetcher}
+          setSourceLang={setSourceLang}
+          setSourceText={setSourceText}
+          setTargetLang={setTargetLang}
         />
-      </div>
+      ) : (
+        <div className="flex flex-col md:flex-row gap-2 mt-2 ">
+          <span className="mt-2">Translate into </span>
+          <input
+            value={direction}
+            onChange={(e) => setDirection(e.target.value)}
+            placeholder="eg. fr"
+            className=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          />
+        </div>
+      )}
+
       <div className="mt-3 flex flex-col md:flex-row  gap-5">
         <CardComponent className="md:w-1/2">
           <div className="w-full flex flex-col justify-center gap-2 min-h-[20vh]  flex-1 ">
@@ -195,15 +227,15 @@ export default function Index() {
                   : "font-poppins"
               }`}
             >
-              {TextSelected && isloading && <LoadingAnimation />}
               {TextSelected && edit && (
                 <EditDisplay editText={editText} setEditText={setEditText} />
               )}
-              {TextSelected && !isloading && sourceText !== "" && (
+              {isLoading && <div>loading</div>}
+              {TextSelected && sourceText !== "" && (
                 <OutputDisplay
                   edit={edit}
                   editData={editData}
-                  output={translated?.translation ?? ""}
+                  output={data}
                   animate={true}
                 />
               )}
@@ -218,17 +250,17 @@ export default function Index() {
               handleEditSubmit={handleEditSubmit}
               editfetcher={editfetcher}
               editText={editText}
-              translated={translated}
+              translated={data}
             />
           )}
-          {!edit && (
+          {!edit && inferenceId && (
             <NonEditModeActions
               selectedTool={selectedTool}
               likefetcher={likefetcher}
               sourceText={sourceText}
               inferenceId={inferenceId}
               setEdit={setEdit}
-              text={translated?.translation}
+              text={data}
               handleCopy={handleCopy}
               setEditText={setEditText}
             />
@@ -247,7 +279,6 @@ export function ErrorBoundary() {
   let isRouteError = isRouteErrorResponse(error);
   const navigate = useNavigate();
 
-  console.log(isRouteError);
   useEffect(() => {
     toast.warn(API_ERROR_MESSAGE, {
       position: toast.POSITION.TOP_RIGHT,
