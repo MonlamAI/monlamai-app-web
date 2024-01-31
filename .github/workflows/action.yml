@@ -2,6 +2,7 @@ name: Scheduled Script Execution
 
 on:
   schedule:
+    - push: main
     - cron: "0 */2 * * *" # Runs at minute 0 past every 2nd hour
 
 jobs:
