@@ -1,4 +1,4 @@
-import { Button, Dropdown } from "flowbite-react";
+import { Button, Dropdown, Tooltip } from "flowbite-react";
 import { useEffect } from "react";
 import { GoPencil } from "react-icons/go";
 import { toast } from "react-toastify";
@@ -38,10 +38,11 @@ export function NonEditModeActions({
   return (
     <div className="flex justify-between">
       {selectedTool !== "File" && <Speak text={text} />}
-      <div className="flex relative  gap-3 md:gap-5 justify-end items-center">
+      <div className="flex relative gap-3 md:gap-5 justify-end items-center">
         <Dropdown
+          className="mt-2 w-52 text-center"
           label="likeDislikeEdit"
-          placement="left"
+          placement="bottom-end"
           dismissOnClick={true}
           renderTrigger={() => (
             <div hidden={!text}>
@@ -50,8 +51,8 @@ export function NonEditModeActions({
           )}
           size="lg"
         >
-          <Dropdown.Header>Satisfied?</Dropdown.Header>
-          <div className="flex justify-center py-2  gap-5 ">
+          <Dropdown.Header>Rate this translation</Dropdown.Header>
+          <div className="flex justify-center py-2 gap-5">
             <ReactionButtons
               fetcher={likefetcher}
               output={text}
@@ -66,6 +67,7 @@ export function NonEditModeActions({
               setEdit(true);
             }}
             icon={GoPencil}
+            className="flex justify-center items-center"
           >
             Suggest an edit
           </Dropdown.Item>
