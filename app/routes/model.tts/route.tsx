@@ -92,9 +92,9 @@ export default function Index() {
       >
         {actionError && <ErrorMessage error={actionError} />}
 
-        <CardComponent className="w-full min-h-[20vh] lg:min-h-[40vh] lg:h-auto flex">
-          <div className="flex flex-col  gap-2 flex-1 ">
-            <div className="flex relative flex-col flex-1  justify-center ">
+        <CardComponent className="md:w-1/2">
+          <div className="flex flex-col gap-2 flex-1 min-h-[20vh]">
+            <div className="flex relative flex-col flex-1 justify-center">
               {selectedTool === "text" && (
                 <TextComponent
                   setSourceText={setSourceText}
@@ -114,7 +114,7 @@ export default function Index() {
                   onClick={handleReset}
                   hidden={!sourceText || sourceText === ""}
                 >
-                  <RxCross2 />
+                  <RxCross2 size={20} />
                 </CancelButton>
               )}
             </div>
@@ -137,7 +137,7 @@ export default function Index() {
             </div>
           </div>
         </CardComponent>
-        <CardComponent className="w-full  max-h-[60vh] flex">
+        <CardComponent className="md:w-1/2">
           <div className="w-full flex-1">
             {data && (
               <div className="flex justify-between mx-2">
@@ -170,7 +170,7 @@ export default function Index() {
             )}
           </div>
           <div className="flex justify-end">
-            <div className="flex gap-3 md:gap-5 items-center">
+            <div className="flex gap-3 md:gap-5 items-center p-2">
               <ReactionButtons
                 fetcher={likeFetcher}
                 output={data ? `data:audio/wav;base64,${data}` : null}

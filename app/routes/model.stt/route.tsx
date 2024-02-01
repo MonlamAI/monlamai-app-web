@@ -252,7 +252,7 @@ export default function Index() {
             )}
             {selectedTool === "Recording" && (
               <CancelButton onClick={handleReset} hidden={!audioURL}>
-                <RxCross2 />
+                <RxCross2 size={20} />
               </CancelButton>
             )}
 

@@ -40,6 +40,7 @@ import CardComponent from "~/component/Card";
 import LanguageSwitcher from "./components/LanguageSwitcher";
 import useTranslate from "./lib/useTranslate";
 import { getUser } from "~/modal/user.server";
+import { resetFetcher } from "~/component/utils/resetFetcher";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -142,6 +143,7 @@ export default function Index() {
           method: "POST",
         }
       );
+      resetFetcher(editfetcher);
     }
   }, [done, data]);
   let inferenceId = savefetcher.data?.id;
@@ -192,9 +194,9 @@ export default function Index() {
         </div>
       )}
 
-      <div className="mt-3 flex flex-col md:flex-row  gap-5">
+      <div className="mt-3 flex flex-col md:flex-row gap-5">
         <CardComponent className="md:w-1/2">
-          <div className="w-full flex flex-col justify-center gap-2 min-h-[20vh]  flex-1 ">
+          <div className="w-full flex flex-col justify-center gap-2 min-h-[50vh]  flex-1 ">
             <TextOrDocumentComponent
               selectedTool={selectedTool}
               sourceText={sourceText}
@@ -217,8 +219,8 @@ export default function Index() {
           />
         </CardComponent>
 
-        <CardComponent className="md:w-1/2  ">
-          <div className="w-full flex flex-col justify-center gap-2 min-h-[20vh]  flex-1 ">
+        <CardComponent className="md:w-1/2">
+          <div className="w-full flex flex-col gap-2 min-h-[50vh] flex-1 ">
             <div
               ref={targetRef}
               className={`h-full text-lg ${
@@ -253,7 +255,7 @@ export default function Index() {
               translated={data}
             />
           )}
-          {!edit && inferenceId && (
+          {!edit && inferenceId && sourceText !== "" && (
             <NonEditModeActions
               selectedTool={selectedTool}
               likefetcher={likefetcher}
