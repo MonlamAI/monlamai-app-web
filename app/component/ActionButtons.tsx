@@ -36,7 +36,7 @@ export function NonEditModeActions({
   let isOutputNull = !text || text === "";
   if (isOutputNull || !isSelected) return null;
   return (
-    <div className="flex justify-between">
+    <div className="flex justify-between p-2">
       {selectedTool !== "File" && <Speak text={text} />}
       <div className="flex relative gap-3 md:gap-5 justify-end items-center">
         <Dropdown
@@ -45,7 +45,7 @@ export function NonEditModeActions({
           placement="bottom-end"
           dismissOnClick={true}
           renderTrigger={() => (
-            <div hidden={!text}>
+            <div hidden={!text} title="Rate this translation">
               <LikeDislike />
             </div>
           )}

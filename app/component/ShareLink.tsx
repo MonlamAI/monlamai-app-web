@@ -61,7 +61,7 @@ function ShareLink({ inferenceId }) {
       placement="top"
       dismissOnClick={true}
       renderTrigger={() => (
-        <div className="border-none cursor-pointer">
+        <div className="border-none cursor-pointer" title="Share">
           <svg
             width="24"
             height="24"

@@ -40,6 +40,7 @@ import CardComponent from "~/component/Card";
 import LanguageSwitcher from "./components/LanguageSwitcher";
 import useTranslate from "./lib/useTranslate";
 import { getUser } from "~/modal/user.server";
+import { resetFetcher } from "~/component/utils/resetFetcher";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -142,6 +143,7 @@ export default function Index() {
           method: "POST",
         }
       );
+      resetFetcher(editfetcher);
     }
   }, [done, data]);
   let inferenceId = savefetcher.data?.id;

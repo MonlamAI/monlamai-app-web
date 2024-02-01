@@ -70,13 +70,13 @@ export function CharacterOrFileSizeComponent({
   if (selectedTool === "Recording") return <div />;
   if (selectedTool === "text") {
     return (
-      <div className="text-gray-400 text-xs">
+      <div className="text-gray-400 text-xs p-2">
         {charCount} / {CHAR_LIMIT}
       </div>
     );
   } else {
     return (
-      <div className="text-gray-400 text-xs">
+      <div className="text-gray-400 text-xs p-2">
         max size: {MAX_SIZE_SUPPORT}KB
       </div>
     );
@@ -102,10 +102,7 @@ export function OutputDisplay({ edit, editData, output, animate }) {
       style={{ lineHeight: "1.8" }}
     >
       <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-        {!!editData && editData}
-        <div className={`${editData && "stroke-red-300 stroke-2"}`}>
-          {output}
-        </div>
+        {editData ? editData : output}
       </motion.p>
     </div>
   );
@@ -120,7 +117,7 @@ export function EditActionButtons({
 }: EditActionButtonsProps) {
   return (
     <>
-      <p className="px-2 py-1 bg-[#F5F6B0] rounded-md text-sm">
+      <p className="px-2 py-1 bg-[#F5F6B0] rounded-md text-sm my-2">
         Your contribution will be used to improve translation quality.
       </p>
       <div className="flex justify-between">
