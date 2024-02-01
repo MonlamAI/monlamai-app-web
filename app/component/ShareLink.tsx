@@ -57,8 +57,9 @@ function ShareLink({ inferenceId }) {
 
   return (
     <Dropdown
+      className="mt-2 w-52 px-1"
       label="shareLink"
-      placement="top"
+      placement="bottom-end"
       dismissOnClick={true}
       renderTrigger={() => (
         <div className="border-none cursor-pointer" title="Share">
@@ -80,12 +81,12 @@ function ShareLink({ inferenceId }) {
       size="sm"
     >
       <Dropdown.Header>Share</Dropdown.Header>
-      <div className="w-[15vw] md:max-w-[15vw] ">
-        <div className="flex gap-2 justify-center mb-2 p-2 ">
+      <div className="">
+        <div className="flex gap-2 justify-center items-center mb-2 p-2 ">
           <TextInput type="text" value={link} readOnly />
           <CopyToClipboard textToCopy={link} />
         </div>
-        <div className="flex justify-around">
+        <div className="flex justify-around mb-2">
           <SocialShareButton
             icon={<FaFacebook />}
             onClick={() => openShareWindow(facebookUrl)}

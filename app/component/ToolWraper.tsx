@@ -13,7 +13,7 @@ function ToolWraper({ title, children }) {
           className={`text-lg ${
             isEnglish
               ? "font-poppins md:text-[1.6rem]"
-              : "font-monlam md:text-[2.7rem]"
+              : "font-monlam md:text-[1.8rem]"
           } flex gap-4 justify-center items-center mb-2 text-center text-slate-700 dark:text-gray-200 `}
         >
           <div

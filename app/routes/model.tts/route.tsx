@@ -114,7 +114,7 @@ export default function Index() {
                   onClick={handleReset}
                   hidden={!sourceText || sourceText === ""}
                 >
-                  <RxCross2 />
+                  <RxCross2 size={20} />
                 </CancelButton>
               )}
             </div>
@@ -170,7 +170,7 @@ export default function Index() {
             )}
           </div>
           <div className="flex justify-end">
-            <div className="flex gap-3 md:gap-5 items-center">
+            <div className="flex gap-3 md:gap-5 items-center p-2">
               <ReactionButtons
                 fetcher={likeFetcher}
                 output={data ? `data:audio/wav;base64,${data}` : null}
