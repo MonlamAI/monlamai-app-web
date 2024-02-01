@@ -52,6 +52,7 @@ async function handleResponse(response, setData) {
     // Handle JSON response
     let data = await response.json();
     setData(data[0].generated_text);
+    return null;
   }
   const reader = response.body.getReader();
 

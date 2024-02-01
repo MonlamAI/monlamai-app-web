@@ -18,7 +18,7 @@ function InferenceWrapper({
           />
         </div>
       )}
-      <div className="flex flex-col  lg:flex-row gap-3 ">{children}</div>
+      <div className="flex flex-col  lg:flex-row gap-5">{children}</div>
     </main>
   );
 }
