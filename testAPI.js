@@ -92,7 +92,7 @@ async function testMT() {
   try {
     const translation = await callApiWithPost(url, modelToken, text, "mt");
     if (translation) {
-      announceToDiscord(MT_SUCCESS_MESSAGE, "success");
+      console.log("mt success");
     }
   } catch (error) {
     announceToDiscord(MT_FAILED_MESSAGE, "reject");
@@ -106,7 +106,7 @@ async function testTTS() {
   try {
     const audio = await callApiWithPost(url, modelToken, text, "tts");
     if (audio) {
-      announceToDiscord(TTS_SUCCESS_MESSAGE, "success");
+      console.log("tts success");
     }
   } catch (error) {
     announceToDiscord(TTS_FAILED_MESSAGE, "reject");
@@ -119,7 +119,7 @@ async function testSTT() {
       "https://playtht-website-assets.s3.amazonaws.com/voice-samples/pages/home/Play.ht+-+videos.wav"
     );
     if (text) {
-      announceToDiscord(STT_SUCCESS_MESSAGE, "success");
+      console.log(" Stt success");
     }
   } catch (error) {
     announceToDiscord(STT_FAILED_MESSAGE, "reject");
