@@ -104,10 +104,12 @@ function Menu() {
         </span>
       </Dropdown.Header>
       <hr />
-      <DarkModeSwitcher />
+      <Dropdown.Item className="px-3 py-2">
+        <DarkModeSwitcher />
+      </Dropdown.Item>
       <hr />
 
-      <Dropdown.Item icon={HiLogout}>
+      <Dropdown.Item icon={HiLogout} className="mt-2">
         <Form method="post" action="/logout">
           <button className={isEnglish ? "font-poppins" : "font-monlam"}>
             {translation.logout}

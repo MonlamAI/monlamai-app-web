@@ -1,9 +1,7 @@
-import React, { useState, useEffect, useMemo } from "react";
-import { Button, Card, Dropdown, TextInput } from "flowbite-react";
-import { FaFacebook, FaShare, FaTwitter, FaWhatsapp } from "react-icons/fa6";
+import { useState, useEffect, useMemo } from "react";
+import { Button, Dropdown, TextInput } from "flowbite-react";
+import { FaFacebook, FaXTwitter, FaWhatsapp } from "react-icons/fa6";
 import CopyToClipboard from "./CopyToClipboard";
-import { useHref } from "@remix-run/react";
-
 // Custom hook for getting share URLs
 function useShareUrl(link: string) {
   const baseShareUrl = link;
@@ -25,11 +23,19 @@ function useShareUrl(link: string) {
   };
 }
 
-function SocialShareButton({ icon, onClick }) {
+function SocialShareButton({ icon, onClick, color }) {
   return (
-    <Button color="gray" onClick={onClick}>
+    <button
+      style={{
+        background: color,
+        padding: "5px 16px",
+        borderRadius: "0.4rem",
+      }}
+      className="hover:opacity-80 transition-all duration-75"
+      onClick={onClick}
+    >
       {icon}
-    </Button>
+    </button>
   );
 }
 
@@ -88,15 +94,18 @@ function ShareLink({ inferenceId }) {
         </div>
         <div className="flex justify-around mb-2">
           <SocialShareButton
-            icon={<FaFacebook />}
+            icon={<FaFacebook className="fill-[white]" />}
+            color="#1877f2"
             onClick={() => openShareWindow(facebookUrl)}
           />
           <SocialShareButton
-            icon={<FaTwitter />}
+            color="black"
+            icon={<FaXTwitter className="fill-[white]" />}
             onClick={() => openShareWindow(twitterUrl)}
           />
           <SocialShareButton
-            icon={<FaWhatsapp />}
+            color="#075e54"
+            icon={<FaWhatsapp className="fill-[white]" />}
             onClick={() => openShareWindow(whatsappUrl)}
           />
         </div>

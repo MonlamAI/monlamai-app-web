@@ -46,7 +46,11 @@ app.all(
 const port = process.env.PORT || 3000;
 let cron = process.env.INTERVAL_TEST_API; // every minute
 let job = schedule.scheduleJob(cron, function () {
-  testAPI();
+  try {
+    testAPI();
+  } catch (e) {
+    console.log("error sending test API request: ");
+  }
 });
 // instead of running listen on the Express app, do it on the HTTP server
 httpServer.listen(port, () => {
