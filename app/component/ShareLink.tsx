@@ -57,7 +57,7 @@ function ShareLink({ inferenceId }) {
 
   return (
     <Dropdown
-      className="mt-2 w-52 px-1"
+      className="mt-2 w-52 px-1 z-30"
       label="shareLink"
       placement="bottom-end"
       dismissOnClick={true}
