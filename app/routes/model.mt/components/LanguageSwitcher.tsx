@@ -2,29 +2,27 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { FaArrowRightArrowLeft } from "react-icons/fa6";
 import { resetFetcher } from "~/component/utils/resetFetcher";
+import { useSearchParams } from "@remix-run/react";
 
 const langLabels = {
   bo: "བོད་སྐད།",
   en: "English",
 };
 
-function LanguageSwitcher({
-  sourceLang,
-  targetLang,
-  setSourceLang,
-  setTargetLang,
-  setSourceText,
-  likefetcher,
-}) {
+function LanguageSwitcher({ likefetcher, setSourceText }) {
   const [isRotated, setIsRotated] = useState(false);
-
+  const [params, setParams] = useSearchParams();
+  const sourceLang = params.get("source") || "en";
+  const targetLang = params.get("target") || "bo";
   const handleLangSwitch = () => {
     resetFetcher(likefetcher);
-    const temp = sourceLang;
-    setSourceLang(targetLang);
-    setTargetLang(temp);
     setSourceText("");
     setIsRotated(!isRotated);
+    setParams((p) => {
+      p.set("source", targetLang);
+      p.set("target", sourceLang);
+      return p;
+    });
   };
 
   return (

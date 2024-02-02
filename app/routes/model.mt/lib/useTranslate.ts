@@ -11,7 +11,6 @@ const useTranslate = ({ url, token, target, text }) => {
     const fetchData = async () => {
       if (text === "" || !text) return null;
       setIsLoading(true);
-      setData("");
       setDone(false);
       setError(null);
       try {
@@ -38,7 +37,7 @@ const useTranslate = ({ url, token, target, text }) => {
 
     fetchData();
     return () => controller.abort();
-  }, [url, token, target, text]); // Include all dependencies
+  }, [url, token, text]); // Include all dependencies
 
   return { data, isLoading, error, done };
 };

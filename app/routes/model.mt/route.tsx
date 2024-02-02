@@ -10,6 +10,7 @@ import {
   useNavigate,
   useRouteError,
   useRouteLoaderData,
+  useSearchParams,
 } from "@remix-run/react";
 import { Button, Card } from "flowbite-react";
 import { useState, useRef, useEffect } from "react";
@@ -41,6 +42,7 @@ import LanguageSwitcher from "./components/LanguageSwitcher";
 import useTranslate from "./lib/useTranslate";
 import { getUser } from "~/modal/user.server";
 import { resetFetcher } from "~/component/utils/resetFetcher";
+import LanguageInput from "./components/LanguageInput";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -92,20 +94,20 @@ export const action: ActionFunction = async ({ request }) => {
 };
 
 export default function Index() {
-  const [sourceLang, setSourceLang] = useLocalStorage("inputLang", "en");
-  const [targetLang, setTargetLang] = useLocalStorage("outputLang", "bo");
+  const [params, setParams] = useSearchParams();
+  const target_lang = params.get("target") || "bo";
+  const source_lang = params.get("source") || "en";
   const [sourceText, setSourceText] = useState("");
   const [selectedTool, setSelectedTool] = useLocalStorage(
     "mt_selected_input",
     "text"
   );
+
   const { url, modelToken } = useLoaderData();
+  const { show_mt_language_toggle } = useRouteLoaderData("root");
   const [edit, setEdit] = useState(false);
   const [editText, setEditText] = useState("");
-  const [direction, setDirection] = useState(targetLang);
-  let { show_mt_language_toggle } = useRouteLoaderData("root");
-  const debouncedSearchTerm = useDebounce(sourceText, 1000);
-  const debouncedDirection = useDebounce(direction, 2000);
+  const debounceSourceText = useDebounce(sourceText, 1000);
   const likefetcher = useFetcher();
   const editfetcher = useFetcher();
   const savefetcher = useFetcher();
@@ -126,18 +128,18 @@ export default function Index() {
   let { data, isLoading, error, done } = useTranslate({
     url,
     token: modelToken,
-    target: debouncedDirection,
-    text: debouncedSearchTerm,
+    target: target_lang,
+    text: debounceSourceText,
   });
   useEffect(() => {
     if (done === true && data) {
       savefetcher.submit(
         {
-          source: debouncedSearchTerm,
+          source: debounceSourceText,
           translation: data,
           responseTime: 5,
-          inputLang: sourceLang,
-          outputLang: targetLang,
+          inputLang: source_lang,
+          outputLang: target_lang,
         },
         {
           method: "POST",
@@ -175,23 +177,11 @@ export default function Index() {
       {error && <ErrorMessage error={error} />}
       {show_mt_language_toggle ? (
         <LanguageSwitcher
-          sourceLang={sourceLang}
-          targetLang={targetLang}
-          likefetcher={likefetcher}
-          setSourceLang={setSourceLang}
           setSourceText={setSourceText}
-          setTargetLang={setTargetLang}
+          likefetcher={likefetcher}
         />
       ) : (
-        <div className="flex flex-col md:flex-row gap-2 mt-2 ">
-          <span className="mt-2">Translate into </span>
-          <input
-            value={direction}
-            onChange={(e) => setDirection(e.target.value)}
-            placeholder="eg. fr"
-            className=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          />
-        </div>
+        <LanguageInput />
       )}
 
       <div className="mt-3 flex flex-col md:flex-row gap-5">
@@ -201,7 +191,7 @@ export default function Index() {
               selectedTool={selectedTool}
               sourceText={sourceText}
               setSourceText={setSourceText}
-              sourceLang={sourceLang}
+              sourceLang={source_lang}
             />
           </div>
           <Button
@@ -224,7 +214,7 @@ export default function Index() {
             <div
               ref={targetRef}
               className={`h-full text-lg ${
-                targetLang === "bo"
+                target_lang === "bo"
                   ? "tracking-wide leading-loose"
                   : "font-poppins"
               }`}
@@ -242,7 +232,7 @@ export default function Index() {
                 />
               )}
               {selectedTool === "document" && sourceText !== "" && (
-                <DownloadDocument source={sourceText} lang={sourceLang} />
+                <DownloadDocument source={sourceText} lang={source_lang} />
               )}
             </div>
           </div>
