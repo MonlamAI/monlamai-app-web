@@ -1,11 +1,13 @@
 const fs = require("fs");
 const { createServer } = require("http");
 const path = require("path");
+const schedule = require("node-schedule");
 
 const { createRequestHandler } = require("@remix-run/express");
 const compression = require("compression");
 const express = require("express");
 const morgan = require("morgan");
+const { testAPI } = require("./testAPI");
 
 const MODE = process.env.NODE_ENV;
 const BUILD_DIR = path.join(process.cwd(), "build");
@@ -42,7 +44,10 @@ app.all(
 );
 
 const port = process.env.PORT || 3000;
-
+let cron = process.env.INTERVAL_TEST_API; // every minute
+let job = schedule.scheduleJob(cron, function () {
+  testAPI();
+});
 // instead of running listen on the Express app, do it on the HTTP server
 httpServer.listen(port, () => {
   console.log(`Express server listening on port ${port}`);
