@@ -38,25 +38,32 @@ function dashboard() {
     setSearchParam({ q: debounced_input });
   }, [debounced_input]);
   return (
-    <>
-      <TextInput
-        id="email"
-        type="text"
-        placeholder="email or username"
-        required
-        className="mb-3"
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-      />
-      <Card>
-        <h1 className="text-2xl font-bold">Total Users: {totalCount}</h1>
-      </Card>
+    <Card
+      className="max-w-md md:ml-20 relative "
+      style={{
+        maxHeight: "60vh",
+        overflow: "auto",
+      }}
+    >
+      <div className="flex justify-between  items-end sticky top-0 pt-2 bg-white z-10 dark:bg-gray-800 dark:text-white ">
+        <div className="font-bold ">
+          USER <span className="text-gray-300">{totalCount}</span>
+        </div>
+        <TextInput
+          id="email"
+          type="text"
+          placeholder="email or username"
+          required
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+        />
+      </div>
       <Table>
         <Table.Head>
-          <Table.HeadCell>user</Table.HeadCell>
+          <Table.HeadCell>name</Table.HeadCell>
           <Table.HeadCell>role</Table.HeadCell>
         </Table.Head>
-        <Table.Body className="divide-y overflow-auto max-h-[80vh]">
+        <Table.Body className=" h-full mt-2">
           {navigation.state !== "idle" ? (
             <div className="flex justify-center py-4">
               <Spinner />
@@ -64,14 +71,20 @@ function dashboard() {
           ) : (
             users?.map((user) => {
               return (
-                <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
-                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white flex gap-2">
+                <Table.Row
+                  key={user.id}
+                  className="bg-white dark:border-gray-700 dark:bg-gray-800"
+                >
+                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white flex gap-2 item-center">
                     <img
                       src={user.picture}
                       alt={user?.username}
-                      className="h-6 w-6 rounded-full"
+                      className="h-6 w-6 rounded-full self-center"
                     />
-                    {user?.username}
+                    <div className="flex flex-col justify-center">
+                      <div>{user?.username}</div>
+                      <div className="text-gray-400">{user?.email}</div>
+                    </div>
                   </Table.Cell>
                   <Table.Cell>{user.role}</Table.Cell>
                 </Table.Row>
@@ -80,7 +93,7 @@ function dashboard() {
           )}
         </Table.Body>
       </Table>
-    </>
+    </Card>
   );
 }
 
