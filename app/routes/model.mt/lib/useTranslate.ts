@@ -38,7 +38,6 @@ const useTranslate = ({ url, token, target, text }) => {
     fetchData();
     return () => controller.abort();
   }, [url, token, text]); // Include all dependencies
-
   return { data, isLoading, error, done };
 };
 

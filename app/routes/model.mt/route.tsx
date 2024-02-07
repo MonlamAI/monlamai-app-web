@@ -139,7 +139,7 @@ export default function Index() {
           translation: data,
           responseTime: 5,
           inputLang: source_lang,
-          outputLang: target_lang,
+          targetLang: target_lang,
         },
         {
           method: "POST",
@@ -177,6 +177,10 @@ export default function Index() {
       {error && <ErrorMessage error={error} />}
       {show_mt_language_toggle ? (
         <LanguageSwitcher
+          onClick={() => {
+            if (!!editText) setSourceText(editText);
+            else setSourceText(data);
+          }}
           setSourceText={setSourceText}
           likefetcher={likefetcher}
         />
@@ -223,7 +227,7 @@ export default function Index() {
                 <EditDisplay editText={editText} setEditText={setEditText} />
               )}
               {isLoading && <div>loading</div>}
-              {TextSelected && sourceText !== "" && (
+              {TextSelected && sourceText !== "" && !isLoading && (
                 <OutputDisplay
                   edit={edit}
                   editData={editData}
