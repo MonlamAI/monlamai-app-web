@@ -98,8 +98,12 @@ export function OutputDisplay({ edit, editData, output, animate }) {
   if (edit) return null;
   return (
     <div
-      className="font-monlam p-2 text-[1.2rem]"
-      style={{ lineHeight: "1.8" }}
+      className="font-monlam p-2 text-[1.2rem] "
+      style={{
+        lineHeight: "1.8",
+        maxHeight: "40vh",
+        overflowY: "auto",
+      }}
     >
       <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
         {editData ? editData : output}
