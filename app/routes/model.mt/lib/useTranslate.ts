@@ -1,6 +1,13 @@
 import { useState, useEffect } from "react";
 
-const useTranslate = ({ url, token, target, text }) => {
+type useTranslateType = {
+  url: string;
+  token: string;
+  target: string;
+  text: string;
+};
+
+const useTranslate = ({ url, token, target, text }: useTranslateType) => {
   const [data, setData] = useState("");
   const [done, setDone] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
