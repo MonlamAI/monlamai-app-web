@@ -177,10 +177,7 @@ export default function Index() {
       {error && <ErrorMessage error={error} />}
       {show_mt_language_toggle ? (
         <LanguageSwitcher
-          onClick={() => {
-            if (!!editText) setSourceText(editText);
-            else setSourceText(data);
-          }}
+          data={data}
           setSourceText={setSourceText}
           likefetcher={likefetcher}
         />

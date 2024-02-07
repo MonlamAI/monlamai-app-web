@@ -9,14 +9,14 @@ const langLabels = {
   en: "English",
 };
 
-function LanguageSwitcher({ likefetcher, onClick }) {
+function LanguageSwitcher({ likefetcher, setSourceText, data }) {
   const [isRotated, setIsRotated] = useState(false);
   const [params, setParams] = useSearchParams();
   const sourceLang = params.get("source") || "en";
   const targetLang = params.get("target") || "bo";
   const handleLangSwitch = () => {
     resetFetcher(likefetcher);
-    onClick();
+    setSourceText(data);
     setIsRotated(!isRotated);
     setParams((p) => {
       p.set("source", targetLang);
