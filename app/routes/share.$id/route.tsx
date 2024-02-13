@@ -18,7 +18,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   if (!id) throw new Error("ID parameter is missing");
 
   const data = await db.inference.findUnique({
-    where: { id: parseInt(id, 10) },
+    where: { id },
   });
   if (!data) throw new Error(`No data found for ID: ${id}`);
 

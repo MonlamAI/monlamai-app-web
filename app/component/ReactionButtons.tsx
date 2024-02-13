@@ -54,11 +54,13 @@ function ReactionButtons({
         active={liked}
         icon={<FaRegThumbsUp />}
         onClick={() => handleReaction("liked")}
+        className="hover:text-green-400"
       />
       <ReactionButton
         enabled={!!output}
         active={disliked}
         icon={<FaRegThumbsDown />}
+        className="hover:text-red-400"
         onClick={() => handleReaction("disliked")}
       />
     </>
@@ -70,14 +72,20 @@ type ReactionButtonProps = {
   active: boolean;
   icon: React.ReactElement;
   onClick: () => void;
+  className?: string;
 };
 
-function ReactionButton({ active, icon, onClick }: ReactionButtonProps) {
+function ReactionButton({
+  active,
+  icon,
+  onClick,
+  className,
+}: ReactionButtonProps) {
   return (
     <div
       color="white"
       onClick={onClick}
-      className="focus:outline-none cursor-pointer text-gray-500 hover:text-green-400"
+      className={"focus:outline-none cursor-pointer text-gray-500 " + className}
     >
       {React.cloneElement(icon, {
         size: "20px",

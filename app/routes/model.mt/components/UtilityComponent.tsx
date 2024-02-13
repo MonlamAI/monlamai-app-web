@@ -97,10 +97,7 @@ export function LoadingAnimation() {
 export function OutputDisplay({ edit, editData, output, animate }) {
   if (edit) return null;
   return (
-    <div
-      className="font-monlam p-2 text-[1.2rem]"
-      style={{ lineHeight: "1.8" }}
-    >
+    <div className="font-monlam p-2 text-[1.2rem] leading-[1.8] max-h-[40vh] overflow-y-auto ">
       <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
         {editData ? editData : output}
       </motion.p>

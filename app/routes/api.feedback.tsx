@@ -9,12 +9,10 @@ export const action: ActionFunction = async ({ request }) => {
   let liked: boolean = action === "liked" ? true : false;
   let disliked: boolean = action === "disliked" ? true : false;
 
-  console.log("vote is", inferenceId, liked, disliked);
-
   const vote = await createVote({
-    inferenceId: parseInt(inferenceId),
-    liked: liked,
-    disliked: disliked,
+    inferenceId,
+    liked,
+    disliked,
   });
 
   return {
