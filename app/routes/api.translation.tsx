@@ -167,3 +167,12 @@ async function postRequestAndHandleResponse(response) {
     throw error;
   }
 }
+
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+  let url = new URL(request.url);
+  let query = url.searchParams;
+  let text = query.get("text");
+  let direction = query.get("direction") || "en";
+  let data = translate(text!, "bo", direction);
+  return data;
+};
