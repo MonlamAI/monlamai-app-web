@@ -20,6 +20,14 @@ import { resetFetcher } from "~/component/utils/resetFetcher";
 import ReactionButtons from "~/component/ReactionButtons";
 import { saveInference } from "~/modal/inference.server";
 import { getUser } from "~/modal/user.server";
+import {
+  unstable_composeUploadHandlers as composeUploadHandlers,
+  unstable_createMemoryUploadHandler as createMemoryUploadHandler,
+  unstable_parseMultipartFormData as parseMultipartFormData,
+} from "@remix-run/node";
+import { s3ImageUpload, s3UploadHandler } from "~/services/uploadImage.server";
+import { base64ToBlob } from "~/component/utils/base64ToBlob";
+import CardComponent from "~/component/Card";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -40,17 +48,28 @@ export async function action({ request }: ActionFunctionArgs) {
   });
   let user = await getUser(userdata?._json.email);
 
-  // if (request.method === "POST") {
-  //   const uploadHandler: UploadHandler = composeUploadHandlers(
-  //     uploadImageToS3,
-  //     createMemoryUploadHandler()
-  //   );
-  //   const formData = await parseMultipartFormData(request, uploadHandler);
-  //   console.log("formData", formData);
-  // }
-  const formData = await request.formData();
-  let base64String = formData.get("base64String");
-  const blob = formData.get("image") as Blob;
+  // to upload to s3 and get the url
+  const uploadHandler: UploadHandler = composeUploadHandlers(
+    s3UploadHandler,
+    createMemoryUploadHandler()
+  );
+  const formData = await parseMultipartFormData(request, uploadHandler);
+
+  const s3UploadUrl = formData.get("image");
+  const base64String = formData.get("base64String");
+  const contentType = formData.get("contentType");
+
+  // // without parseMultipartFormData
+  // const formData = await request.formData();
+  // const image = formData.get("image");
+  // const base64String = formData.get("base64String");
+  // const contentType = formData.get("contentType");
+  // const imageName = encodeURIComponent(image.name);
+  // const s3UploadUrl = await s3ImageUpload(imageName, image);
+
+  // convert base64String to blob
+  const blob = base64ToBlob(base64String, contentType);
+
   const ocrFormData = new FormData();
   ocrFormData.append("file", blob);
   const startTime = Date.now();
@@ -78,7 +97,7 @@ export async function action({ request }: ActionFunctionArgs) {
     const inferenceData = await saveInference({
       userId: user?.id,
       model: "ocr",
-      input: base64String,
+      input: s3UploadUrl,
       output: ocrtxt,
       responseTime: responseTime,
     });
@@ -96,6 +115,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
 export default function Index() {
   const [ImageUrl, setImageUrl] = useState<string>("");
+  const [contentType, setContentType] = useState<string>("");
   const fetcher = useFetcher();
   let likeFetcher = useFetcher();
 
@@ -106,14 +126,13 @@ export default function Index() {
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = () => {
-          // Once the file is loaded, set the image state to the data URL
-          setImageUrl(reader.result);
-        };
-        reader.readAsDataURL(file);
-      }
+      setContentType(file.type);
+      const reader = new FileReader();
+      reader.onload = () => {
+        // Once the file is loaded, set the image state to the data URL
+        setImageUrl(reader.result);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -125,112 +144,115 @@ export default function Index() {
     resetFetcher(fetcher);
   };
   let { translation } = uselitteraTranlation();
-  console.log("inferenceId", inferenceId);
   return (
     <ToolWraper title="OCR">
-      <main className="mx-auto w-11/12 lg:w-4/5">
-        <div className="mt-1 flex flex-col md:flex-row  lg:h-[55vh] items-strech gap-5">
-          <Card className="md:w-1/2 relative">
-            <div className="absolute  top-2 right-2 cursor-pointer hover:text-orange-400  bg-gray-200 p-1 rounded-full">
-              <Tooltip
-                content="Please ensure that the image is of high quality and that it includes a lengthy text that is easily readable."
-                animation="duration-500"
-                placement="left"
-                className="w-[200px] md:w-[400px] font-poppins text-xs"
-                style="light"
-              >
-                <BiQuestionMark />
-              </Tooltip>
-            </div>
-            <fetcher.Form method="post" encType="multipart/form-data">
-              <div className="w-full min-h-[45vh] flex flex-col items-center justify-center gap-5">
-                <div className={ImageUrl ? "hidden" : ""}>
-                  <div className="mb-2 block">
-                    <Label
-                      htmlFor="file"
-                      value={translation.uploadImage}
-                      className="text-lg text-slate-700"
-                    />
-                  </div>
-                  <FileInput
-                    helperText={`${translation.acceptedImage} JPG, PNG, JPEG, TIF`}
-                    id="file"
-                    name="image"
-                    accept="image/png, image/jpeg, image/jpg, image/tiff"
-                    onChange={handleFileChange}
+      <div className="mt-1 flex flex-col md:flex-row  lg:h-[55vh] items-strech gap-5">
+        <CardComponent className="md:w-1/2 relative">
+          <div className="absolute  top-2 right-2 cursor-pointer hover:text-orange-400  bg-gray-200 p-1 rounded-full">
+            <Tooltip
+              content="Please ensure that the image is of high quality and that it includes a lengthy text that is easily readable."
+              animation="duration-500"
+              placement="left"
+              className="w-[200px] md:w-[400px] font-poppins text-xs"
+              style="light"
+            >
+              <BiQuestionMark />
+            </Tooltip>
+          </div>
+          <fetcher.Form method="post" encType="multipart/form-data">
+            <div className="w-full min-h-[45vh] flex flex-col items-center justify-center gap-5">
+              <div className={ImageUrl ? "hidden" : ""}>
+                <div className="mb-2 block">
+                  <Label
+                    htmlFor="file"
+                    value={translation.uploadImage}
+                    className="text-lg text-slate-700"
                   />
-                  <input type="hidden" name="base64String" value={ImageUrl} />
                 </div>
-                {ImageUrl && (
-                  <img
-                    src={ImageUrl}
-                    alt="selected file"
-                    style={{
-                      maxWidth: "100%",
-                      maxHeight: "40vh",
-                      objectFit: "contain",
+                <FileInput
+                  helperText={`${translation.acceptedImage} JPG, PNG, JPEG, TIF`}
+                  id="file"
+                  name="image"
+                  accept="image/png, image/jpeg, image/jpg, image/tiff"
+                  onChange={handleFileChange}
+                />
+                <input type="hidden" name="base64String" value={ImageUrl} />
+                <input type="hidden" name="contentType" value={contentType} />
+              </div>
+              {ImageUrl && (
+                <img
+                  src={ImageUrl}
+                  alt="selected file"
+                  style={{
+                    maxWidth: "100%",
+                    maxHeight: "40vh",
+                    objectFit: "contain",
+                  }}
+                />
+              )}
+            </div>
+            <div className="flex justify-between">
+              <Button
+                type="reset"
+                color="gray"
+                disabled={!ImageUrl}
+                onClick={handleFormClear}
+                className="text-gray-500"
+              >
+                <div className="pt-1">{translation.reset}</div>
+              </Button>
+              <Button
+                type="submit"
+                disabled={!ImageUrl}
+                isProcessing={isActionSubmission}
+              >
+                <div className="pt-1">{translation.submit}</div>
+              </Button>
+            </div>
+          </fetcher.Form>
+        </CardComponent>
+
+        <CardComponent className="md:w-1/2">
+          <div className="w-full h-[50vh] p-3 text-black bg-slate-50 rounded-lg overflow-auto">
+            {isActionSubmission ? (
+              <div className="h-full flex justify-center items-center">
+                <Spinner size="lg" />
+              </div>
+            ) : (
+              <div className="text-lg  tracking-wide leading-loose overflow-auto">
+                {isEmptyData && (
+                  <div className="text-red-500">
+                    བསྐྱར་དུ་པར་རིས་གཞན་པ་ཞིག་བཙལ་རོགས་གནང་།
+                  </div>
+                )}
+                {errorMessage && (
+                  <div className="text-red-500">{errorMessage}</div>
+                )}
+                {data?.text && (
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: data.text?.join("<br/>"),
                     }}
                   />
                 )}
               </div>
-              <div className="flex justify-between">
-                <Button
-                  type="reset"
-                  color="gray"
-                  onClick={handleFormClear}
-                  className="text-gray-500"
-                >
-                  <div className="pt-1">{translation.reset}</div>
-                </Button>
-                <Button type="submit" isProcessing={isActionSubmission}>
-                  <div className="pt-1">{translation.submit}</div>
-                </Button>
-              </div>
-            </fetcher.Form>
-          </Card>
-
-          <Card className="md:w-1/2">
-            <div className="w-full h-[50vh] p-3 text-black bg-slate-50 rounded-lg overflow-auto">
-              {isActionSubmission ? (
-                <div className="h-full flex justify-center items-center">
-                  <Spinner size="lg" />
-                </div>
-              ) : (
-                <div className="text-lg  tracking-wide leading-loose overflow-auto">
-                  {isEmptyData && (
-                    <div className="text-red-500">
-                      བསྐྱར་དུ་པར་རིས་གཞན་པ་ཞིག་བཙལ་རོགས་གནང་།
-                    </div>
-                  )}
-                  {errorMessage && (
-                    <div className="text-red-500">{errorMessage}</div>
-                  )}
-                  {data?.text && (
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: data.text?.join("<br/>"),
-                      }}
-                    />
-                  )}
-                </div>
+            )}
+          </div>
+          <div className="flex justify-end">
+            <div className="flex gap-3 md:gap-5 items-center p-2">
+              <ReactionButtons
+                fetcher={likeFetcher}
+                output={data?.text?.join("\n")}
+                sourceText={ImageUrl}
+                inferenceId={inferenceId}
+              />
+              {inferenceId && (
+                <CopyToClipboard textToCopy={data?.text?.join("\n")} />
               )}
             </div>
-            <div className="flex justify-end">
-              <div className="flex gap-3 md:gap-5 items-center p-2">
-                <ReactionButtons
-                  fetcher={likeFetcher}
-                  output={data?.text?.join("\n")}
-                  sourceText={ImageUrl}
-                  inferenceId={inferenceId}
-                />
-                {data && data?.text?.join("\n") && (
-                  <CopyToClipboard textToCopy={data?.text?.join("\n")} />
-                )}
-              </div>
-            </div>
-          </Card>
-        </div>
-      </main>
+          </div>
+        </CardComponent>
+      </div>
     </ToolWraper>
   );
 }
