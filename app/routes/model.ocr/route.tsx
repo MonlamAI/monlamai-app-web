@@ -51,7 +51,7 @@ export async function action({ request }: ActionFunctionArgs) {
   // to upload to s3 and get the url
   const uploadHandler: UploadHandler = composeUploadHandlers(
     s3UploadHandler,
-    createMemoryUploadHandler()
+    createMemoryUploadHandler({ maxPartSize: 10000000 })
   );
   const formData = await parseMultipartFormData(request, uploadHandler);
 
@@ -123,13 +123,13 @@ export default function Index() {
   const inferenceId = fetcher.data?.id;
   const isActionSubmission = fetcher.state !== "idle";
   const errorMessage = data?.error_message;
+
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
       setContentType(file.type);
       const reader = new FileReader();
       reader.onload = () => {
-        // Once the file is loaded, set the image state to the data URL
         setImageUrl(reader.result);
       };
       reader.readAsDataURL(file);
@@ -170,10 +170,10 @@ export default function Index() {
                   />
                 </div>
                 <FileInput
-                  helperText={`${translation.acceptedImage} JPG, PNG, JPEG, TIF`}
+                  helperText={`${translation.acceptedImage} JPG, PNG, JPEG`}
                   id="file"
                   name="image"
-                  accept="image/png, image/jpeg, image/jpg, image/tiff"
+                  accept="image/png, image/jpeg, image/jpg"
                   onChange={handleFileChange}
                 />
                 <input type="hidden" name="base64String" value={ImageUrl} />
