@@ -30,5 +30,7 @@
   "OCR_description": "Convert an image into text with AI",
   "reset": "Reset",
   "submit": "Submit",
-  "jobs": "Jobs"
+  "jobs": "Jobs",
+  "uploadImage": "Upload Image",
+  "acceptedImage": "Accepted Image"
 }

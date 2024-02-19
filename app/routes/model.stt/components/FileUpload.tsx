@@ -2,7 +2,9 @@ import { Button } from "flowbite-react";
 import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { FaFile } from "react-icons/fa";
+import { toast } from "react-toastify";
 import { formatBytes } from "~/component/utils/formatSize";
+import { MAX_SIZE_SUPPORT_AUDIO } from "~/helper/const";
 
 export function HandleAudioFile({ handleFileChange, reset }) {
   const [myFiles, setMyFiles] = useState(null);
@@ -10,8 +12,15 @@ export function HandleAudioFile({ handleFileChange, reset }) {
     // Do something with the files
     var file = acceptedFiles[0];
     if (!file) {
+      toast.error("Wrong file format. Please select .mp3 or .wav file.");
       return;
     }
+
+    if (file.size > MAX_SIZE_SUPPORT_AUDIO * 1024 * 1024) {
+      toast.info("File size is too big.");
+      return;
+    }
+
     handleFileChange(file);
     setMyFiles(file);
   }, []);

@@ -1,6 +1,4 @@
-import React from "react";
-
-function Card(props) {
+function CardComponent(props) {
   return (
     <div
       className={`flex rounded-lg border border-gray-200 bg-white shadow-md dark:border-gray-700 dark:bg-gray-800 flex-col md:w-1/2 py-2 px-3
@@ -11,4 +9,4 @@ function Card(props) {
   );
 }
 
-export default Card;
+export default CardComponent;
