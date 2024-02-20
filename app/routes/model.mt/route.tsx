@@ -256,6 +256,7 @@ export default function Index() {
               text={data}
               handleCopy={handleCopy}
               setEditText={setEditText}
+              sourceLang={source_lang}
             />
           )}
         </CardComponent>

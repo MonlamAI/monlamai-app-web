@@ -17,6 +17,7 @@ type NonEditModeActionsProps = {
   setEditText: (p: string) => void;
   text: any;
   handleCopy: () => void;
+  sourceLang: string;
 };
 
 export function NonEditModeActions({
@@ -28,6 +29,7 @@ export function NonEditModeActions({
   setEditText,
   text,
   handleCopy,
+  sourceLang,
 }: NonEditModeActionsProps) {
   let isSelected =
     selectedTool === "text" ||
@@ -35,10 +37,15 @@ export function NonEditModeActions({
     selectedTool === "File";
   let isOutputNull = !text || text === "";
   if (isOutputNull || !isSelected) return null;
+  console.log("sourceLang", sourceLang);
   return (
-    <div className="flex justify-between p-2">
-      {selectedTool !== "File" && <Speak text={text} />}
-      <div className="flex relative gap-3 md:gap-5 justify-end items-center">
+    <div
+      className={`flex ${
+        sourceLang == "en" ? "justify-between" : "justify-end"
+      } p-2`}
+    >
+      {selectedTool !== "File" && sourceLang == "en" && <Speak text={text} />}
+      <div className="flex gap-3 md:gap-5 justify-end items-center">
         <Dropdown
           className="mt-2 w-52 text-center"
           label="likeDislikeEdit"
