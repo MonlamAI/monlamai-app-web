@@ -32,5 +32,6 @@
   "submit": "Submit",
   "jobs": "Jobs",
   "uploadImage": "Upload Image",
-  "acceptedImage": "Accepted Image"
+  "acceptedImage": "Supported file types:",
+  "maxFileSize": "Max."
 }
