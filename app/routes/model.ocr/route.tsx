@@ -28,7 +28,6 @@ import {
 import { s3ImageUpload, s3UploadHandler } from "~/services/uploadImage.server";
 import { base64ToBlob } from "~/component/utils/base64ToBlob";
 import CardComponent from "~/component/Card";
-import { toast } from "react-toastify";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -128,10 +127,6 @@ export default function Index() {
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      if (file.size > 10000000) {
-        toast.info("File size is too big.");
-        return;
-      }
       setContentType(file.type);
       const reader = new FileReader();
       reader.onload = () => {
@@ -175,7 +170,7 @@ export default function Index() {
                   />
                 </div>
                 <FileInput
-                  helperText={`${translation.acceptedImage} .jpg, .jpeg, .png (${translation.maxFileSize} 10MB)`}
+                  helperText={`${translation.acceptedImage} JPG, PNG, JPEG`}
                   id="file"
                   name="image"
                   accept="image/png, image/jpeg, image/jpg"
