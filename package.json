@@ -11,7 +11,6 @@
   },
   "dependencies": {
     "@assembless/react-littera": "^2.4.0",
-    "@aws-sdk/client-s3": "^3.515.0",
     "@headlessui/react": "^1.7.17",
     "@prisma/client": "^5.4.2",
     "@remix-run/css-bundle": "2.5.0",
@@ -21,7 +20,6 @@
     "@remix-run/serve": "2.5.0",
     "@remix-run/v1-route-convention": "^0.1.4",
     "auth0-js": "^9.23.0",
-    "aws-sdk": "^2.1559.0",
     "compression": "^1.7.4",
     "cross-env": "^7.0.3",
     "docx": "^8.2.4",
@@ -49,7 +47,6 @@
     "react-type-animation": "^3.1.0",
     "remix-auth-auth0": "^1.7.0",
     "source-map-support": "^0.5.21",
-    "uuid": "^9.0.1",
     "wavesurfer.js": "^7.6.4",
     "webhook-discord": "^3.7.8"
   },
@@ -64,7 +61,6 @@
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
     "@types/source-map-support": "^0.5.6",
-    "@types/uuid": "^9.0.8",
     "chokidar": "^3.5.3",
     "concurrently": "^8.2.1",
     "eslint": "^8.38.0",

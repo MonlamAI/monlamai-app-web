@@ -14,11 +14,10 @@ function FileUpload({ sourceText, setSourceText, reset }) {
     setMyFiles([...myFiles, ...acceptedFiles]);
     var file = acceptedFiles[0];
     if (!file) {
-      toast.error("Wrong file format. Please upload a .txt or .docx file.");
       return;
     }
     if (file.size > MAX_SIZE_SUPPORT * 1024) {
-      toast.info("File size is too big.");
+      toast("File size is too big.");
       return;
     }
 
@@ -30,7 +29,6 @@ function FileUpload({ sourceText, setSourceText, reset }) {
       console.log("Unsupported file type.");
     }
   }, []);
-
   const { getRootProps, getInputProps, isDragActive, acceptedFiles } =
     useDropzone({
       onDrop,
