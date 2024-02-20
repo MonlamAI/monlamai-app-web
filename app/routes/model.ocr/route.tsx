@@ -8,7 +8,6 @@ import { json } from "@remix-run/node";
 import { useFetcher } from "@remix-run/react";
 import { Button, Card, FileInput, Label, Spinner } from "flowbite-react";
 import { useRef, useState, useMemo, useLayoutEffect } from "react";
-import { FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa6";
 import CopyToClipboard from "~/component/CopyToClipboard";
 import { auth } from "~/services/auth.server";
 import { BiQuestionMark } from "react-icons/bi";
@@ -117,6 +116,7 @@ export async function action({ request }: ActionFunctionArgs) {
 export default function Index() {
   const [ImageUrl, setImageUrl] = useState<string>("");
   const [contentType, setContentType] = useState<string>("");
+  const [key, setKey] = useState(0);
   const fetcher = useFetcher();
   let likeFetcher = useFetcher();
 
@@ -130,6 +130,7 @@ export default function Index() {
     if (file) {
       if (file.size > 10000000) {
         toast.info("File size is too big.");
+        handleFormClear();
         return;
       }
       setContentType(file.type);
@@ -145,8 +146,9 @@ export default function Index() {
   isEmptyData = isEmptyData || data?.text?.join("") === "";
 
   const handleFormClear = () => {
-    setImageUrl(null);
+    setImageUrl("");
     resetFetcher(fetcher);
+    setKey((prevKey) => prevKey + 1);
   };
   let { translation } = uselitteraTranlation();
   return (
@@ -175,6 +177,7 @@ export default function Index() {
                   />
                 </div>
                 <FileInput
+                  key={key}
                   helperText={`${translation.acceptedImage} .jpg, .jpeg, .png (${translation.maxFileSize} 10MB)`}
                   id="file"
                   name="image"
