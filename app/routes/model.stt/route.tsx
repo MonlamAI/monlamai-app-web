@@ -26,6 +26,7 @@ import { formatBytes } from "~/component/utils/formatSize";
 import { API_ERROR_MESSAGE, MAX_SIZE_SUPPORT_AUDIO } from "~/helper/const";
 import { HandleAudioFile } from "./components/FileUpload";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
+import { auth } from "~/services/auth.server";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -33,6 +34,13 @@ export const meta: MetaFunction<typeof loader> = ({ matches }) => {
 
   return [{ title: "Monlam | སྒྲ་འཛིན་རིག་ནུས།" }, ...parentMeta];
 };
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  let userdata = await auth.isAuthenticated(request, {
+    failureRedirect: "/login",
+  });
+  return { user: userdata };
+}
 
 export const action: ActionFunction = async ({ request }) => {
   let formdata = await request.formData();
