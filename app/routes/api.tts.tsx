@@ -1,10 +1,13 @@
 import { ActionFunction, json } from "@remix-run/node";
+import { base64ToBuffer } from "~/component/utils/base64ToBuffer";
 import inputReplace from "~/component/utils/ttsReplace.server";
 import { verifyDomain } from "~/component/utils/verifyDomain";
 import { API_ERROR_MESSAGE } from "~/helper/const";
 import { checkIfInferenceExist, saveInference } from "~/modal/inference.server";
 import { getUser } from "~/modal/user.server";
 import { auth } from "~/services/auth.server";
+import { uploadAudioToS3 } from "~/services/uploadAudioToS3.server";
+import { v4 as uuidv4 } from "uuid";
 
 export const action: ActionFunction = async ({ request }) => {
   const isDomainAllowed = verifyDomain(request);
@@ -44,6 +47,12 @@ export const action: ActionFunction = async ({ request }) => {
   }
   const { audio_base64 } = data;
 
+  // upload to s3 and get the url
+  const buffer = base64ToBuffer(audio_base64);
+  const key = `TTS/playground/${uuidv4()}.mp3`;
+  // Upload the audio and get the URL
+  const url = await uploadAudioToS3(buffer, key);
+
   const responseTime = Date.now() - startTime; // Calculate response time
   const checkifModelExist = await checkIfInferenceExist(
     userInput,
@@ -56,7 +65,7 @@ export const action: ActionFunction = async ({ request }) => {
       userId: user?.id,
       model: "tts",
       input: userInput,
-      output: audio_base64,
+      output: url,
       responseTime: responseTime,
     });
     return { data: audio_base64, inferenceData };
