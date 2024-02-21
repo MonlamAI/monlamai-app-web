@@ -19,12 +19,21 @@ import TextComponent from "~/component/TextComponent";
 import { CharacterOrFileSizeComponent } from "../model.mt/components/UtilityComponent";
 import ErrorMessage from "~/component/ErrorMessage";
 import CardComponent from "~/component/Card";
+import { auth } from "~/services/auth.server";
+
 export const meta: MetaFunction = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
   parentMeta.shift(1);
 
   return [{ title: "Monlam | ཀློག་འདོན་རིག་ནུས།" }, ...parentMeta];
 };
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  let userdata = await auth.isAuthenticated(request, {
+    failureRedirect: "/login",
+  });
+  return { user: userdata };
+}
 
 export default function Index() {
   const [sourceText, setSourceText] = useState("");
