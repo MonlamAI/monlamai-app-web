@@ -226,8 +226,8 @@ export default function Index() {
       >
         {actionError && <ErrorMessage error={actionError} />}
 
-        <CardComponent className="w-full flex  ">
-          <div className="flex flex-col relative gap-2 flex-1 ">
+        <CardComponent>
+          <div className="flex flex-col relative gap-2 flex-1 min-h-[30vh]">
             {selectedTool === "Recording" && (
               <div className="flex flex-col items-center gap-5 flex-1 justify-center md:min-h-[30vh]">
                 {recording &&
@@ -283,8 +283,8 @@ export default function Index() {
             </div>
           </div>
         </CardComponent>
-        <CardComponent className="w-full flex">
-          <div className="w-full flex-1 lp-3 text-black  dark:text-gray-200 dark:bg-slate-700 rounded-lg overflow-auto">
+        <CardComponent>
+          <div className="w-full flex-1 min-h-[30vh] lp-3 text-black  dark:text-gray-200 dark:bg-slate-700 rounded-lg overflow-auto">
             {RecordingSelected && isLoading && <LoadingAnimation />}
             {edit && (
               <EditDisplay editText={editText} setEditText={setEditText} />

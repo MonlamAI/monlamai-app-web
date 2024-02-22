@@ -185,9 +185,9 @@ export default function Index() {
         <LanguageInput />
       )}
 
-      <div className="mt-3 flex flex-col md:flex-row gap-5">
-        <CardComponent className="md:w-1/2">
-          <div className="w-full flex flex-col justify-center gap-2 min-h-[30vh] flex-1 ">
+      <div className="mt-3 flex flex-col gap-5 lg:flex-row">
+        <CardComponent>
+          <div className="flex min-h-[30vh] w-full flex-1 flex-col justify-center gap-2">
             <TextOrDocumentComponent
               selectedTool={selectedTool}
               sourceText={sourceText}
@@ -210,13 +210,13 @@ export default function Index() {
           />
         </CardComponent>
 
-        <CardComponent className="md:w-1/2">
-          <div className="w-full flex flex-col gap-2 min-h-[30vh] flex-1 ">
+        <CardComponent>
+          <div className="flex min-h-[30vh] w-full flex-1 flex-col gap-2 ">
             <div
               ref={targetRef}
               className={`h-full text-lg ${
                 target_lang === "bo"
-                  ? "tracking-wide leading-loose"
+                  ? "leading-loose tracking-wide"
                   : "font-poppins"
               }`}
             >
@@ -261,7 +261,7 @@ export default function Index() {
           )}
         </CardComponent>
       </div>
-      <div className="w-full text-center md:w-fit md:float-right text-xs mt-3 text-slate-400 text-[0.7rem]">
+      <div className="mt-3 w-full text-center text-[0.7rem] text-xs text-slate-400 md:float-right md:w-fit">
         Monlam-MITRA ཡིག་སྒྱུར་རིག་ནུས་དཔེ་གཞི་ཐོན་རིམ་ <small>v</small>10-16
       </div>
     </ToolWraper>

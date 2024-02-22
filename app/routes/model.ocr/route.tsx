@@ -153,9 +153,9 @@ export default function Index() {
   let { translation } = uselitteraTranlation();
   return (
     <ToolWraper title="OCR">
-      <div className="mt-1 flex flex-col md:flex-row  lg:h-[55vh] items-strech gap-5">
-        <CardComponent className="md:w-1/2 relative">
-          <div className="absolute  top-2 right-2 cursor-pointer hover:text-orange-400  bg-gray-200 p-1 rounded-full">
+      <div className="mt-1 flex flex-col lg:flex-row  lg:h-[55vh] items-strech gap-5">
+        <CardComponent className="relative">
+          <div className="absolute top-2 right-2 cursor-pointer hover:text-orange-400  bg-gray-200 p-1 rounded-full">
             <Tooltip
               content="Please ensure that the image is of high quality and that it includes a lengthy text that is easily readable."
               animation="duration-500"
@@ -220,7 +220,7 @@ export default function Index() {
           </fetcher.Form>
         </CardComponent>
 
-        <CardComponent className="md:w-1/2">
+        <CardComponent>
           <div className="w-full h-[50vh] p-3 text-black bg-slate-50 rounded-lg overflow-auto">
             {isActionSubmission ? (
               <div className="h-full flex justify-center items-center">
