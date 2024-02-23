@@ -101,7 +101,7 @@ export default function Index() {
       >
         {actionError && <ErrorMessage error={actionError} />}
 
-        <CardComponent className="md:w-1/2">
+        <CardComponent>
           <div className="flex flex-col gap-2 flex-1 min-h-[30vh]">
             <div className="flex relative flex-col flex-1 justify-center">
               {selectedTool === "text" && (
@@ -146,7 +146,7 @@ export default function Index() {
             </div>
           </div>
         </CardComponent>
-        <CardComponent className="md:w-1/2">
+        <CardComponent>
           <div className="w-full flex-1 min-h-[30vh]">
             {data && (
               <div className="flex justify-between mx-2">
