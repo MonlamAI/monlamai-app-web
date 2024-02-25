@@ -11,3 +11,7 @@ export const CHAR_LIMIT_TTS = 5000;
 //error messages
 
 export const API_ERROR_MESSAGE = "API ERROR";
+
+//mt api hit delay
+
+export const API_HIT_DELAY = 3000  //in ms equals to 3 sec

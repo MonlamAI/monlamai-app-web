@@ -26,6 +26,7 @@ import {   getTodayInferenceByUserIdCountModel, saveInference, updateEdit } from
 import ListInput from "~/component/ListInput";
 import {
   API_ERROR_MESSAGE,
+  API_HIT_DELAY,
   CHAR_LIMIT,
   MAX_SIZE_SUPPORT,
 } from "~/helper/const";
@@ -110,7 +111,7 @@ export default function Index() {
   const { show_mt_language_toggle } = useRouteLoaderData("root");
   const [edit, setEdit] = useState(false);
   const [editText, setEditText] = useState("");
-  const debounceSourceText = useDebounce(sourceText, 1000);
+  const debounceSourceText = useDebounce(sourceText, API_HIT_DELAY);
   const likefetcher = useFetcher();
   const editfetcher = useFetcher();
   const savefetcher = useFetcher();
