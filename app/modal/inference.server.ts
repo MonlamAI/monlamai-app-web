@@ -39,3 +39,17 @@ export async function updateEdit(inferenceId: string, edited: string) {
     },
   });
 }
+
+
+export async function getTodayInferenceByUserIdCountModel(userId: number,model:models) {
+  return await db.inference.count({
+    where: {
+      userId,
+      model,
+      createdAt: {
+        gte: new Date(new Date().setHours(0, 0, 0, 0)),
+        lt: new Date(new Date().setHours(23, 59, 59, 999)),
+      },
+    },
+  });
+}

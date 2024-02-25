@@ -12,7 +12,7 @@ import {
 } from "~/component/utils/replace.server";
 import { verifyDomain } from "~/component/utils/verifyDomain";
 import { API_ERROR_MESSAGE } from "~/helper/const";
-import { saveInference } from "~/modal/inference.server";
+import { getTodayInferenceByUserId, saveInference } from "~/modal/inference.server";
 import { getUser } from "~/modal/user.server";
 import { auth } from "~/services/auth.server";
 import { fetchGPTData } from "~/services/fetchGPTData.server";
@@ -103,6 +103,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   if (source) {
     let result;
     try {
+  
       result = await translate(source, lang, direction);
     } catch (e) {
       return { error: e?.message };
