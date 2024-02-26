@@ -12,7 +12,6 @@ import {
   useRouteLoaderData,
   useSearchParams,
 } from "@remix-run/react";
-import { Button, Card } from "flowbite-react";
 import { useState, useRef, useEffect } from "react";
 import { auth } from "~/services/auth.server";
 import useDebounce from "~/component/hooks/useDebounceState";
@@ -22,7 +21,11 @@ import ToolWraper from "~/component/ToolWraper";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import DownloadDocument from "~/routes/model.mt/components/DownloadDocument";
 import { toast } from "react-toastify";
-import {   getTodayInferenceByUserIdCountModel, saveInference, updateEdit } from "~/modal/inference.server";
+import {
+  getTodayInferenceByUserIdCountModel,
+  saveInference,
+  updateEdit,
+} from "~/modal/inference.server";
 import ListInput from "~/component/ListInput";
 import {
   API_ERROR_MESSAGE,
@@ -44,6 +47,8 @@ import useTranslate from "./lib/useTranslate";
 import { getUser } from "~/modal/user.server";
 import { resetFetcher } from "~/component/utils/resetFetcher";
 import LanguageInput from "./components/LanguageInput";
+import { CancelButton } from "~/component/Buttons";
+import { RxCross2 } from "react-icons/rx";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -57,11 +62,21 @@ export async function loader({ request }: LoaderFunctionArgs) {
   });
   const url = process.env?.MT_API_URL;
   let modelToken = process.env?.MODEL_API_AUTH_TOKEN;
-  let user=await getUser(userdata?._json.email);
-  let checkNumberOfInferenceToday=await getTodayInferenceByUserIdCountModel(user?.id,"mt");
-  let checkLimit=checkNumberOfInferenceToday >= parseInt(process.env?.API_HIT_LIMIT!);
-  let limitMessage='You have reached the daily limit of translation. Please try again tomorrow.';
-  return { user: userdata, url, modelToken,limitMessage:checkLimit?limitMessage:null };
+  let user = await getUser(userdata?._json.email);
+  let checkNumberOfInferenceToday = await getTodayInferenceByUserIdCountModel(
+    user?.id,
+    "mt"
+  );
+  let checkLimit =
+    checkNumberOfInferenceToday >= parseInt(process.env?.API_HIT_LIMIT!);
+  let limitMessage =
+    "You have reached the daily limit of translation. Please try again tomorrow.";
+  return {
+    user: userdata,
+    url,
+    modelToken,
+    limitMessage: checkLimit ? limitMessage : null,
+  };
 }
 
 export const action: ActionFunction = async ({ request }) => {
@@ -107,7 +122,7 @@ export default function Index() {
     "text"
   );
 
-  const { url, modelToken,limitMessage } = useLoaderData();
+  const { url, modelToken, limitMessage } = useLoaderData();
   const { show_mt_language_toggle } = useRouteLoaderData("root");
   const [edit, setEdit] = useState(false);
   const [editText, setEditText] = useState("");
@@ -171,6 +186,12 @@ export default function Index() {
     setEdit(false);
     setEditText("");
   }
+
+  const handleReset = () => {
+    setSourceText("");
+    resetFetcher(savefetcher);
+  };
+
   return (
     <ToolWraper title="MT">
       <ListInput
@@ -191,33 +212,39 @@ export default function Index() {
 
       <div className="mt-3 flex flex-col gap-5 lg:flex-row">
         <CardComponent>
-          {limitMessage?<div className="text-gray-500">{limitMessage} <br/> thank you for using MonlamAI</div>:
-          <>
-          <div className="flex min-h-[30vh] w-full flex-1 flex-col justify-center gap-2" >
-            <TextOrDocumentComponent
-            selectedTool={selectedTool}
-            sourceText={sourceText}
-            setSourceText={setSourceText}
-            sourceLang={source_lang}
-            />
-          </div>
-          <Button
-            color="gray"
-            className="text-slate-500 md:hidden"
-            onClick={() => setSourceText("")}
-            >
-            {translation.reset}
-          </Button>
-          <CharacterOrFileSizeComponent
-            selectedTool={selectedTool}
-            charCount={charCount}
-            CHAR_LIMIT={CHAR_LIMIT}
-            MAX_SIZE_SUPPORT={MAX_SIZE_SUPPORT}
-            />
-          </>}
+          {limitMessage ? (
+            <div className="text-gray-500">
+              {limitMessage} <br /> thank you for using MonlamAI
+            </div>
+          ) : (
+            <>
+              <div className="flex relative min-h-[30vh] w-full flex-1 flex-col justify-center gap-2">
+                <TextOrDocumentComponent
+                  selectedTool={selectedTool}
+                  sourceText={sourceText}
+                  setSourceText={setSourceText}
+                  sourceLang={source_lang}
+                />
+                {selectedTool === "text" && (
+                  <CancelButton
+                    onClick={handleReset}
+                    hidden={!sourceText || sourceText === ""}
+                  >
+                    <RxCross2 size={20} />
+                  </CancelButton>
+                )}
+              </div>
+              <CharacterOrFileSizeComponent
+                selectedTool={selectedTool}
+                charCount={charCount}
+                CHAR_LIMIT={CHAR_LIMIT}
+                MAX_SIZE_SUPPORT={MAX_SIZE_SUPPORT}
+              />
+            </>
+          )}
         </CardComponent>
 
-<CardComponent>
+        <CardComponent>
           <div className="flex min-h-[30vh] w-full flex-1 flex-col gap-2 ">
             <div
               ref={targetRef}
@@ -266,7 +293,6 @@ export default function Index() {
               sourceLang={source_lang}
             />
           )}
-         
         </CardComponent>
       </div>
       <div className="mt-3 w-full text-center text-[0.7rem] text-xs text-slate-400 md:float-right md:w-fit">
