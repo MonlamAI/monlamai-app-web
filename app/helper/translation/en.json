@@ -30,5 +30,9 @@
   "OCR_description": "Convert an image into text with AI",
   "reset": "Reset",
   "submit": "Submit",
-  "jobs": "Jobs"
+  "jobs": "Jobs",
+  "inputPlaceholder": "Enter text here...",
+  "advisors": "Advisors",
+  "lamas": "Blessings and Guidance of our Gurus",
+  "partners": "Collaborators and Partners"
 }

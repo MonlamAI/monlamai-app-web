@@ -47,8 +47,8 @@ function Footer() {
         <div className="text-sm text-gray-400 sm:text-center">
           <div className="hover:underline text-[1rem] cursor-default leading-relaxed text-center">
             {isEnglish
-              ? "Web © Monlam AI 2023"
-              : "བདག་དབང་། © སྨོན་ལམ་བརྡ་འཕྲིན་ཞིབ་འཇུག་ཁང་། ༢༠༢༣"}
+              ? "© Monlam AI 2024"
+              : "བདག་དབང་། © སྨོན་ལམ་བརྡ་འཕྲིན་ཞིབ་འཇུག་ཁང་། ༢༠༢༤"}
           </div>
         </div>
         <div className="flex flex-wrap items-center mt-3 sm:mt-2">
