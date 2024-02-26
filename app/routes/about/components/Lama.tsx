@@ -3,14 +3,11 @@ import { Blurhash } from "react-blurhash";
 import { useState, useRef, useEffect } from "react";
 import uselitteraTranlation from "../../../component/hooks/useLitteraTranslation";
 function Lamas() {
-  let { locale } = uselitteraTranlation();
-  let isEnglish = locale === "en_US";
+  let { translation } = uselitteraTranlation();
   return (
     <div>
       <h2 className="lg:text-3xl text-xl font-bold my-10 lg:my-20 flex justify-center ">
-        {isEnglish
-          ? "Blessings and Guidance of our Gurus"
-          : "བླ་ཆེན་རྣམ་པས་བྱིན་རླབས་དང་ལམ་སྟོན།"}
+        {translation.lamas}
       </h2>
       <div className="flex gap-10 mt-10 flex-col md:flex-row ">
         <img

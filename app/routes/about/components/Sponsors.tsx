@@ -1,12 +1,11 @@
 import { sponsors as sponsor_list } from "~/routes/about/data/sponsors";
 import uselitteraTranlation from "../../../component/hooks/useLitteraTranslation";
 function Sponsors() {
-  let { locale } = uselitteraTranlation();
-  let isEnglish = locale === "en_US";
+  let { translation } = uselitteraTranlation();
   return (
     <div className="relative top-10 ">
       <h2 className="lg:text-3xl text-xl font-bold  mt-10 md:my-10 flex justify-center">
-        {isEnglish ? "Collaborators and Partners" : "མཉམ་འབྲེལ་དང་རོགས་རམ།"}
+        {translation.partners}
       </h2>
 
       <div className="flex gap-4 justify-center flex-wrap ">

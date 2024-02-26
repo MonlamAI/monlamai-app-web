@@ -2,12 +2,11 @@ import { instructors } from "~/routes/about/data/instructors";
 import uselitteraTranlation from "../../../component/hooks/useLitteraTranslation";
 
 function Instructor() {
-  let { locale } = uselitteraTranlation();
-  let isEnglish = locale === "en_US";
+  let { translation } = uselitteraTranlation();
   return (
     <div className="my-20">
       <h2 className="lg:text-3xl text-xl font-bold  my-10 md:my-20 flex justify-center">
-        {isEnglish ? "Advisors" : "ཆེད་ལས་སློབ་སྟོན་པ།"}
+        {translation.advisors}
       </h2>
 
       <div className="flex flex-wrap gap-4 justify-center">
