@@ -23,7 +23,7 @@ function TextComponent({ sourceText, setSourceText, sourceLang }) {
           return prev;
         });
       }}
-      rows={6}
+      rows={3}
       autoFocus
       ref={textRef}
     />

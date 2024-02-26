@@ -218,7 +218,7 @@ export default function Index() {
             </div>
           ) : (
             <>
-              <div className="flex relative min-h-[30vh] w-full flex-1 flex-col justify-center gap-2">
+              <div className="flex relative min-h-[15vh] lg:min-h-[30vh] w-full flex-1 flex-col justify-center gap-2">
                 <TextOrDocumentComponent
                   selectedTool={selectedTool}
                   sourceText={sourceText}
@@ -245,7 +245,7 @@ export default function Index() {
         </CardComponent>
 
         <CardComponent>
-          <div className="flex min-h-[30vh] w-full flex-1 flex-col gap-2 ">
+          <div className="flex min-h-[15vh] lg:min-h-[30vh] h-auto w-full flex-1 flex-col gap-2 ">
             <div
               ref={targetRef}
               className={`h-full text-lg ${
@@ -257,7 +257,7 @@ export default function Index() {
               {TextSelected && edit && (
                 <EditDisplay editText={editText} setEditText={setEditText} />
               )}
-              {isLoading && <div>loading</div>}
+              {isLoading && <div>...</div>}
               {TextSelected && sourceText !== "" && !isLoading && (
                 <OutputDisplay
                   edit={edit}
