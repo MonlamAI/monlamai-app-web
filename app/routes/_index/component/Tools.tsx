@@ -14,22 +14,11 @@ function Tools() {
   let isEnglish = locale === "en_US";
   return (
     <main>
-      <div className="py-5 md:pt-[5vh] h-full my-auto">
-        <div className="text-center max-w-7xl mx-auto">
-          <div
-            className={` 
-            px-3 mb-20 mt-10 leading-[normal] text-[1.25rem] md:text-[2rem]  ${
-              !isEnglish ? "font-monlam " : " font-poppins"
-            }
-          `}
-          >
-            {translation.homepageHeading}
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mx-10 mb-7 ">
-            {models.map((model, index) => (
-              <EachModel key={model.name} model={model} />
-            ))}
-          </div>
+      <div className="text-center max-w-7xl mx-auto h-[80vh] mt-10 lg:mt-32">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 m-10">
+          {models.map((model, index) => (
+            <EachModel key={model.name} model={model} />
+          ))}
         </div>
       </div>
     </main>

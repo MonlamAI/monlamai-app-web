@@ -81,6 +81,11 @@ export const meta: MetaFunction = () => {
 };
 
 function Document({ children }: { children: React.ReactNode }) {
+  const feedbucketScript = `(function(k) {
+      const s=document.createElement('script');s.module=true;s.defer=true;
+      s.src="https://cdn.feedbucket.app/assets/feedbucket.js";
+      s.dataset.feedbucket=k;document.head.appendChild(s);
+})('ym4vwOa3unzDSASQ2o5f')`;
   return (
     <html lang="en">
       <head>
@@ -88,6 +93,7 @@ function Document({ children }: { children: React.ReactNode }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
         <Links />
+        <script dangerouslySetInnerHTML={{ __html: feedbucketScript }}></script>
       </head>
       <body className="inset-0 overflow-y-auto overflow-x-hidden dark:bg-slate-700 dark:text-gray-200">
         {children}

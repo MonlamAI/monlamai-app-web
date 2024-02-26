@@ -4,14 +4,14 @@ import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import { CHAR_LIMIT } from "~/helper/const";
 
 function TextComponent({ sourceText, setSourceText, sourceLang }) {
-  let { translation, locale } = uselitteraTranlation();
+  let { translation } = uselitteraTranlation();
   let textRef = useRef<HTMLTextAreaElement>(null);
 
   return (
     <Textarea
       name="sourceText"
       placeholder={translation.inputPlaceholder}
-      className={`w-full p-2 overflow-auto resize-none flex-1 min-h-[5em] bg-transparent  border-0 focus:outline-none focus:ring-transparent  caret-slate-500 placeholder:text-slate-300 placeholder:font-monlam placeholder:text-lg ${
+      className={`w-full p-2 overflow-auto resize-none flex-1 min-h-[5em] bg-transparent border-0 focus:outline-none focus:ring-transparent caret-slate-500 placeholder:text-slate-300 placeholder:font-monlam placeholder:text-lg ${
         sourceLang == "en" && "font-poppins text-xl"
       } ${sourceLang == "bo" && "text-lg leading-loose font-monlam"}`}
       required
