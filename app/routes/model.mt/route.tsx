@@ -60,8 +60,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
   let userdata = await auth.isAuthenticated(request, {
     failureRedirect: "/login",
   });
-  const url = process.env?.MT_API_URL;
-  let modelToken = process.env?.MODEL_API_AUTH_TOKEN;
   let user = await getUser(userdata?._json.email);
   let checkNumberOfInferenceToday = await getTodayInferenceByUserIdCountModel(
     user?.id,
@@ -73,8 +71,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
     "You have reached the daily limit of translation. Please try again tomorrow.";
   return {
     user: userdata,
-    url,
-    modelToken,
     limitMessage: checkLimit ? limitMessage : null,
   };
 }
@@ -93,23 +89,7 @@ export const action: ActionFunction = async ({ request }) => {
     let updated = await updateEdit(inferenceId, edited);
     return updated;
   }
-  if (method === "POST") {
-    let source = formdata.get("source") as string;
-    let translation = formdata.get("translation") as string;
-    let responseTime = formdata.get("responseTime") as string;
-    let inputLang = formdata.get("inputLang") as string;
-    let outputLang = formdata.get("targetLang") as string;
-    const inferenceData = await saveInference({
-      userId: user?.id,
-      model: "mt",
-      input: source,
-      output: translation,
-      responseTime: parseInt(responseTime),
-      inputLang: inputLang,
-      outputLang: outputLang,
-    });
-    return { id: inferenceData?.id };
-  }
+ 
 };
 
 export default function Index() {
@@ -129,13 +109,12 @@ export default function Index() {
   const debounceSourceText = useDebounce(sourceText, API_HIT_DELAY);
   const likefetcher = useFetcher();
   const editfetcher = useFetcher();
-  const savefetcher = useFetcher();
+  const translationFetcher = useFetcher();
 
   const targetRef = useRef<HTMLDivElement>(null);
   const editData = editfetcher.data?.edited;
 
   let charCount = sourceText?.length;
-  let { translation } = uselitteraTranlation();
   function handleCopy() {
     navigator.clipboard.writeText(data);
   }
@@ -144,30 +123,24 @@ export default function Index() {
     setSourceText("");
   }, [selectedTool]);
 
-  let { data, isLoading, error, done } = useTranslate({
-    url,
-    token: modelToken,
-    target: target_lang,
-    text: debounceSourceText,
-  });
+
   useEffect(() => {
-    if (done === true && data) {
-      savefetcher.submit(
+    if (debounceSourceText) {
+      translationFetcher.submit(
         {
-          source: debounceSourceText,
-          translation: data,
-          responseTime: 5,
-          inputLang: source_lang,
-          targetLang: target_lang,
+          lang: target_lang,
+          input:debounceSourceText,
+          sourceLang: source_lang,
+
         },
         {
           method: "POST",
+          action:"/api/translation"
         }
       );
-      resetFetcher(editfetcher);
     }
-  }, [done, data]);
-  let inferenceId = savefetcher.data?.id;
+  }, [debounceSourceText]);
+  let inferenceId = translationFetcher.data?.inferenceData?.id;
   let TextSelected = selectedTool === "text";
   function handleEditSubmit() {
     let edited = editText;
@@ -191,7 +164,9 @@ export default function Index() {
     setSourceText("");
     resetFetcher(savefetcher);
   };
-
+  let error=translationFetcher.data?.error || '';
+  let isLoading = translationFetcher.state !== "idle";
+  let data=translationFetcher.data?.inferenceData?.output;
   return (
     <ToolWraper title="MT">
       <ListInput

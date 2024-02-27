@@ -1,3 +1,4 @@
+import { useFetcher } from "@remix-run/react";
 import { useState, useEffect } from "react";
 
 type useTranslateType = {
@@ -12,6 +13,9 @@ const useTranslate = ({ url, token, target, text }: useTranslateType) => {
   const [done, setDone] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+
+
+
 
   useEffect(() => {
     const controller = new AbortController();
@@ -45,6 +49,9 @@ const useTranslate = ({ url, token, target, text }: useTranslateType) => {
     fetchData();
     return () => controller.abort();
   }, [url, token, text]); // Include all dependencies
+  
+
+
   return { data, isLoading, error, done };
 };
 

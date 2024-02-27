@@ -12,7 +12,7 @@ import {
 } from "~/component/utils/replace.server";
 import { verifyDomain } from "~/component/utils/verifyDomain";
 import { API_ERROR_MESSAGE } from "~/helper/const";
-import { getTodayInferenceByUserId, saveInference } from "~/modal/inference.server";
+import {  saveInference } from "~/modal/inference.server";
 import { getUser } from "~/modal/user.server";
 import { auth } from "~/services/auth.server";
 import { fetchGPTData } from "~/services/fetchGPTData.server";
@@ -51,7 +51,6 @@ export async function translate(
     if (!response.ok) {
       throw new Error(API_ERROR_MESSAGE);
     }
-
     let response_data = await postRequestAndHandleResponse(response);
     receivedData = response_data;
   } catch (e) {
@@ -83,12 +82,12 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   }
   let user = await getUser(userdata?._json.email);
   let formdata = await request.formData();
-  const lang = formdata.get("lang") as "bo" | "en";
+  const sourceLang = formdata.get("sourceLang") as "bo" | "en";
   let source = formdata.get("input") as string | null;
   let direction = formdata.get("direction") as string;
   let original_source = source;
-  let targetLang: Lang = lang === "en" ? "bo" : "en";
-  if (lang === "en") {
+  let targetLang: Lang = sourceLang === "en" ? "bo" : "en";
+  if (sourceLang === "en") {
     source = en_bo_english_replaces(source!);
     let prompt = `replace all the abbreviations with full form and preserve newlines, "${source}"  `;
     try {
@@ -97,14 +96,14 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       console.log("chatGPT Error", e);
     }
   }
-  if (lang === "bo") {
+  if (sourceLang === "bo") {
     source = bo_en_tibetan_replaces(source!);
   }
   if (source) {
     let result;
     try {
   
-      result = await translate(source, lang, direction);
+      result = await translate(source, sourceLang, direction);
     } catch (e) {
       return { error: e?.message };
     }
@@ -118,7 +117,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       input: original_source,
       output: result.translation,
       responseTime: responseTime,
-      inputLang: lang,
+      inputLang: sourceLang,
       outputLang: targetLang,
     });
     return json({
