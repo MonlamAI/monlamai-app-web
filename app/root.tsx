@@ -124,7 +124,7 @@ function Document({ children }: { children: React.ReactNode }) {
       <body className="inset-0 overflow-y-auto overflow-x-hidden dark:bg-slate-700 dark:text-gray-200">
         <>
           <div
-            className={`absolute right-2 ${
+            className={`fixed right-2 ${
               !show ? "bottom-1 md:top-[50%]" : "top-[58%] md:top-[65%]"
             } `}
             hidden={!show_feed_bucket}
