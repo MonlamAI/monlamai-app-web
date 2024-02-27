@@ -14,6 +14,8 @@ import {
   ScrollRestoration,
   useLoaderData,
   useLocation,
+  useNavigation,
+  useRouteLoaderData,
 } from "@remix-run/react";
 import Footer from "./component/layout/Footer";
 import Header from "./component/layout/Header";
@@ -24,7 +26,7 @@ import { getUserSession } from "~/services/session.server";
 import { getUser } from "./modal/user.server";
 import toastStyle from "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
-import flagsmith_provider, { feature } from "./services/features.server";
+import flagsmith_provider from "./services/features.server";
 import { useEffect } from "react";
 import useLocalStorage from "./component/hooks/useLocaleStorage";
 export const loader: LoaderFunction = async ({ request }) => {
@@ -34,12 +36,14 @@ export const loader: LoaderFunction = async ({ request }) => {
   const isJobEnabled = fetchdata.flags.job_link;
   const isFileUploadEnabled = fetchdata.flags.feat_file_upload;
   const show_mt_language_toggle = fetchdata.flags.show_mt_language_toggle;
+  const show_feed_bucket = fetchdata.flags.show_feed_bucket
   return json(
     {
       user: userdata ? await getUser(userdata?._json?.email) : null,
       isJobEnabled: isJobEnabled.enabled,
       isFileUploadEnabled: isFileUploadEnabled.enabled,
       show_mt_language_toggle: show_mt_language_toggle.enabled,
+      show_feed_bucket: show_feed_bucket.enabled
     },
     { status: 200, headers: { "cache-control": "no-cache" } }
   );
@@ -81,6 +85,8 @@ export const meta: MetaFunction = () => {
 };
 
 function Document({ children }: { children: React.ReactNode }) {
+  let { show_feed_bucket } = useRouteLoaderData("root");
+ 
   const feedbucketScript = `(function(k) {
       const s=document.createElement('script');s.module=true;s.defer=true;
       s.src="https://cdn.feedbucket.app/assets/feedbucket.js";
@@ -93,7 +99,7 @@ function Document({ children }: { children: React.ReactNode }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
         <Links />
-        <script dangerouslySetInnerHTML={{ __html: feedbucketScript }}></script>
+       {show_feed_bucket && <script dangerouslySetInnerHTML={{ __html: feedbucketScript }}></script>}
       </head>
       <body className="inset-0 overflow-y-auto overflow-x-hidden dark:bg-slate-700 dark:text-gray-200">
         {children}
