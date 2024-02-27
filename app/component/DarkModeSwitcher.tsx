@@ -1,7 +1,9 @@
+import uselitteraTranlation from "./hooks/useLitteraTranslation";
 import useLocalStorage from "./hooks/useLocaleStorage";
 import { MdOutlineLightMode, MdDarkMode } from "react-icons/md";
 function DarkModeSwitcher() {
   let [isDarkMode, setIsDarkMode] = useLocalStorage("Darktheme", false);
+  const { translation } = uselitteraTranlation();
 
   function handleClick() {
     if (
@@ -21,7 +23,7 @@ function DarkModeSwitcher() {
       className="flex flex-1 gap-3 items-center  hover:bg-gray-100 dark:hover:bg-slate-600 cursor-pointer"
     >
       {isDarkMode ? <MdOutlineLightMode /> : <MdDarkMode />}
-      Appearance
+      {translation.appearance}
     </div>
   );
 }
