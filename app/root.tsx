@@ -3,7 +3,7 @@ import type {
   LoaderFunction,
   HeadersArgs,
 } from "@remix-run/node";
-import { json, redirect } from "@remix-run/node";
+import { json } from "@remix-run/node";
 import {
   Links,
   LiveReload,
@@ -14,7 +14,6 @@ import {
   ScrollRestoration,
   useLoaderData,
   useLocation,
-  useNavigation,
   useRouteLoaderData,
 } from "@remix-run/react";
 import Footer from "./component/layout/Footer";
