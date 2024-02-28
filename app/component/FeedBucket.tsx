@@ -32,7 +32,6 @@ function FeedBucket() {
     feedbucket?.classList.add("hidden");
   };
   let esukhia_user = user?.email?.includes("@esukhia.org");
-
   if (esukhia_user || JSON.parse(feedBucketAccess).includes(user?.email)) {
     return (
       <div
@@ -60,6 +59,8 @@ function FeedBucket() {
     );
   }
   return null;
+
+ 
 }
 
 export default FeedBucket;
