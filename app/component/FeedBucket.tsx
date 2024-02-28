@@ -4,9 +4,8 @@ import { MdFeedback } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
 
 function FeedBucket() {
-  let { show_feed_bucket, user } = useRouteLoaderData("root");
+  let { show_feed_bucket, user, feedBucketAccess } = useRouteLoaderData("root");
   let [show, setShow] = useState(false);
-
   let feedFunction = () => {
     setShow(true);
     const feedbucket = document.querySelector("feedbucket-app");
@@ -32,6 +31,8 @@ function FeedBucket() {
     const feedbucket = document.querySelector("feedbucket-app");
     feedbucket?.classList.add("hidden");
   };
+
+  if (!JSON.parse(feedBucketAccess).includes(user?.email)) return null;
 
   return (
     <div
