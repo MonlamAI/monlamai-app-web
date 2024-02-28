@@ -52,7 +52,6 @@ export const action: ActionFunction = async ({ request }) => {
   const key = `TTS/playground/${uuidv4()}.mp3`;
   // Upload the audio and get the URL
   const url = await uploadAudioToS3(buffer, key);
-
   const responseTime = Date.now() - startTime; // Calculate response time
   const checkifModelExist = await checkIfInferenceExist(
     userInput,

@@ -95,6 +95,7 @@ function Menu() {
           src={user.picture}
           title={user.email}
           alt={user.email}
+          referrerPolicy="no-referrer"
         />
       )}
     >

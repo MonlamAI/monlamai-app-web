@@ -18,8 +18,6 @@ export const loader: LoaderFunction = async ({ request }) => {
   });
   let user = await getUser(userdata?._json.email);
   //check if all questions are answered
-  let aboutUser = await getUserAboutData(user?.id);
-  if (!aboutUser) return redirect("/steps");
 
   const { list, totalCount } = await getUsers(query?.get("q") ?? "");
   return json({
@@ -39,13 +37,13 @@ function dashboard() {
   }, [debounced_input]);
   return (
     <Card
-      className="max-w-md md:ml-20 relative "
+      className="max-w-md md:ml-20 relative"
       style={{
         maxHeight: "60vh",
         overflow: "auto",
       }}
     >
-      <div className="flex justify-between  items-end sticky top-0 pt-2 bg-white z-10 dark:bg-gray-800 dark:text-white ">
+      <div className="flex justify-between  items-center sticky top-0 pt-2 bg-white z-10 dark:bg-gray-800 dark:text-white ">
         <div className="font-bold ">
           USER <span className="text-gray-300">{totalCount}</span>
         </div>
