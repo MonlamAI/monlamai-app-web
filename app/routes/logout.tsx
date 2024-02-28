@@ -8,16 +8,16 @@ export const loader: LoaderFunction = async ({ request }) => {
 };
 
 export const action: ActionFunction = async ({ request }) => {
-  const session = await getUserSession(request);
+  let clientId = process.env.AUTH0_CLIENT_ID as string;
   let domain = process.env.AUTH0_DOMAIN as string;
   let requestUrl = new URL(request.url);
+
+  const session = await getUserSession(request);
 
   let redirect_url =
     process.env.NODE_ENV === "development"
       ? "http://localhost:3000"
       : "https://" + (requestUrl.hostname as string);
-
-  let clientId = process.env.AUTH0_CLIENT_ID as string;
 
   let url = `https://${domain}/v2/logout?client_id=${clientId}&returnTo=${redirect_url}`;
 
