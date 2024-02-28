@@ -11,7 +11,9 @@ function EditDisplay({ editText, setEditText }: EditDisplayProps) {
     <Textarea
       value={editText}
       rows={5}
-      onChange={(e) => setEditText(e.target.value)}
+      onChange={(e) => {
+        setEditText(e.target.value);
+      }}
       className="w-full h-full resize-none bg-transparent text-xl font-monlam leading-[normal] ring-0 flex-1"
     />
   );

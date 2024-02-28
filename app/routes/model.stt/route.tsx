@@ -210,6 +210,8 @@ export default function Index() {
     );
     setEdit(false);
   }
+  let newText = editfetcher.data?.edited;
+
   function handleCancelEdit() {
     setEdit(false);
     setEditText("");
@@ -309,12 +311,13 @@ export default function Index() {
           )}
           {!edit && (
             <NonEditModeActions
+              sourceLang=""
               selectedTool={selectedTool}
               likefetcher={likefetcher}
               sourceText={audioBase64 || ""}
               inferenceId={inferenceId}
               setEdit={setEdit}
-              text={text}
+              text={newText ?? text}
               handleCopy={handleCopy}
               setEditText={setEditText}
             />
