@@ -43,7 +43,6 @@ import { NonEditModeActions } from "~/component/ActionButtons";
 import EditDisplay from "~/component/EditDisplay";
 import CardComponent from "~/component/Card";
 import LanguageSwitcher from "./components/LanguageSwitcher";
-import useTranslate from "./lib/useTranslate";
 import { getUser } from "~/modal/user.server";
 import { resetFetcher } from "~/component/utils/resetFetcher";
 import LanguageInput from "./components/LanguageInput";
@@ -101,7 +100,7 @@ export default function Index() {
     "text"
   );
 
-  const { url, modelToken, limitMessage } = useLoaderData();
+  const { limitMessage } = useLoaderData();
   const { show_mt_language_toggle } = useRouteLoaderData("root");
   const [edit, setEdit] = useState(false);
   const [editText, setEditText] = useState("");
