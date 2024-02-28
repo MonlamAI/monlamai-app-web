@@ -59,8 +59,6 @@ function FeedBucket() {
     );
   }
   return null;
-
- 
 }
 
 export default FeedBucket;
