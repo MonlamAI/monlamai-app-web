@@ -22,7 +22,7 @@ function ReactionButtons({
   inferenceId,
 }: ReactionButtonsProps) {
   if (!inferenceId) return null;
-  const { liked, disliked } = fetcher.data || {};
+  const { liked, disliked } = fetcher.data?.vote || {};
 
   const isLoading =
     fetcher.state !== IDLE_STATE && fetcher.formData?.get("action");
@@ -51,14 +51,14 @@ function ReactionButtons({
     <>
       <ReactionButton
         enabled={!!output}
-        active={liked}
+        disabled={liked}
         icon={<FaRegThumbsUp />}
         onClick={() => handleReaction("liked")}
         className="hover:text-green-400"
       />
       <ReactionButton
         enabled={!!output}
-        active={disliked}
+        disabled={disliked}
         icon={<FaRegThumbsDown />}
         className="hover:text-red-400"
         onClick={() => handleReaction("disliked")}
@@ -69,28 +69,32 @@ function ReactionButtons({
 
 type ReactionButtonProps = {
   enabled: boolean;
-  active: boolean;
+  disabled: boolean;
   icon: React.ReactElement;
   onClick: () => void;
   className?: string;
 };
 
 function ReactionButton({
-  active,
+  disabled,
   icon,
   onClick,
   className,
 }: ReactionButtonProps) {
   return (
-    <div
+    <button
       color="white"
       onClick={onClick}
-      className={"focus:outline-none cursor-pointer text-gray-500 " + className}
+      className={
+        "focus:outline-none cursor-pointer text-gray-500 disabled:opacity-20 " +
+        className
+      }
+      disabled={disabled}
     >
       {React.cloneElement(icon, {
         size: "20px",
       })}
-    </div>
+    </button>
   );
 }
 
