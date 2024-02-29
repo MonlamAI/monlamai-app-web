@@ -1,8 +1,8 @@
 // Purpose: Const used in MT
 
 export const CHAR_LIMIT = 2000;
-export const MAX_SIZE_SUPPORT = 20; //KB
-export const MAX_SIZE_SUPPORT_AUDIO = 10; //MB;
+export const MAX_SIZE_SUPPORT_DOC = "20KB"; //KB
+export const MAX_SIZE_SUPPORT_AUDIO = "10MB"; //MB;
 
 // Const used in TTS
 
@@ -14,4 +14,4 @@ export const API_ERROR_MESSAGE = "API ERROR";
 
 //mt api hit delay
 
-export const API_HIT_DELAY = 3000  //in ms equals to 3 sec
+export const API_HIT_DELAY = 3000; //in ms equals to 3 sec

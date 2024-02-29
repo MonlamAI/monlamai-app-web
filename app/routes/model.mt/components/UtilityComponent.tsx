@@ -16,7 +16,7 @@ type CharacterOrFileSizeComponentProps = {
   selectedTool: string;
   charCount: number;
   CHAR_LIMIT: number | undefined;
-  MAX_SIZE_SUPPORT: number;
+  MAX_SIZE_SUPPORT: string;
 };
 
 type EditActionButtonsProps = {
@@ -77,7 +77,7 @@ export function CharacterOrFileSizeComponent({
   } else {
     return (
       <div className="text-gray-400 text-xs p-2">
-        max size: {MAX_SIZE_SUPPORT}KB
+        max size: {MAX_SIZE_SUPPORT}
       </div>
     );
   }
