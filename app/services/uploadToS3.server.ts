@@ -18,12 +18,13 @@ const config = {
 
 const s3Client = new S3Client(config as S3ClientConfig);
 
-export async function uploadAudioToS3(buffer, key) {
+export async function uploadToS3(buffer, key,ContentType) {
+
   const command = new PutObjectCommand({
     Bucket: BUCKET_NAME,
     Key: key,
     Body: buffer,
-    ContentType: "audio/mpeg", // Adjust based on your audio format
+    ContentType, // Adjust based on your audio format
   });
 
   await s3Client.send(command);

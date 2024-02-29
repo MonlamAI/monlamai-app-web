@@ -4,17 +4,15 @@ import type {
   MetaFunction,
 } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { Button, Card, Spinner } from "flowbite-react";
-import { useState, useEffect } from "react";
-import { FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa6";
-import CopyToClipboard from "~/component/CopyToClipboard";
 import { auth } from "~/services/auth.server";
 import { ErrorBoundary } from "../model.mt/route";
-import ErrorMessage from "~/component/ErrorMessage";
-import { dummydata } from "~/helper/dummy";
 import ToolWraper from "~/component/ToolWraper";
-import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
-import InferenceWrapper from "~/component/layout/InferenceWrapper";
+import { useRouteLoaderData } from "@remix-run/react";
+import DummyOCR from "~/routes/model.ocr/Component/DummyOCR";
+import { v4 as uuidv4 } from "uuid";
+import OCR from "./Component/OCR";
+import { uploadToS3 } from "~/services/uploadToS3.server";
+
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
   parentMeta.shift(1);
@@ -33,8 +31,13 @@ export async function action({ request }: ActionFunctionArgs) {
   const ocrFormData = new FormData();
   let blob = formData.get("image") as Blob;
   ocrFormData.append("file", blob);
+  let url = process.env?.OCR_API_URL as string;
+  const arrayBuffer = await blob.arrayBuffer();
+  const buffer = Buffer.from(arrayBuffer);
+  const key = `OCR/playground/${uuidv4() + "-" + blob.name}`;
+  const locationOnS3 = await uploadToS3(buffer, key, "image/*");
   try {
-    const response = await fetch("https://ocr.pecha.tools/", {
+    const response = await fetch(url, {
       method: "POST",
       body: ocrFormData,
     });
@@ -56,76 +59,13 @@ export async function action({ request }: ActionFunctionArgs) {
     };
   }
 }
-let timer;
+
 export default function Index() {
-  const [selection, setSelection] = useState(null);
-  const [loading, setLoading] = useState(false);
-  useEffect(() => {
-    if (timer) clearTimeout(timer);
-    setLoading(true);
-    timer = setTimeout(() => {
-      setLoading(false);
-    }, 2000);
-    return () => {
-      if (timer) clearTimeout(timer);
-    };
-  }, [selection?.text]);
-  let { translation } = uselitteraTranlation();
-  let text = selection?.text?.replaceAll("\n", "<br />");
+  const { enable_ocr_model } = useRouteLoaderData("root");
   return (
     <ToolWraper title="OCR">
       <div className="flex flex-col md:flex-row gap-2">
-        <Card className="md:w-1/2 relative overflow-auto max-h-[50vh]">
-          {selection ? (
-            <>
-              <img src={selection?.image} />
-              <Button onClick={() => setSelection(null)}>
-                {translation.reset}
-              </Button>
-            </>
-          ) : (
-            <div className="overflow-y-scroll flex flex-col gap-2">
-              {dummydata?.map((item, index) => {
-                return (
-                  <div className="flex gap-1">
-                    <div className="flex items-center">{item.id}.</div>
-                    <Card
-                      onClick={() => setSelection(item)}
-                      key={item.id + index}
-                    >
-                      <img src={item.image} alt={item.image} />
-                    </Card>
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        </Card>
-
-        <Card className="md:w-1/2 overflow-auto max-h-[50vh]">
-          <div className="w-full min-h-[20vh] md:min-h-[40vh] leading-6 p-3 text-black bg-slate-50 dark:text-gray-200 dark:bg-slate-700 rounded-lg overflow-auto">
-            <div className="h-full flex justify-center items-center">
-              {loading ? (
-                <Spinner size="lg" hidden={!selection?.text} />
-              ) : (
-                <div
-                  className="h-full text-sm font-monlam md:text-2xl "
-                  style={{ lineHeight: "1.8" }}
-                  dangerouslySetInnerHTML={{ __html: text }}
-                ></div>
-              )}
-            </div>
-          </div>
-          <div className="flex justify-end">
-            <Button color="white" disabled={true}>
-              <FaRegThumbsUp color="gray" size="20px" />
-            </Button>
-            <Button color="white" disabled={true}>
-              <FaRegThumbsDown color="gray" size="20px" />
-            </Button>
-            <CopyToClipboard textToCopy={selection?.text ?? ""} />
-          </div>
-        </Card>
+        {enable_ocr_model ? <OCR /> : <DummyOCR />}
       </div>
     </ToolWraper>
   );

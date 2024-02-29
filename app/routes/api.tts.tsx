@@ -6,7 +6,7 @@ import { API_ERROR_MESSAGE } from "~/helper/const";
 import { checkIfInferenceExist, saveInference } from "~/modal/inference.server";
 import { getUser } from "~/modal/user.server";
 import { auth } from "~/services/auth.server";
-import { uploadAudioToS3 } from "~/services/uploadAudioToS3.server";
+import { uploadToS3 } from "~/services/uploadToS3.server";
 import { v4 as uuidv4 } from "uuid";
 
 export const action: ActionFunction = async ({ request }) => {
@@ -51,7 +51,7 @@ export const action: ActionFunction = async ({ request }) => {
   const buffer = base64ToBuffer(audio_base64);
   const key = `TTS/playground/${uuidv4()}.mp3`;
   // Upload the audio and get the URL
-  const url = await uploadAudioToS3(buffer, key);
+  const url = await uploadToS3(buffer, key, "audio/mpeg");
   const responseTime = Date.now() - startTime; // Calculate response time
   const checkifModelExist = await checkIfInferenceExist(
     userInput,

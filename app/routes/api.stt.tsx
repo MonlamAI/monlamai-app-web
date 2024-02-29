@@ -5,7 +5,7 @@ import { saveInference } from "~/modal/inference.server";
 import { getUser } from "~/modal/user.server";
 import { auth } from "~/services/auth.server";
 import { v4 as uuid } from "uuid";
-import { uploadAudioToS3 } from "~/services/uploadAudioToS3.server";
+import { uploadToS3 } from "~/services/uploadToS3.server";
 
 export const action: ActionFunction = async ({ request }) => {
   const startTime = Date.now();
@@ -51,7 +51,7 @@ export const action: ActionFunction = async ({ request }) => {
 
     // upload audio to s3 and get the url
     const key = `STT/playground/${uuid()}.mp3`;
-    const url = await uploadAudioToS3(buffer, key);
+    const url = await uploadToS3(buffer, key, "audio/mpeg");
     console.log("url", url);
     // save inference to db
     const inferenceData = await saveInference({
