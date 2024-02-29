@@ -1,5 +1,6 @@
 import { Button, Dropdown, Tooltip } from "flowbite-react";
 import { useEffect } from "react";
+import { FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa";
 import { GoPencil } from "react-icons/go";
 import { toast } from "react-toastify";
 import CopyToClipboard from "~/component/CopyToClipboard";
@@ -37,6 +38,8 @@ export function NonEditModeActions({
     selectedTool === "File";
   let isOutputNull = !text || text === "";
   if (isOutputNull || !isSelected) return null;
+  const { liked, disliked } = likefetcher.data?.vote || {};
+
   console.log("sourceLang", sourceLang);
   return (
     <div
@@ -52,8 +55,18 @@ export function NonEditModeActions({
           placement="bottom-end"
           dismissOnClick={true}
           renderTrigger={() => (
-            <div hidden={!text} title="Rate this translation">
-              <LikeDislike />
+            <div
+              hidden={!text}
+              title="Rate this translation"
+              className="text-black dark:text-white"
+            >
+              {liked ? (
+                <FaRegThumbsUp />
+              ) : disliked ? (
+                <FaRegThumbsDown />
+              ) : (
+                <LikeDislike />
+              )}
             </div>
           )}
           size="lg"
