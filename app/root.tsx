@@ -38,6 +38,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   const isFileUploadEnabled = fetchdata.flags.feat_file_upload;
   const show_mt_language_toggle = fetchdata.flags.show_mt_language_toggle;
   const show_feed_bucket = fetchdata.flags.show_feed_bucket;
+  const enable_ocr_model = fetchdata.flags.enable_ocr_model;
   const feedBucketAccess = process.env.FEEDBUCKET_ACCESS;
   return json(
     {
@@ -46,6 +47,7 @@ export const loader: LoaderFunction = async ({ request }) => {
       isFileUploadEnabled: isFileUploadEnabled.enabled,
       show_mt_language_toggle: show_mt_language_toggle.enabled,
       show_feed_bucket: show_feed_bucket.enabled,
+      enable_ocr_model: enable_ocr_model.enabled,
       feedBucketAccess,
     },
     { status: 200, headers: { "cache-control": "no-cache" } }

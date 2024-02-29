@@ -18,12 +18,10 @@ import useDebounce from "~/component/hooks/useDebounceState";
 import useLocalStorage from "~/component/hooks/useLocaleStorage";
 import ErrorMessage from "~/component/ErrorMessage";
 import ToolWraper from "~/component/ToolWraper";
-import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import DownloadDocument from "~/routes/model.mt/components/DownloadDocument";
 import { toast } from "react-toastify";
 import {
   getTodayInferenceByUserIdCountModel,
-  saveInference,
   updateEdit,
 } from "~/modal/inference.server";
 import ListInput from "~/component/ListInput";
