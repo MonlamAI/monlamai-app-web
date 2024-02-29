@@ -55,7 +55,11 @@ export function NonEditModeActions({
           placement="bottom-end"
           dismissOnClick={true}
           renderTrigger={() => (
-            <div hidden={!text} title="Rate this translation">
+            <div
+              hidden={!text}
+              title="Rate this translation"
+              className="text-black dark:text-white"
+            >
               {liked ? (
                 <FaRegThumbsUp />
               ) : disliked ? (

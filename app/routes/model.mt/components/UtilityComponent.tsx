@@ -114,7 +114,7 @@ export function EditActionButtons({
 }: EditActionButtonsProps) {
   return (
     <>
-      <p className="px-2 py-1 bg-[#F5F6B0] rounded-md text-sm my-2">
+      <p className="px-2 py-1 bg-[#F5F6B0] dark:bg-yellow-500 rounded-md text-sm my-2 text-black dark:text-white">
         Your contribution will be used to improve translation quality.
       </p>
       <div className="flex justify-between">

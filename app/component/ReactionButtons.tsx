@@ -54,13 +54,13 @@ function ReactionButtons({
         disabled={liked}
         icon={<FaRegThumbsUp />}
         onClick={() => handleReaction("liked")}
-        className="hover:text-green-400"
+        className="hover:text-green-400 "
       />
       <ReactionButton
         enabled={!!output}
         disabled={disliked}
         icon={<FaRegThumbsDown />}
-        className="hover:text-red-400"
+        className="hover:text-red-400 "
         onClick={() => handleReaction("disliked")}
       />
     </>

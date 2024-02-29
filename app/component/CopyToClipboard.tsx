@@ -42,7 +42,9 @@ const CopyToClipboard = ({ textToCopy, onClick }: CopyToClipboardProps) => {
       className="cursor-pointer"
     >
       {!isCopied ? (
-        <LuCopy color="gray" size="20px" />
+        <div className="text-black dark:text-white">
+          <LuCopy size="20px" />
+        </div>
       ) : (
         <LuCopyCheck color="green" size="20px" />
       )}
