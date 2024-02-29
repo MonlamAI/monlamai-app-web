@@ -3,18 +3,31 @@ import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { FaFile } from "react-icons/fa";
 import { formatBytes } from "~/component/utils/formatSize";
+import { toast } from "react-toastify";
+import { MAX_SIZE_SUPPORT_AUDIO } from "~/helper/const";
 
 export function HandleAudioFile({ handleFileChange, reset }) {
   const [myFiles, setMyFiles] = useState(null);
-  const onDrop = useCallback((acceptedFiles) => {
-    // Do something with the files
-    var file = acceptedFiles[0];
-    if (!file) {
-      return;
-    }
-    handleFileChange(file);
-    setMyFiles(file);
-  }, []);
+  const maxSize = MAX_SIZE_SUPPORT_AUDIO.replace("MB", "");
+  const onDrop = useCallback(
+    (acceptedFiles) => {
+      // Do something with the files
+      var file = acceptedFiles[0];
+      if (!file) {
+        toast.error("Wrong file format. Please select .mp3 or .wav file.");
+        return;
+      }
+
+      if (file.size > parseInt(maxSize) * 1024 * 1024) {
+        toast.info("File size is too big.");
+        return;
+      }
+
+      handleFileChange(file);
+      setMyFiles(file);
+    },
+    [handleFileChange]
+  );
   const removeFile = () => {
     setMyFiles(null);
     reset();

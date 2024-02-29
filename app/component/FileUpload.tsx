@@ -5,19 +5,21 @@ import { FaFile } from "react-icons/fa6";
 import { toast } from "react-toastify";
 import { formatBytes } from "~/component/utils/formatSize";
 import { readDocxFile, readTextFile } from "~/component/utils/readers";
-import { MAX_SIZE_SUPPORT } from "~/helper/const";
+import { MAX_SIZE_SUPPORT_DOC } from "~/helper/const";
 
 function FileUpload({ sourceText, setSourceText, reset }) {
   const [myFiles, setMyFiles] = useState([]);
+  const maxSize = MAX_SIZE_SUPPORT_DOC.replace("KB", "");
   const onDrop = useCallback((acceptedFiles) => {
     // Do something with the files
     setMyFiles([...myFiles, ...acceptedFiles]);
     var file = acceptedFiles[0];
     if (!file) {
+      toast.error("Wrong file format. Please upload a .txt or .docx file.");
       return;
     }
-    if (file.size > MAX_SIZE_SUPPORT * 1024) {
-      toast("File size is too big.");
+    if (file.size > parseInt(maxSize) * 1024) {
+      toast.info("File size is too big.");
       return;
     }
 

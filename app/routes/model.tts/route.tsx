@@ -9,7 +9,7 @@ import ToolWraper from "~/component/ToolWraper";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import { ErrorBoundary } from "../model.mt/route";
 import InferenceWrapper from "~/component/layout/InferenceWrapper";
-import { CHAR_LIMIT, MAX_SIZE_SUPPORT } from "~/helper/const";
+import { CHAR_LIMIT, MAX_SIZE_SUPPORT_DOC } from "~/helper/const";
 import ShareLink from "~/component/ShareLink";
 import { resetFetcher } from "~/component/utils/resetFetcher";
 import { RxCross2 } from "react-icons/rx";
@@ -132,7 +132,7 @@ export default function Index() {
                 selectedTool={selectedTool}
                 charCount={sourceText.length}
                 CHAR_LIMIT={CHAR_LIMIT}
-                MAX_SIZE_SUPPORT={MAX_SIZE_SUPPORT}
+                MAX_SIZE_SUPPORT={MAX_SIZE_SUPPORT_DOC}
               />
               <SubmitButton
                 type="submit"
