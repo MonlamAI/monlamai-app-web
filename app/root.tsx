@@ -46,7 +46,7 @@ export const loader: LoaderFunction = async ({ request }) => {
       isJobEnabled: isJobEnabled.enabled,
       isFileUploadEnabled: isFileUploadEnabled.enabled,
       show_mt_language_toggle: show_mt_language_toggle.enabled,
-      show_feed_bucket: show_feed_bucket.enabled,
+      show_feed_bucket_to_all: show_feed_bucket.enabled,
       enable_ocr_model: enable_ocr_model.enabled,
       feedBucketAccess,
     },

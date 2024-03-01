@@ -4,7 +4,8 @@ import { MdFeedback } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
 
 function FeedBucket() {
-  let { show_feed_bucket, user, feedBucketAccess } = useRouteLoaderData("root");
+  let { show_feed_bucket_to_all, user, feedBucketAccess } =
+    useRouteLoaderData("root");
   let [show, setShow] = useState(false);
   let feedFunction = () => {
     setShow(true);
@@ -32,13 +33,18 @@ function FeedBucket() {
     feedbucket?.classList.add("hidden");
   };
   let esukhia_user = user?.email?.includes("@esukhia.org");
-  if (esukhia_user || JSON.parse(feedBucketAccess).includes(user?.email)) {
+  let monlam_user = user?.email?.includes("@monlam.ai");
+  if (
+    monlam_user ||
+    esukhia_user ||
+    JSON.parse(feedBucketAccess).includes(user?.email) ||
+    show_feed_bucket_to_all
+  ) {
     return (
       <div
         className={`fixed right-2 ${
           !show ? "bottom-1 md:top-[50%]" : "top-[58%] md:top-[65%]"
         } `}
-        hidden={!show_feed_bucket}
       >
         {!show ? (
           <button
