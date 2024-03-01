@@ -30,6 +30,12 @@ export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
   const ocrFormData = new FormData();
   let blob = formData.get("image") as Blob;
+  if (
+    !blob.name.endsWith(".jpg") &&
+    !blob.name.endsWith(".jpg") &&
+    !blob.name.endsWith(".png")
+  ) {
+  }
   ocrFormData.append("file", blob);
   let url = process.env?.OCR_API_URL as string;
   const arrayBuffer = await blob.arrayBuffer();
