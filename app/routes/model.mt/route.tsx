@@ -29,7 +29,7 @@ import {
   API_ERROR_MESSAGE,
   API_HIT_DELAY,
   CHAR_LIMIT,
-  MAX_SIZE_SUPPORT,
+  MAX_SIZE_SUPPORT_DOC,
 } from "~/helper/const";
 import {
   CharacterOrFileSizeComponent,
@@ -210,7 +210,7 @@ export default function Index() {
                 selectedTool={selectedTool}
                 charCount={charCount}
                 CHAR_LIMIT={CHAR_LIMIT}
-                MAX_SIZE_SUPPORT={MAX_SIZE_SUPPORT}
+                MAX_SIZE_SUPPORT={MAX_SIZE_SUPPORT_DOC}
               />
             </>
           )}

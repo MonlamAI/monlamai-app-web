@@ -35,5 +35,7 @@
   "advisors": "Advisors",
   "lamas": "Blessings and Guidance of our Gurus",
   "partners": "Collaborators and Partners",
-  "appearance":"Appearance"
+  "appearance": "Appearance",
+  "uploadImage": "Upload Image",
+  "acceptedImage": "Accepted Image"
 }

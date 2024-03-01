@@ -8,11 +8,14 @@ import { BiQuestionMark } from "react-icons/bi";
 import { Tooltip } from "flowbite-react";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import { resetFetcher } from "~/component/utils/resetFetcher";
+import ReactionButtons from "~/component/ReactionButtons";
 
 function OCR() {
   const [ImageUrl, setImageUrl] = useState<string | null>(null);
   const fetcher = useFetcher();
+  const likeFetcher = useFetcher();
   const data = fetcher.data;
+  const inferenceId = fetcher.data?.id;
   const isActionSubmission = fetcher.state !== "idle";
   const errorMessage = data?.error_message;
   const handleFileChange = (event) => {
@@ -23,8 +26,6 @@ function OCR() {
     }
   };
 
-  let isEmptyData = data?.text?.length === 1 && data?.text[0].trim() === "";
-  isEmptyData = isEmptyData || data?.text?.join("") === "";
   const handleFormClear = () => {
     setImageUrl(null);
     resetFetcher(fetcher);
@@ -50,12 +51,12 @@ function OCR() {
               <div className="mb-5 block">
                 <Label
                   htmlFor="file"
-                  value="འདིར་པར་རིས་འཇུག་རོགས།"
+                  value={translation.uploadImage}
                   className="text-lg text-slate-700"
                 />
               </div>
               <FileInput
-                helperText="ངོས་ལེན་ཡོད་པའི་པར་རྣམ། JPG, PNG, JPEG"
+                helperText={`${translation.acceptedImage} JPG, PNG, JPEG`}
                 id="file"
                 name="image"
                 accept="image/png, image/jpeg, image/jpg"
@@ -98,18 +99,13 @@ function OCR() {
             </div>
           ) : (
             <div className="text-lg  tracking-wide leading-loose overflow-auto">
-              {isEmptyData && (
-                <div className="text-red-500">
-                  བསྐྱར་དུ་པར་རིས་གཞན་པ་ཞིག་བཙལ་རོགས་གནང་།
-                </div>
-              )}
               {errorMessage && (
                 <div className="text-red-500">{errorMessage}</div>
               )}
               {data?.text && (
                 <div
                   dangerouslySetInnerHTML={{
-                    __html: data.text?.join("<br/>"),
+                    __html: data.text.replaceAll("\n", "<br>"),
                   }}
                 />
               )}
@@ -117,16 +113,15 @@ function OCR() {
           )}
         </div>
         <div className="flex justify-end">
-          <Button color="white" disabled={data ? false : true}>
-            <FaRegThumbsUp color="gray" size="20px" />
-          </Button>
-          <Button color="white" disabled={data ? false : true}>
-            <FaRegThumbsDown color="gray" size="20px" />
-          </Button>
-          <CopyToClipboard
-            textToCopy={data?.text?.join("\n")}
-            disabled={data ? false : true}
-          />
+          <div className="flex gap-3 md:gap-5 items-center p-2">
+            <ReactionButtons
+              fetcher={likeFetcher}
+              output={data?.text}
+              sourceText={ImageUrl}
+              inferenceId={inferenceId}
+            />
+            {data?.text && <CopyToClipboard textToCopy={data?.text} />}
+          </div>
         </div>
       </Card>
     </>
