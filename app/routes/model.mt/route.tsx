@@ -162,9 +162,13 @@ export default function Index() {
     setEdit(false);
     setEditText("");
   }
-  let { data, setData, isLoading, error, done, triger } = useTranslate({
+  const [data, setData] = useState("");
+
+  let { isLoading, error, done, trigger } = useTranslate({
     target: target_lang,
     text: debounceSourceText,
+    data,
+    setData,
   });
   useEffect(() => {
     if (done === true && data) {
@@ -240,7 +244,7 @@ export default function Index() {
                   CHAR_LIMIT={CHAR_LIMIT}
                   MAX_SIZE_SUPPORT={MAX_SIZE_SUPPORT_DOC}
                 />
-                <Button size="xs" onClick={triger}>
+                <Button size="xs" onClick={trigger}>
                   {translation.translate}
                 </Button>
               </div>
@@ -261,8 +265,7 @@ export default function Index() {
               {TextSelected && edit && (
                 <EditDisplay editText={editText} setEditText={setEditText} />
               )}
-              {isLoading && <div>...</div>}
-              {TextSelected && sourceText !== "" && !isLoading && (
+              {TextSelected && sourceText !== "" && (
                 <OutputDisplay
                   edit={edit}
                   editData={editData}
