@@ -40,7 +40,6 @@ export function NonEditModeActions({
   if (isOutputNull || !isSelected) return null;
   const { liked, disliked } = likefetcher.data?.vote || {};
 
-  console.log("sourceLang", sourceLang);
   return (
     <div
       className={`flex ${
