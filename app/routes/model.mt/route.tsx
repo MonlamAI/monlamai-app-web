@@ -22,6 +22,7 @@ import DownloadDocument from "~/routes/model.mt/components/DownloadDocument";
 import { toast } from "react-toastify";
 import {
   getTodayInferenceByUserIdCountModel,
+  saveInference,
   updateEdit,
 } from "~/modal/inference.server";
 import ListInput from "~/component/ListInput";
@@ -90,6 +91,23 @@ export const action: ActionFunction = async ({ request }) => {
     let updated = await updateEdit(inferenceId, edited);
     return updated;
   }
+  if (method === "POST") {
+    let source = formdata.get("source") as string;
+    let translation = formdata.get("translation") as string;
+    let responseTime = formdata.get("responseTime") as string;
+    let inputLang = formdata.get("inputLang") as string;
+    let outputLang = formdata.get("targetLang") as string;
+    const inferenceData = await saveInference({
+      userId: user?.id,
+      model: "mt",
+      input: source,
+      output: translation,
+      responseTime: parseInt(responseTime),
+      inputLang: inputLang,
+      outputLang: outputLang,
+    });
+    return { id: inferenceData?.id };
+  }
 };
 
 export default function Index() {
@@ -110,7 +128,7 @@ export default function Index() {
   const likefetcher = useFetcher();
   const editfetcher = useFetcher();
   const translationFetcher = useFetcher();
-
+  const savefetcher = useFetcher();
   const targetRef = useRef<HTMLDivElement>(null);
   const editData = editfetcher.data?.edited;
 
@@ -136,6 +154,7 @@ export default function Index() {
       }
     );
   }
+
   let inferenceId = translationFetcher.data?.inferenceData?.id;
   let TextSelected = selectedTool === "text";
   let newText = editfetcher.data?.edited;
@@ -160,6 +179,23 @@ export default function Index() {
     target: target_lang,
     text: debounceSourceText,
   });
+  useEffect(() => {
+    if (done === true && data) {
+      savefetcher.submit(
+        {
+          source: debounceSourceText,
+          translation: data,
+          responseTime: 5,
+          inputLang: source_lang,
+          targetLang: target_lang,
+        },
+        {
+          method: "POST",
+        }
+      );
+      resetFetcher(editfetcher);
+    }
+  }, [done]);
   const handleReset = () => {
     setSourceText("");
     resetFetcher(translationFetcher);
