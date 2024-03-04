@@ -22,6 +22,7 @@ import DownloadDocument from "~/routes/model.mt/components/DownloadDocument";
 import { toast } from "react-toastify";
 import {
   getTodayInferenceByUserIdCountModel,
+  saveInference,
   updateEdit,
 } from "~/modal/inference.server";
 import ListInput from "~/component/ListInput";
@@ -47,6 +48,8 @@ import LanguageInput from "./components/LanguageInput";
 import { CancelButton } from "~/component/Buttons";
 import { RxCross2 } from "react-icons/rx";
 import { Button } from "flowbite-react";
+import useTranslate from "./lib/useTranslate";
+import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -70,6 +73,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
   return {
     user: userdata,
     limitMessage: checkLimit ? limitMessage : null,
+    url: process.env?.MT_API_URL,
+    token: process.env?.MODEL_API_AUTH_TOKEN,
   };
 }
 
@@ -87,6 +92,23 @@ export const action: ActionFunction = async ({ request }) => {
     let updated = await updateEdit(inferenceId, edited);
     return updated;
   }
+  if (method === "POST") {
+    let source = formdata.get("source") as string;
+    let translation = formdata.get("translation") as string;
+    let responseTime = formdata.get("responseTime") as string;
+    let inputLang = formdata.get("inputLang") as string;
+    let outputLang = formdata.get("targetLang") as string;
+    const inferenceData = await saveInference({
+      userId: user?.id,
+      model: "mt",
+      input: source,
+      output: translation,
+      responseTime: parseInt(responseTime),
+      inputLang: inputLang,
+      outputLang: outputLang,
+    });
+    return { id: inferenceData?.id };
+  }
 };
 
 export default function Index() {
@@ -98,6 +120,7 @@ export default function Index() {
     "mt_selected_input",
     "text"
   );
+  const { translation } = uselitteraTranlation();
 
   const { limitMessage } = useLoaderData();
   const { show_mt_language_toggle } = useRouteLoaderData("root");
@@ -107,7 +130,7 @@ export default function Index() {
   const likefetcher = useFetcher();
   const editfetcher = useFetcher();
   const translationFetcher = useFetcher();
-
+  const savefetcher = useFetcher();
   const targetRef = useRef<HTMLDivElement>(null);
   const editData = editfetcher.data?.edited;
 
@@ -120,20 +143,6 @@ export default function Index() {
     setSourceText("");
   }, [selectedTool]);
 
-  function handleSubmit() {
-    translationFetcher.submit(
-      {
-        lang: target_lang,
-        input: debounceSourceText,
-        sourceLang: source_lang,
-      },
-      {
-        method: "POST",
-        action: "/api/translation",
-      }
-    );
-  }
-  let inferenceId = translationFetcher.data?.inferenceData?.id;
   let TextSelected = selectedTool === "text";
   let newText = editfetcher.data?.edited;
   function handleEditSubmit() {
@@ -153,15 +162,34 @@ export default function Index() {
     setEdit(false);
     setEditText("");
   }
-
+  let { data, setData, isLoading, error, done, triger } = useTranslate({
+    target: target_lang,
+    text: debounceSourceText,
+  });
+  useEffect(() => {
+    if (done === true && data) {
+      savefetcher.submit(
+        {
+          source: debounceSourceText,
+          translation: data,
+          responseTime: 5,
+          inputLang: source_lang,
+          targetLang: target_lang,
+        },
+        {
+          method: "POST",
+        }
+      );
+      resetFetcher(editfetcher);
+    }
+  }, [done]);
+  let inferenceId = savefetcher.data?.id;
   const handleReset = () => {
+    setData("");
     setSourceText("");
     resetFetcher(translationFetcher);
     resetFetcher(editfetcher);
   };
-  let error = translationFetcher.data?.error || "";
-  let isLoading = translationFetcher.state !== "idle";
-  let data = translationFetcher.data?.inferenceData?.output;
   return (
     <ToolWraper title="MT">
       <ListInput
@@ -174,6 +202,7 @@ export default function Index() {
         <LanguageSwitcher
           data={data}
           setSourceText={setSourceText}
+          setTranslated={setData}
           likefetcher={likefetcher}
         />
       ) : (
@@ -211,8 +240,8 @@ export default function Index() {
                   CHAR_LIMIT={CHAR_LIMIT}
                   MAX_SIZE_SUPPORT={MAX_SIZE_SUPPORT_DOC}
                 />
-                <Button size="xs" onClick={handleSubmit}>
-                  submit
+                <Button size="xs" onClick={triger}>
+                  {translation.translate}
                 </Button>
               </div>
             </>

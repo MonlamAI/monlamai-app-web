@@ -1,58 +1,59 @@
-import { useFetcher } from "@remix-run/react";
+import { useFetcher, useLoaderData } from "@remix-run/react";
 import { useState, useEffect } from "react";
 
 type useTranslateType = {
-  url: string;
-  token: string;
+
   target: string;
   text: string;
 };
 
-const useTranslate = ({ url, token, target, text }: useTranslateType) => {
+const useTranslate = ({ target, text }: useTranslateType) => {
   const [data, setData] = useState("");
   const [done, setDone] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const {url,token}=useLoaderData();
 
+   const triger=()=>{
 
-
-
-  useEffect(() => {
-    const controller = new AbortController();
-    const fetchData = async () => {
-      if (text === "" || !text) return null;
-      setIsLoading(true);
-      setDone(false);
-      setError(null);
-      try {
-        const response = await fetch(url, {
+     
+     const controller = new AbortController();
+     const fetchData = async () => {
+       if (text === "" || !text) return null;
+       setIsLoading(true);
+       setDone(false);
+       setError(null);
+       try {
+         const response = await fetch(url, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: token,
           },
-          body: JSON.stringify({ inputs: "<2" + target + ">" + text }),
-          signal: controller.signal,
-        });
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        await handleResponse(response, setData);
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setIsLoading(false);
-        setDone(true);
+          body: JSON.stringify({ inputs: "<2" + target + ">" + text,
+          parameters: {
+            max_new_tokens: 256
+        } }),
+        signal: controller.signal,
+      });
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
       }
-    };
-
-    fetchData();
-    return () => controller.abort();
-  }, [url, token, text]); // Include all dependencies
+      await handleResponse(response, setData);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setIsLoading(false);
+      setDone(true);
+    }
+  };
+  
+  fetchData();
+  
+}
   
 
-
-  return { data, isLoading, error, done };
+  return { data,setData, isLoading, error, done,triger };
 };
 
 export default useTranslate;
@@ -78,10 +79,12 @@ async function handleResponse(response, setData) {
         .decode(value)
         .replace(/^data:/, "");
       const chunkData = JSON.parse(chunkText);
-      if (chunkData?.token.text) {
-        if (chunkData?.token.text === "</s>") return null;
-        setData((p) => p + chunkData?.token.text);
-      }
+        setData((p) => {
+        if(chunkData?.token.text!=='</s>')
+        return  p + chunkData?.token.text
+
+        return p
+        });
     }
   } catch (error) {
     throw new Error("Error reading stream");
