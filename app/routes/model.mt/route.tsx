@@ -47,6 +47,7 @@ import LanguageInput from "./components/LanguageInput";
 import { CancelButton } from "~/component/Buttons";
 import { RxCross2 } from "react-icons/rx";
 import { Button } from "flowbite-react";
+import useTranslate from "./lib/useTranslate";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -70,6 +71,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
   return {
     user: userdata,
     limitMessage: checkLimit ? limitMessage : null,
+    url: process.env?.MT_API_URL,
+    token: process.env?.MODEL_API_AUTH_TOKEN,
   };
 }
 
@@ -153,15 +156,15 @@ export default function Index() {
     setEdit(false);
     setEditText("");
   }
-
+  let { data, isLoading, error, done, triger } = useTranslate({
+    target: target_lang,
+    text: debounceSourceText,
+  });
   const handleReset = () => {
     setSourceText("");
     resetFetcher(translationFetcher);
     resetFetcher(editfetcher);
   };
-  let error = translationFetcher.data?.error || "";
-  let isLoading = translationFetcher.state !== "idle";
-  let data = translationFetcher.data?.inferenceData?.output;
   return (
     <ToolWraper title="MT">
       <ListInput
@@ -211,7 +214,7 @@ export default function Index() {
                   CHAR_LIMIT={CHAR_LIMIT}
                   MAX_SIZE_SUPPORT={MAX_SIZE_SUPPORT_DOC}
                 />
-                <Button size="xs" onClick={handleSubmit}>
+                <Button size="xs" onClick={triger}>
                   submit
                 </Button>
               </div>
