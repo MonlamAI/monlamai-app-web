@@ -62,6 +62,7 @@ const useTranslate = ({ target, text,data,setData }: useTranslateType) => {
 }
 
 async function handleResponse(response) {
+  setData("")
   const contentType = response.headers.get("Content-Type");
   let chunk="";
   if (contentType && contentType.includes("application/json")) {
