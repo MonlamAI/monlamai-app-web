@@ -143,20 +143,6 @@ export default function Index() {
     setSourceText("");
   }, [selectedTool]);
 
-  function handleSubmit() {
-    translationFetcher.submit(
-      {
-        lang: target_lang,
-        input: debounceSourceText,
-        sourceLang: source_lang,
-      },
-      {
-        method: "POST",
-        action: "/api/translation",
-      }
-    );
-  }
-
   let TextSelected = selectedTool === "text";
   let newText = editfetcher.data?.edited;
   function handleEditSubmit() {
@@ -216,6 +202,7 @@ export default function Index() {
         <LanguageSwitcher
           data={data}
           setSourceText={setSourceText}
+          setTranslated={setData}
           likefetcher={likefetcher}
         />
       ) : (
