@@ -53,7 +53,7 @@ const useTranslate = ({ target, text }: useTranslateType) => {
 }
   
 
-  return { data, isLoading, error, done,triger };
+  return { data,setData, isLoading, error, done,triger };
 };
 
 export default useTranslate;

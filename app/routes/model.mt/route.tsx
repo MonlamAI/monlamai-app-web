@@ -155,7 +155,6 @@ export default function Index() {
     );
   }
 
-  let inferenceId = translationFetcher.data?.inferenceData?.id;
   let TextSelected = selectedTool === "text";
   let newText = editfetcher.data?.edited;
   function handleEditSubmit() {
@@ -175,7 +174,7 @@ export default function Index() {
     setEdit(false);
     setEditText("");
   }
-  let { data, isLoading, error, done, triger } = useTranslate({
+  let { data, setData, isLoading, error, done, triger } = useTranslate({
     target: target_lang,
     text: debounceSourceText,
   });
@@ -196,7 +195,9 @@ export default function Index() {
       resetFetcher(editfetcher);
     }
   }, [done]);
+  let inferenceId = savefetcher.data?.id;
   const handleReset = () => {
+    setData("");
     setSourceText("");
     resetFetcher(translationFetcher);
     resetFetcher(editfetcher);
