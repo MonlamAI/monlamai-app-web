@@ -46,6 +46,7 @@ import { resetFetcher } from "~/component/utils/resetFetcher";
 import LanguageInput from "./components/LanguageInput";
 import { CancelButton } from "~/component/Buttons";
 import { RxCross2 } from "react-icons/rx";
+import { Button } from "flowbite-react";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -102,7 +103,7 @@ export default function Index() {
   const { show_mt_language_toggle } = useRouteLoaderData("root");
   const [edit, setEdit] = useState(false);
   const [editText, setEditText] = useState("");
-  const debounceSourceText = useDebounce(sourceText, API_HIT_DELAY);
+  const debounceSourceText = useDebounce(sourceText, 100);
   const likefetcher = useFetcher();
   const editfetcher = useFetcher();
   const translationFetcher = useFetcher();
@@ -119,22 +120,19 @@ export default function Index() {
     setSourceText("");
   }, [selectedTool]);
 
-  useEffect(() => {
-    if (debounceSourceText) {
-      translationFetcher.submit(
-        {
-          lang: target_lang,
-          input: debounceSourceText,
-          sourceLang: source_lang,
-        },
-        {
-          method: "POST",
-          action: "/api/translation",
-        }
-      );
-    }
-  }, [debounceSourceText]);
-
+  function handleSubmit() {
+    translationFetcher.submit(
+      {
+        lang: target_lang,
+        input: debounceSourceText,
+        sourceLang: source_lang,
+      },
+      {
+        method: "POST",
+        action: "/api/translation",
+      }
+    );
+  }
   let inferenceId = translationFetcher.data?.inferenceData?.id;
   let TextSelected = selectedTool === "text";
   let newText = editfetcher.data?.edited;
@@ -206,12 +204,17 @@ export default function Index() {
                   </CancelButton>
                 )}
               </div>
-              <CharacterOrFileSizeComponent
-                selectedTool={selectedTool}
-                charCount={charCount}
-                CHAR_LIMIT={CHAR_LIMIT}
-                MAX_SIZE_SUPPORT={MAX_SIZE_SUPPORT_DOC}
-              />
+              <div className="flex justify-between">
+                <CharacterOrFileSizeComponent
+                  selectedTool={selectedTool}
+                  charCount={charCount}
+                  CHAR_LIMIT={CHAR_LIMIT}
+                  MAX_SIZE_SUPPORT={MAX_SIZE_SUPPORT_DOC}
+                />
+                <Button size="xs" onClick={handleSubmit}>
+                  submit
+                </Button>
+              </div>
             </>
           )}
         </CardComponent>
