@@ -49,6 +49,7 @@ import { CancelButton } from "~/component/Buttons";
 import { RxCross2 } from "react-icons/rx";
 import { Button } from "flowbite-react";
 import useTranslate from "./lib/useTranslate";
+import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -119,6 +120,7 @@ export default function Index() {
     "mt_selected_input",
     "text"
   );
+  const { translation } = uselitteraTranlation();
 
   const { limitMessage } = useLoaderData();
   const { show_mt_language_toggle } = useRouteLoaderData("root");
@@ -252,7 +254,7 @@ export default function Index() {
                   MAX_SIZE_SUPPORT={MAX_SIZE_SUPPORT_DOC}
                 />
                 <Button size="xs" onClick={triger}>
-                  submit
+                  {translation.translate}
                 </Button>
               </div>
             </>
