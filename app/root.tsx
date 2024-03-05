@@ -99,7 +99,7 @@ function Document({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body className="inset-0 overflow-y-auto overflow-x-hidden dark:bg-slate-700 dark:text-gray-200">
+      <body className="flex h-[100dvh] inset-0 overflow-y-auto overflow-x-hidden dark:bg-slate-700 dark:text-gray-200">
         {children}
         <FeedBucket />
         <Scripts />
@@ -128,9 +128,13 @@ export default function App() {
   return (
     <Document>
       <LitteraProvider locales={["en_US", "bo_TI"]}>
-        {user && <Header />}
-        <Outlet />
-        {user && !isSteps && <Footer />}
+        <div className="flex flex-col flex-1">
+          {user && <Header />}
+          <div className="flex-1">
+            <Outlet />
+          </div>
+          {user && !isSteps && <Footer />}
+        </div>
       </LitteraProvider>
       <ToastContainer />
     </Document>
