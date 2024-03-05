@@ -71,21 +71,22 @@ const useTranslate = ({ target, text, data, setData }: useTranslateType) => {
       const jsonResponse = await response.json();
       setData(jsonResponse[0].generated_text);
     } else if (contentType && contentType.includes("text/event-stream")) {
-      // Handle streaming response using asynchronous iterator
-      const reader = response.body
-        .pipeThrough(new TextDecoderStream())
+      const reader =await response.body
+        .pipeThrough(new TextDecoderStream(
+          'utf-8'
+        ))
         .getReader();
       let streamData = "";
       while (true) {
         const { done, value } = await reader.read();
+      
         if (done) break;
-        chunk = "";
-        chunk = value.replace(/^data:/, "").replace(/^\s/, "");
-
+        
         try {
-          streamData = JSON.parse(chunk).token.text;
+          let parsedData = parseCustomData(value);
+          streamData =parsedData.map(item => item.token.text).join('');
         } catch (e) {
-          console.log(e);
+          console.log(chunk)
         }
 
         setData((p) => {
@@ -99,3 +100,22 @@ const useTranslate = ({ target, text, data, setData }: useTranslateType) => {
 };
 
 export default useTranslate;
+
+
+function parseCustomData(input) {
+  // Split the input by "data:" to separate each JSON object string
+  const entries = input.split('data:').filter(entry => entry.trim() !== '');
+
+  // Map each entry to a parsed JSON object
+  const parsedData = entries.map(entry => {
+    try {
+      // Parse the JSON string to an object
+      return JSON.parse(entry);
+    } catch (error) {
+      console.error("Error parsing entry:", entry, error);
+      return null; // Return null if parsing fails
+    }
+  }).filter(entry => entry !== null); // Remove any null entries resulting from parsing errors
+
+  return parsedData;
+}
