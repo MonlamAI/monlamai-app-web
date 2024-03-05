@@ -116,25 +116,30 @@ export default function Index() {
   const target_lang = params.get("target") || "bo";
   const source_lang = params.get("source") || "en";
   const [sourceText, setSourceText] = useState("");
+
   const [selectedTool, setSelectedTool] = useLocalStorage(
     "mt_selected_input",
     "text"
   );
+
   const { translation } = uselitteraTranlation();
 
   const { limitMessage } = useLoaderData();
   const { show_mt_language_toggle } = useRouteLoaderData("root");
+
   const [edit, setEdit] = useState(false);
   const [editText, setEditText] = useState("");
   const debounceSourceText = useDebounce(sourceText, 100);
   const likefetcher = useFetcher();
   const editfetcher = useFetcher();
   const translationFetcher = useFetcher();
+
   const savefetcher = useFetcher();
   const targetRef = useRef<HTMLDivElement>(null);
   const editData = editfetcher.data?.edited;
 
   let charCount = sourceText?.length;
+
   function handleCopy() {
     navigator.clipboard.writeText(data);
   }
@@ -145,6 +150,7 @@ export default function Index() {
 
   let TextSelected = selectedTool === "text";
   let newText = editfetcher.data?.edited;
+
   function handleEditSubmit() {
     let edited = editText;
     editfetcher.submit(
@@ -158,6 +164,7 @@ export default function Index() {
     );
     setEdit(false);
   }
+
   function handleCancelEdit() {
     setEdit(false);
     setEditText("");

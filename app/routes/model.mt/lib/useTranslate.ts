@@ -105,7 +105,6 @@ export default useTranslate;
 function parseCustomData(input) {
   // Split the input by "data:" to separate each JSON object string
   const entries = input.split('data:').filter(entry => entry.trim() !== '');
-
   // Map each entry to a parsed JSON object
   const parsedData = entries.map(entry => {
     try {
@@ -116,6 +115,5 @@ function parseCustomData(input) {
       return null; // Return null if parsing fails
     }
   }).filter(entry => entry !== null); // Remove any null entries resulting from parsing errors
-
   return parsedData;
 }
