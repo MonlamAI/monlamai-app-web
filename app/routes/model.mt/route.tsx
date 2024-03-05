@@ -217,7 +217,12 @@ export default function Index() {
           likefetcher={likefetcher}
         />
       ) : (
-        <LanguageInput />
+        <LanguageInput
+          setSourceText={setSourceText}
+          data={data}
+          setTranslated={setData}
+          likefetcher={likefetcher}
+        />
       )}
 
       <div className="mt-3 flex flex-col gap-5 lg:flex-row">
