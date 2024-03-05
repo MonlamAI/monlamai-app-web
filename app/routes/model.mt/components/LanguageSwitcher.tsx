@@ -30,7 +30,7 @@ function LanguageSwitcher({ likefetcher, setSourceText, data, setTranslated }) {
     <div className="flex justify-center items-center gap-2">
       <div
         className={`inline-block text-lg text-gray-500 dark:text-gray-300 ${
-          sourceLang == "en" && "font-poppins text-xl"
+          sourceLang !== "bo" && "font-poppins text-xl"
         } ${sourceLang == "bo" && "text-lg leading-loose font-monlam"}`}
       >
         {langLabels[sourceLang]}

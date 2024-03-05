@@ -1,26 +1,97 @@
 import { useSearchParams } from "@remix-run/react";
+import { Select } from "flowbite-react";
 import React from "react";
+import { FaArrowRightArrowLeft } from "react-icons/fa6";
+import { resetFetcher } from "~/component/utils/resetFetcher";
 
-function LanguageInput() {
-  const [param, setParam] = useSearchParams();
-  let target_lang = param.get("target") || "bo";
-  let source_lang = param.get("source") || "en";
+function LanguageInput({ likefetcher, setSourceText, data, setTranslated }) {
+  const [params, setParams] = useSearchParams();
+  const sourceLang = params.get("source") || "en";
+  const targetLang = params.get("target") || "bo";
+  function handleChangeTo(event: React.ChangeEvent<HTMLSelectElement>) {
+    const lang = event.target.value;
+    setParams((p) => {
+      p.set("target", lang);
+      return p;
+    });
+  }
+  function handleChangefrom(event: React.ChangeEvent<HTMLSelectElement>) {
+    const lang = event.target.value;
+    setParams((p) => {
+      p.set("source", lang);
+      return p;
+    });
+  }
+  function toggleDirection() {
+    resetFetcher(likefetcher);
+    setSourceText(data);
+    setTranslated("");
+    setParams((p) => {
+      const source = sourceLang;
+      const target = targetLang;
+      p.set("source", target);
+      p.set("target", source);
+      return p;
+    });
+  }
   return (
-    <div className="flex flex-col md:flex-row gap-2 mt-2 ">
-      <span className="mt-2">Translate into </span>
-      <input
-        value={target_lang}
-        onChange={(e) =>
-          setParam((p) => {
-            p.set("direction", e.target.value);
-            return p;
-          })
-        }
+    <div className="flex items-center justify-center md:flex-row gap-3 mt-2 ">
+      <Select
         placeholder="eg. fr"
-        className=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-      />
+        onChange={handleChangefrom}
+        value={sourceLang}
+        className="w-full"
+      >
+        {languagesOptions.map((lang) => (
+          <option key={lang.code} value={lang.code}>
+            {lang.value}
+          </option>
+        ))}
+      </Select>
+      <div
+        className="text-2xl font-bold cursor-pointer"
+        onClick={toggleDirection}
+      >
+        <FaArrowRightArrowLeft size="20px" />
+      </div>
+      <Select
+        placeholder="eg. fr"
+        onChange={handleChangeTo}
+        value={targetLang}
+        className="w-full"
+      >
+        {languagesOptions.map((lang) => (
+          <option key={lang.code} value={lang.code}>
+            {lang.value}
+          </option>
+        ))}
+      </Select>
     </div>
   );
 }
 
 export default LanguageInput;
+
+const languagesOptions = [
+  { value: "English", code: "en" },
+  { value: "Tibetan", code: "bo" },
+  { value: "French", code: "fr" },
+  { value: "Chinese", code: "zh" },
+  { value: "Spanish", code: "es" },
+  { value: "German", code: "de" },
+  { value: "Italian", code: "it" },
+  { value: "Japanese", code: "ja" },
+  { value: "Korean", code: "ko" },
+  { value: "Russian", code: "ru" },
+  { value: "Portuguese", code: "pt" },
+  { value: "Turkish", code: "tr" },
+  { value: "Hindi", code: "hi" },
+  { value: "Swedish", code: "sv" },
+  { value: "Norwegian", code: "no" },
+  { value: "Estonian", code: "et" },
+  { value: "Latvian", code: "lv" },
+  { value: "Lithuanian", code: "lt" },
+  { value: "Hungarian", code: "hu" },
+  { value: "Polish", code: "pl" },
+  { value: "Greek", code: "el" },
+];
