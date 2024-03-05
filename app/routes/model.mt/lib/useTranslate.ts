@@ -30,9 +30,11 @@ const useTranslate = ({ target, text, data, setData }: useTranslateType) => {
       try {
         const response = await fetch(url, {
           method: "POST",
+          mode:"cors",
           headers: {
             "Content-Type": "application/json",
             Authorization: `${token}`,
+            "Access-Control-Allow-Origin":"*"
           },
           body: JSON.stringify({
             inputs: `<2${target}>${text}`,
