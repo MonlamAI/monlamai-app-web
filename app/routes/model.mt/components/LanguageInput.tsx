@@ -36,12 +36,7 @@ function LanguageInput({ likefetcher, setSourceText, data, setTranslated }) {
   }
   return (
     <div className="flex items-center justify-center md:flex-row gap-3 mt-2 ">
-      <Select
-        placeholder="eg. fr"
-        onChange={handleChangefrom}
-        value={sourceLang}
-        className="w-full"
-      >
+      <Select onChange={handleChangefrom} value={sourceLang}>
         {languagesOptions.map((lang) => (
           <option key={lang.code} value={lang.code}>
             {lang.value}
@@ -54,12 +49,7 @@ function LanguageInput({ likefetcher, setSourceText, data, setTranslated }) {
       >
         <FaArrowRightArrowLeft size="20px" />
       </div>
-      <Select
-        placeholder="eg. fr"
-        onChange={handleChangeTo}
-        value={targetLang}
-        className="w-full"
-      >
+      <Select onChange={handleChangeTo} value={targetLang}>
         {languagesOptions.map((lang) => (
           <option key={lang.code} value={lang.code}>
             {lang.value}

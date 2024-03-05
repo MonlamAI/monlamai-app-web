@@ -32,7 +32,7 @@ function EachModel({ model }: EachProps) {
       {({ isTransitioning }) => (
         <motion.div whileHover={{ scale: 0.95 }} className="h-full">
           <Card
-            className="h-full flex flex-row md:flex-col"
+            className="h-full flex flex-row md:flex-col md:py-3"
             renderImage={() => (
               <div
                 className="flex  justify-center items-center ml-2 md:ml-0 md:py-3  dark:mix-blend-exclusion dark:rounded-lg "
@@ -62,7 +62,7 @@ function EachModel({ model }: EachProps) {
               <p
                 className={`text-gray-400 ${
                   isEnglish ? "text-[0.7rem]" : "text-[0.7rem]"
-                } md:text-[0.7rem]`}
+                } md:text-[0.7rem] mt-3 lg:mt-0 `}
               >
                 {translation[desc]}
               </p>
