@@ -122,7 +122,7 @@ export default function Index() {
     "text"
   );
 
-  const { translation } = uselitteraTranlation();
+  const { translation, locale } = uselitteraTranlation();
 
   const { limitMessage } = useLoaderData();
   const { show_mt_language_toggle } = useRouteLoaderData("root");
@@ -256,7 +256,13 @@ export default function Index() {
                   CHAR_LIMIT={CHAR_LIMIT}
                   MAX_SIZE_SUPPORT={MAX_SIZE_SUPPORT_DOC}
                 />
-                <Button size="xs" onClick={trigger}>
+                <Button
+                  size="xs"
+                  onClick={trigger}
+                  className={
+                    locale !== "bo_TI" ? "font-poppins" : "font-monlam"
+                  }
+                >
                   {translation.translate}
                 </Button>
               </div>
