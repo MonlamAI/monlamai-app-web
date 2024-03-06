@@ -51,7 +51,6 @@ import { RxCross2 } from "react-icons/rx";
 import { Button } from "flowbite-react";
 import useTranslate from "./lib/useTranslate";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
-import { franc, francAll } from "franc-min";
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
   parentMeta.shift(1);
@@ -84,7 +83,7 @@ export const action: ActionFunction = async ({ request }) => {
   let userdata = await auth.isAuthenticated(request, {
     failureRedirect: "/login",
   });
-  let user = await getUser(userdata?._json.email);
+  let user = await getUser(userdata?._json?.email);
 
   let method = request.method;
   if (method === "PATCH") {
@@ -153,19 +152,7 @@ export default function Index() {
   const editData = editfetcher.data?.edited;
 
   let charCount = sourceText?.length;
-  useEffect(() => {
-    if (sourceText?.length > 0) {
-      // Detect language here
-      const langCode = franc(text);
-      if (langCode === "und") {
-        // 'und' means undetermined
-        console.log("Language cannot be determined");
-      } else {
-        // You might want to map the language code to a full language name here
-        console.log(langCode);
-      }
-    }
-  }, [sourceText]);
+
   function handleCopy() {
     navigator.clipboard.writeText(data);
   }
