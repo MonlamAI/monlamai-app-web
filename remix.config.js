@@ -10,6 +10,7 @@ module.exports = {
     "react-form-wizard-component",
     "docx",
     "file-saver",
+    "franc-min"
   ],
   tailwind: true,
   browserNodeBuiltinsPolyfill: {

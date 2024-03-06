@@ -40,6 +40,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   const show_feed_bucket = fetchdata.flags.show_feed_bucket;
   const enable_ocr_model = fetchdata.flags.enable_ocr_model;
   const feedBucketAccess = process.env.FEEDBUCKET_ACCESS;
+  const feedbucketToken = process.env.FEEDBUCKET_TOKEN;
   return json(
     {
       user: userdata ? await getUser(userdata?._json?.email) : null,
@@ -49,6 +50,7 @@ export const loader: LoaderFunction = async ({ request }) => {
       show_feed_bucket_to_all: show_feed_bucket.enabled,
       enable_ocr_model: enable_ocr_model.enabled,
       feedBucketAccess,
+      feedbucketToken,
     },
     { status: 200, headers: { "cache-control": "no-cache" } }
   );
