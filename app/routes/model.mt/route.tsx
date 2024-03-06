@@ -235,6 +235,7 @@ export default function Index() {
           data={data}
           setTranslated={setData}
           likefetcher={likefetcher}
+          sourceText={debounceSourceText}
         />
       )}
 
