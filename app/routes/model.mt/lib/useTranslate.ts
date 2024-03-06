@@ -1,5 +1,6 @@
 import { useFetcher, useLoaderData } from "@remix-run/react";
 import { useState, useEffect } from "react";
+import { en_bo_tibetan_replaces } from "~/component/utils/replace";
 
 type useTranslateType = {
   target: string;
@@ -92,7 +93,9 @@ const useTranslate = ({ target, text, data, setData }: useTranslateType) => {
         }
 
         setData((p) => {
-          return p + streamData.replace("</s>", "");
+          let newChunk=p + streamData.replace("</s>", "");
+    
+          return en_bo_tibetan_replaces(newChunk) 
         });
       }
     }

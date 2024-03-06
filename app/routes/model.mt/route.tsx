@@ -4,6 +4,7 @@ import type {
   MetaFunction,
 } from "@remix-run/node";
 import {
+  ClientLoaderFunctionArgs,
   isRouteErrorResponse,
   useFetcher,
   useLoaderData,
@@ -109,6 +110,19 @@ export const action: ActionFunction = async ({ request }) => {
     });
     return { id: inferenceData?.id };
   }
+};
+
+export const clientLoader = async ({
+  request,
+  params,
+  serverLoader,
+}: ClientLoaderFunctionArgs) => {
+  // call the server loader
+  const serverData = await serverLoader();
+  // And/or fetch data on the client
+  // Return the data to expose through useLoaderData()
+
+  return serverData;
 };
 
 export default function Index() {
@@ -291,6 +305,8 @@ export default function Index() {
                   animate={true}
                 />
               )}
+              {isLoading && <span>...</span>}
+
               {selectedTool === "document" && sourceText !== "" && (
                 <DownloadDocument source={sourceText} lang={source_lang} />
               )}
