@@ -4,7 +4,7 @@ import { MdFeedback } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
 
 function FeedBucket() {
-  let { show_feed_bucket_to_all, user, feedBucketAccess } =
+  let { show_feed_bucket_to_all, user, feedBucketAccess, feedbucketToken } =
     useRouteLoaderData("root");
   let [show, setShow] = useState(false);
   let feedFunction = () => {
@@ -19,7 +19,7 @@ function FeedBucket() {
       s.src = "https://cdn.feedbucket.app/assets/feedbucket.js";
       s.dataset.feedbucket = k;
       document.head.appendChild(s);
-    })("ym4vwOa3unzDSASQ2o5f");
+    })(feedbucketToken);
     window.feedbucketConfig = {
       reporter: {
         name: user.username,
