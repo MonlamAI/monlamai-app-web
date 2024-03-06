@@ -1850,9 +1850,6 @@ export function bo_en_english_replaces(text: string) {
   result = result.replaceAll("' event: message data: '", "");
   result = result.replaceAll("Tibet was not pure independence", "Tibet was pure independence");
   
-
-  
-  
   return result;
 }
 

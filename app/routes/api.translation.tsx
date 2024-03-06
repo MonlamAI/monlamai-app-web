@@ -9,17 +9,17 @@ import {
   bo_en_tibetan_replaces,
   en_bo_english_replaces,
   en_bo_tibetan_replaces,
-} from "~/component/utils/replace.server";
+} from "~/component/utils/replace";
 import { verifyDomain } from "~/component/utils/verifyDomain";
 import { API_ERROR_MESSAGE } from "~/helper/const";
-import {  saveInference } from "~/modal/inference.server";
+import { saveInference } from "~/modal/inference.server";
 import { getUser } from "~/modal/user.server";
 import { auth } from "~/services/auth.server";
 import { fetchGPTData } from "~/services/fetchGPTData.server";
 type Lang = "bo" | "en";
 
 export async function translate(
-  text: String,
+  text: string,
   sourceLang: Lang,
   direction: string
 ) {
@@ -32,7 +32,7 @@ export async function translate(
   } else if (sourceLang === "en") {
     text = "<2bo>" + text;
   }
-  const data = { inputs: text };
+  const data = { inputs: en_bo_english_replaces(text) };
   let response;
   const startTime = Date.now(); // Start time for measuring response time
   let receivedData = "";
@@ -102,7 +102,6 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   if (source) {
     let result;
     try {
-  
       result = await translate(source, sourceLang, direction);
     } catch (e) {
       return { error: e?.message };
