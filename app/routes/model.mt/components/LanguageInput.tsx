@@ -4,8 +4,25 @@ import React, { useEffect } from "react";
 import { FaArrowRightArrowLeft } from "react-icons/fa6";
 import { resetFetcher } from "~/component/utils/resetFetcher";
 import LanguageDetect from "languagedetect";
+import { languagesOptions } from "~/helper/const";
 
 const lngDetector = new LanguageDetect();
+
+// Utility function to check if the input is Tibetan
+function isTibetan(input) {
+  const tibetanRegex = /[\u0F00-\u0FFF]+/;
+  return tibetanRegex.test(input);
+}
+
+// Finds the first common element between two arrays
+function findFirstCommonElement(array1, array2) {
+  for (let element of array1) {
+    if (array2.includes(element)) {
+      return element;
+    }
+  }
+  return undefined;
+}
 
 function LanguageInput({
   likefetcher,
@@ -17,52 +34,62 @@ function LanguageInput({
   const [params, setParams] = useSearchParams();
   const sourceLang = params.get("source") || "detect language";
   const targetLang = params.get("target") || "bo";
-  function handleChangeTo(event: React.ChangeEvent<HTMLSelectElement>) {
+
+  function handleChange(event, type) {
     const lang = event.target.value;
-    setParams((p) => {
-      p.set("target", lang);
-      return p;
+    setParams((prevParams) => {
+      prevParams.set(type, lang);
+      return prevParams;
     });
   }
-  function handleChangefrom(event: React.ChangeEvent<HTMLSelectElement>) {
-    const lang = event.target.value;
-    setParams((p) => {
-      p.set("source", lang);
-      return p;
-    });
-  }
+
   function toggleDirection() {
     resetFetcher(likefetcher);
     setSourceText(data);
     setTranslated("");
-    setParams((p) => {
-      const source = sourceLang;
-      const target = targetLang;
-      p.set("source", target);
-      p.set("target", source);
-      return p;
+    setParams((prevParams) => {
+      prevParams.set("source", targetLang);
+      prevParams.set("target", sourceLang);
+      return prevParams;
     });
   }
+
   useEffect(() => {
+    if (sourceLang === "detect language") {
+      detectAndSetLanguage(sourceText);
+    }
+  }, [sourceText, sourceLang]);
+  const detectAndSetLanguage = (text: string) => {
     if (sourceLang !== "detect language") return;
-    let lang = lngDetector.detect(sourceText);
-    let ranked = lang.map((l) => l[0]);
+
+    if (isTibetan(text)) {
+      setParams((prevParams) => {
+        prevParams.set("source", "bo");
+        return prevParams;
+      });
+      return;
+    }
+
+    let detectedLanguages = lngDetector.detect(text);
+    let ranked = detectedLanguages.map((l) => l[0]);
     let option = languagesOptions.map((l) => l.value.toLowerCase());
     let common = findFirstCommonElement(ranked, option);
+
     if (common) {
-      let newLang = languagesOptions.find(
-        (l) => l.value.toLowerCase() === common
+      let detectedLang = languagesOptions.find(
+        (lang) => lang.value.toLowerCase() === common
       );
-      setParams((p) => {
-        p.set("source", newLang?.code);
-        return p;
+      setParams((prevParams) => {
+        prevParams.set("source", detectedLang?.code || "en");
+        return prevParams;
       });
     }
-  }, [sourceText]);
+  };
+
   return (
-    <div className="flex items-center justify-center md:flex-row gap-3 mt-2 ">
-      <Select onChange={handleChangefrom} value={sourceLang}>
-        <option>detect language</option>
+    <div className="flex items-center justify-center md:flex-row gap-3 mt-2">
+      <Select onChange={(e) => handleChange(e, "source")} value={sourceLang}>
+        <option value="detect language">Detect</option>
         {languagesOptions.map((lang) => (
           <option key={lang.code} value={lang.code}>
             {lang.value}
@@ -75,7 +102,7 @@ function LanguageInput({
       >
         <FaArrowRightArrowLeft size="20px" />
       </div>
-      <Select onChange={handleChangeTo} value={targetLang}>
+      <Select onChange={(e) => handleChange(e, "target")} value={targetLang}>
         {languagesOptions.map((lang) => (
           <option key={lang.code} value={lang.code}>
             {lang.value}
@@ -87,36 +114,3 @@ function LanguageInput({
 }
 
 export default LanguageInput;
-
-const languagesOptions = [
-  { value: "English", code: "en" },
-  { value: "Tibetan", code: "bo" },
-  { value: "French", code: "fr" },
-  { value: "Chinese", code: "zh" },
-  { value: "Spanish", code: "es" },
-  { value: "German", code: "de" },
-  { value: "Italian", code: "it" },
-  { value: "Japanese", code: "ja" },
-  { value: "Korean", code: "ko" },
-  { value: "Russian", code: "ru" },
-  { value: "Portuguese", code: "pt" },
-  { value: "Turkish", code: "tr" },
-  { value: "Hindi", code: "hi" },
-  { value: "Swedish", code: "sv" },
-  { value: "Norwegian", code: "no" },
-  { value: "Estonian", code: "et" },
-  { value: "Latvian", code: "lv" },
-  { value: "Lithuanian", code: "lt" },
-  { value: "Hungarian", code: "hu" },
-  { value: "Polish", code: "pl" },
-  { value: "Greek", code: "el" },
-];
-
-function findFirstCommonElement(array1, array2) {
-  for (let element of array1) {
-    if (array2.includes(element)) {
-      return element;
-    }
-  }
-  return undefined; // Or return null, or any other value to indicate no common elements were found.
-}
