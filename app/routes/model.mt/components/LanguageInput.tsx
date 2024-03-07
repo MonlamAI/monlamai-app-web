@@ -97,7 +97,7 @@ function LanguageInput({
         ))}
       </Select>
       <div
-        className="text-2xl font-bold cursor-pointer"
+        className="text-2xl font-bold cursor-pointer text-gray-500 hover:text-gray-700 transition-colors duration-300 ease-in-out"
         onClick={toggleDirection}
       >
         <FaArrowRightArrowLeft size="20px" />
