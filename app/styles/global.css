@@ -1,5 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
 @import url("https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css");
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
 
 @font-face {
   font-family: "Monlam";
@@ -27,9 +29,11 @@
   align-items: center;
   margin-top: 20px;
 }
+
 :root {
   --fontsize: 16px;
 }
+
 html {
   font-size: var(--fontsize);
 }
