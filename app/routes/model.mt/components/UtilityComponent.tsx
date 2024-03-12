@@ -94,10 +94,17 @@ export function LoadingAnimation() {
   );
 }
 
-export function OutputDisplay({ edit, editData, output, animate }) {
+export function OutputDisplay({ edit, editData, output, animate, targetLang }) {
   if (edit) return null;
+  let isNotEng = targetLang !== "en";
+  let isNotTib = targetLang !== "bo";
   return (
-    <div className="font-monlam p-2 text-[1.2rem] leading-[1.8] max-h-[40vh] overflow-y-auto ">
+    <div
+      className={`p-2 text-[1.2rem] leading-[1.8] max-h-[40vh] overflow-y-auto first-letter 
+      ${!isNotEng && "font-poppins text-xl"} ${
+        !isNotTib && "text-lg leading-loose font-monlam"
+      } ${isNotEng && isNotTib && "font-notosans"}`}
+    >
       <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
         {editData ? editData : output}
       </motion.p>

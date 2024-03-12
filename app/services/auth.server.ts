@@ -18,6 +18,7 @@ const auth0Strategy = new Auth0Strategy(
     scope: "openid profile email",
   },
   async (data) => {
+
     let { profile, extraParams } = data;
     //
     // Use the returned information to process or write to the DB.
@@ -41,7 +42,8 @@ const auth0Strategy = new Auth0Strategy(
           username,
           email,
         },
-      }));
+      }));    
+            
     return profile;
   }
 );

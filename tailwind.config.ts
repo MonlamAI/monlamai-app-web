@@ -15,6 +15,7 @@ export default {
     fontFamily: {
       poppins: ["Poppins", "sans-serif"],
       monlam: ["Monlam", "sans-serif"],
+      notosans: ["Noto Sans", "sans-serif"],
     },
   },
   plugins: [require("flowbite/plugin")],

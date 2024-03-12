@@ -32,6 +32,7 @@
     "framer-motion": "^10.16.4",
     "franc-min": "^6.2.0",
     "isbot": "^3.6.8",
+    "languagedetect": "^2.0.0",
     "mammoth": "^1.6.0",
     "morgan": "^1.10.0",
     "node-schedule": "^2.1.1",

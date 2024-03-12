@@ -235,6 +235,7 @@ export default function Index() {
           data={data}
           setTranslated={setData}
           likefetcher={likefetcher}
+          sourceText={debounceSourceText}
         />
       )}
 
@@ -302,6 +303,7 @@ export default function Index() {
                   editData={editData}
                   output={data}
                   animate={true}
+                  targetLang={target_lang}
                 />
               )}
               {isLoading && <span>...</span>}
