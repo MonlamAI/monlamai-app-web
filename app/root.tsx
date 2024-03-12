@@ -26,9 +26,10 @@ import { getUser } from "./modal/user.server";
 import toastStyle from "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import flagsmith_provider from "./services/features.server";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useLocalStorage from "./component/hooks/useLocaleStorage";
 import FeedBucket from "./component/FeedBucket";
+import LocationComponent from "./component/LocationDetect";
 
 export const loader: LoaderFunction = async ({ request }) => {
   let userdata = await getUserSession(request);
@@ -118,7 +119,6 @@ export default function App() {
   let location = useLocation();
   let isSteps = location.pathname.includes("steps");
   let [isDarkMode, setIsDarkMode] = useLocalStorage("Darktheme", false);
-
   useEffect(() => {
     if (isDarkMode) {
       document.documentElement.classList.add("dark");
@@ -126,12 +126,12 @@ export default function App() {
       document.documentElement.classList.remove("dark");
     }
   }, []);
-
   return (
     <Document>
       <LitteraProvider locales={["en_US", "bo_TI"]}>
         <div className="flex flex-col flex-1">
           {user && <Header />}
+            {user && <LocationComponent/>}
           <div className="flex-1">
             <Outlet />
           </div>

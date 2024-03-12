@@ -18,7 +18,10 @@ model User {
   role      role?       @default(newUser)
   about     AboutUser?  @relation("aboutUser")
   Inference Inference[] @relation("inference")
+  country   String?
+  city      String?
 }
+
 
 model AboutUser {
   id           Int    @id @default(autoincrement())

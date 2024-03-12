@@ -43,3 +43,17 @@ export async function getUsers(value: string) {
   });
   return { list, totalCount };
 }
+
+
+export async function update_location(userId:string,city:string,country:string){
+  let user=await db.user.update({
+    where:{
+      id:parseInt(userId)
+    },
+    data:{
+      city,
+      country
+    }
+  })
+  return user;
+}
