@@ -27,21 +27,26 @@ export const action = async ({
   let user = await getUser(userdata?._json.email);
   const formData = await unstable_parseMultipartFormData(request, uploadHandler);
   const inputFileUrl = formData.get("file") as string;
-  var formdata = new FormData();
-  const filename=inputFileUrl.split('/MT/input/')[1];
-  formdata.append('link',inputFileUrl);
-  let res=await fetch('https://monlam-file-api.onrender.com/aws', {
+  let inferenceData;
+  try{
+    var formdata = new FormData();
+    formdata.append('link',inputFileUrl);
+    let res=await fetch('https://monlam-file-api.onrender.com/aws', {
       method: 'POST',
       body: formdata
     });
-  let data=await res.json();
+    inferenceData=await res.json();
+  }catch(e){
+    console.log(e);
+    return {error:e,message:"cannot start the job"}
+}
    
   let inference_new=await addFileInference({
-    userId:user.id,
+    userId:user?.id,
     input:inputFileUrl,
     type:'file',
     model:'mt',
-    jobId:data?.id
+    jobId:inferenceData?.id
   });
   
   return redirect('/profile');
@@ -50,7 +55,7 @@ export const action = async ({
 
 function FileUploadFeature() {
   const fileFetcher=useFetcher();
-  const inputUrl=fileFetcher.data;
+  const message=fileFetcher.data?.message;
   
   return (
     <div className='flex   flex-col gap-3 justify-center items-center'>
@@ -58,9 +63,9 @@ function FileUploadFeature() {
     
       <fileFetcher.Form className='flex shadow-lg flex-col gap-4 p-2 hover:ring-1 hover:ring-blue-400' method="post" encType="multipart/form-data">
         <input id="txt" type="file" name="file" accept='.txt' />
-        <Button type="submit" disabled={!!inputUrl}>Upload to S3</Button>
+        <Button type="submit" >Upload to S3</Button>
       </fileFetcher.Form>
-      
+      {message && <div>{message}</div>}
       </div>
   );
 }
