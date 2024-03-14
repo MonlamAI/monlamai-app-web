@@ -67,7 +67,6 @@ export async function addFileInference({input,userId,type,model}){
 }
 
 export async function getUserFileInferences({userId}){
-  console.log(userId)
   return await db.inference.findMany({
     where:{
       userId,
