@@ -1,8 +1,7 @@
 import React from "react";
 import { useFetcher } from "@remix-run/react";
 import { Button, Card, FileInput, Label, Spinner } from "flowbite-react";
-import { useRef, useState, useMemo, useLayoutEffect } from "react";
-import { FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa6";
+import { useState   } from "react";
 import CopyToClipboard from "~/component/CopyToClipboard";
 import { BiQuestionMark } from "react-icons/bi";
 import { Tooltip } from "flowbite-react";

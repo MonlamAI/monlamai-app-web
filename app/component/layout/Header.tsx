@@ -3,6 +3,7 @@ import {
   NavLink,
   useRouteLoaderData,
   useLoaderData,
+  Link,
 } from "@remix-run/react";
 import { Dropdown } from "flowbite-react";
 import { useState } from "react";
@@ -100,9 +101,9 @@ function Menu() {
       )}
     >
       <Dropdown.Header>
-        <span className="block truncate text-sm font-medium font-poppins">
+        <Link to='/profile' className="block truncate text-sm font-medium font-poppins">
           {user.email}
-        </span>
+        </Link>
       </Dropdown.Header>
       <hr />
       <Dropdown.Item className="px-3 py-2">
