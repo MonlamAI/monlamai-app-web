@@ -27,9 +27,11 @@ export const action = async ({
   let user = await getUser(userdata?._json.email);
   const formData = await unstable_parseMultipartFormData(request, uploadHandler);
   const inputFileUrl = formData.get("file") as string;
+  console.log(inputFileUrl)
   let inferenceData;
   try{
     var formdata = new FormData();
+    
     formdata.append('link',inputFileUrl);
     let res=await fetch('https://monlam-file-api.onrender.com/aws', {
       method: 'POST',
