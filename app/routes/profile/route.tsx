@@ -1,7 +1,9 @@
 import { LoaderFunction } from '@remix-run/node'
-import { useLoaderData } from '@remix-run/react';
+import { useFetcher, useLoaderData } from '@remix-run/react';
+import { Button } from 'flowbite-react';
 import React, { useEffect, useState } from 'react'
-import { getUserFileInferences } from '~/modal/inference.server';
+import { MdDeleteForever } from 'react-icons/md';
+import { deleteInference, getUserFileInferences } from '~/modal/inference.server';
 import { getUser } from '~/modal/user.server';
 import { auth } from '~/services/auth.server';
 
@@ -14,7 +16,17 @@ export const loader:LoaderFunction=async ({request})=>{
   let inferences=await getUserFileInferences({userId:user?.id})
   return {inferences};
 }
+export const action:LoaderFunction=async ({request})=>{
+  
+  let formdata=await request.formData();
+  let id=formdata.get('id') as string;
+  if(request.method==='DELETE'){
+    let delete_inference=await deleteInference({id})
+    return delete_inference;
+  }
 
+  return null;
+}
 
 function Index() {
  const {inferences}= useLoaderData();
@@ -36,7 +48,7 @@ export default Index
 
 function EachInference({inference}:any){
  const [status,setStatus]=useState({});
-
+  const deleteFetcher=useFetcher();
   let filename = inference.input.split('/MT/input/')[1];
   useEffect(() => {
     const fetchStatus = () => {
@@ -57,16 +69,23 @@ function EachInference({inference}:any){
 
     return () => clearInterval(statusInterval);
   }, [filename]);
-  
+  function deleteHandler(){
+  deleteFetcher.submit({id:inference.id},{
+    method:'DELETE',
+  })
+  }
   let isComplete = status === 'complete';
   let outputURL=inference.input.replace('input', 'output').replaceAll('%20','%2520')
   
   return <div  className="bg-white shadow-md rounded-lg p-4 flex justify-between items-center">
   <span className="text-gray-800 truncate">{filename}</span>
+  <div className='flex gap-5 items-center'>
   {isComplete ? (
     <a href={outputURL} className="text-blue-500 hover:text-blue-700 transition duration-150 ease-in-out">Download Translation</a>
-  ) : (
-    <span className="text-yellow-500">Translating...</span>
-  )}
+    ) : (
+      <span className="text-yellow-500">Translating...</span>
+      )}
+  <button onClick={deleteHandler} className=' hover:text-red-400'><MdDeleteForever/></button>
+      </div>
 </div>
 }

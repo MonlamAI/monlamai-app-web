@@ -74,3 +74,10 @@ export async function getUserFileInferences({userId}){
     }
   })
 }
+export  async function deleteInference({id}){
+  return await db.inference.delete({
+    where:{
+      id
+    }
+  })
+}
