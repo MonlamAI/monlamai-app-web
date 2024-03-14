@@ -30,16 +30,18 @@ export const action = async ({
   var formdata = new FormData();
   const filename=inputFileUrl.split('/MT/input/')[1];
   formdata.append('link',inputFileUrl);
-  await fetch('https://monlam-file-api.onrender.com/aws', {
+  let res=await fetch('https://monlam-file-api.onrender.com/aws', {
       method: 'POST',
       body: formdata
     });
+  let data=await res.json();
    
   let inference_new=await addFileInference({
     userId:user.id,
     input:inputFileUrl,
     type:'file',
     model:'mt',
+    jobId:data?.id
   });
   
   return redirect('/profile');

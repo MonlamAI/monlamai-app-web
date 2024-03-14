@@ -47,12 +47,14 @@ export default Index
 
 
 function EachInference({inference}:any){
- const [status,setStatus]=useState({});
+ const [status,setStatus]=useState('');
   const deleteFetcher=useFetcher();
   let filename = inference.input.split('/MT/input/')[1];
   useEffect(() => {
     const fetchStatus = () => {
-      fetch(`https://monlam-file-api.onrender.com/status/${filename.replaceAll('%20', '%2520')}`)
+      let jobId=inference.jobId;
+      console.log(jobId)
+      fetch(`https://monlam-file-api.onrender.com/status/${jobId}`)
         .then(res => res.json())
         .then(data => {
           setStatus(data.status);
@@ -83,7 +85,7 @@ function EachInference({inference}:any){
   {isComplete ? (
     <a href={outputURL} className="text-blue-500 hover:text-blue-700 transition duration-150 ease-in-out">Download Translation</a>
     ) : (
-      <span className="text-yellow-500">Translating...</span>
+      <span className="text-yellow-500">{status}</span>
       )}
   <button onClick={deleteHandler} className=' hover:text-red-400'><MdDeleteForever/></button>
       </div>

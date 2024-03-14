@@ -54,14 +54,15 @@ export async function getTodayInferenceByUserIdCountModel(userId: number,model:m
   });
 }
 
-export async function addFileInference({input,userId,type,model}){
+export async function addFileInference({input,userId,type,model,jobId}){
   return await db.inference.create({
     data:{
       input,
       model,
       userId,
       type,
-      output:''
+      output:'',
+      jobId
     }
   }) 
 }
