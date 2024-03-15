@@ -62,7 +62,6 @@ function FileUploadFeature() {
   return (
     <div className='flex   flex-col gap-3 justify-center items-center'>
     <h1 className='mt-[10vh]'>this is for testing purpose only</h1>
-    
       <fileFetcher.Form className='flex shadow-lg flex-col gap-4 p-2 hover:ring-1 hover:ring-blue-400' method="post" encType="multipart/form-data">
         <input id="txt" type="file" name="file" accept='.txt' />
         <Button type="submit" >Start</Button>
