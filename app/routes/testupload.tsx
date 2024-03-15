@@ -65,7 +65,7 @@ function FileUploadFeature() {
     
       <fileFetcher.Form className='flex shadow-lg flex-col gap-4 p-2 hover:ring-1 hover:ring-blue-400' method="post" encType="multipart/form-data">
         <input id="txt" type="file" name="file" accept='.txt' />
-        <Button type="submit" >Upload to S3</Button>
+        <Button type="submit" >Start</Button>
       </fileFetcher.Form>
       {message && <div>{message}</div>}
       </div>

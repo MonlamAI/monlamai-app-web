@@ -1,5 +1,5 @@
 import { LoaderFunction } from '@remix-run/node'
-import { useFetcher, useLoaderData } from '@remix-run/react';
+import { Link, useFetcher, useLoaderData } from '@remix-run/react';
 import { Button } from 'flowbite-react';
 import React, { useEffect, useState } from 'react'
 import { MdDeleteForever } from 'react-icons/md';
@@ -33,7 +33,12 @@ function Index() {
  
   return (
     <div className="p-4">
+      <div className='flex justify-between'>
       <h1 className="text-xl font-bold mb-4">File Inferences</h1>
+      <Button>
+        <Link to='/testupload' className='mr-3'>Upload</Link>
+        </Button>
+      </div>
       <div className="space-y-2">
         {inferences.map((inference) => {
            return <EachInference inference={inference} key={inference.id}/>;
