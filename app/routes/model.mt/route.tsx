@@ -71,15 +71,15 @@ export async function loader({ request }: LoaderFunctionArgs) {
     checkNumberOfInferenceToday >= parseInt(process.env?.API_HIT_LIMIT!);
   let limitMessage =
     "You have reached the daily limit of translation. Please try again tomorrow.";
-  
-  let inferences=await getUserFileInferences({userId:user?.id})
 
-  
-    return {
+  let inferences = await getUserFileInferences({ userId: user?.id });
+
+  return {
     user: userdata,
     limitMessage: checkLimit ? limitMessage : null,
     url: process.env?.MT_API_URL,
     token: process.env?.MODEL_API_AUTH_TOKEN,
+    fileUploadUrl: process.env?.FILE_SUBMIT_URL,
     inferences,
   };
 }
@@ -135,14 +135,14 @@ export default function Index() {
   const target_lang = params.get("target") || "bo";
   const source_lang = params.get("source") || "en";
   const [sourceText, setSourceText] = useState("");
-  const selectedTool= params.get("tool")||"text";
-  const setSelectedTool=(tool:string)=>{
-    setParams(p=>{
-      p.set("tool",tool);
+  const selectedTool = params.get("tool") || "text";
+  const setSelectedTool = (tool: string) => {
+    setParams((p) => {
+      p.set("tool", tool);
       return p;
-    })
-  }
-  const [ file, setFile] = useState<File | null>(null);
+    });
+  };
+  const [file, setFile] = useState<File | null>(null);
   const { limitMessage } = useLoaderData();
   const { show_mt_language_toggle } = useRouteLoaderData("root");
 
@@ -222,13 +222,13 @@ export default function Index() {
   };
 
   const handleFileSubmit = () => {
-    let formdata=new FormData();
-    formdata.append('file',file as Blob);
-    translationFetcher.submit(formdata,{
-      method:"POST"
-    ,encType:"multipart/form-data",
-    action:"/testupload",
-    })
+    let formdata = new FormData();
+    formdata.append("file", file as Blob);
+    translationFetcher.submit(formdata, {
+      method: "POST",
+      encType: "multipart/form-data",
+      action: "/testupload",
+    });
   };
   return (
     <ToolWraper title="MT">
@@ -287,10 +287,11 @@ export default function Index() {
                   CHAR_LIMIT={CHAR_LIMIT}
                   MAX_SIZE_SUPPORT={MAX_SIZE_SUPPORT_DOC}
                 />
-                <SubmitButton 
-                trigger={trigger} 
-                selectedTool={selectedTool}
-                submitFile={handleFileSubmit}/>
+                <SubmitButton
+                  trigger={trigger}
+                  selectedTool={selectedTool}
+                  submitFile={handleFileSubmit}
+                />
               </div>
             </>
           )}
@@ -318,9 +319,7 @@ export default function Index() {
                   targetLang={target_lang}
                 />
               )}
-              {selectedTool === "document" && (
-                <InferenceList/>
-              )}
+              {selectedTool === "document" && <InferenceList />}
               {isLoading && <span>...</span>}
 
               {selectedTool === "document" && sourceText !== "" && (

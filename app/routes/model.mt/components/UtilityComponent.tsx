@@ -6,7 +6,7 @@ import FileUpload from "~/component/FileUpload";
 import { MAX_SIZE_SUPPORT_AUDIO } from "~/helper/const";
 import { useEffect, useState } from "react";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
-import { useFetcher, useLoaderData } from "@remix-run/react";
+import { useFetcher, useLoaderData, useRevalidator } from "@remix-run/react";
 import { MdDeleteForever } from "react-icons/md";
 import { FaDownload } from "react-icons/fa";
 type TextOrDocumentComponentProps = {
@@ -45,7 +45,7 @@ export function TextOrDocumentComponent({
   sourceText,
   setSourceText,
   sourceLang,
-  setFile
+  setFile,
 }: TextOrDocumentComponentProps) {
   if (selectedTool === "text") {
     return (
@@ -56,11 +56,7 @@ export function TextOrDocumentComponent({
       />
     );
   } else if (selectedTool === "document") {
-    return (
-      <FileUpload
-        setFile={setFile}
-      />
-    );
+    return <FileUpload setFile={setFile} />;
   }
   return null;
 }
@@ -145,80 +141,96 @@ export function EditActionButtons({
   );
 }
 
-export function SubmitButton({selectedTool,trigger,submitFile}){
+export function SubmitButton({ selectedTool, trigger, submitFile }) {
   const { translation, locale } = uselitteraTranlation();
-  const isFile=selectedTool==='document';
-  return <Button
-  size="xs"
-  onClick={isFile?submitFile:trigger}
-  className={
-    locale !== "bo_TI" ? "font-poppins" : "font-monlam"
-  }
->
-  {translation.translate}
-</Button>
+  const isFile = selectedTool === "document";
+  return (
+    <Button
+      size="xs"
+      onClick={isFile ? submitFile : trigger}
+      className={locale !== "bo_TI" ? "font-poppins" : "font-monlam"}
+    >
+      {translation.translate}
+    </Button>
+  );
 }
 
-export function InferenceList(){
-  let {inferences}=useLoaderData();
-  return <div className="space-y-2 max-h-[50vh] overflow-auto">
-  {inferences.map((inference:any) => {
-     return <EachInference inference={inference} key={inference.id}/>;
-  })}
-  
-</div>
+export function InferenceList() {
+  let { inferences } = useLoaderData();
+  return (
+    <div className="space-y-2 max-h-[50vh] overflow-auto">
+      {inferences.map((inference: any) => {
+        return <EachInference inference={inference} key={inference.id} />;
+      })}
+    </div>
+  );
 }
 
-function EachInference({inference}:any){
-  const [status,setStatus]=useState('');
-   const deleteFetcher=useFetcher();
-   let filename = inference.input.split('/MT/input/')[1].split('-%40-')[0];
-   let updatedAt=new Date(inference.updatedAt).toLocaleString();
-   useEffect(() => {
-    if(!inference?.output || inference?.output===''){
-     const fetchStatus = () => {
-       let jobId=inference.jobId;
-       fetch(`https://monlam-file-api.onrender.com/status/${jobId}`)
-         .then(res => res.json())
-         .then(data => {
-           setStatus(data.status);
-           if (data.status === 'complete') {
-             clearInterval(statusInterval); // Clear the interval if the status is complete
-           }
-         })
-         .catch(error => console.error('Failed to fetch status:', error));
-     };
- 
-     fetchStatus();
-     const statusInterval = setInterval(fetchStatus, 5000);
-     return () => clearInterval(statusInterval);
+function EachInference({ inference }: any) {
+  const [progress, setProgress] = useState("");
+  const { fileUploadUrl } = useLoaderData();
+  const deleteFetcher = useFetcher();
+  let filename = inference.input.split("/MT/input/")[1].split("-%40-")[0];
+  let updatedAt = new Date(inference.updatedAt).toLocaleString();
+  const revalidator = useRevalidator();
+  useEffect(() => {
+    let statusInterval;
+    if (inference.output) {
+      clearInterval(statusInterval);
+    } else {
+      statusInterval = setInterval(async () => {
+        try {
+          let res = await fetch(fileUploadUrl + `/status/${inference.jobId}`);
+          let data = await res.json();
+          if (!data?.progress) {
+            revalidator.revalidate();
+          } else {
+            setProgress(data.progress);
+          }
+        } catch (e) {
+          console.log(e);
+        }
+      }, 3000);
     }
-    
-   }, [filename]);
-   function deleteHandler(){
-   deleteFetcher.submit({id:inference.id},{
-     method:'DELETE',
-     action:"/testupload"
-   })
-   }
-   let isComplete = status === 'complete';
-   let outputURL=inference.input.replace('input', 'output').replaceAll('%20','%2520')
-   
-   return <div  className="bg-white rounded-lg  flex  justify-between items-center">
-   <div>
-   <span className="text-gray-800 truncate">{filename}</span>
-   <span className="text-gray-500 text-xs block">{updatedAt}</span>
-   </div>
-   <div className='flex gap-5 items-center'>
-   {isComplete ? (
-     <a href={outputURL} className="text-blue-500 hover:text-blue-700 transition duration-150 ease-in-out"><FaDownload/></a>
-     ) : (
-       <div className="text-yellow-500">
-         <span>{status}</span><div role="status">
-      
-   </div></div>
-       )}
-   <button onClick={deleteHandler} className=' hover:text-red-400'><MdDeleteForever/></button>
-       </div>
- </div>
- }
+    return () => clearInterval(statusInterval);
+  }, [inference?.output]);
+
+  function deleteHandler() {
+    deleteFetcher.submit(
+      { id: inference.id },
+      {
+        method: "DELETE",
+        action: "/testupload",
+      }
+    );
+  }
+  let outputURL = inference.output;
+  let isComplete = !!outputURL;
+
+  return (
+    <div className="bg-white rounded-lg  flex  justify-between items-center">
+      <div>
+        <span className="text-gray-800 truncate">{filename}</span>
+        <span className="text-gray-500 text-xs block">{updatedAt}</span>
+      </div>
+      <div className="flex gap-5 items-center">
+        {isComplete ? (
+          <a
+            href={outputURL}
+            className="text-blue-500 hover:text-blue-700 transition duration-150 ease-in-out"
+          >
+            <FaDownload />
+          </a>
+        ) : (
+          <div className="text-yellow-500">
+            <span>{progress} %</span>
+            <div role="status"></div>
+          </div>
+        )}
+        <button onClick={deleteHandler} className=" hover:text-red-400">
+          <MdDeleteForever />
+        </button>
+      </div>
+    </div>
+  );
+}

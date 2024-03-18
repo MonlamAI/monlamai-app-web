@@ -72,6 +72,9 @@ export async function getUserFileInferences({userId}){
     where:{
       userId,
       type:'file'
+    },
+    orderBy:{
+      updatedAt:'desc'
     }
   })
 }
