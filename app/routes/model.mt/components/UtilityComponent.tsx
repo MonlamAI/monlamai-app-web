@@ -9,6 +9,8 @@ import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import { useFetcher, useLoaderData, useRevalidator } from "@remix-run/react";
 import { MdDeleteForever } from "react-icons/md";
 import { FaDownload } from "react-icons/fa";
+import { Progress } from "flowbite-react";
+
 type TextOrDocumentComponentProps = {
   selectedTool: string;
   sourceText: string;
@@ -167,33 +169,32 @@ export function InferenceList() {
 }
 
 function EachInference({ inference }: any) {
-  const [progress, setProgress] = useState("");
+  const [progress, setProgress] = useState(0);
   const { fileUploadUrl } = useLoaderData();
   const deleteFetcher = useFetcher();
   let filename = inference.input.split("/MT/input/")[1].split("-%40-")[0];
   let updatedAt = new Date(inference.updatedAt).toLocaleString();
   const revalidator = useRevalidator();
+
+  let outputURL = inference.output;
+  let isComplete = !!outputURL;
+
   useEffect(() => {
     let statusInterval;
-    if (inference.output) {
-      clearInterval(statusInterval);
-    } else {
-      statusInterval = setInterval(async () => {
-        try {
-          let res = await fetch(fileUploadUrl + `/status/${inference.jobId}`);
-          let data = await res.json();
-          if (!data?.progress) {
-            revalidator.revalidate();
-          } else {
-            setProgress(data.progress);
-          }
-        } catch (e) {
-          console.log(e);
-        }
-      }, 3000);
+    async function fetcher() {
+      if (isComplete) return;
+      let res = await fetch(fileUploadUrl + `/status/${inference.jobId}`);
+      let data = await res.json();
+      if (!data?.progress) {
+        revalidator.revalidate();
+      } else {
+        setProgress(data.progress?.toFixed());
+      }
     }
+    fetcher();
+    statusInterval = setInterval(fetcher, 1000);
     return () => clearInterval(statusInterval);
-  }, [inference?.output]);
+  }, [isComplete]);
 
   function deleteHandler() {
     deleteFetcher.submit(
@@ -204,8 +205,6 @@ function EachInference({ inference }: any) {
       }
     );
   }
-  let outputURL = inference.output;
-  let isComplete = !!outputURL;
 
   return (
     <div className="bg-white rounded-lg  flex  justify-between items-center">
@@ -223,7 +222,7 @@ function EachInference({ inference }: any) {
           </a>
         ) : (
           <div className="text-yellow-500">
-            <span>{progress} %</span>
+            <div>{progress}%</div>
             <div role="status"></div>
           </div>
         )}
