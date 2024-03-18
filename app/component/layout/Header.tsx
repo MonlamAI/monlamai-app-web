@@ -101,9 +101,9 @@ function Menu() {
       )}
     >
       <Dropdown.Header>
-        <Link to='/profile' className="block truncate text-sm font-medium font-poppins">
+        <span className="block truncate text-sm font-medium font-poppins">
           {user.email}
-        </Link>
+        </span>
       </Dropdown.Header>
       <hr />
       <Dropdown.Item className="px-3 py-2">

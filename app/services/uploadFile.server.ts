@@ -17,7 +17,7 @@ const uploadStream = ({ Key }: Pick<AWS.S3.Types.PutObjectRequest, 'Key'>) => {
   });
   const pass = new PassThrough();
   let id=uuidv4();
-  const KEY_NAME = `MT/input/${id+Key}`;
+  const KEY_NAME = `MT/input/${Key+'-@-'+id}`;
   return {
     writeStream: pass,
     promise: s3

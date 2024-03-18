@@ -1,20 +1,25 @@
-import { ActionFunctionArgs, LoaderFunction, UploadHandler, json, redirect, unstable_composeUploadHandlers, unstable_createMemoryUploadHandler, unstable_parseMultipartFormData } from '@remix-run/node'
-import { useFetcher } from '@remix-run/react';
-import { Button } from 'flowbite-react';
-import { useState } from 'react';
-import { addFileInference } from '~/modal/inference.server';
+import { ActionFunctionArgs,UploadHandler, unstable_composeUploadHandlers, unstable_createMemoryUploadHandler, unstable_parseMultipartFormData } from '@remix-run/node'
+
+import { addFileInference, deleteInference,  } from '~/modal/inference.server';
 import { getUser } from '~/modal/user.server';
 import { auth } from '~/services/auth.server';
 import { uploadFile } from '~/services/uploadFile.server';
-export const loader:LoaderFunction=async ({request})=>{
-let data;
-  return null;
-}
 
 
 export const action = async ({
   request,
 }: ActionFunctionArgs) => {
+
+  if(request.method==='DELETE'){
+    let formdata=await request.formData();
+    let id=formdata.get('id') as string;
+    if(request.method==='DELETE'){
+      let delete_inference=await deleteInference({id})
+      return delete_inference;
+    }
+  }
+
+
   const uploadHandler: UploadHandler = unstable_composeUploadHandlers(
     uploadFile,
     unstable_createMemoryUploadHandler(),
@@ -27,7 +32,6 @@ export const action = async ({
   let user = await getUser(userdata?._json.email);
   const formData = await unstable_parseMultipartFormData(request, uploadHandler);
   const inputFileUrl = formData.get("file") as string;
-  console.log(inputFileUrl)
   let inferenceData;
   try{
     var formdata = new FormData();
@@ -50,25 +54,5 @@ export const action = async ({
     model:'mt',
     jobId:inferenceData?.id
   });
-  
-  return redirect('/profile');
+  return inference_new
 };
-
-
-function FileUploadFeature() {
-  const fileFetcher=useFetcher();
-  const message=fileFetcher.data?.message;
-  
-  return (
-    <div className='flex   flex-col gap-3 justify-center items-center'>
-    <h1 className='mt-[10vh]'>this is for testing purpose only</h1>
-      <fileFetcher.Form className='flex shadow-lg flex-col gap-4 p-2 hover:ring-1 hover:ring-blue-400' method="post" encType="multipart/form-data">
-        <input id="txt" type="file" name="file" accept='.txt' />
-        <Button type="submit" >Start</Button>
-      </fileFetcher.Form>
-      {message && <div>{message}</div>}
-      </div>
-  );
-}
-
-export default FileUploadFeature
