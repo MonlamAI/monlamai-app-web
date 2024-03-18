@@ -175,6 +175,7 @@ function EachInference({inference}:any){
    let filename = inference.input.split('/MT/input/')[1].split('-%40-')[0];
    let updatedAt=new Date(inference.updatedAt).toLocaleString();
    useEffect(() => {
+    if(!inference?.output || inference?.output===''){
      const fetchStatus = () => {
        let jobId=inference.jobId;
        fetch(`https://monlam-file-api.onrender.com/status/${jobId}`)
@@ -191,8 +192,9 @@ function EachInference({inference}:any){
      fetchStatus();
  
      const statusInterval = setInterval(fetchStatus, 5000);
- 
      return () => clearInterval(statusInterval);
+    }
+    
    }, [filename]);
    function deleteHandler(){
    deleteFetcher.submit({id:inference.id},{
