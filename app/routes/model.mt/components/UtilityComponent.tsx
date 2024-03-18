@@ -4,12 +4,13 @@ import { motion } from "framer-motion";
 import EditDisplay from "~/component/EditDisplay";
 import FileUpload from "~/component/FileUpload";
 import { MAX_SIZE_SUPPORT_AUDIO } from "~/helper/const";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import { useFetcher, useLoaderData, useRevalidator } from "@remix-run/react";
 import { MdDeleteForever } from "react-icons/md";
 import { FaDownload } from "react-icons/fa";
 import { Progress } from "flowbite-react";
+import timeSince from "~/component/utils/timeSince";
 
 type TextOrDocumentComponentProps = {
   selectedTool: string;
@@ -173,28 +174,41 @@ function EachInference({ inference }: any) {
   const { fileUploadUrl } = useLoaderData();
   const deleteFetcher = useFetcher();
   let filename = inference.input.split("/MT/input/")[1].split("-%40-")[0];
-  let updatedAt = new Date(inference.updatedAt).toLocaleString();
+  let updatedAt = new Date(inference.updatedAt);
   const revalidator = useRevalidator();
-
   let outputURL = inference.output;
   let isComplete = !!outputURL;
-
-  useEffect(() => {
-    let statusInterval;
-    async function fetcher() {
-      if (isComplete) return;
+  async function fetchJobProgress() {
+    try {
       let res = await fetch(fileUploadUrl + `/status/${inference.jobId}`);
       let data = await res.json();
-      if (!data?.progress) {
-        revalidator.revalidate();
-      } else {
-        setProgress(data.progress?.toFixed());
+      let progress = data?.progress;
+      console.log(data);
+
+      if (progress) {
+        setProgress(progress);
       }
+    } catch (e) {
+      console.log(e);
     }
-    fetcher();
-    statusInterval = setInterval(fetcher, 1000);
-    return () => clearInterval(statusInterval);
-  }, [isComplete]);
+  }
+
+  useEffect(() => {
+    if (progress === 100) {
+      setTimeout(() => {
+        revalidator.revalidate();
+      }, 2000);
+    }
+    const interval = setInterval(() => {
+      if (progress < 80) {
+        fetchJobProgress();
+      } else {
+        clearInterval(interval);
+      }
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, [progress]);
 
   function deleteHandler() {
     deleteFetcher.submit(
@@ -210,7 +224,9 @@ function EachInference({ inference }: any) {
     <div className="bg-white rounded-lg  flex  justify-between items-center">
       <div>
         <span className="text-gray-800 truncate">{filename}</span>
-        <span className="text-gray-500 text-xs block">{updatedAt}</span>
+        <span className="text-gray-500 text-xs block">
+          {updatedAt ? timeSince(updatedAt) : ""}
+        </span>
       </div>
       <div className="flex gap-5 items-center">
         {isComplete ? (

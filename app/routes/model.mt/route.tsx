@@ -224,6 +224,8 @@ export default function Index() {
   const handleFileSubmit = () => {
     let formdata = new FormData();
     formdata.append("file", file as Blob);
+    formdata.append("target", target_lang as string);
+
     translationFetcher.submit(formdata, {
       method: "POST",
       encType: "multipart/form-data",

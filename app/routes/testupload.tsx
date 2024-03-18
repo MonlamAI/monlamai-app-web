@@ -36,17 +36,19 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     uploadHandler
   );
   const inputFileUrl = formData.get("file") as string;
+  const targetLanguage = formData.get("target") as string;
+
   let inferenceData;
   try {
     var formdata = new FormData();
     formdata.append("link", inputFileUrl);
+    formdata.append("language", targetLanguage);
     const url = process.env.FILE_SUBMIT_URL;
     let res = await fetch(url + `/aws`, {
       method: "POST",
       body: formdata,
     });
     inferenceData = await res.json();
-    console.log(inferenceData);
   } catch (e) {
     console.log(e);
   }
