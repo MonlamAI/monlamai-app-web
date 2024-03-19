@@ -73,7 +73,7 @@ function login() {
                 <Button
                   type="submit"
                   gradientDuoTone="purpleToBlue"
-                  outline
+                  className="px-3"
                   pill
                   size="xs"
                 >
