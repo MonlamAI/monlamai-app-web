@@ -1,6 +1,6 @@
 import { useFetcher, useLoaderData } from "@remix-run/react";
 import { useState, useEffect } from "react";
-import { en_bo_tibetan_replaces } from "~/component/utils/replace";
+import { en_bo_english_replaces, en_bo_tibetan_replaces } from "~/component/utils/replace";
 
 type useTranslateType = {
   target: string;
@@ -38,7 +38,7 @@ const useTranslate = ({ target, text, data, setData }: useTranslateType) => {
             "Access-Control-Allow-Origin":"*"
           },
           body: JSON.stringify({
-            inputs: `<2${target}>${text}`,
+            inputs: `<2${target}>${en_bo_english_replaces(text)}`,
             parameters: {
               max_new_tokens: 256,
             },
@@ -94,7 +94,6 @@ const useTranslate = ({ target, text, data, setData }: useTranslateType) => {
 
         setData((p) => {
           let newChunk=p + streamData.replace("</s>", "");
-    
           return en_bo_tibetan_replaces(newChunk) 
         });
       }
