@@ -1,5 +1,5 @@
-import { useFetcher, useLoaderData } from "@remix-run/react";
-import { useState, useEffect } from "react";
+import { useLoaderData } from "@remix-run/react";
+import { useState } from "react";
 import { en_bo_english_replaces, en_bo_tibetan_replaces } from "~/component/utils/replace";
 
 type useTranslateType = {
