@@ -329,7 +329,6 @@ export default function Index() {
                   <div className=" loader_animation"></div>
                 </div>
               )}
-
               {selectedTool === "document" && sourceText !== "" && (
                 <DownloadDocument source={sourceText} lang={source_lang} />
               )}
