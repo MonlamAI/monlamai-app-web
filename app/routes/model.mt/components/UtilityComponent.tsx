@@ -74,7 +74,10 @@ export function CharacterOrFileSizeComponent({
   if (selectedTool === "text") {
     return (
       <div className="text-gray-400 text-xs p-2">
-        {charCount} / {CHAR_LIMIT}
+        <span style={{ color: charCount > CHAR_LIMIT ? "red" : "inherit" }}>
+          {charCount}
+        </span>{" "}
+        / {CHAR_LIMIT}
       </div>
     );
   } else {
@@ -144,12 +147,21 @@ export function EditActionButtons({
   );
 }
 
-export function SubmitButton({ selectedTool, trigger, submitFile }) {
+export function SubmitButton({
+  selectedTool,
+  trigger,
+  submitFile,
+  charCount,
+  CHAR_LIMIT,
+}) {
   const { translation, locale } = uselitteraTranlation();
   const isFile = selectedTool === "document";
+  const exceedsLimit = charCount > CHAR_LIMIT;
   return (
     <Button
+      disabled={exceedsLimit}
       size="xs"
+      title={exceedsLimit ? "Character limit exceeded" : ""}
       onClick={isFile ? submitFile : trigger}
       className={locale !== "bo_TI" ? "font-poppins" : "font-monlam"}
     >
