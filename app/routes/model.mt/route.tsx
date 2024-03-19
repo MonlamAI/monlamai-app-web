@@ -324,8 +324,11 @@ export default function Index() {
                 />
               )}
               {selectedTool === "document" && <InferenceList />}
-              {isLoading && <span>...</span>}
-
+              {isLoading && (
+                <div className="w-full flex justify-center">
+                  <div className=" loader_animation"></div>
+                </div>
+              )}
               {selectedTool === "document" && sourceText !== "" && (
                 <DownloadDocument source={sourceText} lang={source_lang} />
               )}
