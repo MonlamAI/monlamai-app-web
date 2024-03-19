@@ -49,11 +49,11 @@ function login() {
           className="hidden md:block z-10 absolute inset-0 container mx-auto w-full h-full object-cover object-center"
         />
         <div className="w-full flex-1 z-20 flex justify-center items-center flex-col">
-          <h1 className="text-center text-[40px]  md:text-[50px] max-w-[1000px] mb-2 ">
-            སྨོན་ལམ་རིག་ནུས།
+          <h1 className="text-center text-[40px] max-w-[1000px] mb-3 ">
+            {translation.monlamAI}
           </h1>
           <TypeAnimation
-            className="text-2xl md:text-3xl inline-block"
+            className="text-2xl md:text-3xl inline-block "
             sequence={sequence}
             wrapper="span"
             speed={50}
