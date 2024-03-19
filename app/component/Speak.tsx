@@ -67,6 +67,9 @@ function Speak({
           }`}
         >
           <RxSpeakerLoud />
+          {fetcher.state !== "idle" && (
+            <div className="speaker_loading ml-2"></div>
+          )}
         </div>
       )}
       {fetcher.data && (
