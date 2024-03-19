@@ -100,7 +100,7 @@ function login() {
             className="py-3 text-xs text-gray-400 hover:text-gray-500"
             to="/terms"
           >
-            {translation.terms}
+            {translation.TermsAndConditions}
           </Link>
         </div>
       </div>

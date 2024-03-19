@@ -39,5 +39,7 @@
   "uploadImage": "Upload Image",
   "acceptedImage": "Accepted Image",
   "translate": "Translate",
-  "terms":"Terms and Conditions"
+  "document": "Document",
+  "text":"Text",
+  "recording":"Recording"
 }

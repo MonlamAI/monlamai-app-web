@@ -1,5 +1,6 @@
 import { useRouteLoaderData } from "@remix-run/react";
 import { Button } from "flowbite-react";
+import uselitteraTranlation from "./hooks/useLitteraTranslation";
 
 type ListInputProps = {
   selectedTool: string;
@@ -13,6 +14,8 @@ export default function ListInput({
   options,
 }: ListInputProps) {
   let { isFileUploadEnabled } = useRouteLoaderData("root");
+  const { translation, locale } = uselitteraTranlation();
+  const isTibetan = locale === "bo_TI";
   return (
     <div className="flex gap-2 mt-2">
       {options.map((option, index) => {
@@ -23,9 +26,9 @@ export default function ListInput({
             size={"xs"}
             key={option + index}
             onClick={() => setSelectedTool(option)}
-            className="capitalize"
+            className={`capitalize ${isTibetan ? "pt-2" : ""}`}
           >
-            {option}
+            {translation[option]}
           </Button>
         );
       })}

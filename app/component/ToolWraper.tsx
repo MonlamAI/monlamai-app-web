@@ -8,13 +8,13 @@ function ToolWraper({ title, children }) {
   let isEnglish = locale === "en_US";
   return (
     <>
-      <div className="mx-auto w-11/12 md:w-4/5 mb-5">
+      <div
+        className={`mx-auto w-11/12 md:w-4/5 mb-5 ${
+          isEnglish ? "font-poppins" : "font-monlam"
+        }`}
+      >
         <h1
-          className={`text-lg ${
-            isEnglish
-              ? "font-poppins md:text-[1.6rem]"
-              : "font-monlam md:text-[1.8rem]"
-          } flex gap-4 justify-center items-center mb-2 text-center text-slate-700 dark:text-gray-200 `}
+          className={`text-lg md:text-[1.6rem] flex gap-4 justify-center items-center mb-2 text-center text-slate-700 dark:text-gray-200 `}
         >
           <div
             className="dark:mix-blend-multiply "
