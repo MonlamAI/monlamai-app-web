@@ -173,7 +173,7 @@ export function SubmitButton({
 export function InferenceList() {
   let { inferences } = useLoaderData();
   return (
-    <div className="space-y-2 max-h-[50vh] overflow-auto">
+    <div className="space-y-2 max-h-[50vh] overflow-auto font-poppins">
       {inferences.map((inference: any) => {
         return <EachInference inference={inference} key={inference.id} />;
       })}
