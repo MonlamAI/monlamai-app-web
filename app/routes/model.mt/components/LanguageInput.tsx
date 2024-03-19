@@ -87,7 +87,7 @@ function LanguageInput({
   };
 
   return (
-    <div className="flex items-center justify-center md:flex-row gap-3 mt-2">
+    <div className="flex items-center justify-center md:flex-row gap-3 mt-2 font-poppins">
       <Select onChange={(e) => handleChange(e, "source")} value={sourceLang}>
         <option value="detect language">Detect</option>
         {languagesOptions.map((lang) => (

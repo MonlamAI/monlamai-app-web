@@ -20,8 +20,7 @@ function TextComponent({ sourceText, setSourceText, sourceLang }) {
       onInput={(e) => {
         setSourceText((prev) => {
           let value = e.target?.value;
-          if (value?.length <= CHAR_LIMIT) return value;
-          return prev;
+          return value;
         });
       }}
       rows={3}

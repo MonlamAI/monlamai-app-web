@@ -2,7 +2,6 @@ import type { LoaderFunction } from "@remix-run/node";
 import { Form, Link, redirect } from "@remix-run/react";
 import { Button } from "flowbite-react";
 import { TypeAnimation } from "react-type-animation";
-import { auth } from "~/services/auth.server";
 import { motion } from "framer-motion";
 import TranslationSwitcher from "~/component/TranslationSwitcher";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
@@ -32,11 +31,12 @@ let sequence = [
 
 function login() {
   const { translation, locale } = uselitteraTranlation();
+  const isEng = locale === "en_US";
 
   return (
     <div
-      className="flex w-screen flex-col md:grid md:grid-cols-2 lg:grid-cols-[60%_40%]
-   min-h-[100dvh]"
+      className={`flex w-screen flex-col md:grid md:grid-cols-2 lg:grid-cols-[60%_40%]
+   min-h-[100dvh]  ${isEng ? "font-poppins" : "font-monlam "}`}
     >
       <div
         className="relative hidden md:flex flex-1 flex-col justify-center px-5 pt-8 text-white
@@ -49,11 +49,11 @@ function login() {
           className="hidden md:block z-10 absolute inset-0 container mx-auto w-full h-full object-cover object-center"
         />
         <div className="w-full flex-1 z-20 flex justify-center items-center flex-col">
-          <h1 className="text-center text-[40px]  md:text-[50px] max-w-[1000px] mb-2 ">
-            སྨོན་ལམ་རིག་ནུས།
+          <h1 className="text-center text-[40px] max-w-[1000px] mb-3 ">
+            {translation.monlamAI}
           </h1>
           <TypeAnimation
-            className="text-2xl md:text-3xl inline-block"
+            className="text-2xl md:text-3xl inline-block "
             sequence={sequence}
             wrapper="span"
             speed={50}
@@ -73,18 +73,11 @@ function login() {
                 <Button
                   type="submit"
                   gradientDuoTone="purpleToBlue"
-                  outline
+                  className="p-3"
                   pill
                   size="xs"
                 >
-                  <span
-                    className={` leading-[normal] relative 
-                    ${
-                      locale === "en_US"
-                        ? "font-poppins text-[1.4rem]"
-                        : "font-monlam text-[1.2rem]"
-                    }`}
-                  >
+                  <span style={{ fontSize: isEng ? "1.4rem" : "1.2rem" }}>
                     {translation.login}
                   </span>
                 </Button>
@@ -100,14 +93,14 @@ function login() {
               className=" relative -top-1 grayscale w-8 "
             />
             <p className="text-lg font-bold text-gray-500 tracking-wide ">
-              Monlam AI
+              {translation.monlamAI}
             </p>
           </div>
           <Link
             className="py-3 text-xs text-gray-400 hover:text-gray-500"
             to="/terms"
           >
-            Terms of use
+            {translation.TermsAndConditions}
           </Link>
         </div>
       </div>

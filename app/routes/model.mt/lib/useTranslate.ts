@@ -1,4 +1,4 @@
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData, useRouteLoaderData } from "@remix-run/react";
 import { useState } from "react";
 import { en_bo_english_replaces, en_bo_tibetan_replaces } from "~/component/utils/replace";
 
@@ -10,6 +10,8 @@ type useTranslateType = {
 };
 
 const useTranslate = ({ target, text, data, setData }: useTranslateType) => {
+  const { enable_replacement_mt } = useRouteLoaderData("root");
+
   const [done, setDone] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -38,7 +40,7 @@ const useTranslate = ({ target, text, data, setData }: useTranslateType) => {
             "Access-Control-Allow-Origin":"*"
           },
           body: JSON.stringify({
-            inputs: `<2${target}>${en_bo_english_replaces(text)}`,
+            inputs: `<2${target}>${enable_replacement_mt?en_bo_english_replaces(text):text}`,
             parameters: {
               max_new_tokens: 256,
             },
@@ -94,7 +96,7 @@ const useTranslate = ({ target, text, data, setData }: useTranslateType) => {
 
         setData((p) => {
           let newChunk=p + streamData.replace("</s>", "");
-          return en_bo_tibetan_replaces(newChunk) 
+          return enable_replacement_mt?en_bo_tibetan_replaces(newChunk):newChunk
         });
       }
     }

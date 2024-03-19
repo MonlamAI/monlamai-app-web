@@ -265,7 +265,7 @@ export default function Index() {
             </div>
           ) : (
             <>
-              <div className="flex relative min-h-[15vh] lg:min-h-[30vh] w-full flex-1 flex-col justify-center gap-2">
+              <div className="flex relative min-h-[25vh] lg:min-h-[40vh] w-full flex-1 flex-col justify-center gap-2">
                 <TextOrDocumentComponent
                   selectedTool={selectedTool}
                   sourceText={sourceText}
@@ -290,6 +290,8 @@ export default function Index() {
                   MAX_SIZE_SUPPORT={MAX_SIZE_SUPPORT_DOC}
                 />
                 <SubmitButton
+                  charCount={charCount}
+                  CHAR_LIMIT={CHAR_LIMIT}
                   trigger={trigger}
                   selectedTool={selectedTool}
                   submitFile={handleFileSubmit}

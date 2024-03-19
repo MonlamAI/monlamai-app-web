@@ -38,6 +38,8 @@
   "appearance": "Appearance",
   "uploadImage": "Upload Image",
   "acceptedImage": "Accepted Image",
-  "translate": "Translate"
-
+  "translate": "Translate",
+  "document": "Document",
+  "text":"Text",
+  "recording":"Recording"
 }
