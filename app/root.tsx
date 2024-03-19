@@ -40,6 +40,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   const show_mt_language_toggle = fetchdata.flags.show_mt_language_toggle;
   const show_feed_bucket = fetchdata.flags.show_feed_bucket;
   const enable_ocr_model = fetchdata.flags.enable_ocr_model;
+  const enable_replacement_mt = fetchdata.flags.enable_replacement_mt;
   const feedBucketAccess = process.env.FEEDBUCKET_ACCESS;
   const feedbucketToken = process.env.FEEDBUCKET_TOKEN;
   return json(
@@ -50,6 +51,7 @@ export const loader: LoaderFunction = async ({ request }) => {
       show_mt_language_toggle: show_mt_language_toggle.enabled,
       show_feed_bucket_to_all: show_feed_bucket.enabled,
       enable_ocr_model: enable_ocr_model.enabled,
+      enable_replacement_mt: enable_replacement_mt.enabled,
       feedBucketAccess,
       feedbucketToken,
     },
@@ -131,7 +133,7 @@ export default function App() {
       <LitteraProvider locales={["en_US", "bo_TI"]}>
         <div className="flex flex-col flex-1">
           {user && <Header />}
-            {user && <LocationComponent/>}
+          {user && <LocationComponent />}
           <div className="flex-1">
             <Outlet />
           </div>

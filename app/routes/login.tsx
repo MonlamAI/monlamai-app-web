@@ -2,7 +2,6 @@ import type { LoaderFunction } from "@remix-run/node";
 import { Form, Link, redirect } from "@remix-run/react";
 import { Button } from "flowbite-react";
 import { TypeAnimation } from "react-type-animation";
-import { auth } from "~/services/auth.server";
 import { motion } from "framer-motion";
 import TranslationSwitcher from "~/component/TranslationSwitcher";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
