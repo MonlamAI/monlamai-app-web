@@ -53,3 +53,35 @@ export async function getTodayInferenceByUserIdCountModel(userId: number,model:m
     },
   });
 }
+
+export async function addFileInference({input,userId,type,model,jobId}){
+  return await db.inference.create({
+    data:{
+      input,
+      model,
+      userId,
+      type,
+      output:'',
+      jobId
+    }
+  }) 
+}
+
+export async function getUserFileInferences({userId}){
+  return await db.inference.findMany({
+    where:{
+      userId,
+      type:'file'
+    },
+    orderBy:{
+      updatedAt:'desc'
+    }
+  })
+}
+export  async function deleteInference({id}){
+  return await db.inference.delete({
+    where:{
+      id
+    }
+  })
+}

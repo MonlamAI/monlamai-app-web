@@ -1,13 +1,11 @@
-import { Button } from "flowbite-react";
 import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { FaFile } from "react-icons/fa6";
 import { toast } from "react-toastify";
 import { formatBytes } from "~/component/utils/formatSize";
-import { readDocxFile, readTextFile } from "~/component/utils/readers";
 import { MAX_SIZE_SUPPORT_DOC } from "~/helper/const";
 
-function FileUpload({ sourceText, setSourceText, reset }) {
+function FileUpload({ setFile }) {
   const [myFiles, setMyFiles] = useState([]);
   const maxSize = MAX_SIZE_SUPPORT_DOC.replace("KB", "");
   const onDrop = useCallback((acceptedFiles) => {
@@ -23,12 +21,9 @@ function FileUpload({ sourceText, setSourceText, reset }) {
       return;
     }
 
-    if (file.name.endsWith(".txt")) {
-      readTextFile(file, setSourceText);
-    } else if (file.name.endsWith(".docx")) {
-      readDocxFile(file, setSourceText);
-    } else {
-      console.log("Unsupported file type.");
+    if (!file.name.endsWith(".txt") && !file.name.endsWith(".docx"))  {
+      toast.info("Unsupported file type.");
+      return;
     }
   }, []);
   const { getRootProps, getInputProps, isDragActive, acceptedFiles } =
@@ -41,14 +36,11 @@ function FileUpload({ sourceText, setSourceText, reset }) {
     });
 
   const removeAll = () => {
-    reset();
     setMyFiles([]);
-    if (sourceText !== "") setSourceText("");
   };
-  useEffect(() => {
-    if (sourceText === "") removeAll();
-  }, [sourceText]);
-
+  useEffect(()=>{
+    if(myFiles.length>0) setFile(myFiles[0]);
+  },[myFiles.length])
   if (myFiles.length > 0)
     return (
       <div className="bg-gray-200 p-4 rounded-lg shadow-md flex justify-between items-center">
@@ -61,28 +53,38 @@ function FileUpload({ sourceText, setSourceText, reset }) {
             </div>
           ))}
         </div>
-        <Button size="sm" className="" pill onClick={removeAll}>
+        <button  className="bg-transparent text-black p-3 rounded-full hover:bg-gray-400"  onClick={removeAll}>
           X
-        </Button>
+        </button>
       </div>
     );
 
   return (
-    <div className="min-h-full flex-1 flex cursor-pointer" {...getRootProps()}>
+    <div className="min-h-full flex-1 flex cursor-pointer mb-3" {...getRootProps()}>
       <input {...getInputProps()} />
-      {isDragActive ? (
-        <p>Drop the files here ...</p>
-      ) : (
-        <>
-          <p className="flex-1 flex flex-col justify-center items-center border-blue-400 border-2 rounded text-slate-300 p-3">
+          <p style={{
+            backgroundColor: isDragActive?"#f5f5f5":'transparent',
+            borderColor: "#d3d3d3",
+            borderWidth: "2px",
+            borderStyle: "dashed",
+            borderRadius: "5px",
+            color: "#666",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            padding: "20px",
+            textAlign: "center",
+            height: "100%",
+            width: "100%",
+          
+          }} className="flex-1 flex flex-col justify-center items-center rounded text-slate-300 p-3">
             <img
               className="w-1/2 "
               src="//ssl.gstatic.com/translate/drag_and_drop.png"
             />
             Drag 'n' drop some files here, or click to select files
           </p>
-        </>
-      )}
     </div>
   );
 }

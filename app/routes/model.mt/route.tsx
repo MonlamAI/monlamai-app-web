@@ -16,27 +16,28 @@ import {
 import { useState, useRef, useEffect } from "react";
 import { auth } from "~/services/auth.server";
 import useDebounce from "~/component/hooks/useDebounceState";
-import useLocalStorage from "~/component/hooks/useLocaleStorage";
 import ErrorMessage from "~/component/ErrorMessage";
 import ToolWraper from "~/component/ToolWraper";
 import DownloadDocument from "~/routes/model.mt/components/DownloadDocument";
 import { toast } from "react-toastify";
 import {
   getTodayInferenceByUserIdCountModel,
+  getUserFileInferences,
   saveInference,
   updateEdit,
 } from "~/modal/inference.server";
 import ListInput from "~/component/ListInput";
 import {
   API_ERROR_MESSAGE,
-  API_HIT_DELAY,
   CHAR_LIMIT,
   MAX_SIZE_SUPPORT_DOC,
 } from "~/helper/const";
 import {
   CharacterOrFileSizeComponent,
   EditActionButtons,
+  InferenceList,
   OutputDisplay,
+  SubmitButton,
   TextOrDocumentComponent,
 } from "./components/UtilityComponent";
 import { NonEditModeActions } from "~/component/ActionButtons";
@@ -70,11 +71,16 @@ export async function loader({ request }: LoaderFunctionArgs) {
     checkNumberOfInferenceToday >= parseInt(process.env?.API_HIT_LIMIT!);
   let limitMessage =
     "You have reached the daily limit of translation. Please try again tomorrow.";
+
+  let inferences = await getUserFileInferences({ userId: user?.id });
+
   return {
     user: userdata,
     limitMessage: checkLimit ? limitMessage : null,
     url: process.env?.MT_API_URL,
     token: process.env?.MODEL_API_AUTH_TOKEN,
+    fileUploadUrl: process.env?.FILE_SUBMIT_URL,
+    inferences,
   };
 }
 
@@ -129,14 +135,14 @@ export default function Index() {
   const target_lang = params.get("target") || "bo";
   const source_lang = params.get("source") || "en";
   const [sourceText, setSourceText] = useState("");
-
-  const [selectedTool, setSelectedTool] = useLocalStorage(
-    "mt_selected_input",
-    "text"
-  );
-
-  const { translation, locale } = uselitteraTranlation();
-
+  const selectedTool = params.get("tool") || "text";
+  const setSelectedTool = (tool: string) => {
+    setParams((p) => {
+      p.set("tool", tool);
+      return p;
+    });
+  };
+  const [file, setFile] = useState<File | null>(null);
   const { limitMessage } = useLoaderData();
   const { show_mt_language_toggle } = useRouteLoaderData("root");
 
@@ -214,6 +220,18 @@ export default function Index() {
     resetFetcher(translationFetcher);
     resetFetcher(editfetcher);
   };
+
+  const handleFileSubmit = () => {
+    let formdata = new FormData();
+    formdata.append("file", file as Blob);
+    formdata.append("target", target_lang as string);
+
+    translationFetcher.submit(formdata, {
+      method: "POST",
+      encType: "multipart/form-data",
+      action: "/testupload",
+    });
+  };
   return (
     <ToolWraper title="MT">
       <ListInput
@@ -253,6 +271,7 @@ export default function Index() {
                   sourceText={sourceText}
                   setSourceText={setSourceText}
                   sourceLang={source_lang}
+                  setFile={setFile}
                 />
                 {selectedTool === "text" && (
                   <CancelButton
@@ -270,15 +289,11 @@ export default function Index() {
                   CHAR_LIMIT={CHAR_LIMIT}
                   MAX_SIZE_SUPPORT={MAX_SIZE_SUPPORT_DOC}
                 />
-                <Button
-                  size="xs"
-                  onClick={trigger}
-                  className={
-                    locale !== "bo_TI" ? "font-poppins" : "font-monlam"
-                  }
-                >
-                  {translation.translate}
-                </Button>
+                <SubmitButton
+                  trigger={trigger}
+                  selectedTool={selectedTool}
+                  submitFile={handleFileSubmit}
+                />
               </div>
             </>
           )}
@@ -306,6 +321,7 @@ export default function Index() {
                   targetLang={target_lang}
                 />
               )}
+              {selectedTool === "document" && <InferenceList />}
               {isLoading && <span>...</span>}
 
               {selectedTool === "document" && sourceText !== "" && (
