@@ -52,13 +52,15 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   } catch (e) {
     console.log(e);
   }
-
-  let inference_new = await addFileInference({
-    userId: user?.id,
-    input: inputFileUrl,
-    type: "file",
-    model: "mt",
-    jobId: inferenceData?.id,
-  });
-  return inference_new;
+  if (inferenceData) {
+    let inference_new = await addFileInference({
+      userId: user?.id,
+      input: inputFileUrl,
+      type: "file",
+      model: "mt",
+      jobId: inferenceData?.id,
+    });
+    return inference_new;
+  }
+  return null;
 };

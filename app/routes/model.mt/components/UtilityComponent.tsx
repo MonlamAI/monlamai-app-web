@@ -185,7 +185,7 @@ function EachInference({ inference }: any) {
   const [progress, setProgress] = useState(0);
   const { fileUploadUrl } = useLoaderData();
   const deleteFetcher = useFetcher();
-  let filename = inference.input.split("/MT/input/")[1].split("-%40-")[0];
+  let filename = inference.input.split("/MT/input/")[1].split("-%40-")[1];
   let updatedAt = new Date(inference.updatedAt);
   const revalidator = useRevalidator();
   let outputURL = inference.output;

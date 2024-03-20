@@ -1,7 +1,6 @@
 import { UploadHandler, writeAsyncIterableToWritable } from '@remix-run/node';
 import * as AWS from 'aws-sdk';
 import { PassThrough } from 'stream';
-import { v4 as uuidv4 } from 'uuid';
 
 // Replace these values with your own
 const AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID_PRODUCTION;
@@ -16,8 +15,7 @@ const uploadStream = ({ Key }: Pick<AWS.S3.Types.PutObjectRequest, 'Key'>) => {
     secretAccessKey: AWS_SECRET_ACCESS_KEY,
   });
   const pass = new PassThrough();
-  let id=uuidv4();
-  const KEY_NAME = `MT/input/${Key+'-@-'+id}`;
+  const KEY_NAME = `MT/input/${new Date().getTime()+'-@-'+Key}`;
   return {
     writeStream: pass,
     promise: s3
