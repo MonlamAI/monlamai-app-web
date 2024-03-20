@@ -235,7 +235,9 @@ function EachInference({ inference }: any) {
   return (
     <div className="bg-white rounded-lg  flex  justify-between items-center">
       <div>
-        <span className="text-gray-800 truncate">{filename}</span>
+        <span className="text-gray-800 truncate">
+          {decodeURIComponent(filename)}
+        </span>
         <span className="text-gray-500 text-xs block">
           {updatedAt ? timeSince(updatedAt) : ""}
         </span>
