@@ -10,13 +10,27 @@ module.exports = {
     "react-form-wizard-component",
     "docx",
     "file-saver",
-    "franc-min"
+    "franc-min",
   ],
   tailwind: true,
   browserNodeBuiltinsPolyfill: {
     modules: {
       path: true,
       util: true,
+      querystring: true,
+      net: true,
+      buffer: true,
+      events: true,
+      stream: true,
+      crypto: true,
+      http: true,
+      os: true,
+      assert: true,
+      tls: true,
+      url: true,
+      https: true,
+      fs: true,
+      child_process: true,
     },
   },
 };

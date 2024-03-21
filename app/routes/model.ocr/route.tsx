@@ -14,6 +14,7 @@ import OCR from "./Component/OCR";
 import { uploadToS3 } from "~/services/uploadToS3.server";
 import { saveInference } from "~/modal/inference.server";
 import { getUser } from "~/modal/user.server";
+import vision from "@google-cloud/vision";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -43,27 +44,27 @@ export async function action({ request }: ActionFunctionArgs) {
   ) {
   }
   ocrFormData.append("file", blob);
-  let url = process.env?.OCR_API_URL as string;
   const arrayBuffer = await blob.arrayBuffer();
   const buffer = Buffer.from(arrayBuffer);
   const key = `OCR/playground/${uuidv4() + "-" + blob.name}`;
   const locationOnS3 = await uploadToS3(buffer, key, "image/*");
   const startTime = Date.now();
+  let url = process.env?.FILE_SUBMIT_URL as string;
   try {
-    const response = await fetch(url, {
+    const response = await fetch(url + "/ocr/upload", {
       method: "POST",
       body: ocrFormData,
     });
-
     if (!response.ok) {
       const message = await response.json();
+      console.log(message);
       console.error("message", message);
       return {
         error_message: message?.detail,
       };
     }
     const data = await response.json();
-    const ocrtxt = data.output.join("\n");
+    const ocrtxt = data.content.join("\n");
     if (!ocrtxt || ocrtxt.length === 0) {
       return {
         error_message: "No text detected in the image",

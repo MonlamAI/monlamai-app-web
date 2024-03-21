@@ -12,6 +12,7 @@
   "dependencies": {
     "@assembless/react-littera": "^2.4.0",
     "@aws-sdk/client-s3": "^3.515.0",
+    "@google-cloud/vision": "^4.1.0",
     "@headlessui/react": "^1.7.17",
     "@prisma/client": "^5.4.2",
     "@remix-run/css-bundle": "2.5.0",
