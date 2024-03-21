@@ -44,7 +44,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     formdata.append("link", inputFileUrl);
     formdata.append("language", targetLanguage);
     const url = process.env.FILE_SUBMIT_URL;
-    let res = await fetch(url + `/aws`, {
+    let res = await fetch(url + `/mt/translate`, {
       method: "POST",
       body: formdata,
     });

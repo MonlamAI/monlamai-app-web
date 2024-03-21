@@ -14,7 +14,6 @@ import OCR from "./Component/OCR";
 import { uploadToS3 } from "~/services/uploadToS3.server";
 import { saveInference } from "~/modal/inference.server";
 import { getUser } from "~/modal/user.server";
-import vision from "@google-cloud/vision";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -78,7 +77,7 @@ export async function action({ request }: ActionFunctionArgs) {
       userId: user?.id,
       model: "ocr",
       input: locationOnS3,
-      output: ocrtxt,
+      output: data?.zipFileName,
       responseTime: responseTime,
     });
 

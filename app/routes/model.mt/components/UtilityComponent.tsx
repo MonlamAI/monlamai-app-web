@@ -192,7 +192,7 @@ function EachInference({ inference }: any) {
   let isComplete = !!outputURL;
   async function fetchJobProgress() {
     try {
-      let res = await fetch(fileUploadUrl + `/status/${inference.jobId}`);
+      let res = await fetch(fileUploadUrl + `/mt/status/${inference.jobId}`);
       let data = await res.json();
       let progress = data?.progress;
       console.log(data);
