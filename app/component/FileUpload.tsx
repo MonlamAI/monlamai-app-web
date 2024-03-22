@@ -39,7 +39,8 @@ function FileUpload({ setFile }) {
     setMyFiles([]);
   };
   useEffect(() => {
-    if (myFiles.length > 0) setFile(myFiles[0]);
+    if (myFiles?.length === 0) setFile([]);
+    if (myFiles?.length) setFile(myFiles[0]);
   }, [myFiles.length]);
   if (myFiles.length > 0)
     return (

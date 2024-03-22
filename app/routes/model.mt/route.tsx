@@ -295,6 +295,7 @@ export default function Index() {
                   trigger={trigger}
                   selectedTool={selectedTool}
                   submitFile={handleFileSubmit}
+                  disabled={!file || file.length === 0}
                 />
               </div>
             </>
