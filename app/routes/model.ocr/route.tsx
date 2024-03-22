@@ -36,6 +36,7 @@ export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
   const ocrFormData = new FormData();
   let blob = formData.get("image") as Blob;
+  console.log(blob);
   if (
     !blob.name.endsWith(".jpg") &&
     !blob.name.endsWith(".jpg") &&
@@ -63,7 +64,7 @@ export async function action({ request }: ActionFunctionArgs) {
       };
     }
     const data = await response.json();
-    const ocrtxt = data.content.join("\n");
+    const ocrtxt = data.content;
     if (!ocrtxt || ocrtxt.length === 0) {
       return {
         error_message: "No text detected in the image",

@@ -1,7 +1,7 @@
 import React from "react";
 import { useFetcher } from "@remix-run/react";
 import { Button, Card, FileInput, Label, Spinner } from "flowbite-react";
-import { useState   } from "react";
+import { useState } from "react";
 import CopyToClipboard from "~/component/CopyToClipboard";
 import { BiQuestionMark } from "react-icons/bi";
 import { Tooltip } from "flowbite-react";
@@ -89,7 +89,6 @@ function OCR() {
           </div>
         </fetcher.Form>
       </Card>
-
       <Card className="md:w-1/2">
         <div className="w-full h-[50vh] p-3 text-black bg-slate-50 rounded-lg overflow-auto">
           {isActionSubmission ? (
