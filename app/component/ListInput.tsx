@@ -28,7 +28,7 @@ export default function ListInput({
             onClick={() => setSelectedTool(option)}
             className={`capitalize ${isTibetan ? "pt-2" : ""}`}
           >
-            {translation[option]}
+            {translation[option] ? translation[option] : option}
           </Button>
         );
       })}

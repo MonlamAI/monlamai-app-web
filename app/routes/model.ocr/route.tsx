@@ -12,7 +12,7 @@ import DummyOCR from "~/routes/model.ocr/Component/DummyOCR";
 import { v4 as uuidv4 } from "uuid";
 import OCR from "./Component/OCR";
 import { uploadToS3 } from "~/services/uploadToS3.server";
-import { saveInference } from "~/modal/inference.server";
+import { getUserFileInferences, saveInference } from "~/modal/inference.server";
 import { getUser } from "~/modal/user.server";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
@@ -25,7 +25,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
   let userdata = await auth.isAuthenticated(request, {
     failureRedirect: "/login",
   });
-  return { user: userdata };
+  let user = await getUser(userdata?._json.email);
+
+  let inferenceList = await getUserFileInferences({
+    userId: user?.id,
+    model: "ocr",
+  });
+  let fileUploadUrl = process.env?.FILE_SUBMIT_URL as string;
+  return { user: userdata, inferenceList, fileUploadUrl };
 }
 
 export async function action({ request }: ActionFunctionArgs) {

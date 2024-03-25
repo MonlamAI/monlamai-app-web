@@ -12,6 +12,8 @@ export async function saveInference(inference: any) {
       responseTime: inference.responseTime,
       inputLang: inference.inputLang,
       outputLang: inference.outputLang,
+      type:inference?.type,
+      jobId:inference?.jobId
     },
   });
 }
