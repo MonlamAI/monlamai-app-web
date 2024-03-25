@@ -16,11 +16,16 @@ export const action: ActionFunction = async ({ request }) => {
   for (var i = 0; i < files.length; i++) {
     let formData = new FormData();
     formData.append("file", files[i]);
-    let res = await fetch(URL_File + "/ocr/queue", {
-      method: "POST",
-      body: formData,
-    });
-    let job = await res.json();
+    let job;
+    try {
+      let res = await fetch(URL_File + "/ocr/queue", {
+        method: "POST",
+        body: formData,
+      });
+      job = await res.json();
+    } catch (e) {
+      throw new Error("file server error");
+    }
     const key = `OCR/input/${files[i].name}`;
     const arrayBuffer = await files[i].arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
@@ -33,7 +38,7 @@ export const action: ActionFunction = async ({ request }) => {
       output: "",
       jobId: job?.jobId,
     });
-    jobs.push(job.jobId);
+    jobs.push(job?.jobId);
   }
   return jobs;
 };

@@ -9,7 +9,7 @@ import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import { resetFetcher } from "~/component/utils/resetFetcher";
 import ReactionButtons from "~/component/ReactionButtons";
 import ListInput from "~/component/ListInput";
-import { MdDeleteForever } from "react-icons/md";
+import { MdDeleteForever, MdRefresh } from "react-icons/md";
 import { FaDownload } from "react-icons/fa";
 import timeSince from "~/component/utils/timeSince";
 
@@ -43,12 +43,18 @@ function OCR() {
   const handleFormClear = () => {
     setImageUrl(null);
     resetFetcher(fetcher);
+    resetFetcher(multipleFileFetcher);
   };
   useEffect(() => {
     setImages([]);
     setImageUrl("");
+    handleFormClear();
   }, [selectedTool]);
-
+  const revalidator = useRevalidator();
+  const refresh = () => {
+    console.log("refresh");
+    revalidator.revalidate();
+  };
   return (
     <div className="flex flex-col gap-2 w-full">
       <ListInput
@@ -155,7 +161,10 @@ function OCR() {
                 >
                   <div className="pt-1">{translation.reset}</div>
                 </Button>
-                <Button type="submit" isProcessing={isActionSubmission}>
+                <Button
+                  type="submit"
+                  isProcessing={multipleFileFetcher.state !== "idle"}
+                >
                   <div className="pt-1">{translation.submit}</div>
                 </Button>
               </div>
@@ -184,6 +193,13 @@ function OCR() {
             )}
             {selectedTool === "multiple" && (
               <div>
+                <button
+                  type="button"
+                  className="float-right cursor-pointer hover:bg-gray-300 p-1 rounded"
+                  onClick={refresh}
+                >
+                  <MdRefresh />
+                </button>
                 {inferenceList.map((inference) => {
                   return (
                     <EachInference inference={inference} key={inference.id} />
@@ -226,9 +242,9 @@ function MultipleFiles({ image }) {
     </div>
   );
 }
-
+let timer;
 function EachInference({ inference }: any) {
-  const [progress, setProgress] = useState(0);
+  const [progress, setProgress] = useState<number | null>(0);
   const { fileUploadUrl } = useLoaderData();
   const deleteFetcher = useFetcher();
   let filename = inference.input.split("/OCR/input/")[1];
@@ -236,37 +252,17 @@ function EachInference({ inference }: any) {
   const revalidator = useRevalidator();
   let outputURL = inference.output;
   let isComplete = !!outputURL;
-  async function fetchJobProgress() {
-    try {
-      let res = await fetch(fileUploadUrl + `/ocr/status/${inference.jobId}`);
-      let data = await res.json();
-      let progress = data?.progress;
-      console.log(data);
-
-      if (progress) {
-        setProgress(progress);
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  }
 
   useEffect(() => {
-    if (progress === 100) {
-      setTimeout(() => {
+    if (!inference.output) {
+      timer = setInterval(() => {
         revalidator.revalidate();
-      }, 2000);
+      }, 3000);
     }
-    const interval = setInterval(() => {
-      if (progress < 80) {
-        fetchJobProgress();
-      } else {
-        clearInterval(interval);
-      }
-    }, 2000);
-
-    return () => clearInterval(interval);
-  }, [progress]);
+    return () => {
+      if (timer) clearInterval(timer);
+    };
+  }, []);
 
   function deleteHandler() {
     deleteFetcher.submit(
