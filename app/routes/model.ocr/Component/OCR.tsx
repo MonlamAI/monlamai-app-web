@@ -172,6 +172,15 @@ function OCR() {
           )}
         </Card>
         <Card className="md:w-1/2">
+          {selectedTool === "multiple" && (
+            <button
+              type="button"
+              className="float-right max-w-fit cursor-pointer hover:bg-gray-300 p-1 rounded"
+              onClick={refresh}
+            >
+              <MdRefresh />
+            </button>
+          )}
           <div className="w-full h-[50vh] p-3 text-black bg-slate-50 rounded-lg overflow-auto">
             {isActionSubmission ? (
               <div className="h-full flex justify-center items-center">
@@ -191,22 +200,12 @@ function OCR() {
                 )}
               </div>
             )}
-            {selectedTool === "multiple" && (
-              <div>
-                <button
-                  type="button"
-                  className="float-right cursor-pointer hover:bg-gray-300 p-1 rounded"
-                  onClick={refresh}
-                >
-                  <MdRefresh />
-                </button>
-                {inferenceList.map((inference) => {
-                  return (
-                    <EachInference inference={inference} key={inference.id} />
-                  );
-                })}
-              </div>
-            )}
+            {selectedTool === "multiple" &&
+              inferenceList.map((inference) => {
+                return (
+                  <EachInference inference={inference} key={inference.id} />
+                );
+              })}
           </div>
           <div className="flex justify-end">
             <div className="flex gap-3 md:gap-5 items-center p-2">
@@ -242,9 +241,10 @@ function MultipleFiles({ image }) {
     </div>
   );
 }
+
 let timer;
+
 function EachInference({ inference }: any) {
-  const [progress, setProgress] = useState<number | null>(0);
   const { fileUploadUrl } = useLoaderData();
   const deleteFetcher = useFetcher();
   let filename = inference.input.split("/OCR/input/")[1];
@@ -275,7 +275,7 @@ function EachInference({ inference }: any) {
   }
 
   return (
-    <div className="bg-white rounded-lg  flex  justify-between items-center">
+    <div className="rounded-lg  flex  justify-between items-center px-1 mx-2 mb-2 pb-1 border-b-2 border-gray-400">
       <div>
         <span className="text-gray-800 truncate">
           {decodeURIComponent(filename)}
@@ -285,18 +285,13 @@ function EachInference({ inference }: any) {
         </span>
       </div>
       <div className="flex gap-5 items-center">
-        {isComplete ? (
+        {isComplete && (
           <a
             href={outputURL}
             className="text-blue-500 hover:text-blue-700 transition duration-150 ease-in-out"
           >
             <FaDownload />
           </a>
-        ) : (
-          <div className="text-yellow-500">
-            <div>{progress}%</div>
-            <div role="status"></div>
-          </div>
         )}
         <button onClick={deleteHandler} className=" hover:text-red-400">
           <MdDeleteForever />
