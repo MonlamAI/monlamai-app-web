@@ -275,7 +275,7 @@ function EachInference({ inference }: any) {
   }
 
   return (
-    <div className="rounded-lg  flex  justify-between items-center px-1 mx-2 mb-2 pb-1 border-b-2 border-gray-400">
+    <div className="rounded-lg font-poppins  flex  justify-between items-center px-1 mx-2 mb-2 pb-1 border-b-2 border-gray-400">
       <div>
         <span className="text-gray-800 truncate">
           {decodeURIComponent(filename)}
@@ -285,13 +285,15 @@ function EachInference({ inference }: any) {
         </span>
       </div>
       <div className="flex gap-5 items-center">
-        {isComplete && (
+        {isComplete ? (
           <a
             href={outputURL}
             className="text-blue-500 hover:text-blue-700 transition duration-150 ease-in-out"
           >
             <FaDownload />
           </a>
+        ) : (
+          <span>processing</span>
         )}
         <button onClick={deleteHandler} className=" hover:text-red-400">
           <MdDeleteForever />
