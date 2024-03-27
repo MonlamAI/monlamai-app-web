@@ -23,6 +23,7 @@
     "@remix-run/v1-route-convention": "^0.1.4",
     "auth0-js": "^9.23.0",
     "aws-sdk": "^2.1577.0",
+    "axios": "^1.6.8",
     "compression": "^1.7.4",
     "cross-env": "^7.0.3",
     "docx": "^8.2.4",

@@ -1,48 +1,13 @@
-import React, { useEffect } from "react";
-import { useFetcher, useLoaderData, useRevalidator } from "@remix-run/react";
-import { useState } from "react";
-import { resetFetcher } from "~/component/utils/resetFetcher";
-import ListInput from "~/component/ListInput";
-import { MdDeleteForever, MdRefresh } from "react-icons/md";
+import { useFetcher, useLoaderData } from "@remix-run/react";
 import { FaDownload } from "react-icons/fa";
+import { MdDeleteForever } from "react-icons/md";
 import timeSince from "~/component/utils/timeSince";
-import SingleInputSection from "./SingleInputSection";
-import PDFInputSection from "./PDFInputSection";
-import FolderInputSection from "./FolderInputSection";
-
-function OCR() {
-  const [selectedTool, setSelectedTool] = useState("single");
-  const SingleFilefetcher = useFetcher();
-  const multipleFileFetcher = useFetcher();
-
-  return (
-    <div className="flex flex-col gap-2 w-full">
-      <ListInput
-        options={["single", "folder", "PDF"]}
-        selectedTool={selectedTool}
-        setSelectedTool={setSelectedTool}
-      />
-      {selectedTool === "single" && (
-        <SingleInputSection fetcher={SingleFilefetcher} />
-      )}
-      {selectedTool === "folder" && <FolderInputSection />}
-      {selectedTool === "PDF" && (
-        <PDFInputSection fetcher={multipleFileFetcher} />
-      )}
-    </div>
-  );
-}
-
-export default OCR;
-
-let timer;
 
 function EachInference({ inference }: any) {
   const { fileUploadUrl } = useLoaderData();
   const deleteFetcher = useFetcher();
-  let filename = inference.input.split("/OCR/input/")[1];
+  let filename = inference.input;
   let updatedAt = new Date(inference.updatedAt);
-  const revalidator = useRevalidator();
   let outputURL = inference.output;
   let isComplete = !!outputURL;
 
@@ -84,3 +49,5 @@ function EachInference({ inference }: any) {
     </div>
   );
 }
+
+export default EachInference;

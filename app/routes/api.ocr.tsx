@@ -13,11 +13,38 @@ export const action: ActionFunction = async ({ request }) => {
   let user = await getUser(userdata?._json.email);
   let jobs = [];
   let URL_File = process.env.FILE_SUBMIT_URL;
-  for (var i = 0; i < files.length; i++) {
+  let foldername = formdata.get("foldername") as string;
+  let PDFurls = formdata.get("files") as string;
+  let PDFFolderName = formdata.get("filesLocation") as string;
+  if (foldername) {
     let formData = new FormData();
-    formData.append("file", files[i]);
+    formData.append("folder", foldername);
+    let res = await fetch(URL_File + "/ocr/folderqueue", {
+      method: "POST",
+      body: formData,
+    });
+    let job = await res.json();
+    const inferenceData = await saveInference({
+      userId: user?.id,
+      model: "ocr",
+      input: foldername,
+      type: "file",
+      output: "",
+      jobId: job?.jobId,
+    });
+
+    return inferenceData;
+  }
+  if (PDFurls) {
     let job;
+    let filename;
     try {
+      let formData = new FormData();
+      formData.append("PDFurls", PDFurls);
+      formData.append("directory", PDFFolderName);
+
+      filename = PDFFolderName;
+
       let res = await fetch(URL_File + "/ocr/queue", {
         method: "POST",
         body: formData,
@@ -26,19 +53,15 @@ export const action: ActionFunction = async ({ request }) => {
     } catch (e) {
       throw new Error("file server error");
     }
-    const key = `OCR/input/${files[i].name}`;
-    const arrayBuffer = await files[i].arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
-    const url = await uploadToS3(buffer, key, files[i].type);
-    const inferenceData = await saveInference({
+    await saveInference({
       userId: user?.id,
       model: "ocr",
-      input: url,
+      input: filename,
       type: "file",
       output: "",
       jobId: job?.jobId,
     });
-    jobs.push(job?.jobId);
+    return PDFurls;
   }
-  return jobs;
+  return null;
 };
