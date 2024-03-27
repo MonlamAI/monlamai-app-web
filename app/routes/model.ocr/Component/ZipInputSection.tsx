@@ -5,16 +5,13 @@ import { useFetcher, useLoaderData } from "@remix-run/react";
 import axios from "axios";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import EachInference from "./EachInference";
-function ZipInputSection() {
-  let fetcher = useFetcher();
+import { resetFetcher } from "~/component/utils/resetFetcher";
+function ZipInputSection({ fetcher }: any) {
   const { inferenceList } = useLoaderData();
 
   const [file, setFile] = useState<File | null>(null);
   const [inputUrl, setInputUrl] = useState<string | null>(null);
-  const [folderName, setFolderName] = useState("");
   const [uploadProgress, setUploadProgress] = useState({});
-  let isActionSubmission = fetcher.state !== "idle";
-  let errorMessage = fetcher.data?.error;
   let { translation } = uselitteraTranlation();
 
   const handleFileChange = (event) => {
@@ -75,6 +72,12 @@ function ZipInputSection() {
       }
     );
   }
+  function handleClear() {
+    setUploadProgress({});
+    setFile(null);
+    setInputUrl(null);
+    resetFetcher(fetcher);
+  }
   return (
     <div className="flex w-full gap-3">
       <Card className="md:w-1/2 relative">
@@ -94,6 +97,7 @@ function ZipInputSection() {
                   name="files"
                   accept=".zip"
                   onChange={handleFileChange}
+                  key={inputUrl}
                 />
               ) : (
                 <ul>
@@ -110,7 +114,12 @@ function ZipInputSection() {
             </div>
           </div>
           <div className="flex justify-between">
-            <Button type="reset" color="gray" className="text-gray-500">
+            <Button
+              type="button"
+              color="gray"
+              className="text-gray-500"
+              onClick={handleClear}
+            >
               <div className="pt-1">{translation.reset}</div>
             </Button>
             <Button

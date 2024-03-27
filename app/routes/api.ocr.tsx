@@ -16,6 +16,32 @@ export const action: ActionFunction = async ({ request }) => {
   let zip_input_url = formdata.get("zip_input_url") as string;
   let PDFurls = formdata.get("files") as string;
   let PDFFolderName = formdata.get("filesLocation") as string;
+  let imageUrl = formdata.get("imageUrl") as string;
+  if (imageUrl) {
+    let formData = new FormData();
+    formData.append("imageUrl", imageUrl);
+
+    let res = await fetch(URL_File + "/ocr/upload", {
+      method: "POST",
+      body: formData,
+    });
+
+    let data = await res.json();
+    if (data?.error) {
+      return {
+        error_message: data.error,
+      };
+    }
+    const inferenceData = await saveInference({
+      userId: user?.id,
+      model: "ocr",
+      input: imageUrl,
+      type: "file",
+      output: data.content,
+      jobId: null,
+    });
+    return { text: inferenceData.output };
+  }
   if (zip_input_url) {
     let formData = new FormData();
     formData.append("zip_input_url", zip_input_url);
