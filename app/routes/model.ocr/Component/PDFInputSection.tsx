@@ -121,7 +121,6 @@ export default function PDFInputSection({ fetcher }: props) {
                   name="files"
                   accept=".pdf"
                   onChange={handleFileChange}
-                  multiple
                 />
               ) : (
                 <ul>
@@ -166,19 +165,6 @@ export default function PDFInputSection({ fetcher }: props) {
           })}
         </div>
       </Card>
-    </div>
-  );
-}
-
-function MultipleFiles({ image }) {
-  return (
-    <div
-      key={image.size}
-      className="flex gap-2 max-w-sm rounded overflow-hidden shadow-lg"
-    >
-      <div className="px-6 py-4 flex-1">
-        <div className=" mb-2">{image.name}</div>
-      </div>
     </div>
   );
 }

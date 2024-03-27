@@ -1,15 +1,62 @@
-import { useFetcher, useLoaderData } from "@remix-run/react";
+import { useFetcher, useLoaderData, useRevalidator } from "@remix-run/react";
+import { useEffect, useState } from "react";
 import { FaDownload } from "react-icons/fa";
 import { MdDeleteForever } from "react-icons/md";
 import timeSince from "~/component/utils/timeSince";
 
+let interval;
+
 function EachInference({ inference }: any) {
   const { fileUploadUrl } = useLoaderData();
+  const [isProgressEmpty, setIsProgressEmpty] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const revalidator = useRevalidator();
+
   const deleteFetcher = useFetcher();
   let filename = inference.input;
+  let displayname = filename.includes("/OCR/input/")
+    ? filename.split("/OCR/input/")[1]
+    : filename;
   let updatedAt = new Date(inference.updatedAt);
   let outputURL = inference.output;
   let isComplete = !!outputURL;
+
+  async function fetchJobProgress() {
+    try {
+      let res = await fetch(fileUploadUrl + `/ocr/status/${inference.jobId}`);
+      let data = await res.json();
+      let progress = data?.job?.progress;
+      if (Object.keys(data).length === 0) {
+        setIsProgressEmpty(true);
+      } else {
+        if (progress) {
+          setProgress(progress);
+        }
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  useEffect(() => {
+    if (!isComplete && progress < 100) {
+      interval = setInterval(() => {
+        fetchJobProgress(); // Assuming this function updates the 'progress' state
+      }, 2000);
+    }
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    if (isProgressEmpty) {
+      setTimeout(() => {
+        revalidator.revalidate();
+      }, 2000);
+    }
+    if (isProgressEmpty && interval) {
+      clearInterval(interval);
+    }
+  }, [isProgressEmpty]);
 
   function deleteHandler() {
     deleteFetcher.submit(
@@ -25,7 +72,7 @@ function EachInference({ inference }: any) {
     <div className="rounded-lg font-poppins  flex  justify-between items-center px-1 mx-2 mb-2 pb-1 border-b-2 border-gray-400">
       <div>
         <span className="text-gray-800 truncate">
-          {decodeURIComponent(filename)}
+          {decodeURIComponent(displayname)}
         </span>
         <span className="text-gray-500 text-xs block">
           {updatedAt ? timeSince(updatedAt) : ""}
@@ -40,7 +87,7 @@ function EachInference({ inference }: any) {
             <FaDownload />
           </a>
         ) : (
-          <span>processing</span>
+          <span>{progress}</span>
         )}
         <button onClick={deleteHandler} className=" hover:text-red-400">
           <MdDeleteForever />

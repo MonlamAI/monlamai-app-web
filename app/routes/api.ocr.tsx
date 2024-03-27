@@ -13,13 +13,13 @@ export const action: ActionFunction = async ({ request }) => {
   let user = await getUser(userdata?._json.email);
   let jobs = [];
   let URL_File = process.env.FILE_SUBMIT_URL;
-  let foldername = formdata.get("foldername") as string;
+  let zip_input_url = formdata.get("zip_input_url") as string;
   let PDFurls = formdata.get("files") as string;
   let PDFFolderName = formdata.get("filesLocation") as string;
-  if (foldername) {
+  if (zip_input_url) {
     let formData = new FormData();
-    formData.append("folder", foldername);
-    let res = await fetch(URL_File + "/ocr/folderqueue", {
+    formData.append("zip_input_url", zip_input_url);
+    let res = await fetch(URL_File + "/ocr/zip", {
       method: "POST",
       body: formData,
     });
@@ -27,12 +27,12 @@ export const action: ActionFunction = async ({ request }) => {
     const inferenceData = await saveInference({
       userId: user?.id,
       model: "ocr",
-      input: foldername,
+      input: zip_input_url,
       type: "file",
       output: "",
       jobId: job?.jobId,
     });
-
+    console.log(inferenceData);
     return inferenceData;
   }
   if (PDFurls) {

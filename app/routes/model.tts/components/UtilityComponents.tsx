@@ -19,6 +19,7 @@ export function InferenceListTts() {
 }
 
 let interval;
+
 function EachInference({ inference }: any) {
   const [progress, setProgress] = useState(0);
   const [isProgressEmpty, setIsProgressEmpty] = useState(false);

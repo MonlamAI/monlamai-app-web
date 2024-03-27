@@ -71,10 +71,11 @@ export async function action({ request }: ActionFunctionArgs) {
       };
     }
     const data = await response.json();
+    const error = data?.error;
     const ocrtxt = data.content;
-    if (!ocrtxt || ocrtxt.length === 0) {
+    if (!ocrtxt || ocrtxt.length === 0 || error) {
       return {
-        error_message: "No text detected in the image",
+        error_message: error,
       };
     }
 

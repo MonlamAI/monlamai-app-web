@@ -86,7 +86,9 @@ function SingleInptSection({ fetcher }: any) {
           ) : (
             <div className="text-lg  tracking-wide leading-loose overflow-auto">
               {errorMessage && (
-                <div className="text-red-500">{errorMessage}</div>
+                <div className="font-poppins capitalize text-red-300">
+                  {errorMessage}
+                </div>
               )}
               {data?.text && (
                 <div
