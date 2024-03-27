@@ -10,7 +10,7 @@ export function InferenceListTts() {
   let { inferences } = useLoaderData();
   if (!inferences) return null;
   return (
-    <div className="space-y-2 max-h-[50vh] overflow-auto font-poppins">
+    <div className="space-y-2 h-full overflow-auto font-poppins">
       {inferences.map((inference: any) => {
         return <EachInference inference={inference} key={inference.id} />;
       })}
@@ -79,7 +79,7 @@ function EachInference({ inference }: any) {
   }
 
   return (
-    <div className="bg-white rounded-lg  flex  justify-between items-center">
+    <div className="bg-white rounded-lg flex justify-between items-center">
       <div>
         <span className="text-gray-800 truncate">
           {decodeURIComponent(filenameOnly)}

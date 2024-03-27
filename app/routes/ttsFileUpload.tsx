@@ -45,7 +45,6 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       process.env.NODE_ENV === "development"
         ? process.env.FILE_SUBMIT_URL_DEV
         : process.env.FILE_SUBMIT_URL;
-    console.log("url", url);
     let res = await fetch(url + `/tts/synthesis`, {
       method: "POST",
       body: formdata,
@@ -62,6 +61,5 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     model: "tts",
     jobId: inferenceData?.id,
   });
-  console.log("inference_new", inference_new);
   return inference_new;
 };
