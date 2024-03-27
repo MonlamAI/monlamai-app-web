@@ -18,8 +18,10 @@ export function InferenceListTts() {
   );
 }
 
+let interval;
 function EachInference({ inference }: any) {
   const [progress, setProgress] = useState(0);
+  const [isProgressEmpty, setIsProgressEmpty] = useState(false);
   const { fileUploadUrl } = useLoaderData();
   const deleteFetcher = useFetcher();
   let filename = inference.input.split("/TTS/input/")[1].split("-%40-")[1];
@@ -28,15 +30,18 @@ function EachInference({ inference }: any) {
   const revalidator = useRevalidator();
   let outputURL = inference.output;
   let isComplete = !!outputURL;
+
   async function fetchJobProgress() {
     try {
       let res = await fetch(fileUploadUrl + `/tts/status/${inference.jobId}`);
       let data = await res.json();
-      let progress = data?.progress;
-      console.log(data);
-
-      if (progress) {
-        setProgress(progress);
+      let progress = data?.job?.progress;
+      if (Object.keys(data).length === 0) {
+        setIsProgressEmpty(true);
+      } else {
+        if (progress) {
+          setProgress(progress);
+        }
       }
     } catch (e) {
       console.log(e);
@@ -44,21 +49,24 @@ function EachInference({ inference }: any) {
   }
 
   useEffect(() => {
-    if (progress === 100) {
+    if (!isComplete && progress < 100) {
+      interval = setInterval(() => {
+        fetchJobProgress(); // Assuming this function updates the 'progress' state
+      }, 2000);
+    }
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    if (isProgressEmpty) {
       setTimeout(() => {
         revalidator.revalidate();
       }, 2000);
     }
-    const interval = setInterval(() => {
-      if (progress < 80) {
-        fetchJobProgress();
-      } else {
-        clearInterval(interval);
-      }
-    }, 2000);
-
-    return () => clearInterval(interval);
-  }, [progress]);
+    if (isProgressEmpty && interval) {
+      clearInterval(interval);
+    }
+  }, [isProgressEmpty]); // Dependency array ensures this effect runs when 'progress' changes
 
   function deleteHandler() {
     deleteFetcher.submit(
@@ -85,6 +93,7 @@ function EachInference({ inference }: any) {
           <a
             href={outputURL}
             className="text-blue-500 hover:text-blue-700 transition duration-150 ease-in-out"
+            download={filenameOnly}
           >
             <FaDownload />
           </a>
