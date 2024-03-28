@@ -81,6 +81,7 @@ export async function getUserFileInferences({ userId, model }) {
     orderBy: {
       updatedAt: "desc",
     },
+    take:20
   });
 }
 export async function deleteInference({ id }) {
