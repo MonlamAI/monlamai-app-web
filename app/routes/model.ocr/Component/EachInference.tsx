@@ -53,7 +53,7 @@ function EachInference({ inference }: any) {
     if (!isComplete && progress < 100) {
       interval = setInterval(() => {
         fetchJobProgress(); // Assuming this function updates the 'progress' state
-      }, 500);
+      }, 3000);
     }
     return () => clearInterval(interval);
   }, []);
@@ -103,7 +103,7 @@ function EachInference({ inference }: any) {
             <FaDownload />
           </a>
         ) : (
-          <span>{progress !== 0 && progress}</span>
+          <span>{progress !== 0 ? progress : "wait"}</span>
         )}
         <button onClick={deleteHandler} className=" hover:text-red-400">
           <MdDeleteForever />
