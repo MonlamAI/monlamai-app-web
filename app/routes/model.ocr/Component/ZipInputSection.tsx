@@ -92,7 +92,7 @@ function ZipInputSection({ fetcher }: any) {
               />
               {!file ? (
                 <FileInput
-                  helperText={`${translation.acceptedImage} PDF`}
+                  helperText={`${translation.acceptedImage} Zip`}
                   id="file"
                   name="files"
                   accept=".zip"
@@ -103,11 +103,13 @@ function ZipInputSection({ fetcher }: any) {
                 <ul>
                   <li className="p-2 flex justify-between">
                     <span>{file.name}</span>
-                    <span>
-                      {uploadProgress[file.name]
-                        ? uploadProgress[file.name] + "%"
-                        : ""}
-                    </span>
+                    {uploadProgress[file.name] != 100 && (
+                      <span>
+                        {uploadProgress[file.name]
+                          ? uploadProgress[file.name] + "%"
+                          : ""}
+                      </span>
+                    )}
                   </li>
                 </ul>
               )}

@@ -38,11 +38,22 @@ function EachInference({ inference }: any) {
     }
   }
 
+  async function handleCancelJob() {
+    try {
+      let res = await fetch(fileUploadUrl + `/ocr/cancel/${inference.jobId}`);
+      let data = await res.json();
+      let message = data?.message;
+      return message;
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   useEffect(() => {
     if (!isComplete && progress < 100) {
       interval = setInterval(() => {
         fetchJobProgress(); // Assuming this function updates the 'progress' state
-      }, 2000);
+      }, 500);
     }
     return () => clearInterval(interval);
   }, []);
@@ -58,7 +69,8 @@ function EachInference({ inference }: any) {
     }
   }, [isProgressEmpty]);
 
-  function deleteHandler() {
+  async function deleteHandler() {
+    await handleCancelJob();
     deleteFetcher.submit(
       { id: inference.id },
       {
@@ -67,12 +79,16 @@ function EachInference({ inference }: any) {
       }
     );
   }
+  const truncateString = (str, maxLength, ending = "...") =>
+    str.length > maxLength
+      ? str.substring(0, maxLength - ending.length) + ending
+      : str;
 
   return (
     <div className="rounded-lg font-poppins  flex  justify-between items-center px-1 mx-2 mb-2 pb-1 border-b-2 border-gray-400">
       <div>
         <span className="text-gray-800 truncate">
-          {decodeURIComponent(displayname)}
+          {truncateString(decodeURIComponent(displayname), 40)}
         </span>
         <span className="text-gray-500 text-xs block">
           {updatedAt ? timeSince(updatedAt) : ""}
@@ -87,7 +103,7 @@ function EachInference({ inference }: any) {
             <FaDownload />
           </a>
         ) : (
-          <span>{progress}</span>
+          <span>{progress !== 0 && progress}</span>
         )}
         <button onClick={deleteHandler} className=" hover:text-red-400">
           <MdDeleteForever />

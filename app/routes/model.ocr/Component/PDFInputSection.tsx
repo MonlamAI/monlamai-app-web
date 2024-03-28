@@ -14,41 +14,40 @@ type props = {
 export default function PDFInputSection({ fetcher }: props) {
   let { translation } = uselitteraTranlation();
   const { inferenceList } = useLoaderData();
-  const [uploadStatuses, setUploadStatuses] = useState({});
-  const [uploadProgress, setUploadProgress] = useState({});
-  const [folderName, setFolderName] = useState("");
-
-  const [images, setImages] = useState([]);
-  const [filePaths, setFilePaths] = useState([]);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [file, setFile] = useState<File | null>(null);
+  const [fileName, setFileName] = useState("");
+  const [filePath, setFilePath] = useState<string | null>();
 
   function handleFormClear() {
     resetFetcher(fetcher);
+    setFile(null);
+    setFilePath(null);
+    setFileName("");
+    setUploadProgress(0);
   }
 
   const handleFileChange = (event) => {
-    const files = event.target.files;
-    const chosenFiles = Array.prototype.slice.call(files);
-    setImages(chosenFiles);
-    setFolderName(Date.now() + "-" + files[0]?.name?.replace(".pdf", ""));
+    const file = event.target.files[0];
+    setFile(file);
   };
+
   useEffect(() => {
-    if (images.length > 0) {
+    if (file?.name) {
       const uploadFiles = async () => {
-        for (const file of images) {
-          await uploadFile(file, folderName);
-        }
+        await uploadFile(file);
       };
 
       uploadFiles();
     }
-  }, [images.length]);
-  const uploadFile = async (file, folderName) => {
+  }, [file?.name]);
+  const uploadFile = async (file: File) => {
     try {
       let formData = new FormData();
       let filename = Date.now() + "-" + file.name;
+      setFileName(filename);
       formData.append("filename", filename);
       formData.append("filetype", file.type);
-      formData.append("folder", folderName);
 
       const response = await axios.post("/api/get_presigned_url", formData);
       const { url } = response.data;
@@ -61,23 +60,13 @@ export default function PDFInputSection({ fetcher }: props) {
           const percentCompleted = Math.round(
             (progressEvent.loaded * 100) / progressEvent.total
           );
-          setUploadProgress((prevProgress) => ({
-            ...prevProgress,
-            [file.name]: percentCompleted,
-          }));
-          setUploadStatuses((prevStatuses) => ({
-            ...prevStatuses,
-            [file.name]: true,
-          }));
+          setUploadProgress(percentCompleted);
         },
       });
       if (uploadStatus.status === 200) {
         const uploadedFilePath = uploadStatus.config.url;
         const baseUrl = uploadedFilePath?.split("?")[0];
-        setFilePaths((prev) => {
-          prev.push(baseUrl);
-          return prev;
-        });
+        setFilePath(baseUrl);
         console.log(`File ${file.name} uploaded successfully.`, uploadStatus);
       }
     } catch (error) {
@@ -86,22 +75,15 @@ export default function PDFInputSection({ fetcher }: props) {
   };
   function handleStartJob() {
     let formData = new FormData();
-    formData.append("files", JSON.stringify(filePaths));
-    formData.append("filesLocation", folderName);
+    formData.append("pdf_file", filePath!);
+    formData.append("file_name", fileName);
     fetcher.submit(formData, {
       method: "POST",
       action: "/api/ocr",
     });
   }
-  const checkAllUploadsComplete = () => {
-    const allDone = Object.values(uploadStatuses).every((status) => status);
-    if (allDone) {
-      console.log("All files have been uploaded.");
-      // Perform any action after all files have been uploaded
-    }
-    return allDone;
-  };
-  let alldone = checkAllUploadsComplete() && images.length > 0;
+
+  let alldone = !!filePath;
   return (
     <div className="flex w-full gap-3">
       <Card className="md:w-1/2 relative">
@@ -114,33 +96,30 @@ export default function PDFInputSection({ fetcher }: props) {
                 value={translation.uploadImage}
                 className="text-lg text-slate-700"
               />
-              {images.length === 0 ? (
+              {!file ? (
                 <FileInput
                   helperText={`${translation.acceptedImage} PDF`}
                   id="file"
                   name="files"
                   accept=".pdf"
                   onChange={handleFileChange}
+                  key={file?.size}
                 />
               ) : (
                 <ul>
-                  {images.map((file, index) => (
-                    <li key={index} className="p-2 flex justify-between">
-                      <span>{file.name}</span>
-                      <span>
-                        {uploadProgress[file.name]
-                          ? uploadProgress[file.name] + "%"
-                          : ""}
-                      </span>
-                    </li>
-                  ))}
+                  <li className="p-2 flex justify-between">
+                    <span>{file.name}</span>
+                    {uploadProgress != 100 && (
+                      <span>{uploadProgress ? uploadProgress + "%" : ""}</span>
+                    )}
+                  </li>
                 </ul>
               )}
             </div>
           </div>
           <div className="flex justify-between">
             <Button
-              type="reset"
+              type="button"
               color="gray"
               onClick={handleFormClear}
               className="text-gray-500"

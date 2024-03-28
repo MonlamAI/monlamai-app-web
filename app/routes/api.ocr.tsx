@@ -14,8 +14,9 @@ export const action: ActionFunction = async ({ request }) => {
   let jobs = [];
   let URL_File = process.env.FILE_SUBMIT_URL;
   let zip_input_url = formdata.get("zip_input_url") as string;
-  let PDFurls = formdata.get("files") as string;
-  let PDFFolderName = formdata.get("filesLocation") as string;
+  let PDFurls = formdata.get("pdf_file") as string;
+  let filename = formdata.get("file_name") as string;
+
   let imageUrl = formdata.get("imageUrl") as string;
   if (imageUrl) {
     let formData = new FormData();
@@ -63,31 +64,28 @@ export const action: ActionFunction = async ({ request }) => {
   }
   if (PDFurls) {
     let job;
-    let filename;
     try {
       let formData = new FormData();
       formData.append("PDFurls", PDFurls);
-      formData.append("directory", PDFFolderName);
+      formData.append("filename", filename);
 
-      filename = PDFFolderName;
-
-      let res = await fetch(URL_File + "/ocr/queue", {
+      let res = await fetch(URL_File + "/ocr/pdf", {
         method: "POST",
         body: formData,
       });
       job = await res.json();
+      await saveInference({
+        userId: user?.id,
+        model: "ocr",
+        input: filename,
+        type: "file",
+        output: "",
+        jobId: job?.jobId,
+      });
+      return PDFurls;
     } catch (e) {
       throw new Error("file server error");
     }
-    await saveInference({
-      userId: user?.id,
-      model: "ocr",
-      input: filename,
-      type: "file",
-      output: "",
-      jobId: job?.jobId,
-    });
-    return PDFurls;
   }
   return null;
 };
