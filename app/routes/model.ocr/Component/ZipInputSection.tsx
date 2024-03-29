@@ -92,10 +92,10 @@ function ZipInputSection({ fetcher }: any) {
               />
               {!file ? (
                 <FileInput
-                  helperText={`${translation.acceptedImage} Zip`}
+                  helperText={`${translation.acceptedImage} Zip , gz`}
                   id="file"
                   name="files"
-                  accept=".zip"
+                  accept=".zip, .gz"
                   onChange={handleFileChange}
                   key={inputUrl}
                 />
@@ -137,6 +137,7 @@ function ZipInputSection({ fetcher }: any) {
       </Card>
       <Card className="md:w-1/2">
         <div className="w-full h-[50vh] p-3 text-black bg-slate-50 rounded-lg overflow-auto">
+          {fetcher.data?.error && <div>{fetcher.data?.error}</div>}
           {inferenceList.map((inference) => {
             return <EachInference inference={inference} key={inference.id} />;
           })}

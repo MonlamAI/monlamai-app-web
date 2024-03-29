@@ -84,6 +84,7 @@ export async function getUserFileInferences({ userId, model }) {
     take:20
   });
 }
+
 export async function deleteInference({ id }) {
   return await db.inference.delete({
     where: {

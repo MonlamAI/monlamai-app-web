@@ -139,6 +139,8 @@ export default function PDFInputSection({ fetcher }: props) {
       </Card>
       <Card className="md:w-1/2">
         <div className="w-full h-[50vh] p-3 text-black bg-slate-50 rounded-lg overflow-auto">
+          {fetcher.data?.error && <div>{fetcher.data?.error}</div>}
+
           {inferenceList.map((inference) => {
             return <EachInference inference={inference} key={inference.id} />;
           })}
