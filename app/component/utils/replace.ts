@@ -1819,7 +1819,7 @@ export function en_bo_tibetan_replaces(text: string) {
   result = result.replaceAll("རྟེན་འབུལ་འབུལ་འབུལ་ཆེད", "རྟེན་འབུལ་འབུལ་ཆེད");
   result = result.replaceAll("ཕྱི་ལོ་༢༠༠༨", "");
   result = result.replaceAll("མ་ངེས་པ་", "");
-
+  result = result.replaceAll("ཨིན་ཆས་ཐི་ཡིས་", "");
   result = result.replaceAll("ངེས་མེད་", "");
   result = result.replaceAll("གསལ་ཁ་མེད་པའི་", "");
   result = result.replaceAll("ངེས་མེད་ཀྱི་", "");
