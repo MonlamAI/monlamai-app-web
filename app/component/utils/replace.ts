@@ -1828,7 +1828,10 @@ export function en_bo_tibetan_replaces(text: string) {
   result = result.replaceAll("བེེངྒ་ལོར་རྒྱལ་བའི་བླ་མ་མཐོ་རིམ་སློབ་གཉེར་ཁང་", "བྷེན་ལོར་ཏཱ་ལའི་བླ་མ་མཐོ་རིམ་སློབ་གཉེར་ཁང་");
   result = result.replaceAll("མ་ངེས་", "");
   result = result.replaceAll("ངེས་ཚིག་མ་བཀོད་པའི་", "");
-//ངེས་ཚིག་མ་བཀོད་པའི་
+  result = result.replaceAll("ཨུ་ཡོན་གཞོན་པ", "དྲུང་ཆེ་གཞོན་པ");
+  result = result.replaceAll("ཨུ་ཡོན་ཀྲང་", "ཚོགས་གཙོ་");
+  result = result.replaceAll("ཨུ་ཡོན་", "འཐུས་མི་");
+//ཨུ་ཡོན་གཞོན་
   result = result.replaceAll(
     "༸ཏཱ་ལའི་བླ་མའི་དགོངས་པ་རྫོགས་ཚུལ་",
     "ཁོ་སྐུ་གཤེགས་པའི་སྐོར་"
