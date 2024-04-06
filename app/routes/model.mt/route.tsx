@@ -72,7 +72,10 @@ export async function loader({ request }: LoaderFunctionArgs) {
   let limitMessage =
     "You have reached the daily limit of translation. Please try again tomorrow.";
 
-  let inferences = await getUserFileInferences({ userId: user?.id });
+  let inferences = await getUserFileInferences({
+    userId: user?.id,
+    model: "mt",
+  });
 
   return {
     user: userdata,
@@ -295,6 +298,7 @@ export default function Index() {
                   trigger={trigger}
                   selectedTool={selectedTool}
                   submitFile={handleFileSubmit}
+                  disabled={!file || file.length === 0}
                 />
               </div>
             </>

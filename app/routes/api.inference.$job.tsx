@@ -8,6 +8,7 @@ export const action: ActionFunction = async ({ request, params }) => {
   const inferenceSelected = await db.inference.findFirst({
     where: { jobId: jobId },
   });
+  console.log(jobId, jobSource);
   if (inferenceSelected) {
     const updatedJob = await db.inference.update({
       where: {

@@ -12,6 +12,8 @@ export async function saveInference(inference: any) {
       responseTime: inference.responseTime,
       inputLang: inference.inputLang,
       outputLang: inference.outputLang,
+      type:inference?.type,
+      jobId:inference?.jobId
     },
   });
 }
@@ -40,8 +42,10 @@ export async function updateEdit(inferenceId: string, edited: string) {
   });
 }
 
-
-export async function getTodayInferenceByUserIdCountModel(userId: number,model:models) {
+export async function getTodayInferenceByUserIdCountModel(
+  userId: number,
+  model: models
+) {
   return await db.inference.count({
     where: {
       userId,
@@ -54,34 +58,37 @@ export async function getTodayInferenceByUserIdCountModel(userId: number,model:m
   });
 }
 
-export async function addFileInference({input,userId,type,model,jobId}){
+export async function addFileInference({ input, userId, type, model, jobId }) {
   return await db.inference.create({
-    data:{
+    data: {
       input,
       model,
       userId,
       type,
-      output:'',
-      jobId
-    }
-  }) 
+      output: "",
+      jobId,
+    },
+  });
 }
 
-export async function getUserFileInferences({userId}){
+export async function getUserFileInferences({ userId, model }) {
   return await db.inference.findMany({
-    where:{
+    where: {
       userId,
-      type:'file'
+      type: "file",
+      model,
     },
-    orderBy:{
-      updatedAt:'desc'
-    }
-  })
+    orderBy: {
+      updatedAt: "desc",
+    },
+    take:20
+  });
 }
-export  async function deleteInference({id}){
+
+export async function deleteInference({ id }) {
   return await db.inference.delete({
-    where:{
-      id
-    }
-  })
+    where: {
+      id,
+    },
+  });
 }

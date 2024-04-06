@@ -9,7 +9,7 @@ import {
 import { addFileInference, deleteInference } from "~/modal/inference.server";
 import { getUser } from "~/modal/user.server";
 import { auth } from "~/services/auth.server";
-import { uploadFile } from "~/services/uploadFile.server";
+import { ttsUploadFile } from "~/services/ttsUploadFile.server";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   if (request.method === "DELETE") {
@@ -22,7 +22,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   }
 
   const uploadHandler: UploadHandler = unstable_composeUploadHandlers(
-    uploadFile,
+    ttsUploadFile,
     unstable_createMemoryUploadHandler()
   );
 
@@ -36,15 +36,16 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     uploadHandler
   );
   const inputFileUrl = formData.get("file") as string;
-  const targetLanguage = formData.get("target") as string;
 
   let inferenceData;
   try {
     var formdata = new FormData();
     formdata.append("link", inputFileUrl);
-    formdata.append("language", targetLanguage);
-    const url = process.env.FILE_SUBMIT_URL;
-    let res = await fetch(url + `/mt/translate`, {
+    const url =
+      process.env.NODE_ENV === "development"
+        ? process.env.FILE_SUBMIT_URL_DEV
+        : process.env.FILE_SUBMIT_URL;
+    let res = await fetch(url + `/tts/synthesis`, {
       method: "POST",
       body: formdata,
     });
@@ -52,15 +53,13 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   } catch (e) {
     console.log(e);
   }
-  if (inferenceData) {
-    let inference_new = await addFileInference({
-      userId: user?.id,
-      input: inputFileUrl,
-      type: "file",
-      model: "mt",
-      jobId: inferenceData?.id,
-    });
-    return inference_new;
-  }
-  return null;
+
+  let inference_new = await addFileInference({
+    userId: user?.id,
+    input: inputFileUrl,
+    type: "file",
+    model: "tts",
+    jobId: inferenceData?.id,
+  });
+  return inference_new;
 };

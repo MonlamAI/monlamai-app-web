@@ -13,13 +13,20 @@ import { CHAR_LIMIT, MAX_SIZE_SUPPORT_DOC } from "~/helper/const";
 import ShareLink from "~/component/ShareLink";
 import { resetFetcher } from "~/component/utils/resetFetcher";
 import { RxCross2 } from "react-icons/rx";
-import { CancelButton, SubmitButton } from "~/component/Buttons";
+import { CancelButton } from "~/component/Buttons";
 import FileUpload from "~/component/FileUpload";
 import TextComponent from "~/component/TextComponent";
 import { CharacterOrFileSizeComponent } from "../model.mt/components/UtilityComponent";
 import ErrorMessage from "~/component/ErrorMessage";
 import CardComponent from "~/component/Card";
 import { auth } from "~/services/auth.server";
+import { getUser } from "~/modal/user.server";
+import { getUserFileInferences } from "~/modal/inference.server";
+import {
+  InferenceListTts,
+  TtsSubmitButton,
+} from "./components/UtilityComponents";
+import { toast } from "react-toastify";
 
 export const meta: MetaFunction = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -32,11 +39,22 @@ export async function loader({ request }: LoaderFunctionArgs) {
   let userdata = await auth.isAuthenticated(request, {
     failureRedirect: "/login",
   });
-  return { user: userdata };
+  let user = await getUser(userdata?._json.email);
+
+  let inferences = await getUserFileInferences({
+    userId: user?.id,
+    model: "tts",
+  });
+  return {
+    user: userdata,
+    fileUploadUrl: process.env?.FILE_SUBMIT_URL_DEV,
+    inferences,
+  };
 }
 
 export default function Index() {
   const [sourceText, setSourceText] = useState("");
+  const [file, setFile] = useState<File | null>(null);
   const [selectedTool, setSelectedTool] = useLocalStorage(
     "tts_selected_input",
     "text"
@@ -51,6 +69,8 @@ export default function Index() {
   }, [data]);
   const audioRef = useRef<HTMLAudioElement>(null);
   let setting = useRef();
+
+  let charCount = sourceText?.length;
 
   const handleVolumeChange = (e) => {
     setVolume(e.target.value);
@@ -77,21 +97,34 @@ export default function Index() {
     }
   }
 
+  const handleFileSubmit = () => {
+    let formdata = new FormData();
+    formdata.append("file", file as Blob);
+
+    fetcher.submit(formdata, {
+      method: "POST",
+      encType: "multipart/form-data",
+      action: "/ttsFileUpload",
+    });
+  };
+
   function submitHandler(e) {
-    e.preventDefault();
-    fetcher.submit(
-      {
-        sourceText: sourceText,
-      },
-      {
-        method: "POST",
-        action: "/api/tts",
-      }
-    );
+    if (!sourceText || sourceText === "") {
+      toast.info("Text is required for TTS");
+    } else {
+      fetcher.submit(
+        {
+          sourceText: sourceText,
+        },
+        {
+          method: "POST",
+          action: "/api/tts",
+        }
+      );
+    }
   }
   let actionError = fetcher.data?.error as string;
 
-  let { translation } = uselitteraTranlation();
   return (
     <ToolWraper title="TTS">
       <InferenceWrapper
@@ -111,13 +144,7 @@ export default function Index() {
                   sourceLang={"bo"}
                 />
               )}
-              {selectedTool === "document" && (
-                <FileUpload
-                  setSourceText={setSourceText}
-                  sourceText={sourceText}
-                  reset={handleReset}
-                />
-              )}
+              {selectedTool === "document" && <FileUpload setFile={setFile} />}
               {selectedTool === "text" && (
                 <CancelButton
                   onClick={handleReset}
@@ -130,24 +157,23 @@ export default function Index() {
             <div className="flex justify-between items-center">
               <CharacterOrFileSizeComponent
                 selectedTool={selectedTool}
-                charCount={sourceText.length}
+                charCount={charCount}
                 CHAR_LIMIT={CHAR_LIMIT}
                 MAX_SIZE_SUPPORT={MAX_SIZE_SUPPORT_DOC}
               />
-              <SubmitButton
-                type="submit"
-                form="ttsForm"
-                isProcessing={isLoading}
-                onClick={submitHandler}
-                disabled={!sourceText || sourceText === ""}
-              >
-                {translation.submit}
-              </SubmitButton>
+              <TtsSubmitButton
+                charCount={charCount}
+                CHAR_LIMIT={CHAR_LIMIT}
+                trigger={submitHandler}
+                selectedTool={selectedTool}
+                submitFile={handleFileSubmit}
+                disabled={!file || file.length === 0}
+              />
             </div>
           </div>
         </CardComponent>
         <CardComponent>
-          <div className="w-full flex-1 min-h-[30vh]">
+          <div className="flex min-h-[15vh] lg:min-h-[30vh] h-auto w-full flex-1 flex-col gap-2 ">
             {data && (
               <div className="flex justify-between mx-2">
                 <div className="flex items-center gap-3">
@@ -163,11 +189,12 @@ export default function Index() {
                 </div>
               </div>
             )}
-            {isLoading ? (
+            {isLoading && selectedTool === "text" && (
               <div className="h-full flex justify-center items-center">
                 <Spinner />
               </div>
-            ) : (
+            )}
+            {selectedTool === "text" && data && (
               <div className="flex-1 h-full flex justify-center items-center">
                 {data?.error ? (
                   <div className="text-red-400">{data?.error}</div>
@@ -177,6 +204,12 @@ export default function Index() {
                 )}
               </div>
             )}
+            {isLoading && selectedTool === "document" && (
+              <div className="w-full flex justify-center">
+                <Spinner />
+              </div>
+            )}
+            {selectedTool === "document" && <InferenceListTts />}
           </div>
           <div className="flex justify-end">
             <div className="flex gap-3 md:gap-5 items-center p-2">

@@ -153,13 +153,15 @@ export function SubmitButton({
   submitFile,
   charCount,
   CHAR_LIMIT,
+  disabled,
 }) {
   const { translation, locale } = uselitteraTranlation();
   const isFile = selectedTool === "document";
   const exceedsLimit = charCount > CHAR_LIMIT;
+
   return (
     <Button
-      disabled={exceedsLimit}
+      disabled={!isFile ? exceedsLimit : disabled}
       size="xs"
       title={exceedsLimit ? "Character limit exceeded" : ""}
       onClick={isFile ? submitFile : trigger}
@@ -185,14 +187,14 @@ function EachInference({ inference }: any) {
   const [progress, setProgress] = useState(0);
   const { fileUploadUrl } = useLoaderData();
   const deleteFetcher = useFetcher();
-  let filename = inference.input.split("/MT/input/")[1].split("-%40-")[0];
+  let filename = inference.input.split("/MT/input/")[1].split("-%40-")[1];
   let updatedAt = new Date(inference.updatedAt);
   const revalidator = useRevalidator();
   let outputURL = inference.output;
   let isComplete = !!outputURL;
   async function fetchJobProgress() {
     try {
-      let res = await fetch(fileUploadUrl + `/status/${inference.jobId}`);
+      let res = await fetch(fileUploadUrl + `/mt/status/${inference.jobId}`);
       let data = await res.json();
       let progress = data?.progress;
       console.log(data);
@@ -235,7 +237,9 @@ function EachInference({ inference }: any) {
   return (
     <div className="bg-white rounded-lg  flex  justify-between items-center">
       <div>
-        <span className="text-gray-800 truncate">{filename}</span>
+        <span className="text-gray-800 truncate">
+          {decodeURIComponent(filename)}
+        </span>
         <span className="text-gray-500 text-xs block">
           {updatedAt ? timeSince(updatedAt) : ""}
         </span>
