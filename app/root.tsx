@@ -65,7 +65,7 @@ export const loader: LoaderFunction = async ({ request }) => {
         user: userdata ? await getUser(userdata?._json?.email) : null,
         isJobEnabled: false,
         isFileUploadEnabled: false,
-        show_mt_language_toggle: false,
+        show_mt_language_toggle: true,
         show_feed_bucket_to_all: false,
         enable_ocr_model: false,
         enable_replacement_mt: false,
