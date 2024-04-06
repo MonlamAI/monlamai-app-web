@@ -79,7 +79,7 @@ function SingleInptSection({ fetcher }: any) {
     );
   };
   return (
-    <div className="flex w-full gap-3">
+    <div className="flex flex-col md:flex-row  overflow-hidden max-w-[100vw] gap-3">
       <Card className="md:w-1/2 relative">
         <TooltipComponent />
         <div className="w-full min-h-[45vh] flex flex-col items-center justify-center gap-5">
@@ -134,14 +134,14 @@ function SingleInptSection({ fetcher }: any) {
           </Button>
         </div>
       </Card>
-      <Card className="md:w-1/2">
-        <div className="w-full h-[50vh] p-3 text-black bg-slate-50 rounded-lg overflow-auto">
+      <Card className="md:w-1/2 ">
+        <div className="w-full max-h-[50vh] p-3 text-black bg-slate-50 rounded-lg overflow-auto">
           {isActionSubmission ? (
             <div className="h-full flex justify-center items-center">
               <Spinner size="lg" />
             </div>
           ) : (
-            <div className="text-lg  tracking-wide leading-loose overflow-auto">
+            <div className="text-lg  tracking-wide leading-loose">
               {errorMessage && (
                 <div
                   className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"

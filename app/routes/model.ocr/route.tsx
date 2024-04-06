@@ -9,10 +9,8 @@ import { ErrorBoundary } from "../model.mt/route";
 import ToolWraper from "~/component/ToolWraper";
 import { useRouteLoaderData } from "@remix-run/react";
 import DummyOCR from "~/routes/model.ocr/Component/DummyOCR";
-import { v4 as uuidv4 } from "uuid";
 import OCR from "./Component/OCR";
-import { uploadToS3 } from "~/services/uploadToS3.server";
-import { getUserFileInferences, saveInference } from "~/modal/inference.server";
+import { getUserFileInferences } from "~/modal/inference.server";
 import { getUser } from "~/modal/user.server";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {

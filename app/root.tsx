@@ -42,7 +42,6 @@ export const loader: LoaderFunction = async ({ request }) => {
   const show_feed_bucket = fetchdata.flags.show_feed_bucket;
   const enable_ocr_model = fetchdata.flags.enable_ocr_model;
   const enable_replacement_mt = fetchdata.flags.enable_replacement_mt;
-  console.log(fetchdata.flags);
   return json(
     {
       user: userdata ? await getUser(userdata?._json?.email) : null,
