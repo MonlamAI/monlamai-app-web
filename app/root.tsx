@@ -35,46 +35,28 @@ export const loader: LoaderFunction = async ({ request }) => {
   let userdata = await getUserSession(request);
   const feedBucketAccess = process.env.FEEDBUCKET_ACCESS;
   const feedbucketToken = process.env.FEEDBUCKET_TOKEN;
-  try {
-    let fetchdata = await flagsmith_provider.getEnvironmentFlags();
-    const isJobEnabled = fetchdata.flags.job_link;
-    const isFileUploadEnabled = fetchdata.flags.feat_file_upload;
-    const show_mt_language_toggle = fetchdata.flags.show_mt_language_toggle;
-    const show_feed_bucket = fetchdata.flags.show_feed_bucket;
-    const enable_ocr_model = fetchdata.flags.enable_ocr_model;
-    const enable_replacement_mt = fetchdata.flags.enable_replacement_mt;
-
-    return json(
-      {
-        user: userdata ? await getUser(userdata?._json?.email) : null,
-        isJobEnabled: isJobEnabled.enabled,
-        isFileUploadEnabled: isFileUploadEnabled.enabled,
-        show_mt_language_toggle: show_mt_language_toggle.enabled,
-        show_feed_bucket_to_all: show_feed_bucket.enabled,
-        enable_ocr_model: enable_ocr_model.enabled,
-        enable_replacement_mt: enable_replacement_mt.enabled,
-        feedBucketAccess,
-        feedbucketToken,
-      },
-      { status: 200, headers: { "cache-control": "no-cache" } }
-    );
-  } catch (e) {
-    console.log(e);
-    return json(
-      {
-        user: userdata ? await getUser(userdata?._json?.email) : null,
-        isJobEnabled: false,
-        isFileUploadEnabled: false,
-        show_mt_language_toggle: true,
-        show_feed_bucket_to_all: false,
-        enable_ocr_model: false,
-        enable_replacement_mt: false,
-        feedBucketAccess,
-        feedbucketToken,
-      },
-      { status: 200, headers: { "cache-control": "no-cache" } }
-    );
-  }
+  let fetchdata = await flagsmith_provider.getEnvironmentFlags();
+  const isJobEnabled = fetchdata.flags.job_link;
+  const isFileUploadEnabled = fetchdata.flags.feat_file_upload;
+  const show_mt_language_toggle = fetchdata.flags.show_mt_language_toggle;
+  const show_feed_bucket = fetchdata.flags.show_feed_bucket;
+  const enable_ocr_model = fetchdata.flags.enable_ocr_model;
+  const enable_replacement_mt = fetchdata.flags.enable_replacement_mt;
+  console.log(fetchdata.flags);
+  return json(
+    {
+      user: userdata ? await getUser(userdata?._json?.email) : null,
+      isJobEnabled: isJobEnabled?.enabled || false,
+      isFileUploadEnabled: isFileUploadEnabled?.enabled || false,
+      show_mt_language_toggle: show_mt_language_toggle?.enabled || false,
+      show_feed_bucket_to_all: show_feed_bucket?.enabled || false,
+      enable_ocr_model: enable_ocr_model?.enabled || false,
+      enable_replacement_mt: enable_replacement_mt?.enabled || false,
+      feedBucketAccess,
+      feedbucketToken,
+    },
+    { status: 200, headers: { "cache-control": "no-cache" } }
+  );
 };
 export const headers = ({ loaderHeaders, parentHeaders }: HeadersArgs) => {
   return { "cache-control": loaderHeaders.get("cache-control") };
