@@ -79,8 +79,8 @@ function SingleInptSection({ fetcher }: any) {
     );
   };
   return (
-    <div className="flex flex-col md:flex-row  overflow-hidden max-w-[100vw] gap-3">
-      <Card className="md:w-1/2 relative">
+    <div className="flex flex-col lg:flex-row  overflow-hidden max-w-[100vw] gap-3">
+      <Card className="lg:w-1/2 relative">
         <TooltipComponent />
         <div className="w-full min-h-[45vh] flex flex-col items-center justify-center gap-5">
           <div className={ImageUrl ? "hidden" : ""}>
@@ -134,8 +134,8 @@ function SingleInptSection({ fetcher }: any) {
           </Button>
         </div>
       </Card>
-      <Card className="md:w-1/2 ">
-        <div className="w-full max-h-[50vh] p-3 text-black bg-slate-50 rounded-lg overflow-auto">
+      <Card className="lg:w-1/2 ">
+        <div className="w-full max-h-[45vh] p-3 text-black bg-slate-50 rounded-lg overflow-auto">
           {isActionSubmission ? (
             <div className="h-full flex justify-center items-center">
               <Spinner size="lg" />
