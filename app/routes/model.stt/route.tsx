@@ -242,8 +242,12 @@ export default function Index() {
                     />
                   )}
                 {!audioURL && (
-                  <Button size="md" color="gray" onClick={toggleRecording}>
-                    {recording ? <BsFillStopFill /> : <BsFillMicFill />}
+                  <Button size="lg" color="gray" onClick={toggleRecording}>
+                    {recording ? (
+                      <BsFillStopFill className="w-[25px] h-[25px] md:w-[50px] md:h-[50px]" />
+                    ) : (
+                      <BsFillMicFill className="w-[25px] h-[25px] md:w-[50px] md:h-[50px]" />
+                    )}
                   </Button>
                 )}
                 {audioURL && (
