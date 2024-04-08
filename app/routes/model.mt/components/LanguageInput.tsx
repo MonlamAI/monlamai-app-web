@@ -1,5 +1,5 @@
 import { useSearchParams } from "@remix-run/react";
-import { Select } from "flowbite-react";
+import { Button, Select } from "flowbite-react";
 import React, { useEffect } from "react";
 import { FaArrowRightArrowLeft } from "react-icons/fa6";
 import { resetFetcher } from "~/component/utils/resetFetcher";
@@ -96,12 +96,15 @@ function LanguageInput({
           </option>
         ))}
       </Select>
-      <div
-        className="text-2xl font-bold cursor-pointer text-gray-500 hover:text-gray-700 transition-colors duration-300 ease-in-out"
+
+      <Button
+        size="sm"
         onClick={toggleDirection}
+        className="text-xl font-bold cursor-pointer text-white transition-colors duration-300 ease-in-out px-5"
       >
         <FaArrowRightArrowLeft size="20px" />
-      </div>
+      </Button>
+
       <Select onChange={(e) => handleChange(e, "target")} value={targetLang}>
         {languagesOptions.map((lang) => (
           <option key={lang.code} value={lang.code}>
