@@ -7,6 +7,7 @@ import { useFetcher } from "@remix-run/react";
 import ReactionButtons from "~/component/ReactionButtons";
 import CopyToClipboard from "~/component/CopyToClipboard";
 import axios from "axios";
+import Speak from "~/component/Speak";
 
 function SingleInptSection({ fetcher }: any) {
   const [ImageUrl, setImageUrl] = useState<string | null>(null);
@@ -135,9 +136,9 @@ function SingleInptSection({ fetcher }: any) {
         </div>
       </Card>
       <Card className="lg:w-1/2 ">
-        <div className="w-full max-h-[45vh] p-3 text-black bg-slate-50 rounded-lg overflow-auto">
+        <div className="w-full flex flex-1 max-h-[45vh] p-3 text-black bg-slate-50 rounded-lg overflow-auto">
           {isActionSubmission ? (
-            <div className="h-full flex justify-center items-center">
+            <div className="w-full flex justify-center items-center">
               <Spinner size="lg" />
             </div>
           ) : (
@@ -161,7 +162,8 @@ function SingleInptSection({ fetcher }: any) {
             </div>
           )}
         </div>
-        <div className="flex justify-end">
+        <div className="flex justify-between">
+          {data?.text && <Speak text={data.text} />}
           <div className="flex gap-3 md:gap-5 items-center p-2">
             <ReactionButtons
               fetcher={likeFetcher}
