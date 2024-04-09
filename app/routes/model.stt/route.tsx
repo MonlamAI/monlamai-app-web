@@ -113,19 +113,25 @@ export default function Index() {
     }
   };
   const getMicrophonePermission = async () => {
-    if ("MediaRecorder" in window) {
-      try {
-        const streamData = await navigator.mediaDevices.getUserMedia({
-          audio: true,
-          video: false,
+    let permissionStatus = await navigator.permissions.query({
+      name: "microphone",
+    });
+    if (permissionStatus.state === "prompt") {
+      navigator.mediaDevices
+        .getUserMedia({ audio: true })
+        .then((stream) => {
+          // Use the audio stream
+        })
+        .catch((error) => {
+          // Handle the error or guide the user to enable permissions
         });
-        return streamData;
-      } catch (err) {
-        alert(err.message);
-        return false;
-      }
-    } else {
-      alert("The MediaRecorder API is not supported in your browser.");
+      alert("Please provide the required permission from browser settings");
+    } else if (permissionStatus.state === "denied") {
+      // The user has denied permission - guide them to enable it manually
+      alert("Please enable microphone permissions in your browser settings.");
+    } else if (permissionStatus.state === "granted") {
+      // Permission was already granted
+      return await navigator.mediaDevices.getUserMedia({ audio: true });
     }
   };
 
