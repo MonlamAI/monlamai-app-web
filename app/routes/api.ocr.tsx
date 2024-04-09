@@ -40,7 +40,7 @@ export const action: ActionFunction = async ({ request }) => {
       output: data.content,
       jobId: null,
     });
-    return { text: inferenceData.output };
+    return { text: inferenceData.output, inferenceId: inferenceData?.id };
   }
   if (zip_input_url) {
     let formData = new FormData();

@@ -17,7 +17,7 @@ function SingleInptSection({ fetcher }: any) {
   let { translation } = uselitteraTranlation();
   const likeFetcher = useFetcher();
   const data = fetcher?.data;
-  const inferenceId = fetcher.data?.id;
+  const inferenceId = fetcher.data?.inferenceId;
   const isActionSubmission = fetcher.state !== "idle";
   const errorMessage = data?.error_message;
   const handleFileChange = (event) => {
