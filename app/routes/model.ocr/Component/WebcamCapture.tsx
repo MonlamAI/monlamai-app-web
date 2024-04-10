@@ -1,10 +1,12 @@
 import { Button } from "flowbite-react";
-import React from "react";
+import React, { useState } from "react";
 import Webcam from "react-webcam";
 import { TbCapture } from "react-icons/tb";
+import { MdFlipCameraIos } from "react-icons/md";
 
 const WebcamCapture = ({ setFile }) => {
   const webcamRef = React.useRef(null);
+  const [facingMode, setFacingMode] = useState("user");
 
   const capture = React.useCallback(async () => {
     const imageSrc = webcamRef.current.getScreenshot();
@@ -14,18 +16,36 @@ const WebcamCapture = ({ setFile }) => {
     }
   }, [webcamRef, setFile]);
 
+  const toggleCamera = () => {
+    if (facingMode === "user") {
+      setFacingMode("environment");
+    } else {
+      setFacingMode("user");
+    }
+  };
+
   return (
     <>
       <Webcam
         audio={false}
         ref={webcamRef}
         screenshotFormat="image/jpeg"
+        screenshotQuality={1}
         width="100%"
+        videoConstraints={{
+          facingMode: facingMode,
+        }}
       />
-      <Button onClick={capture} color="dark">
-        <TbCapture className="mr-2" />
-        Capture
-      </Button>
+      <div className="flex gap-4">
+        <Button onClick={toggleCamera} color="dark">
+          <MdFlipCameraIos className="mr-2" />
+          Flip
+        </Button>
+        <Button onClick={capture} color="dark">
+          <TbCapture className="mr-2" />
+          Capture
+        </Button>
+      </div>
     </>
   );
 };
