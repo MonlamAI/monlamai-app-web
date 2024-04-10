@@ -11,6 +11,9 @@ import Speak from "~/component/Speak";
 import { GoPencil } from "react-icons/go";
 import { EditActionButtons } from "~/routes/model.mt/components/UtilityComponent";
 import EditDisplay from "~/component/EditDisplay";
+import WebcamCapture from "./WebcamCapture";
+import { FaCamera } from "react-icons/fa";
+import { FiCameraOff } from "react-icons/fi";
 
 function SingleInptSection({ fetcher }: any) {
   const [ImageUrl, setImageUrl] = useState<string | null>(null);
@@ -18,6 +21,7 @@ function SingleInptSection({ fetcher }: any) {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [edit, setEdit] = useState(false);
   const [editText, setEditText] = useState("");
+  const [isCameraOpen, setCameraiOpen] = useState(false);
 
   let { translation } = uselitteraTranlation();
   const likeFetcher = useFetcher();
@@ -108,12 +112,16 @@ function SingleInptSection({ fetcher }: any) {
     setEdit(false);
   }
 
+  const toggleCamera = () => {
+    setCameraiOpen(!isCameraOpen);
+  };
+
   return (
     <div className="flex flex-col lg:flex-row  overflow-hidden max-w-[100vw] gap-3">
       <Card className="lg:w-1/2 relative">
         {/* <TooltipComponent /> */}
         <div className="w-full min-h-[45vh] flex flex-col items-center justify-center gap-5">
-          <div className={ImageUrl ? "hidden" : ""}>
+          <div className={ImageUrl || isCameraOpen ? "hidden" : ""}>
             <div className="mb-5 block">
               <Label
                 htmlFor="file"
@@ -130,6 +138,25 @@ function SingleInptSection({ fetcher }: any) {
               onChange={handleFileChange}
             />
           </div>
+          {!ImageUrl && !isCameraOpen && <div>OR</div>}
+          <Button
+            color="dark"
+            onClick={toggleCamera}
+            className={ImageUrl ? "hidden" : ""}
+          >
+            {isCameraOpen ? (
+              <>
+                <FiCameraOff className="mr-2" />
+                <p> Camera off</p>
+              </>
+            ) : (
+              <>
+                <FaCamera className="mr-2" />
+                <p>Open Camera</p>
+              </>
+            )}
+          </Button>
+          {isCameraOpen && !ImageUrl && <WebcamCapture setFile={setFile} />}
           {uploadProgress > 0 && uploadProgress < 100 && (
             <div>progress:{uploadProgress}</div>
           )}
