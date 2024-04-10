@@ -14,6 +14,7 @@ import EditDisplay from "~/component/EditDisplay";
 import WebcamCapture from "./WebcamCapture";
 import { FaCamera } from "react-icons/fa";
 import { FiCameraOff } from "react-icons/fi";
+import CardComponent from "~/component/Card";
 
 function SingleInptSection({ fetcher }: any) {
   const [ImageUrl, setImageUrl] = useState<string | null>(null);
@@ -118,7 +119,7 @@ function SingleInptSection({ fetcher }: any) {
 
   return (
     <div className="flex flex-col lg:flex-row  overflow-hidden max-w-[100vw] gap-3">
-      <Card className="lg:w-1/2 relative">
+      <CardComponent>
         {/* <TooltipComponent /> */}
         <div className="w-full min-h-[45vh] flex flex-col items-center justify-center gap-5">
           <div className={ImageUrl || isCameraOpen ? "hidden" : ""}>
@@ -190,8 +191,8 @@ function SingleInptSection({ fetcher }: any) {
             <div className="pt-1">{translation.submit}</div>
           </Button>
         </div>
-      </Card>
-      <Card className="lg:w-1/2 ">
+      </CardComponent>
+      <CardComponent>
         <div className="w-full flex flex-1 max-h-[45vh] p-3 text-black bg-slate-50 rounded-lg overflow-auto">
           {isActionSubmission ? (
             <div className="w-full flex justify-center items-center">
@@ -258,7 +259,7 @@ function SingleInptSection({ fetcher }: any) {
             </div>
           </div>
         )}
-      </Card>
+      </CardComponent>
     </div>
   );
 }
