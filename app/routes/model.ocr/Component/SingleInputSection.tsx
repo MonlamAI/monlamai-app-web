@@ -8,14 +8,22 @@ import ReactionButtons from "~/component/ReactionButtons";
 import CopyToClipboard from "~/component/CopyToClipboard";
 import axios from "axios";
 import Speak from "~/component/Speak";
+import { GoPencil } from "react-icons/go";
+import { EditActionButtons } from "~/routes/model.mt/components/UtilityComponent";
+import EditDisplay from "~/component/EditDisplay";
 
 function SingleInptSection({ fetcher }: any) {
   const [ImageUrl, setImageUrl] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [edit, setEdit] = useState(false);
+  const [editText, setEditText] = useState("");
 
   let { translation } = uselitteraTranlation();
   const likeFetcher = useFetcher();
+  const editfetcher = useFetcher();
+
+  const editData = editfetcher.data?.edited;
   const data = fetcher?.data;
   const inferenceId = fetcher.data?.inferenceId;
   const isActionSubmission = fetcher.state !== "idle";
@@ -30,6 +38,7 @@ function SingleInptSection({ fetcher }: any) {
   const handleFormClear = () => {
     setImageUrl(null);
     resetFetcher(fetcher);
+    resetFetcher(editfetcher);
   };
   useEffect(() => {
     if (file) {
@@ -79,10 +88,30 @@ function SingleInptSection({ fetcher }: any) {
       }
     );
   };
+
+  function handleCancelEdit() {
+    setEdit(false);
+    setEditText("");
+  }
+
+  function handleEditSubmit() {
+    let edited = editText;
+    editfetcher.submit(
+      {
+        inferenceId,
+        edited,
+      },
+      {
+        method: "PATCH",
+      }
+    );
+    setEdit(false);
+  }
+
   return (
     <div className="flex flex-col lg:flex-row  overflow-hidden max-w-[100vw] gap-3">
       <Card className="lg:w-1/2 relative">
-        <TooltipComponent />
+        {/* <TooltipComponent /> */}
         <div className="w-full min-h-[45vh] flex flex-col items-center justify-center gap-5">
           <div className={ImageUrl ? "hidden" : ""}>
             <div className="mb-5 block">
@@ -142,38 +171,66 @@ function SingleInptSection({ fetcher }: any) {
               <Spinner size="lg" />
             </div>
           ) : (
-            <div className="text-lg  tracking-wide leading-loose">
-              {errorMessage && (
-                <div
-                  className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
-                  role="alert"
-                >
-                  <strong className="font-bold">Error!</strong>
-                  <span className="block sm:inline">{errorMessage}</span>
-                </div>
+            <>
+              <div className="text-lg tracking-wide leading-loose">
+                {errorMessage && (
+                  <div
+                    className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+                    role="alert"
+                  >
+                    <strong className="font-bold">Error!</strong>
+                    <span className="block sm:inline">{errorMessage}</span>
+                  </div>
+                )}
+                {!edit && data?.text && !editData && (
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: data?.text.replaceAll("\n", "<br>"),
+                    }}
+                  />
+                )}
+              </div>
+              {edit && (
+                <EditDisplay editText={editText} setEditText={setEditText} />
               )}
-              {data?.text && (
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: data.text.replaceAll("\n", "<br>"),
-                  }}
-                />
-              )}
-            </div>
+              {!edit && editData && <p>{editData}</p>}
+            </>
           )}
         </div>
-        <div className="flex justify-between">
-          {data?.text && <Speak text={data.text} />}
-          <div className="flex gap-3 md:gap-5 items-center p-2">
-            <ReactionButtons
-              fetcher={likeFetcher}
-              output={data?.text}
-              sourceText={ImageUrl}
-              inferenceId={inferenceId}
-            />
-            {data?.text && <CopyToClipboard textToCopy={data?.text} />}
+        {edit && (
+          <EditActionButtons
+            handleCancelEdit={handleCancelEdit}
+            handleEditSubmit={handleEditSubmit}
+            editfetcher={editfetcher}
+            editText={editText}
+            translated={data}
+          />
+        )}
+        {!edit && (
+          <div className="flex justify-between">
+            {data?.text && <Speak text={data.text} />}
+            <div className="flex gap-3 md:gap-5 items-center p-2">
+              {data?.text && (
+                <button
+                  color="grey"
+                  onClick={() => {
+                    setEditText(editData ?? data?.text);
+                    setEdit(true);
+                  }}
+                >
+                  <GoPencil size={20} />
+                </button>
+              )}
+              <ReactionButtons
+                fetcher={likeFetcher}
+                output={data?.text}
+                sourceText={ImageUrl}
+                inferenceId={inferenceId}
+              />
+              {data?.text && <CopyToClipboard textToCopy={data?.text} />}
+            </div>
           </div>
-        </div>
+        )}
       </Card>
     </div>
   );

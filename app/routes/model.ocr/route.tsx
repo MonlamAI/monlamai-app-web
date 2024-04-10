@@ -10,7 +10,7 @@ import ToolWraper from "~/component/ToolWraper";
 import { useRouteLoaderData } from "@remix-run/react";
 import DummyOCR from "~/routes/model.ocr/Component/DummyOCR";
 import OCR from "./Component/OCR";
-import { getUserFileInferences } from "~/modal/inference.server";
+import { getUserFileInferences, updateEdit } from "~/modal/inference.server";
 import { getUser } from "~/modal/user.server";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
@@ -32,6 +32,18 @@ export async function loader({ request }: LoaderFunctionArgs) {
   let fileUploadUrl = process.env?.FILE_SUBMIT_URL as string;
   return { user: userdata, inferenceList, fileUploadUrl };
 }
+
+export const action: ActionFunction = async ({ request }) => {
+  let formdata = await request.formData();
+
+  let method = request.method;
+  if (method === "PATCH") {
+    let edited = formdata.get("edited") as string;
+    let inferenceId = formdata.get("inferenceId") as string;
+    let updated = await updateEdit(inferenceId, edited);
+    return updated;
+  }
+};
 
 export default function Index() {
   const { enable_ocr_model } = useRouteLoaderData("root");
