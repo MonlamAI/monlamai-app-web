@@ -265,7 +265,7 @@ export default function Index() {
             </div>
           ) : (
             <>
-              <div className="flex relative min-h-[25vh] lg:min-h-[40vh] w-full flex-1 flex-col justify-center gap-2">
+              <div className="flex relative h-auto md:min-h-[25vh] lg:min-h-[40vh] w-full flex-1 flex-col justify-center gap-2">
                 <TextOrDocumentComponent
                   selectedTool={selectedTool}
                   sourceText={sourceText}
