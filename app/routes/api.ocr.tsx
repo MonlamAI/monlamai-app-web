@@ -2,6 +2,7 @@ import { ActionFunction } from "@remix-run/node";
 import { saveInference } from "~/modal/inference.server";
 import { getUser } from "~/modal/user.server";
 import { auth } from "~/services/auth.server";
+import applyReplacements from "./model.ocr/utils/replacements";
 
 let FILE_SERVER_ISSUE_MESSAGE = "File upload server is not working !";
 
@@ -40,8 +41,10 @@ export const action: ActionFunction = async ({ request }) => {
       output: data.content,
       jobId: null,
     });
+    let with_replacement = applyReplacements(inferenceData.output);
+
     return {
-      text: inferenceData.output.replaceAll("་\r", "་").replaceAll("\n", " "),
+      text: with_replacement,
       inferenceId: inferenceData?.id,
     };
   }

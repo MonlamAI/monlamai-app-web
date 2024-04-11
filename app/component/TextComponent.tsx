@@ -10,7 +10,7 @@ function TextComponent({ sourceText, setSourceText, sourceLang }) {
     <Textarea
       name="sourceText"
       placeholder={translation.inputPlaceholder}
-      className={`w-full p-2 overflow-auto resize-none flex-1 min-h-[5em] bg-transparent border-0 focus:outline-none focus:ring-transparent caret-slate-500 placeholder:text-slate-300 placeholder:font-monlam placeholder:text-lg
+      className={`w-full p-2 overflow-auto resize-none flex-1 md:min-h-[5em] bg-transparent border-0 focus:outline-none focus:ring-transparent caret-slate-500 placeholder:text-slate-300 placeholder:font-monlam placeholder:text-lg
         ${!isNotEng && "font-poppins text-xl"} ${
         !isNotTib && "text-lg leading-loose font-monlam"
       } ${isNotEng && isNotTib && "font-notosans"}`}
@@ -22,7 +22,6 @@ function TextComponent({ sourceText, setSourceText, sourceLang }) {
           return value;
         });
       }}
-      rows={3}
       autoFocus
       ref={textRef}
     />
