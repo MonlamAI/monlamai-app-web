@@ -15,6 +15,8 @@ import WebcamCapture from "./WebcamCapture";
 import { FaCamera } from "react-icons/fa";
 import { FiCameraOff } from "react-icons/fi";
 import CardComponent from "~/component/Card";
+import { RxCross2 } from "react-icons/rx";
+import { CancelButton } from "~/component/Buttons";
 
 function SingleInptSection({ fetcher }: any) {
   const [ImageUrl, setImageUrl] = useState<string | null>(null);
@@ -121,7 +123,7 @@ function SingleInptSection({ fetcher }: any) {
     <div className="flex flex-col lg:flex-row  overflow-hidden max-w-[100vw] gap-3">
       <CardComponent>
         {/* <TooltipComponent /> */}
-        <div className="w-full min-h-[45vh] flex flex-col items-center justify-center gap-5">
+        <div className="w-full relative min-h-[45vh] flex flex-col items-center justify-center gap-5">
           <div className={ImageUrl || isCameraOpen ? "hidden" : ""}>
             <div className="mb-5 block">
               <Label
@@ -171,25 +173,17 @@ function SingleInptSection({ fetcher }: any) {
                 maxHeight: "40vh",
                 objectFit: "contain",
               }}
+              onLoad={handleSubmit}
             />
           )}
-        </div>
-        <div className="flex justify-between">
-          <Button
+          <CancelButton
             type="reset"
             color="gray"
             onClick={handleFormClear}
-            className="text-gray-500"
+            hidden={!file || !ImageUrl}
           >
-            <div className="pt-1">{translation.reset}</div>
-          </Button>
-          <Button
-            onClick={handleSubmit}
-            disabled={!file || !ImageUrl}
-            isProcessing={fetcher.state !== "idle"}
-          >
-            <div className="pt-1">{translation.submit}</div>
-          </Button>
+            <RxCross2 size={20} />
+          </CancelButton>
         </div>
       </CardComponent>
       <CardComponent>

@@ -1,10 +1,11 @@
 import { useSearchParams } from "@remix-run/react";
-import { Button, Select } from "flowbite-react";
-import React, { useEffect } from "react";
+import { Select } from "flowbite-react";
+import { useEffect, useState } from "react";
 import { FaArrowRightArrowLeft } from "react-icons/fa6";
 import { resetFetcher } from "~/component/utils/resetFetcher";
 import LanguageDetect from "languagedetect";
 import { languagesOptions } from "~/helper/const";
+import { motion } from "framer-motion";
 
 const lngDetector = new LanguageDetect();
 
@@ -34,10 +35,14 @@ function LanguageInput({
   const [params, setParams] = useSearchParams();
   const sourceLang = params.get("source") || "detect language";
   const targetLang = params.get("target") || "bo";
+  const [isRotated, setIsRotated] = useState(false);
 
   function setTarget(lang: string) {
     setParams((prevParams) => {
       prevParams.set("target", lang);
+      if (lang === "bo") {
+        prevParams.set("source", "en");
+      }
       if (lang !== "bo") {
         prevParams.set("source", "bo");
       }
@@ -49,6 +54,9 @@ function LanguageInput({
       prevParams.set("source", lang);
       if (lang !== "bo") {
         prevParams.set("target", "bo");
+      }
+      if (lang === "bo") {
+        prevParams.set("target", "en");
       }
       return prevParams;
     });
@@ -67,6 +75,8 @@ function LanguageInput({
     resetFetcher(likefetcher);
     setSourceText(data);
     setTranslated("");
+    setIsRotated(!isRotated);
+
     setParams((prevParams) => {
       prevParams.set("source", targetLang);
       prevParams.set("target", sourceLang);
@@ -118,13 +128,15 @@ function LanguageInput({
         ))}
       </Select>
 
-      <Button
-        size="sm"
+      <motion.button
         onClick={toggleDirection}
-        className="text-xl font-bold cursor-pointer text-white transition-colors duration-300 ease-in-out px-5"
+        className="group flex items-center py-1 justify-center text-center font-medium relative focus:z-10 focus:outline-none text-white bg-primary border border-transparent enabled:hover:bg-primary-hover focus:ring-primary dark:bg-primary dark:enabled:hover:bg-primary-hover dark:focus:ring-primary rounded-full focus:ring-2 px-2"
+        transition={{ duration: 0.3 }}
+        initial={{ rotate: 0 }}
+        animate={{ rotate: isRotated ? 180 : 0 }}
       >
         <FaArrowRightArrowLeft size="20px" />
-      </Button>
+      </motion.button>
 
       <Select onChange={(e) => handleChange(e, "target")} value={targetLang}>
         {languagesOptions.map((lang) => (

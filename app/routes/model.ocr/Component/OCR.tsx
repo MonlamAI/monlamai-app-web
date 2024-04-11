@@ -7,23 +7,25 @@ import ZipInputSection from "./ZipInputSection";
 import { resetFetcher } from "~/component/utils/resetFetcher";
 
 function OCR() {
-  const [selectedTool, setSelectedTool] = useState("single");
+  const [selectedTool, setSelectedTool] = useState("image");
   const SingleFilefetcher = useFetcher();
   const pdfFetcher = useFetcher();
   const zipFetcher = useFetcher();
   useEffect(() => {
-    resetFetcher(pdfFetcher);
-    resetFetcher(zipFetcher);
-    resetFetcher(SingleFilefetcher);
+    if (selectedTool !== "image") {
+      resetFetcher(pdfFetcher);
+      resetFetcher(zipFetcher);
+      resetFetcher(SingleFilefetcher);
+    }
   }, [selectedTool]);
   return (
     <div className="flex flex-col gap-2 w-full">
       <ListInput
-        options={["single", "zip", "PDF"]}
+        options={["image", "zip", "PDF"]}
         selectedTool={selectedTool}
         setSelectedTool={setSelectedTool}
       />
-      {selectedTool === "single" && (
+      {selectedTool === "image" && (
         <SingleInputSection fetcher={SingleFilefetcher} />
       )}
       {selectedTool === "zip" && <ZipInputSection fetcher={zipFetcher} />}
