@@ -1,7 +1,12 @@
 import { Button, Card, Label, Spinner } from "flowbite-react";
 import { BsFillStopFill, BsFillMicFill } from "react-icons/bs";
 import { useState, useRef, useCallback, useEffect } from "react";
-import { type LoaderFunction, ActionFunction, json } from "@remix-run/node";
+import {
+  type LoaderFunction,
+  ActionFunction,
+  json,
+  LoaderFunctionArgs,
+} from "@remix-run/node";
 import { MetaFunction, useFetcher } from "@remix-run/react";
 import { LiveAudioVisualizer } from "react-audio-visualize";
 import { getBrowser } from "~/component/utils/getBrowserDetail";
@@ -17,15 +22,13 @@ import {
 } from "../model.mt/components/UtilityComponent";
 import { ErrorBoundary } from "../model.mt/route";
 import { NonEditModeActions } from "~/component/ActionButtons";
-import { saveInference, updateEdit } from "~/modal/inference.server";
+import { updateEdit } from "~/modal/inference.server";
 import EditDisplay from "~/component/EditDisplay";
 import { resetFetcher } from "~/component/utils/resetFetcher";
 import { RxCross2 } from "react-icons/rx";
-import { CancelButton, SubmitButton } from "~/component/Buttons";
-import { formatBytes } from "~/component/utils/formatSize";
-import { API_ERROR_MESSAGE, MAX_SIZE_SUPPORT_AUDIO } from "~/helper/const";
+import { CancelButton } from "~/component/Buttons";
+import { MAX_SIZE_SUPPORT_AUDIO } from "~/helper/const";
 import { HandleAudioFile } from "./components/FileUpload";
-import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import { auth } from "~/services/auth.server";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
@@ -54,8 +57,8 @@ export const action: ActionFunction = async ({ request }) => {
 export default function Index() {
   const fetcher = useFetcher();
   const [audioChunks, setAudioChunks] = useState([]);
-  const [selectedTool, setSelectedTool] = useState<"Recording" | "File">(
-    "Recording"
+  const [selectedTool, setSelectedTool] = useState<"recording" | "file">(
+    "recording"
   );
   const [audio, setAudio] = useState<Blob | null>(null);
   const [audioURL, setAudioURL] = useState<string | null>(null);
@@ -184,6 +187,12 @@ export default function Index() {
     };
   };
 
+  useEffect(() => {
+    if (audioBase64) {
+      handleSubmit();
+    }
+  }, [audioBase64]);
+
   const handleFileChange = (file) => {
     if (file) {
       setAudio(file);
@@ -197,11 +206,10 @@ export default function Index() {
       };
     }
   };
-  let { translation } = uselitteraTranlation();
-  let isDisabled = !audioURL;
   let text = fetcher.data?.text;
   let inferenceId = fetcher.data?.inferenceId;
-  let RecordingSelected = selectedTool === "Recording";
+  let RecordingSelected = selectedTool === "recording";
+  let fileSelected = selectedTool === "file";
 
   function handleEditSubmit() {
     let edited = editText;
@@ -230,13 +238,13 @@ export default function Index() {
       <InferenceWrapper
         selectedTool={selectedTool}
         setSelectedTool={setSelectedTool}
-        options={["recording", "document"]}
+        options={["recording", "file"]}
       >
         {actionError && <ErrorMessage error={actionError} />}
 
         <CardComponent>
           <div className="flex flex-col relative gap-2 flex-1 min-h-[30vh]">
-            {selectedTool === "Recording" && (
+            {RecordingSelected && (
               <div className="flex flex-col items-center gap-5 flex-1 justify-center md:min-h-[30vh]">
                 {recording &&
                   mediaRecorder.current &&
@@ -264,13 +272,13 @@ export default function Index() {
                 )}
               </div>
             )}
-            {selectedTool === "File" && (
+            {fileSelected && (
               <HandleAudioFile
                 handleFileChange={handleFileChange}
                 reset={handleReset}
               />
             )}
-            {selectedTool === "Recording" && (
+            {RecordingSelected && (
               <CancelButton onClick={handleReset} hidden={!audioURL}>
                 <RxCross2 size={20} />
               </CancelButton>
@@ -283,15 +291,6 @@ export default function Index() {
                 CHAR_LIMIT={undefined}
                 MAX_SIZE_SUPPORT={MAX_SIZE_SUPPORT_AUDIO}
               />
-              <SubmitButton
-                onClick={handleSubmit}
-                disabled={isDisabled}
-                outline
-                isProcessing={fetcher.state !== "idle"}
-                size="xs"
-              >
-                {translation.submit}
-              </SubmitButton>
             </div>
           </div>
         </CardComponent>

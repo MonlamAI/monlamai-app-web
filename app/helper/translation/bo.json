@@ -40,9 +40,11 @@
   "uploadImage": "འདིར་པར་རིས་འཇུག་རོགས།",
   "acceptedImage": "ངོས་ལེན་ཡོད་པའི་པར་རྣམ།",
   "document": "ཡིག་ཆ།",
+  "file":"ཡིག་ཆ།",
   "text":"ཡིག་རྐྱང་",
   "recording":"སྒྲ་འབེབས།",
   "image":"འདྲ་པར།",
   "zip":"zip",
-  "PDF":"PDF"
+  "PDF":"PDF",
+  "team":"team"
 }

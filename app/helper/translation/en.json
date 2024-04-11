@@ -41,8 +41,11 @@
   "translate": "Translate",
   "document": "Document",
   "text":"Text",
+  "file":"file",
   "recording":"Recording",
   "image":"འདྲ་པར།",
   "zip":"zip",
-  "PDF":"PDF"
+  "PDF":"PDF",
+  "team":"team"
+
 }

@@ -20,6 +20,7 @@ let icons = {
   image: <FaImage />,
   zip: <FaFileZipper />,
   PDF: <FaFilePdf />,
+  file: <IoMdDocument />,
 };
 
 export default function ListInput({

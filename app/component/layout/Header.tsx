@@ -14,11 +14,15 @@ import uselitteraTranlation from "../hooks/useLitteraTranslation";
 import TranslationSwitcher from "../TranslationSwitcher";
 import { IoMdGlobe } from "react-icons/io";
 import DarkModeSwitcher from "../DarkModeSwitcher";
-
+import { motion } from "framer-motion";
 function Header() {
   const [showMenu, setShowMenu] = useState(false);
   const { isEnglish, translation } = uselitteraTranlation();
   const data = useRouteLoaderData("root");
+  const variants = {
+    open: { opacity: 1, x: 0 },
+    closed: { opacity: 0, x: "-100%" },
+  };
   return (
     <nav
       className={`flex flex-col lg:flex-row  ${
@@ -41,7 +45,7 @@ function Header() {
           {translation.monlamAI}
         </NavLink>
         <button
-          className="block lg:hidden"
+          className="block lg:hidden z-50"
           onClick={() => setShowMenu((p) => !p)}
         >
           {showMenu ? <RxCross1 /> : <GiHamburgerMenu />}
@@ -50,30 +54,45 @@ function Header() {
           <div className="flex items-center gap-8 text-sm ml-4">
             <AboutLink />
             {data?.isJobEnabled && <JobLink />}
+            <TeamLink />
           </div>
           <div className="flex items-center gap-4 mr-7">
             <TranslationSwitcher />
             <Menu />
           </div>
         </div>
-      </div>
-
-      {/* mobile view */}
-      {showMenu && (
-        <div
-          className="lg:hidden flex justify-between flex-1 items-center px-5 pb-5 right-0 w-full shadow-sm
-"
+        {/* mobile view */}
+        <motion.div
+          animate={showMenu ? "open" : "closed"}
+          variants={variants}
+          className="absolute top-0 left-0 right-0 w-full h-full bg-white shadow-lg z-40"
+          transition={{ duration: 0.5 }}
         >
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 p-5">
+            <NavLink
+              className="flex items-center gap-2 text-xl"
+              prefetch="intent"
+              unstable_viewTransition
+              to="/"
+              onClick={() => setShowMenu((p) => !p)}
+            >
+              <img
+                src="/assets/logo.png"
+                width="40px"
+                alt="Monalm AI"
+                className="relative -top-1"
+              />
+              {translation.monlamAI}
+            </NavLink>
             <AboutLink />
             <JobLink />
+            <TeamLink />
+
             <TranslationSwitcher />
-          </div>
-          <div className="flex gap-4">
             <Menu />
           </div>
-        </div>
-      )}
+        </motion.div>
+      </div>
     </nav>
   );
 }
@@ -146,6 +165,20 @@ function AboutLink() {
       unstable_viewTransition
     >
       {translation.aboutUs}
+    </NavLink>
+  );
+}
+
+function TeamLink() {
+  const { translation, locale } = uselitteraTranlation();
+  return (
+    <NavLink
+      to="#"
+      className="text-base capitalize text-gray-300 cursor-default"
+      prefetch="intent"
+      unstable_viewTransition
+    >
+      {translation.team}
     </NavLink>
   );
 }

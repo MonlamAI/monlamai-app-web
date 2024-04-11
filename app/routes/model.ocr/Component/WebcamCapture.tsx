@@ -31,7 +31,7 @@ const WebcamCapture = ({ setFile }) => {
         ref={webcamRef}
         screenshotFormat="image/jpeg"
         screenshotQuality={1}
-        width="100%"
+        width="70%"
         videoConstraints={{
           facingMode: facingMode,
         }}
