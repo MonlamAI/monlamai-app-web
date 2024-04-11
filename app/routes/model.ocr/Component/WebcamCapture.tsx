@@ -6,7 +6,7 @@ import { MdFlipCameraIos } from "react-icons/md";
 
 const WebcamCapture = ({ setFile }) => {
   const webcamRef = React.useRef(null);
-  const [facingMode, setFacingMode] = useState("user");
+  const [facingMode, setFacingMode] = useState("environment");
 
   const capture = React.useCallback(async () => {
     const imageSrc = webcamRef.current.getScreenshot();
