@@ -35,22 +35,28 @@ export const loader: LoaderFunction = async ({ request }) => {
   let userdata = await getUserSession(request);
   const feedBucketAccess = process.env.FEEDBUCKET_ACCESS;
   const feedbucketToken = process.env.FEEDBUCKET_TOKEN;
-  let fetchdata = await flagsmith_provider.getEnvironmentFlags();
-  const isJobEnabled = fetchdata.flags.job_link;
-  const isFileUploadEnabled = fetchdata.flags.feat_file_upload;
-  const show_mt_language_toggle = fetchdata.flags.show_mt_language_toggle;
-  const show_feed_bucket = fetchdata.flags.show_feed_bucket;
-  const enable_ocr_model = fetchdata.flags.enable_ocr_model;
-  const enable_replacement_mt = fetchdata.flags.enable_replacement_mt;
+  let features: any = {};
+  try {
+    let flagsmithdata = await flagsmith_provider.getEnvironmentFlags();
+    features = flagsmithdata.flags;
+  } catch (e) {
+    console.log("flagsmith not available without internet");
+  }
+  const isJobEnabled = features?.job_link?.enabled;
+  const isFileUploadEnabled = features?.feat_file_upload?.enabled;
+  const show_mt_language_toggle = features?.show_mt_language_toggle?.enabled;
+  const show_feed_bucket = features?.show_feed_bucket?.enabled;
+  const enable_ocr_model = features?.enable_ocr_model?.enabled;
+  const enable_replacement_mt = features?.enable_replacement_mt?.enabled;
   return json(
     {
       user: userdata ? await getUser(userdata?._json?.email) : null,
-      isJobEnabled: isJobEnabled?.enabled || false,
-      isFileUploadEnabled: isFileUploadEnabled?.enabled || false,
-      show_mt_language_toggle: show_mt_language_toggle?.enabled || false,
-      show_feed_bucket_to_all: show_feed_bucket?.enabled || false,
-      enable_ocr_model: enable_ocr_model?.enabled || false,
-      enable_replacement_mt: enable_replacement_mt?.enabled || false,
+      isJobEnabled: isJobEnabled || false,
+      isFileUploadEnabled: isFileUploadEnabled || false,
+      show_mt_language_toggle: show_mt_language_toggle || false,
+      show_feed_bucket_to_all: show_feed_bucket || false,
+      enable_ocr_model: enable_ocr_model || false,
+      enable_replacement_mt: enable_replacement_mt || false,
       feedBucketAccess,
       feedbucketToken,
     },

@@ -35,12 +35,32 @@ function LanguageInput({
   const sourceLang = params.get("source") || "detect language";
   const targetLang = params.get("target") || "bo";
 
-  function handleChange(event, type) {
-    const lang = event.target.value;
+  function setTarget(lang: string) {
     setParams((prevParams) => {
-      prevParams.set(type, lang);
+      prevParams.set("target", lang);
+      if (lang !== "bo") {
+        prevParams.set("source", "bo");
+      }
       return prevParams;
     });
+  }
+  function setSource(lang: string) {
+    setParams((prevParams) => {
+      prevParams.set("source", lang);
+      if (lang !== "bo") {
+        prevParams.set("target", "bo");
+      }
+      return prevParams;
+    });
+  }
+
+  function handleChange(e, type) {
+    const lang = e.target.value;
+    if (type === "target") {
+      setTarget(lang);
+    } else if (type === "source") {
+      setSource(lang);
+    }
   }
 
   function toggleDirection() {
@@ -59,6 +79,7 @@ function LanguageInput({
       detectAndSetLanguage(sourceText);
     }
   }, [sourceText, sourceLang]);
+
   const detectAndSetLanguage = (text: string) => {
     if (sourceLang !== "detect language") return;
 
