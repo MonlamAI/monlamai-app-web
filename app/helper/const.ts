@@ -16,7 +16,7 @@ export const API_ERROR_MESSAGE = "API ERROR";
 
 export const API_HIT_DELAY = 3000; //in ms equals to 3 sec
 
-export  const languagesOptions = [
+export const languagesOptions = [
   { value: "English", code: "en" },
   { value: "Tibetan", code: "bo" },
   { value: "French", code: "fr" },
