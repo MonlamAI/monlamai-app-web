@@ -142,7 +142,7 @@ export default function App() {
           <div className="flex-1">
             <Outlet />
           </div>
-          {!isSteps && <Footer />}
+          {!isSteps && showHeader && <Footer />}
         </div>
       </LitteraProvider>
       <ToastContainer />
