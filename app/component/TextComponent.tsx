@@ -1,7 +1,6 @@
 import { Textarea } from "flowbite-react";
 import { useRef } from "react";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
-import { CHAR_LIMIT } from "~/helper/const";
 function TextComponent({ sourceText, setSourceText, sourceLang }) {
   let { translation } = uselitteraTranlation();
   let textRef = useRef<HTMLTextAreaElement>(null);
