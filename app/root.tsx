@@ -14,7 +14,6 @@ import {
   ScrollRestoration,
   useLoaderData,
   useLocation,
-  useRouteLoaderData,
 } from "@remix-run/react";
 import Footer from "./component/layout/Footer";
 import Header from "./component/layout/Header";
@@ -133,16 +132,17 @@ export default function App() {
       document.documentElement.classList.remove("dark");
     }
   }, []);
+  let showHeader = !location.pathname.includes("/login");
   return (
     <Document>
       <LitteraProvider locales={["en_US", "bo_TI"]}>
         <div className="flex flex-col flex-1">
-          {user && <Header />}
+          {showHeader && <Header />}
           {user && <LocationComponent />}
           <div className="flex-1">
             <Outlet />
           </div>
-          {user && !isSteps && <Footer />}
+          {!isSteps && <Footer />}
         </div>
       </LitteraProvider>
       <ToastContainer />

@@ -1,18 +1,15 @@
 import { ActionFunction } from "@remix-run/node";
 import { saveInference } from "~/modal/inference.server";
-import { getUser } from "~/modal/user.server";
-import { auth } from "~/services/auth.server";
 import applyReplacements from "./model.ocr/utils/replacements";
+import { getUserDetail } from "~/services/session.server";
 
 let FILE_SERVER_ISSUE_MESSAGE = "File upload server is not working !";
 
 export const action: ActionFunction = async ({ request }) => {
   let formdata = await request.formData();
   let files = formdata.getAll("files") as string[] | File[];
-  let userdata = await auth.isAuthenticated(request, {
-    failureRedirect: "/login",
-  });
-  let user = await getUser(userdata?._json.email);
+
+  let user = await getUserDetail(request);
   let URL_File = process.env.FILE_SUBMIT_URL;
   let zip_input_url = formdata.get("zip_input_url") as string;
   let PDFurls = formdata.get("pdf_file") as string;

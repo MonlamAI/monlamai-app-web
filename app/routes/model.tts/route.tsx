@@ -26,6 +26,7 @@ import {
   TtsSubmitButton,
 } from "./components/UtilityComponents";
 import { toast } from "react-toastify";
+import { getUserSession } from "~/services/session.server";
 
 export const meta: MetaFunction = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -35,10 +36,11 @@ export const meta: MetaFunction = ({ matches }) => {
 };
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  let userdata = await auth.isAuthenticated(request, {
-    failureRedirect: "/login",
-  });
-  let user = await getUser(userdata?._json.email);
+  let userdata = await getUserSession(request);
+  let user = null;
+  if (userdata) {
+    user = await getUser(userdata?._json.email);
+  }
 
   let inferences = await getUserFileInferences({
     userId: user?.id,
@@ -47,7 +49,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   let CHAR_LIMIT = parseInt(process.env?.MAX_TEXT_LENGTH_TTS!);
 
   return {
-    user: userdata,
+    user,
     fileUploadUrl: process.env?.FILE_SUBMIT_URL_DEV,
     inferences,
     CHAR_LIMIT,

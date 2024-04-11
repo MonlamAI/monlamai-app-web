@@ -165,7 +165,7 @@ export function SubmitButton({
       size="xs"
       title={exceedsLimit ? "Character limit exceeded" : ""}
       onClick={isFile ? submitFile : trigger}
-      className={locale !== "bo_TI" ? "font-poppins" : "font-monlam"}
+      className={` ${locale !== "bo_TI" ? "font-poppins" : "font-monlam"}`}
     >
       {translation.translate}
     </Button>

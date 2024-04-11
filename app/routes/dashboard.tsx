@@ -5,18 +5,15 @@ import {
   useSearchParams,
 } from "@remix-run/react";
 import { useEffect, useState } from "react";
-import { getUserAboutData } from "~/modal/aboutUser.server";
-import { getUser, getUsers } from "~/modal/user.server";
-import { auth } from "~/services/auth.server";
+import { getUsers } from "~/modal/user.server";
 import { Card, Spinner, Table, TextInput } from "flowbite-react";
 import useDebounce from "~/component/hooks/useDebounceState";
+import { getUserDetail } from "~/services/session.server";
 export const loader: LoaderFunction = async ({ request }) => {
   let url = new URL(request.url);
   let query = url.searchParams;
-  let userdata = await auth.isAuthenticated(request, {
-    failureRedirect: "/login",
-  });
-  let user = await getUser(userdata?._json.email);
+
+  let user = await getUserDetail(request);
   //check if all questions are answered
 
   const { list, totalCount } = await getUsers(query?.get("q") ?? "");

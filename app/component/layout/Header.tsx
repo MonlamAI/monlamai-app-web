@@ -1,10 +1,5 @@
-import {
-  Form,
-  NavLink,
-  useRouteLoaderData,
-  useLoaderData,
-  Link,
-} from "@remix-run/react";
+import { Form, NavLink, useRouteLoaderData, Link } from "@remix-run/react";
+import { IoLogInSharp } from "react-icons/io5";
 import { Dropdown } from "flowbite-react";
 import { useState } from "react";
 import { HiLogout } from "react-icons/hi";
@@ -29,7 +24,7 @@ function Header() {
         isEnglish ? "font-poppins" : "font-monlam"
       }`}
     >
-      <div className="flex p-3 items-center justify-between  w-full bg-white dark:bg-slate-700 dark:text-gray-200 ">
+      <div className="flex p-3 items-center justify-between  w-full bg-white ">
         <NavLink
           className="flex items-center gap-2 text-xl"
           prefetch="intent"
@@ -50,7 +45,7 @@ function Header() {
         >
           {showMenu ? <RxCross1 /> : <GiHamburgerMenu />}
         </button>
-        <div className="hidden lg:flex gap-2 ml-8 flex-1 justify-between bg-white dark:bg-slate-700 dark:text-gray-200">
+        <div className="hidden lg:flex gap-2 ml-8 flex-1 justify-between ">
           <div className="flex items-center gap-8 text-sm ml-4">
             <AboutLink />
             {data?.isJobEnabled && <JobLink />}
@@ -103,7 +98,16 @@ function Menu() {
   const { user } = useRouteLoaderData("root");
   const { translation, locale } = uselitteraTranlation();
   let isEnglish = locale === "en_US";
-  if (!user) return null;
+  if (!user)
+    return (
+      <Link
+        to="/login"
+        style={{ paddingTop: isEnglish ? "" : "5px" }}
+        className="font-medium flex items-center gap-2 py-1 px-2 rounded-md hover:underline bg-secondary-500 hover:bg-secondary-400 text-dark_text-default"
+      >
+        <IoLogInSharp /> {translation.login}
+      </Link>
+    );
   return (
     <Dropdown
       label={user.email}

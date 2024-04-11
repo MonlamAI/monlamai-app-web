@@ -46,6 +46,7 @@ import LanguageInput from "./components/LanguageInput";
 import { CancelButton } from "~/component/Buttons";
 import { RxCross2 } from "react-icons/rx";
 import useTranslate from "./lib/useTranslate";
+import { getUserSession } from "~/services/session.server";
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
   parentMeta.shift(1);
@@ -53,9 +54,7 @@ export const meta: MetaFunction<typeof loader> = ({ matches }) => {
 };
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  let userdata = await auth.isAuthenticated(request, {
-    failureRedirect: "/login",
-  });
+  let userdata = await getUserSession(request);
   let user = await getUser(userdata?._json.email);
   let checkNumberOfInferenceToday = await getTodayInferenceByUserIdCountModel(
     user?.id,
@@ -85,9 +84,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 export const action: ActionFunction = async ({ request }) => {
   let formdata = await request.formData();
-  let userdata = await auth.isAuthenticated(request, {
-    failureRedirect: "/login",
-  });
+  let userdata = await getUserSession(request);
   let user = await getUser(userdata?._json?.email);
 
   let method = request.method;

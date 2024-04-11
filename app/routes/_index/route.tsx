@@ -1,14 +1,10 @@
-import { type LoaderFunction, redirect, json } from "@remix-run/node";
+import { type LoaderFunction, json } from "@remix-run/node";
 import ErrorMessage from "~/component/ErrorMessage";
 import Tools from "~/routes/_index/component/Tools";
-import { getOrCreateUser } from "~/modal/user.server";
-import { getUserSession } from "~/services/session.server";
+import { getUserDetail } from "~/services/session.server";
+
 export const loader: LoaderFunction = async ({ request }) => {
-  let userdata = await getUserSession(request);
-  if (!userdata) {
-    return redirect("/login");
-  }
-  let user = await getOrCreateUser(userdata);
+  let user = await getUserDetail(request);
   return json({
     user,
   });

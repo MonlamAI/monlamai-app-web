@@ -1,10 +1,8 @@
 import type {
-  ActionFunctionArgs,
+  ActionFunction,
   LoaderFunctionArgs,
   MetaFunction,
 } from "@remix-run/node";
-import { json } from "@remix-run/node";
-import { auth } from "~/services/auth.server";
 import { ErrorBoundary } from "../model.mt/route";
 import ToolWraper from "~/component/ToolWraper";
 import { useRouteLoaderData } from "@remix-run/react";
@@ -12,6 +10,7 @@ import DummyOCR from "~/routes/model.ocr/Component/DummyOCR";
 import OCR from "./Component/OCR";
 import { getUserFileInferences, updateEdit } from "~/modal/inference.server";
 import { getUser } from "~/modal/user.server";
+import { getUserSession } from "~/services/session.server";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -20,11 +19,11 @@ export const meta: MetaFunction<typeof loader> = ({ matches }) => {
 };
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  let userdata = await auth.isAuthenticated(request, {
-    failureRedirect: "/login",
-  });
-  let user = await getUser(userdata?._json.email);
-
+  let userdata = await getUserSession(request);
+  let user = null;
+  if (userdata) {
+    user = await getUser(userdata?._json.email);
+  }
   let inferenceList = await getUserFileInferences({
     userId: user?.id,
     model: "ocr",

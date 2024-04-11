@@ -30,6 +30,7 @@ import { CancelButton } from "~/component/Buttons";
 import { MAX_SIZE_SUPPORT_AUDIO } from "~/helper/const";
 import { HandleAudioFile } from "./components/FileUpload";
 import { auth } from "~/services/auth.server";
+import { getUserSession } from "~/services/session.server";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -39,10 +40,12 @@ export const meta: MetaFunction<typeof loader> = ({ matches }) => {
 };
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  let userdata = await auth.isAuthenticated(request, {
-    failureRedirect: "/login",
-  });
-  return { user: userdata };
+  let userdata = await getUserSession(request);
+  let user = null;
+  if (userdata) {
+    user = userdata;
+  }
+  return { user };
 }
 
 export const action: ActionFunction = async ({ request }) => {

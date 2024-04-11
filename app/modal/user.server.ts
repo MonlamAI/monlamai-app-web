@@ -28,9 +28,11 @@ export async function getOrCreateUser(userdata: any) {
 }
 
 export async function getUser(email: string) {
-  return await db.user.findFirst({
+  if (!email) return null;
+  let user = await db.user.findUnique({
     where: { email },
   });
+  return user;
 }
 
 export async function getUsers(value: string) {
@@ -44,16 +46,19 @@ export async function getUsers(value: string) {
   return { list, totalCount };
 }
 
-
-export async function update_location(userId:string,city:string,country:string){
-  let user=await db.user.update({
-    where:{
-      id:parseInt(userId)
+export async function update_location(
+  userId: string,
+  city: string,
+  country: string
+) {
+  let user = await db.user.update({
+    where: {
+      id: parseInt(userId),
     },
-    data:{
+    data: {
       city,
-      country
-    }
-  })
+      country,
+    },
+  });
   return user;
 }

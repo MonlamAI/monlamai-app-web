@@ -130,7 +130,7 @@ function LanguageInput({
 
       <motion.button
         onClick={toggleDirection}
-        className="group flex items-center py-1 justify-center text-center font-medium relative focus:z-10 focus:outline-none text-white bg-primary border border-transparent enabled:hover:bg-primary-hover focus:ring-primary dark:bg-primary dark:enabled:hover:bg-primary-hover dark:focus:ring-primary rounded-full focus:ring-2 px-2"
+        className="group flex items-center py-1 justify-center text-center font-medium relative focus:z-10 focus:outline-none text-white bg-neutral-800 border border-transparent enabled:hover:bg-primary-hover focus:ring-primary dark:bg-primary-300 dark:enabled:hover:bg-primary-hover dark:focus:ring-primary-700 rounded-full focus:ring-2 px-2"
         transition={{ duration: 0.3 }}
         initial={{ rotate: 0 }}
         animate={{ rotate: isRotated ? 180 : 0 }}

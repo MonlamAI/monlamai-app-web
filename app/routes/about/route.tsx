@@ -4,12 +4,10 @@ import { EnglishIntro, TibetanIntro } from "~/routes/about/components/Intro";
 import Lamas from "~/routes/about/components/Lama";
 import Sponsors from "~/routes/about/components/Sponsors";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
-import { auth } from "~/services/auth.server";
+import { getUserDetail } from "~/services/session.server";
 
 export const loader: LoaderFunction = async ({ request }) => {
-  let userdata = await auth.isAuthenticated(request, {
-    failureRedirect: "/login",
-  });
+  let userdata = await getUserDetail(request);
   return userdata;
 };
 

@@ -6,6 +6,7 @@ import { getUser } from "~/modal/user.server";
 import { auth } from "~/services/auth.server";
 import { v4 as uuid } from "uuid";
 import { uploadToS3 } from "~/services/uploadToS3.server";
+import { getUserDetail } from "~/services/session.server";
 
 export const action: ActionFunction = async ({ request }) => {
   const startTime = Date.now();
@@ -14,12 +15,7 @@ export const action: ActionFunction = async ({ request }) => {
     // If the referer is not from the expected domain, return a forbidden response
     return json({ message: "Access forbidden" }, { status: 403 });
   }
-
-  let userdata = await auth.isAuthenticated(request, {
-    failureRedirect: "/login",
-  });
-
-  let user = await getUser(userdata?._json.email);
+  let user = await getUserDetail(request);
   const formData = await request.formData();
   const apiUrl = process.env.STT_API_URL as string;
   const headers = {
