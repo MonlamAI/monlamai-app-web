@@ -27,11 +27,7 @@ import {
   updateEdit,
 } from "~/modal/inference.server";
 import ListInput from "~/component/ListInput";
-import {
-  API_ERROR_MESSAGE,
-  CHAR_LIMIT,
-  MAX_SIZE_SUPPORT_DOC,
-} from "~/helper/const";
+import { API_ERROR_MESSAGE, MAX_SIZE_SUPPORT_DOC } from "~/helper/const";
 import {
   CharacterOrFileSizeComponent,
   EditActionButtons,
@@ -49,9 +45,7 @@ import { resetFetcher } from "~/component/utils/resetFetcher";
 import LanguageInput from "./components/LanguageInput";
 import { CancelButton } from "~/component/Buttons";
 import { RxCross2 } from "react-icons/rx";
-import { Button } from "flowbite-react";
 import useTranslate from "./lib/useTranslate";
-import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
   parentMeta.shift(1);
@@ -69,6 +63,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   );
   let checkLimit =
     checkNumberOfInferenceToday >= parseInt(process.env?.API_HIT_LIMIT!);
+  let CHAR_LIMIT = parseInt(process.env?.MAX_TEXT_LENGTH_MT!);
   let limitMessage =
     "You have reached the daily limit of translation. Please try again tomorrow.";
 
@@ -84,6 +79,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     token: process.env?.MODEL_API_AUTH_TOKEN,
     fileUploadUrl: process.env?.FILE_SUBMIT_URL,
     inferences,
+    CHAR_LIMIT,
   };
 }
 
@@ -145,8 +141,9 @@ export default function Index() {
       return p;
     });
   };
+
   const [file, setFile] = useState<File | null>(null);
-  const { limitMessage } = useLoaderData();
+  const { limitMessage, CHAR_LIMIT } = useLoaderData();
   const { show_mt_language_toggle } = useRouteLoaderData("root");
 
   const [edit, setEdit] = useState(false);

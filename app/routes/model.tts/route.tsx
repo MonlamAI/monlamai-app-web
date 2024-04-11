@@ -1,15 +1,14 @@
-import { Card, Spinner } from "flowbite-react";
-import { MetaFunction, useFetcher } from "@remix-run/react";
+import { Spinner } from "flowbite-react";
+import { MetaFunction, useFetcher, useLoaderData } from "@remix-run/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import ReactionButtons from "~/component/ReactionButtons";
 import { amplifyMedia } from "~/component/utils/audioGain";
 import useLocalStorage from "~/component/hooks/useLocaleStorage";
 import AudioPlayer from "~/component/AudioPlayer";
 import ToolWraper from "~/component/ToolWraper";
-import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import { ErrorBoundary } from "../model.mt/route";
 import InferenceWrapper from "~/component/layout/InferenceWrapper";
-import { CHAR_LIMIT, MAX_SIZE_SUPPORT_DOC } from "~/helper/const";
+import { MAX_SIZE_SUPPORT_DOC } from "~/helper/const";
 import ShareLink from "~/component/ShareLink";
 import { resetFetcher } from "~/component/utils/resetFetcher";
 import { RxCross2 } from "react-icons/rx";
@@ -45,10 +44,13 @@ export async function loader({ request }: LoaderFunctionArgs) {
     userId: user?.id,
     model: "tts",
   });
+  let CHAR_LIMIT = parseInt(process.env?.MAX_TEXT_LENGTH_TTS!);
+
   return {
     user: userdata,
     fileUploadUrl: process.env?.FILE_SUBMIT_URL_DEV,
     inferences,
+    CHAR_LIMIT,
   };
 }
 
@@ -59,6 +61,7 @@ export default function Index() {
     "tts_selected_input",
     "text"
   );
+  let { CHAR_LIMIT } = useLoaderData();
   const [volume, setVolume] = useLocalStorage("volume", 1);
   const fetcher = useFetcher();
   const isLoading = fetcher.state !== "idle";

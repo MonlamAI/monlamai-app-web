@@ -28,8 +28,9 @@ export function SubmitButton(props: ButtonProps<"button">) {
 export function CancelButton(props: any) {
   return (
     <div
-      className="absolute -top-1 -right-2 hover:bg-slate-300 transition-colors duration-200 rounded-full p-1 cursor-pointer"
+      className="absolute -top-1 -right-2 bg-slate-300 transition-colors duration-200 rounded-full p-1 cursor-pointer"
       {...props}
+      title="reset"
     >
       {props.children}
     </div>
