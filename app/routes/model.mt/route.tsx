@@ -36,7 +36,7 @@ import {
   SubmitButton,
   TextOrDocumentComponent,
 } from "./components/UtilityComponent";
-import { NonEditModeActions } from "~/component/ActionButtons";
+import { NonEditButtons, NonEditModeActions } from "~/component/ActionButtons";
 import EditDisplay from "~/component/EditDisplay";
 import CardComponent from "~/component/Card";
 import LanguageSwitcher from "./components/LanguageSwitcher";
@@ -342,7 +342,7 @@ export default function Index() {
             />
           )}
           {!edit && inferenceId && sourceText !== "" && (
-            <NonEditModeActions
+            <NonEditButtons
               selectedTool={selectedTool}
               likefetcher={likefetcher}
               sourceText={sourceText}
