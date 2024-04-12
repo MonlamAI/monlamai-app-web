@@ -28,14 +28,17 @@ export default function ListInput({
   setSelectedTool,
   options,
 }: ListInputProps) {
-  let { isFileUploadEnabled } = useRouteLoaderData("root");
+  let { isFileUploadEnabled, user } = useRouteLoaderData("root");
   const { translation, locale } = uselitteraTranlation();
   const isTibetan = locale === "bo_TI";
+  const isUserLoggedIn = !!user;
+  const ShowList = ["text", "recording", "image"];
   return (
     <div className="flex gap-2 mt-2">
       {options.map((option, index) => {
         if (!isFileUploadEnabled) return null;
         let icon = icons[option] ?? null;
+        let disabled = !isUserLoggedIn && !ShowList.includes(option);
         return (
           <Button
             color={option === selectedTool ? "blue" : "gray"}
@@ -43,6 +46,7 @@ export default function ListInput({
             key={option + index}
             onClick={() => setSelectedTool(option)}
             className="capitalize flex items-center"
+            disabled={disabled}
           >
             <span className="mr-2 h-3 w-3">{icon}</span>
             <span className={isTibetan ? "pt-2" : ""}>
