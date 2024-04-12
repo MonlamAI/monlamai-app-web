@@ -5,7 +5,6 @@ import { FaArrowRightArrowLeft } from "react-icons/fa6";
 import { resetFetcher } from "~/component/utils/resetFetcher";
 import LanguageDetect from "languagedetect";
 import { languagesOptions } from "~/helper/const";
-import { motion } from "framer-motion";
 
 const lngDetector = new LanguageDetect();
 
@@ -129,15 +128,12 @@ function LanguageInput({
         ))}
       </Select>
 
-      <motion.button
+      <button
         onClick={toggleDirection}
         className="group flex items-center py-1 justify-center text-center font-medium relative focus:z-10 focus:outline-none text-[#838585] border border-transparent enabled:hover:bg-primary-hover  dark:enabled:hover:bg-primary-hover  rounded-full  px-2"
-        transition={{ duration: 0.3 }}
-        initial={{ rotate: 0 }}
-        animate={{ rotate: isRotated ? 180 : 0 }}
       >
         <FaArrowRightArrowLeft size="20px" />
-      </motion.button>
+      </button>
 
       <Select onChange={(e) => handleChange(e, "target")} value={targetLang}>
         {languagesOptions.map((lang) => (
