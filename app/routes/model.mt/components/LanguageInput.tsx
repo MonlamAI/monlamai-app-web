@@ -96,6 +96,7 @@ function LanguageInput({
     if (isTibetan(text)) {
       setParams((prevParams) => {
         prevParams.set("source", "bo");
+        prevParams.set("target", "en");
         return prevParams;
       });
       return;
