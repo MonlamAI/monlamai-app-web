@@ -181,7 +181,7 @@ function TeamLink() {
       prefetch="intent"
       unstable_viewTransition
     >
-      {translation.team}
+      {/* {translation.team} */}
     </NavLink>
   );
 }
