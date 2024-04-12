@@ -35,7 +35,7 @@ export default function ListInput({
   const ShowList = ["text", "recording", "image"];
 
   return (
-    <div className="flex gap-2 mt-2">
+    <div className="flex relative top-[-4px] text-lg gap-2 mt-2">
       {options.map((option, index) => {
         if (!isFileUploadEnabled) return null;
         let icon = icons[option] ?? null;
