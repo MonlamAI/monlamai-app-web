@@ -39,7 +39,7 @@ export default function ListInput({
       {options.map((option, index) => {
         if (!isFileUploadEnabled) return null;
         let icon = icons[option] ?? null;
-        let disabled = !isUserLoggedIn && !ShowList.includes(option);
+        let disabled = !isUserLoggedIn ? !ShowList.includes(option) : false;
         function handleSelection(option) {
           if (disabled) {
             return alert("login to use this feature");
@@ -51,7 +51,7 @@ export default function ListInput({
             color={option === selectedTool ? "blue" : "gray"}
             size={"xs"}
             key={option + index}
-            onClick={handleSelection}
+            onClick={() => handleSelection(option)}
             className={`capitalize flex items-center ${
               disabled && "  opacity-50 cursor-not-allowed  "
             }`}

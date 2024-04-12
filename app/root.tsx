@@ -142,7 +142,7 @@ export default function App() {
         <div className="flex flex-col flex-1">
           {showHeader && <Header />}
           {user && <LocationComponent />}
-          <div className="flex-1 mt-5">
+          <div className="flex-1">
             <Outlet />
           </div>
           {!isSteps && showHeader && <Footer />}
