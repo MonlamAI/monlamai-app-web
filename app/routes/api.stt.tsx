@@ -48,7 +48,6 @@ export const action: ActionFunction = async ({ request }) => {
     // upload audio to s3 and get the url
     const key = `STT/playground/${uuid()}.mp3`;
     const url = await uploadToS3(buffer, key, "audio/mpeg");
-    console.log("url", url);
     // save inference to db
     const inferenceData = await saveInference({
       userId: user?.id,

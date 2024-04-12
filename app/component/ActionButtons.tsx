@@ -34,8 +34,8 @@ export function NonEditModeActions({
 }: NonEditModeActionsProps) {
   let isSelected =
     selectedTool === "text" ||
-    selectedTool === "Recording" ||
-    selectedTool === "File";
+    selectedTool === "recording" ||
+    selectedTool === "file";
   let isOutputNull = !text || text === "";
   if (isOutputNull || !isSelected) return null;
   const { liked, disliked } = likefetcher.data?.vote || {};
