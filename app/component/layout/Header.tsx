@@ -97,6 +97,7 @@ function Menu() {
   const { user } = useRouteLoaderData("root");
   const { translation, locale } = uselitteraTranlation();
   let isEnglish = locale === "en_US";
+  const isTibetan = locale === "bo_TI";
   if (!user)
     return (
       <Link
@@ -104,7 +105,8 @@ function Menu() {
         style={{ paddingTop: isEnglish ? "" : "5px" }}
         className="font-medium flex items-center gap-2 py-1 px-2 rounded-md hover:underline bg-secondary-500 hover:bg-secondary-400 text-dark_text-default"
       >
-        <IoLogInSharp /> {translation.login}
+        <IoLogInSharp />{" "}
+        <span className={isTibetan ? "pt-2" : ""}>{translation.login}</span>
       </Link>
     );
   return (
