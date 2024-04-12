@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import { resetFetcher } from "~/component/utils/resetFetcher";
 import TooltipComponent from "./Tooltip";
-import { useFetcher } from "@remix-run/react";
+import { useFetcher, useLoaderData } from "@remix-run/react";
 import ReactionButtons from "~/component/ReactionButtons";
 import CopyToClipboard from "~/component/CopyToClipboard";
 import axios from "axios";
@@ -29,6 +29,7 @@ function SingleInptSection({ fetcher }: any) {
   let { translation } = uselitteraTranlation();
   const likeFetcher = useFetcher();
   const editfetcher = useFetcher();
+  const { isMobile } = useLoaderData();
 
   const editData = editfetcher.data?.edited;
   const data = fetcher?.data;
@@ -142,28 +143,51 @@ function SingleInptSection({ fetcher }: any) {
             />
           </div>
           {!ImageUrl && !isCameraOpen && <div>OR</div>}
-          <Button
-            color="dark"
-            onClick={toggleCamera}
-            className={ImageUrl ? "hidden" : ""}
-          >
-            {isCameraOpen ? (
-              <>
-                <FiCameraOff className="mr-2" />
-                <p> Camera off</p>
-              </>
-            ) : (
-              <>
+          {!isMobile && (
+            <Button
+              color="dark"
+              onClick={toggleCamera}
+              className={ImageUrl ? "hidden" : ""}
+            >
+              {isCameraOpen ? (
+                <>
+                  <FiCameraOff className="mr-2" />
+                  <p>Camera off</p>
+                </>
+              ) : (
+                <>
+                  <FaCamera className="mr-2" />
+                  <p>Take Photo</p>
+                </>
+              )}
+            </Button>
+          )}
+          {isCameraOpen && !ImageUrl && !isMobile && (
+            <WebcamCapture setFile={setFile} />
+          )}
+          {!ImageUrl && isMobile && (
+            <>
+              <Label
+                htmlFor="take_photo"
+                className="flex justify-center items-center bg-black rounded-md text-white py-2 px-3"
+              >
                 <FaCamera className="mr-2" />
-                <p>Open Camera</p>
-              </>
-            )}
-          </Button>
-          {isCameraOpen && !ImageUrl && <WebcamCapture setFile={setFile} />}
+                <p>Take Photo</p>
+              </Label>
+              <input
+                type="file"
+                accept="image/*"
+                capture="environment" // Use "user" for front camera if needed
+                id="take_photo"
+                name="take_photo"
+                className="opacity-0"
+                onChange={handleFileChange}
+              />
+            </>
+          )}
           {uploadProgress > 0 && uploadProgress < 100 && (
             <div>progress:{uploadProgress}</div>
           )}
-
           {ImageUrl && (
             <img
               src={ImageUrl}
