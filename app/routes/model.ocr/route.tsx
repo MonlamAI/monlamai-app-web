@@ -28,8 +28,13 @@ export async function loader({ request }: LoaderFunctionArgs) {
     userId: user?.id,
     model: "ocr",
   });
+  const userAgent = request.headers.get("User-Agent") || "";
+  const isMobile =
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      userAgent
+    );
   let fileUploadUrl = process.env?.FILE_SUBMIT_URL as string;
-  return { user: userdata, inferenceList, fileUploadUrl };
+  return { user: userdata, inferenceList, fileUploadUrl, isMobile };
 }
 
 export const action: ActionFunction = async ({ request }) => {
