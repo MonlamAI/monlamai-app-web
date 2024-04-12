@@ -56,12 +56,12 @@ export const meta: MetaFunction<typeof loader> = ({ matches }) => {
 export async function loader({ request }: LoaderFunctionArgs) {
   let userdata = await getUserSession(request);
   let user = await getUser(userdata?._json.email);
-  let checkNumberOfInferenceToday = await getTodayInferenceByUserIdCountModel(
-    user?.id,
-    "mt"
-  );
-  let checkLimit =
-    checkNumberOfInferenceToday >= parseInt(process.env?.API_HIT_LIMIT!);
+  let checkNumberOfInferenceToday = user
+    ? await getTodayInferenceByUserIdCountModel(user?.id, "mt")
+    : null;
+  let checkLimit = checkNumberOfInferenceToday
+    ? checkNumberOfInferenceToday >= parseInt(process.env?.API_HIT_LIMIT!)
+    : false;
   let CHAR_LIMIT = parseInt(process.env?.MAX_TEXT_LENGTH_MT!);
   let limitMessage =
     "You have reached the daily limit of translation. Please try again tomorrow.";

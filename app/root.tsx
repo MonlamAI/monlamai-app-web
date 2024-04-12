@@ -23,6 +23,7 @@ import { LitteraProvider } from "@assembless/react-littera";
 import { getUserSession } from "~/services/session.server";
 import { getUser } from "./modal/user.server";
 import toastStyle from "react-toastify/dist/ReactToastify.css";
+import feedBucketStyle from "~/styles/feedbucket.css";
 import { ToastContainer } from "react-toastify";
 import flagsmith_provider from "./services/features.server";
 import { useEffect, useState } from "react";
@@ -70,6 +71,8 @@ export const links: LinksFunction = () => [
   { rel: "stylesheet", href: tailwindStyle },
   { rel: "stylesheet", href: globalStyle },
   { rel: "stylesheet", href: toastStyle },
+  { rel: "stylesheet", href: feedBucketStyle },
+
   {
     rel: "icon",
     type: "image/png",
@@ -139,7 +142,7 @@ export default function App() {
         <div className="flex flex-col flex-1">
           {showHeader && <Header />}
           {user && <LocationComponent />}
-          <div className="flex-1">
+          <div className="flex-1 mt-5">
             <Outlet />
           </div>
           {!isSteps && showHeader && <Footer />}

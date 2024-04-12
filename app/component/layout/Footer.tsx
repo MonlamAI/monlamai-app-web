@@ -37,14 +37,14 @@ function Footer() {
     <footer
       className={` ${
         !isAboutPage ? "lg:fixed" : ""
-      } bottom-0 w-full p-3 bg-primary-500 dark:bg-gray-800 shadow-md dark:shadow-none transition-all duration-500 `}
+      } bottom-0 w-full p-3 bg-primary-400 dark:bg-secondary-600 text-light_text-secondary dark:text-dark_text-secondary shadow-md dark:shadow-none transition-all duration-500 `}
       style={{
         fontFamily: isEnglish ? "Inter" : "monlam",
         lineHeight: "normal",
       }}
     >
       <div className="mx-auto max-w-screen-xl flex flex-col md:flex-row items-center md:justify-between">
-        <div className="text-sm text-light_text-secondary sm:text-center">
+        <div className="text-sm   sm:text-center">
           <div className="hover:underline text-[1rem] cursor-default leading-relaxed text-center">
             {isEnglish
               ? "© Monlam AI 2024"

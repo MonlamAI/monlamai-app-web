@@ -7,7 +7,6 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { RxCross1 } from "react-icons/rx";
 import uselitteraTranlation from "../hooks/useLitteraTranslation";
 import TranslationSwitcher from "../TranslationSwitcher";
-import { IoMdGlobe } from "react-icons/io";
 import DarkModeSwitcher from "../DarkModeSwitcher";
 import { motion } from "framer-motion";
 function Header() {
@@ -22,9 +21,9 @@ function Header() {
     <nav
       className={`flex flex-col lg:flex-row  ${
         isEnglish ? "font-poppins" : "font-monlam"
-      }`}
+      } `}
     >
-      <div className="flex p-3 items-center justify-between  w-full bg-white ">
+      <div className="flex px-1 py-2  items-center justify-between  w-full bg-white dark:bg-secondary-600 ">
         <NavLink
           className="flex items-center gap-2 text-xl"
           prefetch="intent"
@@ -40,7 +39,7 @@ function Header() {
           {translation.monlamAI}
         </NavLink>
         <button
-          className="block lg:hidden z-50"
+          className="block lg:hidden z-50 pr-2"
           onClick={() => setShowMenu((p) => !p)}
         >
           {showMenu ? <RxCross1 /> : <GiHamburgerMenu />}
