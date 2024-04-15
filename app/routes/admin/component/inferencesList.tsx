@@ -3,11 +3,13 @@ import { Virtuoso } from "react-virtuoso";
 import Papa from "papaparse";
 import { DateRangePicker } from "react-date-range";
 import { startOfMonth, endOfMonth, format } from "date-fns";
-import { useSearchParams } from "@remix-run/react";
+import { useNavigation, useSearchParams } from "@remix-run/react";
+import { Spinner } from "flowbite-react";
 
 const InferenceList = ({ inferences }) => {
   const [param, setParam] = useSearchParams();
-
+  const navigation = useNavigation();
+  let isLoading = navigation.state !== "idle";
   const [filterUserId, setFilterUserId] = useState("");
   const [filterModel, setFilterModel] = useState("");
   let filterDates = [
@@ -103,7 +105,11 @@ const InferenceList = ({ inferences }) => {
           Download CSV
         </button>
       </div>
-
+      {isLoading && (
+        <div>
+          <Spinner />
+        </div>
+      )}
       <Virtuoso
         style={{ height: "600px", width: "100%" }}
         data={filteredInferences}
