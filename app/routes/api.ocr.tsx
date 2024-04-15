@@ -14,6 +14,8 @@ export const action: ActionFunction = async ({ request }) => {
   let zip_input_url = formdata.get("zip_input_url") as string;
   let PDFurls = formdata.get("pdf_file") as string;
   let filename = formdata.get("file_name") as string;
+  let show_coordinate = formdata.get("show_coordinate") as string;
+
   let imageUrl = formdata.get("imageUrl") as string;
   if (imageUrl) {
     let formData = new FormData();
@@ -42,6 +44,7 @@ export const action: ActionFunction = async ({ request }) => {
 
     return {
       text: with_replacement,
+      coordinate: show_coordinate ? data?.coordinates : null,
       inferenceId: inferenceData?.id,
     };
   }

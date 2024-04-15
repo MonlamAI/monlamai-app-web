@@ -2,7 +2,6 @@ import { Button, Card, FileInput, Label, Spinner } from "flowbite-react";
 import React, { useEffect, useState } from "react";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import { resetFetcher } from "~/component/utils/resetFetcher";
-import TooltipComponent from "./Tooltip";
 import { useFetcher, useLoaderData } from "@remix-run/react";
 import ReactionButtons from "~/component/ReactionButtons";
 import CopyToClipboard from "~/component/CopyToClipboard";

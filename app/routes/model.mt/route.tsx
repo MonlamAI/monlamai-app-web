@@ -47,6 +47,8 @@ import { CancelButton } from "~/component/Buttons";
 import { RxCross2 } from "react-icons/rx";
 import useTranslate from "./lib/useTranslate";
 import { getUserSession } from "~/services/session.server";
+import ImageTranslateComponent from "./components/ImageTranslateComponent";
+import useSocket from "~/component/hooks/useSocket";
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
   parentMeta.shift(1);
@@ -70,7 +72,12 @@ export async function loader({ request }: LoaderFunctionArgs) {
     userId: user?.id,
     model: "mt",
   });
+  const userAgent = request.headers.get("User-Agent") || "";
 
+  const isMobile =
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      userAgent
+    );
   return {
     user: userdata,
     limitMessage: checkLimit ? limitMessage : null,
@@ -79,6 +86,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     fileUploadUrl: process.env?.FILE_SUBMIT_URL,
     inferences,
     CHAR_LIMIT,
+    isMobile,
   };
 }
 
@@ -140,9 +148,9 @@ export default function Index() {
   };
 
   const [file, setFile] = useState<File | null>(null);
-  const { limitMessage, CHAR_LIMIT } = useLoaderData();
+  const { limitMessage, CHAR_LIMIT, user } = useLoaderData();
   const { show_mt_language_toggle } = useRouteLoaderData("root");
-
+  const { isConnected, socket, completed } = useSocket("localhost:1000", user);
   const [edit, setEdit] = useState(false);
   const [editText, setEditText] = useState("");
   const debounceSourceText = useDebounce(sourceText, 100);
@@ -254,108 +262,118 @@ export default function Index() {
         />
       )}
 
-      <div className="mt-3 flex flex-col gap-5 lg:flex-row">
-        <CardComponent>
-          {limitMessage ? (
-            <div className="text-gray-500">
-              {limitMessage} <br /> thank you for using MonlamAI
-            </div>
-          ) : (
-            <>
-              <div className="flex relative h-auto md:min-h-[25vh] lg:min-h-[40vh] w-full flex-1 flex-col justify-center gap-2">
-                <TextOrDocumentComponent
-                  selectedTool={selectedTool}
-                  sourceText={sourceText}
-                  setSourceText={setSourceText}
-                  sourceLang={source_lang}
-                  setFile={setFile}
-                />
-                {selectedTool === "text" && (
-                  <CancelButton
-                    onClick={handleReset}
-                    hidden={!sourceText || sourceText === ""}
-                  >
-                    <RxCross2 size={20} />
-                  </CancelButton>
-                )}
-              </div>
-              <div className="flex justify-between">
-                <CharacterOrFileSizeComponent
-                  selectedTool={selectedTool}
-                  charCount={charCount}
-                  CHAR_LIMIT={CHAR_LIMIT}
-                  MAX_SIZE_SUPPORT={MAX_SIZE_SUPPORT_DOC}
-                />
-                <SubmitButton
-                  charCount={charCount}
-                  CHAR_LIMIT={CHAR_LIMIT}
-                  trigger={trigger}
-                  selectedTool={selectedTool}
-                  submitFile={handleFileSubmit}
-                  disabled={!file || file.length === 0}
-                />
-              </div>
-            </>
-          )}
-        </CardComponent>
-
-        <CardComponent>
-          <div className="flex min-h-[15vh] lg:min-h-[30vh] h-auto w-full flex-1 flex-col gap-2 ">
-            <div
-              ref={targetRef}
-              className={`h-full text-lg ${
-                target_lang === "bo"
-                  ? "leading-loose tracking-wide"
-                  : "font-poppins"
-              }`}
-            >
-              {TextSelected && edit && (
-                <EditDisplay editText={editText} setEditText={setEditText} />
-              )}
-              {TextSelected && sourceText !== "" && (
-                <OutputDisplay
-                  edit={edit}
-                  editData={editData}
-                  output={data}
-                  animate={true}
-                  targetLang={target_lang}
-                />
-              )}
-              {selectedTool === "document" && <InferenceList />}
-              {isLoading && (
-                <div className="w-full flex justify-center">
-                  <div className=" loader_animation"></div>
+      {(selectedTool === "text" || selectedTool === "document") && (
+        <div className="mt-3 flex flex-col gap-5 lg:flex-row">
+          <>
+            <CardComponent>
+              {limitMessage ? (
+                <div className="text-gray-500">
+                  {limitMessage} <br /> thank you for using MonlamAI
                 </div>
+              ) : (
+                <>
+                  <div className="flex relative h-auto md:min-h-[25vh] lg:min-h-[40vh] w-full flex-1 flex-col justify-center gap-2">
+                    <TextOrDocumentComponent
+                      selectedTool={selectedTool}
+                      sourceText={sourceText}
+                      setSourceText={setSourceText}
+                      sourceLang={source_lang}
+                      setFile={setFile}
+                    />
+                    {selectedTool === "text" && (
+                      <CancelButton
+                        onClick={handleReset}
+                        hidden={!sourceText || sourceText === ""}
+                      >
+                        <RxCross2 size={20} />
+                      </CancelButton>
+                    )}
+                  </div>
+                  <div className="flex justify-between">
+                    <CharacterOrFileSizeComponent
+                      selectedTool={selectedTool}
+                      charCount={charCount}
+                      CHAR_LIMIT={CHAR_LIMIT}
+                      MAX_SIZE_SUPPORT={MAX_SIZE_SUPPORT_DOC}
+                    />
+                    <SubmitButton
+                      charCount={charCount}
+                      CHAR_LIMIT={CHAR_LIMIT}
+                      trigger={trigger}
+                      selectedTool={selectedTool}
+                      submitFile={handleFileSubmit}
+                      disabled={!file || file.length === 0}
+                    />
+                  </div>
+                </>
               )}
-              {selectedTool === "document" && sourceText !== "" && (
-                <DownloadDocument source={sourceText} lang={source_lang} />
+            </CardComponent>
+            <CardComponent>
+              <div className="flex min-h-[15vh] lg:min-h-[30vh] h-auto w-full flex-1 flex-col gap-2 ">
+                <div
+                  ref={targetRef}
+                  className={`h-full text-lg ${
+                    target_lang === "bo"
+                      ? "leading-loose tracking-wide"
+                      : "font-poppins"
+                  }`}
+                >
+                  {TextSelected && edit && (
+                    <EditDisplay
+                      editText={editText}
+                      setEditText={setEditText}
+                    />
+                  )}
+                  {TextSelected && sourceText !== "" && (
+                    <OutputDisplay
+                      edit={edit}
+                      editData={editData}
+                      output={data}
+                      animate={true}
+                      targetLang={target_lang}
+                    />
+                  )}
+                  {selectedTool === "document" && (
+                    <InferenceList completed={completed} />
+                  )}
+                  {isLoading && (
+                    <div className="w-full flex justify-center">
+                      <div className=" loader_animation"></div>
+                    </div>
+                  )}
+                  {selectedTool === "document" && sourceText !== "" && (
+                    <DownloadDocument source={sourceText} lang={source_lang} />
+                  )}
+                </div>
+              </div>
+              {edit && (
+                <EditActionButtons
+                  handleCancelEdit={handleCancelEdit}
+                  handleEditSubmit={handleEditSubmit}
+                  editfetcher={editfetcher}
+                  editText={editText}
+                  translated={data}
+                />
               )}
-            </div>
-          </div>
-          {edit && (
-            <EditActionButtons
-              handleCancelEdit={handleCancelEdit}
-              handleEditSubmit={handleEditSubmit}
-              editfetcher={editfetcher}
-              editText={editText}
-              translated={data}
-            />
-          )}
-          {!edit && inferenceId && sourceText !== "" && (
-            <NonEditModeActions
-              selectedTool={selectedTool}
-              likefetcher={likefetcher}
-              sourceText={sourceText}
-              inferenceId={inferenceId}
-              setEdit={setEdit}
-              text={newText ?? data}
-              handleCopy={handleCopy}
-              setEditText={setEditText}
-              sourceLang={source_lang}
-            />
-          )}
-        </CardComponent>
-      </div>
+              {!edit && inferenceId && sourceText !== "" && (
+                <NonEditModeActions
+                  selectedTool={selectedTool}
+                  likefetcher={likefetcher}
+                  sourceText={sourceText}
+                  inferenceId={inferenceId}
+                  setEdit={setEdit}
+                  text={newText ?? data}
+                  handleCopy={handleCopy}
+                  setEditText={setEditText}
+                  sourceLang={source_lang}
+                />
+              )}
+            </CardComponent>
+          </>
+        </div>
+      )}
+      {selectedTool === "image" && <ImageTranslateComponent />}
+
       <div className="mt-3 w-full text-center text-[0.7rem] text-xs text-slate-400 md:float-right md:w-fit">
         Monlam-MITRA ཡིག་སྒྱུར་རིག་ནུས་དཔེ་གཞི་ཐོན་རིམ་ <small>v</small>10-16
       </div>

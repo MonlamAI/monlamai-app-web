@@ -4,13 +4,14 @@ import { motion } from "framer-motion";
 import EditDisplay from "~/component/EditDisplay";
 import FileUpload from "~/component/FileUpload";
 import { MAX_SIZE_SUPPORT_AUDIO } from "~/helper/const";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import { useFetcher, useLoaderData, useRevalidator } from "@remix-run/react";
 import { MdDeleteForever } from "react-icons/md";
 import { FaDownload } from "react-icons/fa";
 import { Progress } from "flowbite-react";
 import timeSince from "~/component/utils/timeSince";
+import useSocket from "~/component/hooks/useSocket";
 
 type TextOrDocumentComponentProps = {
   selectedTool: string;
@@ -172,19 +173,24 @@ export function SubmitButton({
   );
 }
 
-export function InferenceList() {
+export function InferenceList({ completed }) {
   let { inferences } = useLoaderData();
   return (
     <div className="space-y-2 max-h-[50vh] overflow-auto font-poppins">
       {inferences.map((inference: any) => {
-        return <EachInference inference={inference} key={inference.id} />;
+        return (
+          <EachInference
+            inference={inference}
+            key={inference.id}
+            completed={completed}
+          />
+        );
       })}
     </div>
   );
 }
 
-function EachInference({ inference }: any) {
-  const [progress, setProgress] = useState(0);
+function EachInference({ inference, completed }: any) {
   const { fileUploadUrl } = useLoaderData();
   const deleteFetcher = useFetcher();
   let filename = inference.input.split("/MT/input/")[1].split("-%40-")[1];
@@ -192,37 +198,10 @@ function EachInference({ inference }: any) {
   const revalidator = useRevalidator();
   let outputURL = inference.output;
   let isComplete = !!outputURL;
-  async function fetchJobProgress() {
-    try {
-      let res = await fetch(fileUploadUrl + `/mt/status/${inference.jobId}`);
-      let data = await res.json();
-      let progress = data?.progress;
-      console.log(data);
 
-      if (progress) {
-        setProgress(progress);
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
-  useEffect(() => {
-    if (progress === 100) {
-      setTimeout(() => {
-        revalidator.revalidate();
-      }, 2000);
-    }
-    const interval = setInterval(() => {
-      if (progress < 80) {
-        fetchJobProgress();
-      } else {
-        clearInterval(interval);
-      }
-    }, 2000);
-
-    return () => clearInterval(interval);
-  }, [progress]);
+  let progress = useMemo(() => {
+    return completed[inference?.jobId]?.progress;
+  }, [completed]);
 
   function deleteHandler() {
     deleteFetcher.submit(
