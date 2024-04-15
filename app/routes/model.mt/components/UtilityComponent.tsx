@@ -11,6 +11,7 @@ import { MdDeleteForever } from "react-icons/md";
 import { FaDownload } from "react-icons/fa";
 import { Progress } from "flowbite-react";
 import timeSince from "~/component/utils/timeSince";
+import { IoSend } from "react-icons/io5";
 
 type TextOrDocumentComponentProps = {
   selectedTool: string;
@@ -167,7 +168,7 @@ export function SubmitButton({
       onClick={isFile ? submitFile : trigger}
       className={` ${locale !== "bo_TI" ? "font-poppins" : "font-monlam"}`}
     >
-      {translation.translate}
+      <IoSend size={18} />
     </Button>
   );
 }
