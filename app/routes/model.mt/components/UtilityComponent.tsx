@@ -2,7 +2,7 @@ import { Button, Textarea } from "flowbite-react";
 import TextComponent from "../../../component/TextComponent";
 import { motion } from "framer-motion";
 import FileUpload from "~/component/FileUpload";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useMemo } from "react";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import { useFetcher, useLoaderData, useRevalidator } from "@remix-run/react";
 import { MdDeleteForever } from "react-icons/md";
@@ -72,7 +72,7 @@ export function CharacterOrFileSizeComponent({
   if (selectedTool === "text") {
     return (
       <div className="text-gray-400 text-xs p-2">
-        <span style={{ color: charCount > CHAR_LIMIT ? "red" : "inherit" }}>
+        <span style={{ color: charCount > CHAR_LIMIT! ? "red" : "inherit" }}>
           {charCount}
         </span>{" "}
         / {CHAR_LIMIT}
