@@ -93,6 +93,19 @@ export async function deleteInference({ id }) {
   });
 }
 
-export async function getInferences() {
-  return await db.inference.findMany();
+export async function getInferences({
+  startDate,
+  endDate,
+}: {
+  startDate: Date;
+  endDate: Date;
+}) {
+  return await db.inference.findMany({
+    where: {
+      updatedAt: {
+        gte: new Date(startDate), // gte means "greater than or equal to"
+        lte: new Date(endDate), // lte means "less than or equal to"
+      },
+    },
+  });
 }

@@ -2,42 +2,32 @@ import React, { useState } from "react";
 import { Virtuoso } from "react-virtuoso";
 import Papa from "papaparse";
 import { DateRangePicker } from "react-date-range";
-import {
-  addMonths,
-  subMonths,
-  startOfMonth,
-  endOfMonth,
-  format,
-} from "date-fns";
+import { startOfMonth, endOfMonth, format } from "date-fns";
+import { useSearchParams } from "@remix-run/react";
 
 const InferenceList = ({ inferences }) => {
-  const [filterDates, setFilterDates] = useState([
-    {
-      startDate: startOfMonth(new Date()),
-      endDate: endOfMonth(new Date()),
-      key: "selection",
-    },
-  ]);
+  const [param, setParam] = useSearchParams();
+
   const [filterUserId, setFilterUserId] = useState("");
   const [filterModel, setFilterModel] = useState("");
-  const [monthly, setMonthly] = useState(false);
-
+  let filterDates = [
+    {
+      startDate: new Date(param.get("startDate")) ?? startOfMonth(new Date()),
+      endDate: new Date(param.get("endDate")) ?? endOfMonth(new Date()),
+      key: "selection",
+    },
+  ];
   const [isDateModalOpen, setDateModalOpen] = useState(false);
   const handleSelect = (ranges) => {
-    setFilterDates([ranges.selection]);
+    setParam((p) => {
+      p.set("startDate", ranges.selection.startDate);
+      p.set("endDate", ranges.selection.endDate);
+      return p;
+    });
   };
 
   const filteredInferences = inferences.filter((inference) => {
-    const infDate = new Date(inference.updatedAt);
-    const startDate = monthly
-      ? startOfMonth(filterDates[0].startDate)
-      : filterDates[0].startDate;
-    const endDate = monthly
-      ? endOfMonth(filterDates[0].endDate)
-      : filterDates[0].endDate;
     return (
-      infDate >= startDate &&
-      infDate <= endDate &&
       (filterUserId ? inference.userId === parseInt(filterUserId) : true) &&
       (filterModel ? inference.model === filterModel : true)
     );
@@ -101,10 +91,10 @@ const InferenceList = ({ inferences }) => {
           onChange={(e) => setFilterModel(e.target.value)}
         >
           <option value="">All Models</option>
-          <option value="MT">MT</option>
-          <option value="STT">STT</option>
-          <option value="TTS">TTS</option>
-          <option value="OCR">OCR</option>
+          <option value="mt">MT</option>
+          <option value="stt">STT</option>
+          <option value="tts">TTS</option>
+          <option value="ocr">OCR</option>
         </select>
         <button
           onClick={downloadCSV}
