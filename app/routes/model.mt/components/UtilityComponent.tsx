@@ -1,17 +1,14 @@
 import { Button, Textarea } from "flowbite-react";
 import TextComponent from "../../../component/TextComponent";
 import { motion } from "framer-motion";
-import EditDisplay from "~/component/EditDisplay";
 import FileUpload from "~/component/FileUpload";
-import { MAX_SIZE_SUPPORT_AUDIO } from "~/helper/const";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import { useFetcher, useLoaderData, useRevalidator } from "@remix-run/react";
 import { MdDeleteForever } from "react-icons/md";
 import { FaDownload } from "react-icons/fa";
-import { Progress } from "flowbite-react";
 import timeSince from "~/component/utils/timeSince";
-import useSocket from "~/component/hooks/useSocket";
+import { IoSend } from "react-icons/io5";
 
 type TextOrDocumentComponentProps = {
   selectedTool: string;
@@ -33,7 +30,7 @@ type EditActionButtonsProps = {
   handleEditSubmit: () => void;
   editfetcher: any;
   editText: string;
-  translated: any;
+  outputText: any;
 };
 
 type OutputDisplayProps = {
@@ -124,7 +121,7 @@ export function EditActionButtons({
   handleEditSubmit,
   editfetcher,
   editText,
-  translated,
+  outputText,
 }: EditActionButtonsProps) {
   return (
     <>
@@ -139,7 +136,7 @@ export function EditActionButtons({
           color="blue"
           onClick={handleEditSubmit}
           isProcessing={editfetcher.state !== "idle"}
-          disabled={editText === translated?.translation}
+          disabled={editText === outputText}
         >
           submit
         </Button>
@@ -168,7 +165,7 @@ export function SubmitButton({
       onClick={isFile ? submitFile : trigger}
       className={` ${locale !== "bo_TI" ? "font-poppins" : "font-monlam"}`}
     >
-      {translation.translate}
+      <IoSend size={18} />
     </Button>
   );
 }

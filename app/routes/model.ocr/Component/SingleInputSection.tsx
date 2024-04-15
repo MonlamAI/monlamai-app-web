@@ -16,6 +16,7 @@ import { FiCameraOff } from "react-icons/fi";
 import CardComponent from "~/component/Card";
 import { RxCross2 } from "react-icons/rx";
 import { CancelButton } from "~/component/Buttons";
+import { NonEditButtons } from "~/component/ActionButtons";
 
 function SingleInptSection({ fetcher }: any) {
   const [ImageUrl, setImageUrl] = useState<string | null>(null);
@@ -32,6 +33,7 @@ function SingleInptSection({ fetcher }: any) {
 
   const editData = editfetcher.data?.edited;
   const data = fetcher?.data;
+  const text = data?.text;
   const inferenceId = fetcher.data?.inferenceId;
   const isActionSubmission = fetcher.state !== "idle";
   const errorMessage = data?.error_message;
@@ -118,6 +120,10 @@ function SingleInptSection({ fetcher }: any) {
   const toggleCamera = () => {
     setCameraiOpen(!isCameraOpen);
   };
+
+  function handleCopy() {
+    navigator.clipboard.writeText(text);
+  }
 
   return (
     <div className="flex flex-col lg:flex-row  overflow-hidden max-w-[100vw] gap-3">
@@ -227,10 +233,11 @@ function SingleInptSection({ fetcher }: any) {
                     <span className="block sm:inline">{errorMessage}</span>
                   </div>
                 )}
-                {!edit && data?.text && !editData && (
+                {!edit && text && !editData && (
                   <div
+                    className="text-xl"
                     dangerouslySetInnerHTML={{
-                      __html: data?.text.replaceAll("\n", "<br>"),
+                      __html: text?.replaceAll("\n", "<br>"),
                     }}
                   />
                 )}
@@ -238,7 +245,7 @@ function SingleInptSection({ fetcher }: any) {
               {edit && (
                 <EditDisplay editText={editText} setEditText={setEditText} />
               )}
-              {!edit && editData && <p>{editData}</p>}
+              {!edit && editData && <p className="text-xl">{editData}</p>}
             </>
           )}
         </div>
@@ -248,33 +255,21 @@ function SingleInptSection({ fetcher }: any) {
             handleEditSubmit={handleEditSubmit}
             editfetcher={editfetcher}
             editText={editText}
-            translated={data}
+            outputText={text}
           />
         )}
-        {!edit && (
-          <div className="flex justify-between">
-            {data?.text && <Speak text={data.text} />}
-            <div className="flex gap-3 md:gap-5 items-center p-2">
-              {data?.text && (
-                <button
-                  color="grey"
-                  onClick={() => {
-                    setEditText(editData ?? data?.text);
-                    setEdit(true);
-                  }}
-                >
-                  <GoPencil size={20} />
-                </button>
-              )}
-              <ReactionButtons
-                fetcher={likeFetcher}
-                output={data?.text}
-                sourceText={ImageUrl}
-                inferenceId={inferenceId}
-              />
-              {data?.text && <CopyToClipboard textToCopy={data?.text} />}
-            </div>
-          </div>
+        {!edit && inferenceId && (
+          <NonEditButtons
+            selectedTool="text"
+            likefetcher={likeFetcher}
+            sourceText={ImageUrl || ""}
+            inferenceId={inferenceId}
+            setEdit={setEdit}
+            text={editData ?? text}
+            handleCopy={handleCopy}
+            setEditText={setEditText}
+            sourceLang="en"
+          />
         )}
       </CardComponent>
     </div>

@@ -21,7 +21,7 @@ import {
   OutputDisplay,
 } from "../model.mt/components/UtilityComponent";
 import { ErrorBoundary } from "../model.mt/route";
-import { NonEditModeActions } from "~/component/ActionButtons";
+import { NonEditButtons, NonEditModeActions } from "~/component/ActionButtons";
 import { updateEdit } from "~/modal/inference.server";
 import EditDisplay from "~/component/EditDisplay";
 import { resetFetcher } from "~/component/utils/resetFetcher";
@@ -309,6 +309,7 @@ export default function Index() {
                 editData={editData}
                 output={text}
                 animate={false}
+                targetLang="bo"
               />
             )}
           </div>
@@ -318,12 +319,11 @@ export default function Index() {
               handleEditSubmit={handleEditSubmit}
               editfetcher={editfetcher}
               editText={editText}
-              translated={text}
+              outputText={text}
             />
           )}
-          {!edit && (
-            <NonEditModeActions
-              sourceLang=""
+          {!edit && inferenceId && (
+            <NonEditButtons
               selectedTool={selectedTool}
               likefetcher={likefetcher}
               sourceText={audioBase64 || ""}
@@ -332,6 +332,7 @@ export default function Index() {
               text={newText ?? text}
               handleCopy={handleCopy}
               setEditText={setEditText}
+              sourceLang="bo"
             />
           )}
         </CardComponent>

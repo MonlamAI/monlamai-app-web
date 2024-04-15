@@ -5,6 +5,7 @@ import { FaDownload } from "react-icons/fa";
 import timeSince from "~/component/utils/timeSince";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import { Button } from "flowbite-react";
+import { IoSend } from "react-icons/io5";
 
 export function InferenceListTts() {
   let { inferences } = useLoaderData();
@@ -132,7 +133,7 @@ export function TtsSubmitButton({
       onClick={isFile ? submitFile : trigger}
       className={locale !== "bo_TI" ? "font-poppins" : "font-monlam"}
     >
-      {translation.submit}
+      <IoSend size={18} />
     </Button>
   );
 }

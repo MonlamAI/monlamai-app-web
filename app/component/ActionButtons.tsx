@@ -97,3 +97,66 @@ export function NonEditModeActions({
     </div>
   );
 }
+
+type NonEditButtonProps = {
+  selectedTool: string;
+  likefetcher: any;
+  sourceText: string;
+  inferenceId: string;
+  setEdit: (p: boolean) => void;
+  setEditText: (p: string) => void;
+  text: any;
+  handleCopy: () => void;
+  sourceLang: string;
+};
+
+export function NonEditButtons({
+  selectedTool,
+  likefetcher,
+  sourceText,
+  inferenceId,
+  setEdit,
+  setEditText,
+  text,
+  handleCopy,
+  sourceLang,
+}: NonEditButtonProps) {
+  let isSelected =
+    selectedTool === "text" ||
+    selectedTool === "recording" ||
+    selectedTool === "file";
+  let isOutputNull = !text || text === "";
+  if (isOutputNull || !isSelected) return null;
+  const { liked, disliked } = likefetcher.data?.vote || {};
+
+  return (
+    <div
+      className={`flex ${
+        sourceLang == "en" ? "justify-between" : "justify-end"
+      } p-2`}
+    >
+      {selectedTool !== "File" && sourceLang == "en" && <Speak text={text} />}
+      <div className="flex gap-3 justify-end items-center">
+        <button
+          onClick={() => {
+            setEditText(text);
+            setEdit(true);
+          }}
+          className="flex justify-center items-center"
+        >
+          <GoPencil size={20} />
+        </button>
+        <div className="flex justify-center py-2 gap-3">
+          <ReactionButtons
+            fetcher={likefetcher}
+            output={text}
+            sourceText={sourceText}
+            inferenceId={inferenceId}
+          />
+        </div>
+        <CopyToClipboard textToCopy={text} onClick={handleCopy} />
+        <ShareLink inferenceId={inferenceId} />
+      </div>
+    </div>
+  );
+}
