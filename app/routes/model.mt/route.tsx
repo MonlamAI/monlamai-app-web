@@ -338,7 +338,7 @@ export default function Index() {
               handleEditSubmit={handleEditSubmit}
               editfetcher={editfetcher}
               editText={editText}
-              translated={data}
+              outputText={data}
             />
           )}
           {!edit && inferenceId && sourceText !== "" && (

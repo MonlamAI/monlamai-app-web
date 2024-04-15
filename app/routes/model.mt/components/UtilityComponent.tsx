@@ -33,7 +33,7 @@ type EditActionButtonsProps = {
   handleEditSubmit: () => void;
   editfetcher: any;
   editText: string;
-  translated: any;
+  outputText: any;
 };
 
 type OutputDisplayProps = {
@@ -124,7 +124,7 @@ export function EditActionButtons({
   handleEditSubmit,
   editfetcher,
   editText,
-  translated,
+  outputText,
 }: EditActionButtonsProps) {
   return (
     <>
@@ -139,7 +139,7 @@ export function EditActionButtons({
           color="blue"
           onClick={handleEditSubmit}
           isProcessing={editfetcher.state !== "idle"}
-          disabled={editText === translated?.translation}
+          disabled={editText === outputText}
         >
           submit
         </Button>
