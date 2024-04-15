@@ -85,8 +85,8 @@ export default function PDFInputSection({ fetcher }: props) {
 
   let alldone = !!filePath;
   return (
-    <div className="flex w-full gap-3">
-      <Card className="md:w-1/2 relative">
+    <div className="flex flex-col lg:flex-row overflow-hidden max-w-[100vw] gap-3">
+      <Card className="lg:w-1/2 relative">
         <TooltipComponent />
         <div>
           <div className="w-full min-h-[45vh] flex flex-col items-center justify-center gap-5">
@@ -137,7 +137,7 @@ export default function PDFInputSection({ fetcher }: props) {
           </div>
         </div>
       </Card>
-      <Card className="md:w-1/2">
+      <Card className="lg:w-1/2">
         <div className="w-full h-[50vh] p-3 text-black bg-slate-50 rounded-lg overflow-auto">
           {fetcher.data?.error && <div>{fetcher.data?.error}</div>}
 

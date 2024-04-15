@@ -1,7 +1,12 @@
 import { Button, Card, Label, Spinner } from "flowbite-react";
 import { BsFillStopFill, BsFillMicFill } from "react-icons/bs";
 import { useState, useRef, useCallback, useEffect } from "react";
-import { type LoaderFunction, ActionFunction, json } from "@remix-run/node";
+import {
+  type LoaderFunction,
+  ActionFunction,
+  json,
+  LoaderFunctionArgs,
+} from "@remix-run/node";
 import { MetaFunction, useFetcher } from "@remix-run/react";
 import { LiveAudioVisualizer } from "react-audio-visualize";
 import { getBrowser } from "~/component/utils/getBrowserDetail";
@@ -16,17 +21,16 @@ import {
   OutputDisplay,
 } from "../model.mt/components/UtilityComponent";
 import { ErrorBoundary } from "../model.mt/route";
-import { NonEditModeActions } from "~/component/ActionButtons";
-import { saveInference, updateEdit } from "~/modal/inference.server";
+import { NonEditButtons, NonEditModeActions } from "~/component/ActionButtons";
+import { updateEdit } from "~/modal/inference.server";
 import EditDisplay from "~/component/EditDisplay";
 import { resetFetcher } from "~/component/utils/resetFetcher";
 import { RxCross2 } from "react-icons/rx";
-import { CancelButton, SubmitButton } from "~/component/Buttons";
-import { formatBytes } from "~/component/utils/formatSize";
-import { API_ERROR_MESSAGE, MAX_SIZE_SUPPORT_AUDIO } from "~/helper/const";
+import { CancelButton } from "~/component/Buttons";
+import { MAX_SIZE_SUPPORT_AUDIO } from "~/helper/const";
 import { HandleAudioFile } from "./components/FileUpload";
-import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import { auth } from "~/services/auth.server";
+import { getUserSession } from "~/services/session.server";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -36,10 +40,12 @@ export const meta: MetaFunction<typeof loader> = ({ matches }) => {
 };
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  let userdata = await auth.isAuthenticated(request, {
-    failureRedirect: "/login",
-  });
-  return { user: userdata };
+  let userdata = await getUserSession(request);
+  let user = null;
+  if (userdata) {
+    user = userdata;
+  }
+  return { user };
 }
 
 export const action: ActionFunction = async ({ request }) => {
@@ -54,8 +60,8 @@ export const action: ActionFunction = async ({ request }) => {
 export default function Index() {
   const fetcher = useFetcher();
   const [audioChunks, setAudioChunks] = useState([]);
-  const [selectedTool, setSelectedTool] = useState<"Recording" | "File">(
-    "Recording"
+  const [selectedTool, setSelectedTool] = useState<"recording" | "file">(
+    "recording"
   );
   const [audio, setAudio] = useState<Blob | null>(null);
   const [audioURL, setAudioURL] = useState<string | null>(null);
@@ -113,19 +119,25 @@ export default function Index() {
     }
   };
   const getMicrophonePermission = async () => {
-    if ("MediaRecorder" in window) {
-      try {
-        const streamData = await navigator.mediaDevices.getUserMedia({
-          audio: true,
-          video: false,
+    let permissionStatus = await navigator.permissions.query({
+      name: "microphone",
+    });
+    if (permissionStatus.state === "prompt") {
+      navigator.mediaDevices
+        .getUserMedia({ audio: true })
+        .then((stream) => {
+          // Use the audio stream
+        })
+        .catch((error) => {
+          // Handle the error or guide the user to enable permissions
         });
-        return streamData;
-      } catch (err) {
-        alert(err.message);
-        return false;
-      }
-    } else {
-      alert("The MediaRecorder API is not supported in your browser.");
+      alert("Please provide the required permission from browser settings");
+    } else if (permissionStatus.state === "denied") {
+      // The user has denied permission - guide them to enable it manually
+      alert("Please enable microphone permissions in your browser settings.");
+    } else if (permissionStatus.state === "granted") {
+      // Permission was already granted
+      return await navigator.mediaDevices.getUserMedia({ audio: true });
     }
   };
 
@@ -178,6 +190,12 @@ export default function Index() {
     };
   };
 
+  useEffect(() => {
+    if (audioBase64) {
+      handleSubmit();
+    }
+  }, [audioBase64]);
+
   const handleFileChange = (file) => {
     if (file) {
       setAudio(file);
@@ -191,11 +209,10 @@ export default function Index() {
       };
     }
   };
-  let { translation } = uselitteraTranlation();
-  let isDisabled = !audioURL;
   let text = fetcher.data?.text;
   let inferenceId = fetcher.data?.inferenceId;
-  let RecordingSelected = selectedTool === "Recording";
+  let RecordingSelected = selectedTool === "recording";
+  let fileSelected = selectedTool === "file";
 
   function handleEditSubmit() {
     let edited = editText;
@@ -224,13 +241,13 @@ export default function Index() {
       <InferenceWrapper
         selectedTool={selectedTool}
         setSelectedTool={setSelectedTool}
-        options={["recording", "document"]}
+        options={["recording", "file"]}
       >
         {actionError && <ErrorMessage error={actionError} />}
 
         <CardComponent>
           <div className="flex flex-col relative gap-2 flex-1 min-h-[30vh]">
-            {selectedTool === "Recording" && (
+            {RecordingSelected && (
               <div className="flex flex-col items-center gap-5 flex-1 justify-center md:min-h-[30vh]">
                 {recording &&
                   mediaRecorder.current &&
@@ -242,8 +259,12 @@ export default function Index() {
                     />
                   )}
                 {!audioURL && (
-                  <Button size="md" color="gray" onClick={toggleRecording}>
-                    {recording ? <BsFillStopFill /> : <BsFillMicFill />}
+                  <Button size="lg" color="gray" onClick={toggleRecording}>
+                    {recording ? (
+                      <BsFillStopFill className="w-[25px] h-[25px] md:w-[50px] md:h-[50px]" />
+                    ) : (
+                      <BsFillMicFill className="w-[25px] h-[25px] md:w-[50px] md:h-[50px]" />
+                    )}
                   </Button>
                 )}
                 {audioURL && (
@@ -254,13 +275,13 @@ export default function Index() {
                 )}
               </div>
             )}
-            {selectedTool === "File" && (
+            {fileSelected && (
               <HandleAudioFile
                 handleFileChange={handleFileChange}
                 reset={handleReset}
               />
             )}
-            {selectedTool === "Recording" && (
+            {RecordingSelected && (
               <CancelButton onClick={handleReset} hidden={!audioURL}>
                 <RxCross2 size={20} />
               </CancelButton>
@@ -273,15 +294,6 @@ export default function Index() {
                 CHAR_LIMIT={undefined}
                 MAX_SIZE_SUPPORT={MAX_SIZE_SUPPORT_AUDIO}
               />
-              <SubmitButton
-                onClick={handleSubmit}
-                disabled={isDisabled}
-                outline
-                isProcessing={fetcher.state !== "idle"}
-                size="xs"
-              >
-                {translation.submit}
-              </SubmitButton>
             </div>
           </div>
         </CardComponent>
@@ -297,6 +309,7 @@ export default function Index() {
                 editData={editData}
                 output={text}
                 animate={false}
+                targetLang="bo"
               />
             )}
           </div>
@@ -306,12 +319,11 @@ export default function Index() {
               handleEditSubmit={handleEditSubmit}
               editfetcher={editfetcher}
               editText={editText}
-              translated={text}
+              outputText={text}
             />
           )}
-          {!edit && (
-            <NonEditModeActions
-              sourceLang=""
+          {!edit && inferenceId && (
+            <NonEditButtons
               selectedTool={selectedTool}
               likefetcher={likefetcher}
               sourceText={audioBase64 || ""}
@@ -320,6 +332,7 @@ export default function Index() {
               text={newText ?? text}
               handleCopy={handleCopy}
               setEditText={setEditText}
+              sourceLang="bo"
             />
           )}
         </CardComponent>

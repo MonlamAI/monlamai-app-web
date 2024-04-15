@@ -1,8 +1,17 @@
 import { createCookieSessionStorage } from "@remix-run/node";
+import { getUser } from "~/modal/user.server";
 
 // export the whole sessionStorage object
+
+function getDate() {
+  const expires = new Date();
+  expires.setDate(expires.getDate() + 7);
+  return expires;
+}
+
 export let sessionStorage = createCookieSessionStorage({
   cookie: {
+    expires: getDate(),
     name: "_session_monlam", // use any name you want here
     sameSite: "lax", // this helps with CSRF
     path: "/", // remember to add this so the cookie will work in all routes
@@ -16,6 +25,15 @@ export let sessionStorage = createCookieSessionStorage({
 export async function getUserSession(request: Request) {
   const session = await getSession(request.headers.get("Cookie"));
   let user = session.get("user");
+  return user;
+}
+
+export async function getUserDetail(request: Request) {
+  let userdata = await getUserSession(request);
+  let user = null;
+  if (userdata) {
+    user = await getUser(userdata?._json.email);
+  }
   return user;
 }
 

@@ -59,8 +59,8 @@ enum models {
 
 model Inference {
   id           String   @id @default(uuid())
-  user         User     @relation("inference", fields: [userId], references: [id])
-  userId       Int
+  user         User?    @relation("inference", fields: [userId], references: [id])
+  userId       Int?
   model        models
   modelVersion String?
   inputLang    String?

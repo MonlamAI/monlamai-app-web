@@ -1,21 +1,21 @@
 import { ActionFunction } from "@remix-run/node";
 import { saveInference } from "~/modal/inference.server";
-import { getUser } from "~/modal/user.server";
-import { auth } from "~/services/auth.server";
+import applyReplacements from "./model.ocr/utils/replacements";
+import { getUserDetail } from "~/services/session.server";
 
 let FILE_SERVER_ISSUE_MESSAGE = "File upload server is not working !";
 
 export const action: ActionFunction = async ({ request }) => {
   let formdata = await request.formData();
   let files = formdata.getAll("files") as string[] | File[];
-  let userdata = await auth.isAuthenticated(request, {
-    failureRedirect: "/login",
-  });
-  let user = await getUser(userdata?._json.email);
+
+  let user = await getUserDetail(request);
   let URL_File = process.env.FILE_SUBMIT_URL;
   let zip_input_url = formdata.get("zip_input_url") as string;
   let PDFurls = formdata.get("pdf_file") as string;
   let filename = formdata.get("file_name") as string;
+  let show_coordinate = formdata.get("show_coordinate") as string;
+
   let imageUrl = formdata.get("imageUrl") as string;
   if (imageUrl) {
     let formData = new FormData();
@@ -40,7 +40,13 @@ export const action: ActionFunction = async ({ request }) => {
       output: data.content,
       jobId: null,
     });
-    return { text: inferenceData.output };
+    let with_replacement = applyReplacements(inferenceData.output);
+
+    return {
+      text: with_replacement,
+      coordinate: show_coordinate ? data?.coordinates : null,
+      inferenceId: inferenceData?.id,
+    };
   }
   if (zip_input_url) {
     let formData = new FormData();

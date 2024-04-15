@@ -1,16 +1,14 @@
 import { Button, Textarea } from "flowbite-react";
 import TextComponent from "../../../component/TextComponent";
 import { motion } from "framer-motion";
-import EditDisplay from "~/component/EditDisplay";
 import FileUpload from "~/component/FileUpload";
-import { MAX_SIZE_SUPPORT_AUDIO } from "~/helper/const";
-import { useEffect, useRef, useState } from "react";
+import { useMemo } from "react";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import { useFetcher, useLoaderData, useRevalidator } from "@remix-run/react";
 import { MdDeleteForever } from "react-icons/md";
 import { FaDownload } from "react-icons/fa";
-import { Progress } from "flowbite-react";
 import timeSince from "~/component/utils/timeSince";
+import { IoSend } from "react-icons/io5";
 
 type TextOrDocumentComponentProps = {
   selectedTool: string;
@@ -32,7 +30,7 @@ type EditActionButtonsProps = {
   handleEditSubmit: () => void;
   editfetcher: any;
   editText: string;
-  translated: any;
+  outputText: any;
 };
 
 type OutputDisplayProps = {
@@ -74,7 +72,7 @@ export function CharacterOrFileSizeComponent({
   if (selectedTool === "text") {
     return (
       <div className="text-gray-400 text-xs p-2">
-        <span style={{ color: charCount > CHAR_LIMIT ? "red" : "inherit" }}>
+        <span style={{ color: charCount > CHAR_LIMIT! ? "red" : "inherit" }}>
           {charCount}
         </span>{" "}
         / {CHAR_LIMIT}
@@ -123,7 +121,7 @@ export function EditActionButtons({
   handleEditSubmit,
   editfetcher,
   editText,
-  translated,
+  outputText,
 }: EditActionButtonsProps) {
   return (
     <>
@@ -138,7 +136,7 @@ export function EditActionButtons({
           color="blue"
           onClick={handleEditSubmit}
           isProcessing={editfetcher.state !== "idle"}
-          disabled={editText === translated?.translation}
+          disabled={editText === outputText}
         >
           submit
         </Button>
@@ -165,26 +163,31 @@ export function SubmitButton({
       size="xs"
       title={exceedsLimit ? "Character limit exceeded" : ""}
       onClick={isFile ? submitFile : trigger}
-      className={locale !== "bo_TI" ? "font-poppins" : "font-monlam"}
+      className={` ${locale !== "bo_TI" ? "font-poppins" : "font-monlam"}`}
     >
-      {translation.translate}
+      <IoSend size={18} />
     </Button>
   );
 }
 
-export function InferenceList() {
+export function InferenceList({ completed }) {
   let { inferences } = useLoaderData();
   return (
     <div className="space-y-2 max-h-[50vh] overflow-auto font-poppins">
       {inferences.map((inference: any) => {
-        return <EachInference inference={inference} key={inference.id} />;
+        return (
+          <EachInference
+            inference={inference}
+            key={inference.id}
+            completed={completed}
+          />
+        );
       })}
     </div>
   );
 }
 
-function EachInference({ inference }: any) {
-  const [progress, setProgress] = useState(0);
+function EachInference({ inference, completed }: any) {
   const { fileUploadUrl } = useLoaderData();
   const deleteFetcher = useFetcher();
   let filename = inference.input.split("/MT/input/")[1].split("-%40-")[1];
@@ -192,37 +195,10 @@ function EachInference({ inference }: any) {
   const revalidator = useRevalidator();
   let outputURL = inference.output;
   let isComplete = !!outputURL;
-  async function fetchJobProgress() {
-    try {
-      let res = await fetch(fileUploadUrl + `/mt/status/${inference.jobId}`);
-      let data = await res.json();
-      let progress = data?.progress;
-      console.log(data);
 
-      if (progress) {
-        setProgress(progress);
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
-  useEffect(() => {
-    if (progress === 100) {
-      setTimeout(() => {
-        revalidator.revalidate();
-      }, 2000);
-    }
-    const interval = setInterval(() => {
-      if (progress < 80) {
-        fetchJobProgress();
-      } else {
-        clearInterval(interval);
-      }
-    }, 2000);
-
-    return () => clearInterval(interval);
-  }, [progress]);
+  let progress = useMemo(() => {
+    return completed[inference?.jobId]?.progress;
+  }, [completed]);
 
   function deleteHandler() {
     deleteFetcher.submit(

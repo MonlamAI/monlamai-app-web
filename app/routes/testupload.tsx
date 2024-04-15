@@ -9,6 +9,7 @@ import {
 import { addFileInference, deleteInference } from "~/modal/inference.server";
 import { getUser } from "~/modal/user.server";
 import { auth } from "~/services/auth.server";
+import { getUserDetail } from "~/services/session.server";
 import { uploadFile } from "~/services/uploadFile.server";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
@@ -26,11 +27,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     unstable_createMemoryUploadHandler()
   );
 
-  let userdata = await auth.isAuthenticated(request, {
-    failureRedirect: "/login",
-  });
-
-  let user = await getUser(userdata?._json.email);
+  let user = await getUserDetail(request);
   const formData = await unstable_parseMultipartFormData(
     request,
     uploadHandler

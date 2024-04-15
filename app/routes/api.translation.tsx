@@ -16,6 +16,7 @@ import { saveInference } from "~/modal/inference.server";
 import { getUser } from "~/modal/user.server";
 import { auth } from "~/services/auth.server";
 import { fetchGPTData } from "~/services/fetchGPTData.server";
+import { getUserDetail } from "~/services/session.server";
 type Lang = "bo" | "en";
 
 export async function translate(
@@ -72,9 +73,7 @@ export async function translate(
 }
 
 export const action = async ({ request }: ActionFunctionArgs) => {
-  let userdata = await auth.isAuthenticated(request, {
-    failureRedirect: "/login",
-  });
+  let userdata = await getUserDetail(request);
   const isDomainAllowed = verifyDomain(request);
   if (!isDomainAllowed) {
     // If the referer is not from the expected domain, return a forbidden response

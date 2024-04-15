@@ -1,10 +1,5 @@
-import {
-  Form,
-  NavLink,
-  useRouteLoaderData,
-  useLoaderData,
-  Link,
-} from "@remix-run/react";
+import { Form, NavLink, useRouteLoaderData, Link } from "@remix-run/react";
+import { IoLogInSharp } from "react-icons/io5";
 import { Dropdown } from "flowbite-react";
 import { useState } from "react";
 import { HiLogout } from "react-icons/hi";
@@ -12,20 +7,23 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { RxCross1 } from "react-icons/rx";
 import uselitteraTranlation from "../hooks/useLitteraTranslation";
 import TranslationSwitcher from "../TranslationSwitcher";
-import { IoMdGlobe } from "react-icons/io";
 import DarkModeSwitcher from "../DarkModeSwitcher";
-
+import { motion } from "framer-motion";
 function Header() {
   const [showMenu, setShowMenu] = useState(false);
   const { isEnglish, translation } = uselitteraTranlation();
   const data = useRouteLoaderData("root");
+  const variants = {
+    open: { opacity: 1, x: 0 },
+    closed: { opacity: 0, x: "-100%" },
+  };
   return (
     <nav
       className={`flex flex-col lg:flex-row  ${
         isEnglish ? "font-poppins" : "font-monlam"
-      }`}
+      } `}
     >
-      <div className="flex p-3 items-center justify-between  w-full bg-white dark:bg-slate-700 dark:text-gray-200 ">
+      <div className="flex px-1 py-2  items-center justify-between  w-full bg-white dark:bg-secondary-600 ">
         <NavLink
           className="flex items-center gap-2 text-xl"
           prefetch="intent"
@@ -41,39 +39,54 @@ function Header() {
           {translation.monlamAI}
         </NavLink>
         <button
-          className="block lg:hidden"
+          className="block lg:hidden z-50 pr-2"
           onClick={() => setShowMenu((p) => !p)}
         >
           {showMenu ? <RxCross1 /> : <GiHamburgerMenu />}
         </button>
-        <div className="hidden lg:flex gap-2 ml-8 flex-1 justify-between bg-white dark:bg-slate-700 dark:text-gray-200">
+        <div className="hidden lg:flex gap-2 ml-8 flex-1 justify-between ">
           <div className="flex items-center gap-8 text-sm ml-4">
             <AboutLink />
             {data?.isJobEnabled && <JobLink />}
+            <TeamLink />
           </div>
           <div className="flex items-center gap-4 mr-7">
             <TranslationSwitcher />
             <Menu />
           </div>
         </div>
-      </div>
-
-      {/* mobile view */}
-      {showMenu && (
-        <div
-          className="lg:hidden flex justify-between flex-1 items-center px-5 pb-5 right-0 w-full shadow-sm
-"
+        {/* mobile view */}
+        <motion.div
+          animate={showMenu ? "open" : "closed"}
+          variants={variants}
+          className="block md:hidden absolute top-0 left-0 right-0 w-full h-full bg-white shadow-lg z-40"
+          transition={{ duration: 0.5 }}
         >
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 p-5">
+            <NavLink
+              className="flex items-center gap-2 text-xl"
+              prefetch="intent"
+              unstable_viewTransition
+              to="/"
+              onClick={() => setShowMenu((p) => !p)}
+            >
+              <img
+                src="/assets/logo.png"
+                width="40px"
+                alt="Monalm AI"
+                className="relative -top-1"
+              />
+              {translation.monlamAI}
+            </NavLink>
             <AboutLink />
             <JobLink />
+            <TeamLink />
+
             <TranslationSwitcher />
-          </div>
-          <div className="flex gap-4">
             <Menu />
           </div>
-        </div>
-      )}
+        </motion.div>
+      </div>
     </nav>
   );
 }
@@ -84,7 +97,18 @@ function Menu() {
   const { user } = useRouteLoaderData("root");
   const { translation, locale } = uselitteraTranlation();
   let isEnglish = locale === "en_US";
-  if (!user) return null;
+  const isTibetan = locale === "bo_TI";
+  if (!user)
+    return (
+      <Link
+        to="/login"
+        style={{ paddingTop: isEnglish ? "" : "5px" }}
+        className="font-medium flex items-center gap-2 py-1 px-2 rounded-md hover:underline bg-secondary-500 hover:bg-secondary-400 text-dark_text-default"
+      >
+        <IoLogInSharp />{" "}
+        <span className={isTibetan ? "pt-2" : ""}>{translation.login}</span>
+      </Link>
+    );
   return (
     <Dropdown
       label={user.email}
@@ -146,6 +170,20 @@ function AboutLink() {
       unstable_viewTransition
     >
       {translation.aboutUs}
+    </NavLink>
+  );
+}
+
+function TeamLink() {
+  const { translation, locale } = uselitteraTranlation();
+  return (
+    <NavLink
+      to="#"
+      className="text-base capitalize text-gray-300 cursor-default"
+      prefetch="intent"
+      unstable_viewTransition
+    >
+      {/* {translation.team} */}
     </NavLink>
   );
 }

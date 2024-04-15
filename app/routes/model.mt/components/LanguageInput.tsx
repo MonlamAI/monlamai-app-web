@@ -1,6 +1,6 @@
 import { useSearchParams } from "@remix-run/react";
 import { Select } from "flowbite-react";
-import React, { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { FaArrowRightArrowLeft } from "react-icons/fa6";
 import { resetFetcher } from "~/component/utils/resetFetcher";
 import LanguageDetect from "languagedetect";
@@ -34,19 +34,48 @@ function LanguageInput({
   const [params, setParams] = useSearchParams();
   const sourceLang = params.get("source") || "detect language";
   const targetLang = params.get("target") || "bo";
+  const [isRotated, setIsRotated] = useState(false);
 
-  function handleChange(event, type) {
-    const lang = event.target.value;
+  function setTarget(lang: string) {
     setParams((prevParams) => {
-      prevParams.set(type, lang);
+      prevParams.set("target", lang);
+      if (lang === "bo") {
+        prevParams.set("source", "en");
+      }
+      if (lang !== "bo") {
+        prevParams.set("source", "bo");
+      }
       return prevParams;
     });
+  }
+  function setSource(lang: string) {
+    setParams((prevParams) => {
+      prevParams.set("source", lang);
+      if (lang !== "bo") {
+        prevParams.set("target", "bo");
+      }
+      if (lang === "bo") {
+        prevParams.set("target", "en");
+      }
+      return prevParams;
+    });
+  }
+
+  function handleChange(e, type) {
+    const lang = e.target.value;
+    if (type === "target") {
+      setTarget(lang);
+    } else if (type === "source") {
+      setSource(lang);
+    }
   }
 
   function toggleDirection() {
     resetFetcher(likefetcher);
     setSourceText(data);
     setTranslated("");
+    setIsRotated(!isRotated);
+
     setParams((prevParams) => {
       prevParams.set("source", targetLang);
       prevParams.set("target", sourceLang);
@@ -59,12 +88,14 @@ function LanguageInput({
       detectAndSetLanguage(sourceText);
     }
   }, [sourceText, sourceLang]);
+
   const detectAndSetLanguage = (text: string) => {
     if (sourceLang !== "detect language") return;
 
     if (isTibetan(text)) {
       setParams((prevParams) => {
         prevParams.set("source", "bo");
+        prevParams.set("target", "en");
         return prevParams;
       });
       return;
@@ -96,12 +127,14 @@ function LanguageInput({
           </option>
         ))}
       </Select>
-      <div
-        className="text-2xl font-bold cursor-pointer text-gray-500 hover:text-gray-700 transition-colors duration-300 ease-in-out"
+
+      <button
         onClick={toggleDirection}
+        className="group flex items-center py-1 justify-center text-center font-medium relative focus:z-10 focus:outline-none text-[#838585] border border-transparent enabled:hover:bg-primary-hover  dark:enabled:hover:bg-primary-hover  rounded-full  px-2"
       >
         <FaArrowRightArrowLeft size="20px" />
-      </div>
+      </button>
+
       <Select onChange={(e) => handleChange(e, "target")} value={targetLang}>
         {languagesOptions.map((lang) => (
           <option key={lang.code} value={lang.code}>

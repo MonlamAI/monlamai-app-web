@@ -4,10 +4,9 @@ import inputReplace from "~/component/utils/ttsReplace.server";
 import { verifyDomain } from "~/component/utils/verifyDomain";
 import { API_ERROR_MESSAGE } from "~/helper/const";
 import { checkIfInferenceExist, saveInference } from "~/modal/inference.server";
-import { getUser } from "~/modal/user.server";
-import { auth } from "~/services/auth.server";
 import { uploadToS3 } from "~/services/uploadToS3.server";
 import { v4 as uuidv4 } from "uuid";
+import { getUserDetail } from "~/services/session.server";
 
 export const action: ActionFunction = async ({ request }) => {
   const isDomainAllowed = verifyDomain(request);
@@ -16,11 +15,8 @@ export const action: ActionFunction = async ({ request }) => {
     return json({ message: "Access forbidden" }, { status: 403 });
   }
 
-  let userdata = await auth.isAuthenticated(request, {
-    failureRedirect: "/login",
-  });
+  let user = await getUserDetail(request);
 
-  let user = await getUser(userdata?._json.email);
   const formdata = await request.formData();
   const startTime = Date.now();
   // const voiceType = formdata.get("voice") as string;
@@ -63,6 +59,7 @@ export const action: ActionFunction = async ({ request }) => {
     const inferenceData = await saveInference({
       userId: user?.id,
       model: "tts",
+      modelVersion: "v1",
       input: userInput,
       output: url,
       responseTime: responseTime,
