@@ -59,6 +59,7 @@ export const action: ActionFunction = async ({ request }) => {
     const inferenceData = await saveInference({
       userId: user?.id,
       model: "tts",
+      modelVersion: "v1",
       input: userInput,
       output: url,
       responseTime: responseTime,
