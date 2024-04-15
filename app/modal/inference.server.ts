@@ -106,6 +106,7 @@ export async function getInferences({
         gte: new Date(startDate), // gte means "greater than or equal to"
         lte: new Date(endDate), // lte means "less than or equal to"
       },
+      model: { not: "ocr" },
     },
   });
 }
