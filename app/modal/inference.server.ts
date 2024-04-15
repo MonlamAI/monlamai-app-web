@@ -12,8 +12,8 @@ export async function saveInference(inference: any) {
       responseTime: inference.responseTime,
       inputLang: inference.inputLang,
       outputLang: inference.outputLang,
-      type:inference?.type,
-      jobId:inference?.jobId
+      type: inference?.type,
+      jobId: inference?.jobId,
     },
   });
 }
@@ -81,7 +81,7 @@ export async function getUserFileInferences({ userId, model }) {
     orderBy: {
       updatedAt: "desc",
     },
-    take:20
+    take: 20,
   });
 }
 
@@ -91,4 +91,8 @@ export async function deleteInference({ id }) {
       id,
     },
   });
+}
+
+export async function getInferences() {
+  return await db.inference.findMany();
 }
