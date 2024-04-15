@@ -7,14 +7,16 @@ import { useNavigation, useSearchParams } from "@remix-run/react";
 import { Spinner } from "flowbite-react";
 
 const InferenceList = ({ inferences }) => {
-  const [param, setParam] = useSearchParams();
+  const [params, setParam] = useSearchParams();
+  const { startDate, endDate } = useValidDateRange();
   const navigation = useNavigation();
   let isLoading = navigation.state !== "idle";
   const [filterModel, setFilterModel] = useState("");
-  let filterDates = [
+
+  const filterDates = [
     {
-      startDate: new Date(param.get("startDate")) ?? startOfMonth(new Date()),
-      endDate: new Date(param.get("endDate")) ?? endOfMonth(new Date()),
+      startDate,
+      endDate,
       key: "selection",
     },
   ];
@@ -102,6 +104,7 @@ const InferenceList = ({ inferences }) => {
           <Spinner />
         </div>
       )}
+
       <Virtuoso
         style={{ height: "600px", width: "100%" }}
         data={filteredInferences}
@@ -110,8 +113,18 @@ const InferenceList = ({ inferences }) => {
             <h2 className="text-lg font-bold">Inference ID: {inference.id}</h2>
             <p>Model: {inference.model}</p>
             <p>Version: {inference.modelVersion}</p>
-            <p>Input: {inference.input}</p>
-            <p>Output: {inference.output}</p>
+            <div className="flex">
+              Input:
+              <CheckOutput data={inference.input} />
+            </div>
+            <div className="flex">
+              Output: <CheckOutput data={inference.output} />
+            </div>
+            {inference?.inputLang && (
+              <div>
+                From: {inference.inputLang} To: {inference.outputLang}
+              </div>
+            )}
             <p>
               Last Updated:{" "}
               {format(new Date(inference.updatedAt), "yyyy-MM-dd")}
@@ -142,4 +155,45 @@ const Modal = ({ isOpen, onClose, children }) => {
       </div>
     </div>
   );
+};
+
+const CheckOutput = ({ data }: any) => {
+  const isAudioUrl = (url: string) => {
+    return /(http[s]?:\/\/.*\.(?:mp3|wav|ogg|m4a))$/i.test(url);
+  };
+  if (!isAudioUrl(data)) {
+    return <span>{data}</span>;
+  }
+  return (
+    <audio controls src={data}>
+      Your browser does not support the audio element.
+    </audio>
+  );
+};
+
+const getValidDate = (dateString, defaultDate) => {
+  const parsedDate = new Date(dateString);
+  return isNaN(parsedDate) ? defaultDate : parsedDate;
+};
+
+const useValidDateRange = () => {
+  const [params] = useSearchParams();
+  const startDateString = params.get("startDate");
+  const endDateString = params.get("endDate");
+  const currentDate = new Date();
+
+  const startDate = startDateString
+    ? new Date(startDateString)
+    : startOfMonth(currentDate);
+  const endDate = endDateString
+    ? new Date(endDateString)
+    : endOfMonth(currentDate);
+
+  // Check if dates are valid, otherwise default to start or end of current month
+  return {
+    startDate: isNaN(startDate.getTime())
+      ? startOfMonth(currentDate)
+      : startDate,
+    endDate: isNaN(endDate.getTime()) ? endOfMonth(currentDate) : endDate,
+  };
 };
