@@ -52,7 +52,7 @@ export const action: ActionFunction = async ({ request }) => {
     const inferenceData = await saveInference({
       userId: user?.id,
       model: "stt",
-      modelVersion: "v3",
+      modelVersion: "wav2vec2_run10",
       input: url,
       output: data?.text,
       responseTime: responseTime,
