@@ -10,7 +10,6 @@ const InferenceList = ({ inferences }) => {
   const [param, setParam] = useSearchParams();
   const navigation = useNavigation();
   let isLoading = navigation.state !== "idle";
-  const [filterUserId, setFilterUserId] = useState("");
   const [filterModel, setFilterModel] = useState("");
   let filterDates = [
     {
@@ -29,10 +28,7 @@ const InferenceList = ({ inferences }) => {
   };
 
   const filteredInferences = inferences.filter((inference) => {
-    return (
-      (filterUserId ? inference.userId === parseInt(filterUserId) : true) &&
-      (filterModel ? inference.model === filterModel : true)
-    );
+    return filterModel ? inference.model === filterModel : true;
   });
 
   const downloadCSV = () => {
@@ -82,13 +78,7 @@ const InferenceList = ({ inferences }) => {
             direction="horizontal"
           />
         </Modal>
-        <input
-          type="number"
-          placeholder="Filter by User ID"
-          className="border p-2"
-          value={filterUserId}
-          onChange={(e) => setFilterUserId(e.target.value)}
-        />
+
         <select
           className="border p-2"
           value={filterModel}
