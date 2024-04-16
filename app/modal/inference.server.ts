@@ -72,11 +72,27 @@ export async function addFileInference({ input, userId, type, model, jobId }) {
 }
 
 export async function getUserFileInferences({ userId, model }) {
+  let OR = undefined;
+  if (model === "ocr") {
+    OR = [
+      {
+        input: { endsWith: ".zip" },
+      },
+      {
+        input: { endsWith: ".gz" },
+      },
+      {
+        input: { endsWith: ".pdf" },
+      },
+    ];
+  }
+
   return await db.inference.findMany({
     where: {
       userId,
       type: "file",
       model,
+      OR,
     },
     orderBy: {
       updatedAt: "desc",

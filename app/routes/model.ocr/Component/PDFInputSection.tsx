@@ -10,15 +10,14 @@ import CardComponent from "~/component/Card";
 import { CancelButton } from "~/component/Buttons";
 import { RxCross2 } from "react-icons/rx";
 import { IoSend } from "react-icons/io5";
+import FileUpload from "./FileUpload";
 
 type props = {
   fetcher: any;
 };
 
 export default function PDFInputSection({ fetcher }: props) {
-  let { translation } = uselitteraTranlation();
   const { inferenceList } = useLoaderData();
-  const [uploadProgress, setUploadProgress] = useState(0);
   const [file, setFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState("");
   const [filePath, setFilePath] = useState<string | null>();
@@ -28,55 +27,8 @@ export default function PDFInputSection({ fetcher }: props) {
     setFile(null);
     setFilePath(null);
     setFileName("");
-    setUploadProgress(0);
   }
 
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    setFile(file);
-  };
-
-  useEffect(() => {
-    if (file?.name) {
-      const uploadFiles = async () => {
-        await uploadFile(file);
-      };
-
-      uploadFiles();
-    }
-  }, [file?.name]);
-  const uploadFile = async (file: File) => {
-    try {
-      let formData = new FormData();
-      let filename = Date.now() + "-" + file.name;
-      setFileName(filename);
-      formData.append("filename", filename);
-      formData.append("filetype", file.type);
-
-      const response = await axios.post("/api/get_presigned_url", formData);
-      const { url } = response.data;
-      // Use Axios to upload the file to S3
-      const uploadStatus = await axios.put(url, file, {
-        headers: {
-          "Content-Type": file.type,
-        },
-        onUploadProgress: (progressEvent) => {
-          const percentCompleted = Math.round(
-            (progressEvent.loaded * 100) / progressEvent.total
-          );
-          setUploadProgress(percentCompleted);
-        },
-      });
-      if (uploadStatus.status === 200) {
-        const uploadedFilePath = uploadStatus.config.url;
-        const baseUrl = uploadedFilePath?.split("?")[0];
-        setFilePath(baseUrl);
-        console.log(`File ${file.name} uploaded successfully.`, uploadStatus);
-      }
-    } catch (error) {
-      console.error(`Error uploading file ${file.name}:`, error);
-    }
-  };
   function handleStartJob() {
     let formData = new FormData();
     formData.append("pdf_file", filePath!);
@@ -93,32 +45,14 @@ export default function PDFInputSection({ fetcher }: props) {
       <CardComponent>
         <div className="w-full relative min-h-[45vh] flex flex-col items-center justify-center gap-5">
           <TooltipComponent />
-          <div className="mb-5 block">
-            <Label
-              htmlFor="file"
-              value={translation.uploadImage}
-              className="text-lg text-slate-700"
-            />
-            {!file ? (
-              <FileInput
-                helperText={`${translation.acceptedImage} PDF`}
-                id="file"
-                name="files"
-                accept=".pdf"
-                onChange={handleFileChange}
-                key={file?.size}
-              />
-            ) : (
-              <ul>
-                <li className="p-2 flex justify-between">
-                  <span>{file.name}</span>
-                  {uploadProgress != 100 && (
-                    <span>{uploadProgress ? uploadProgress + "%" : ""}</span>
-                  )}
-                </li>
-              </ul>
-            )}
-          </div>
+          <FileUpload
+            file={file}
+            setFile={setFile}
+            inputUrl={filePath}
+            setInputUrl={setFilePath}
+            supported=".pdf"
+            setFilename={setFileName}
+          />
           <CancelButton
             type="button"
             color="gray"

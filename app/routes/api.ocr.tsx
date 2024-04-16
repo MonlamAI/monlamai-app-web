@@ -72,7 +72,7 @@ export const action: ActionFunction = async ({ request }) => {
   }
   if (PDFurls) {
     let job;
-    console.log(PDFurls, filename);
+    console.log("filename", filename);
     let formData = new FormData();
     formData.append("PDFurls", PDFurls);
     formData.append("filename", filename);

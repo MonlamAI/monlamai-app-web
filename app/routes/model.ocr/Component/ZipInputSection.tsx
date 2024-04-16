@@ -10,62 +10,13 @@ import { CancelButton } from "~/component/Buttons";
 import { RxCross2 } from "react-icons/rx";
 import CardComponent from "~/component/Card";
 import { IoSend } from "react-icons/io5";
+import FileUpload from "./FileUpload";
 
 function ZipInputSection({ fetcher }: any) {
   const { inferenceList } = useLoaderData();
-
   const [file, setFile] = useState<File | null>(null);
   const [inputUrl, setInputUrl] = useState<string | null>(null);
-  const [uploadProgress, setUploadProgress] = useState({});
-  let { translation } = uselitteraTranlation();
 
-  const handleFileChange = (event) => {
-    let file = event.target.files[0];
-    setFile(file);
-  };
-  useEffect(() => {
-    if (file) {
-      const uploadFiles = async () => {
-        await uploadFile(file);
-      };
-      uploadFiles();
-    }
-  }, [file]);
-
-  const uploadFile = async (file: File) => {
-    try {
-      let formData = new FormData();
-      let uniqueFilename = Date.now() + "-" + file.name;
-      formData.append("filename", uniqueFilename);
-      formData.append("filetype", file.type);
-      const response = await axios.post("/api/get_presigned_url", formData);
-      const { url } = response.data;
-      // Use Axios to upload the file to S3
-      const uploadStatus = await axios.put(url, file, {
-        headers: {
-          "Content-Type": file.type,
-        },
-        onUploadProgress: (progressEvent) => {
-          const percentCompleted = Math.round(
-            (progressEvent.loaded * 100) / progressEvent.total
-          );
-          setUploadProgress((prevProgress) => ({
-            ...prevProgress,
-            [file.name]: percentCompleted,
-          }));
-        },
-      });
-
-      if (uploadStatus.status === 200) {
-        const uploadedFilePath = uploadStatus.config.url;
-        const baseUrl = uploadedFilePath?.split("?")[0]!;
-        setInputUrl(baseUrl);
-        console.log(`File ${file.name} uploaded successfully.`, uploadStatus);
-      }
-    } catch (error) {
-      console.error(`Error uploading file ${file.name}:`, error);
-    }
-  };
   let alldone = !!file && !!inputUrl;
 
   function handleStartJob() {
@@ -78,9 +29,7 @@ function ZipInputSection({ fetcher }: any) {
     );
   }
   function handleClear() {
-    setUploadProgress({});
     setFile(null);
-    setInputUrl(null);
     resetFetcher(fetcher);
   }
   return (
@@ -88,36 +37,14 @@ function ZipInputSection({ fetcher }: any) {
       <CardComponent>
         <div className="w-full relative min-h-[45vh] flex flex-col items-center justify-center gap-5">
           <TooltipComponent />
-          <div className="mb-5 block">
-            <Label
-              htmlFor="file"
-              value={translation.uploadImage}
-              className="text-lg text-slate-700"
-            />
-            {!file ? (
-              <FileInput
-                helperText={`${translation.acceptedImage} Zip , gz`}
-                id="file"
-                name="files"
-                accept=".zip, .gz"
-                onChange={handleFileChange}
-                key={inputUrl}
-              />
-            ) : (
-              <ul>
-                <li className="p-2 flex justify-between">
-                  <span>{file.name}</span>
-                  {uploadProgress[file.name] != 100 && (
-                    <span>
-                      {uploadProgress[file.name]
-                        ? uploadProgress[file.name] + "%"
-                        : ""}
-                    </span>
-                  )}
-                </li>
-              </ul>
-            )}
-          </div>
+          <FileUpload
+            file={file}
+            setFile={setFile}
+            inputUrl={inputUrl}
+            setInputUrl={setInputUrl}
+            supported={".zip, .gz"}
+            setFilename={() => {}}
+          />
           <CancelButton
             type="button"
             color="gray"
