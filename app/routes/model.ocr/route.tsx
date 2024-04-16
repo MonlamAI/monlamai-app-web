@@ -20,6 +20,7 @@ export const meta: MetaFunction<typeof loader> = ({ matches }) => {
 
 export async function loader({ request }: LoaderFunctionArgs) {
   let userdata = await getUserSession(request);
+
   let user = null;
   if (userdata) {
     user = await getUser(userdata?._json.email);

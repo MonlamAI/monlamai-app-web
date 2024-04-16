@@ -65,10 +65,10 @@ export const action: ActionFunction = async ({ request }) => {
         output: "",
         jobId: job?.jobId,
       });
+      return inferenceData;
     } catch (e) {
       return { error: FILE_SERVER_ISSUE_MESSAGE };
     }
-    return inferenceData;
   }
   if (PDFurls) {
     let job;
