@@ -17,6 +17,7 @@ import CardComponent from "~/component/Card";
 import { RxCross2 } from "react-icons/rx";
 import { CancelButton } from "~/component/Buttons";
 import { NonEditButtons } from "~/component/ActionButtons";
+import TooltipComponent from "./Tooltip";
 
 function SingleInptSection({ fetcher }: any) {
   const [ImageUrl, setImageUrl] = useState<string | null>(null);
@@ -126,10 +127,10 @@ function SingleInptSection({ fetcher }: any) {
   }
 
   return (
-    <div className="flex flex-col lg:flex-row  overflow-hidden max-w-[100vw] gap-3">
+    <div className="flex flex-col lg:flex-row overflow-hidden max-w-[100vw] gap-3">
       <CardComponent>
-        {/* <TooltipComponent /> */}
         <div className="w-full relative min-h-[45vh] flex flex-col items-center justify-center gap-5">
+          <TooltipComponent />
           <div className={ImageUrl || isCameraOpen ? "hidden" : ""}>
             <div className="mb-5 block">
               <Label
