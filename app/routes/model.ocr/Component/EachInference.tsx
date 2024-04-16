@@ -14,7 +14,7 @@ function EachInference({ inference }: any) {
   let updatedAt = new Date(inference.updatedAt);
   let outputURL = inference.output;
   let isComplete = !!outputURL;
-
+  let { fileUploadUrl } = useLoaderData();
   async function handleCancelJob() {
     try {
       let res = await fetch(fileUploadUrl + `/ocr/cancel/${inference.jobId}`);
