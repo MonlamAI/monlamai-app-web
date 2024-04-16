@@ -6,6 +6,10 @@ import TooltipComponent from "./Tooltip";
 import { useLoaderData } from "@remix-run/react";
 import EachInference from "./EachInference";
 import axios from "axios";
+import CardComponent from "~/component/Card";
+import { CancelButton } from "~/component/Buttons";
+import { RxCross2 } from "react-icons/rx";
+import { IoSend } from "react-icons/io5";
 
 type props = {
   fetcher: any;
@@ -86,58 +90,57 @@ export default function PDFInputSection({ fetcher }: props) {
   let alldone = !!filePath;
   return (
     <div className="flex flex-col lg:flex-row overflow-hidden max-w-[100vw] gap-3">
-      <Card className="lg:w-1/2 relative">
-        <TooltipComponent />
-        <div>
-          <div className="w-full min-h-[45vh] flex flex-col items-center justify-center gap-5">
-            <div className="mb-5 block w-full">
-              <Label
-                htmlFor="file"
-                value={translation.uploadImage}
-                className="text-lg text-slate-700"
+      <CardComponent>
+        <div className="w-full relative min-h-[45vh] flex flex-col items-center justify-center gap-5">
+          <TooltipComponent />
+          <div className="mb-5 block">
+            <Label
+              htmlFor="file"
+              value={translation.uploadImage}
+              className="text-lg text-slate-700"
+            />
+            {!file ? (
+              <FileInput
+                helperText={`${translation.acceptedImage} PDF`}
+                id="file"
+                name="files"
+                accept=".pdf"
+                onChange={handleFileChange}
+                key={file?.size}
               />
-              {!file ? (
-                <FileInput
-                  helperText={`${translation.acceptedImage} PDF`}
-                  id="file"
-                  name="files"
-                  accept=".pdf"
-                  onChange={handleFileChange}
-                  key={file?.size}
-                />
-              ) : (
-                <ul>
-                  <li className="p-2 flex justify-between">
-                    <span>{file.name}</span>
-                    {uploadProgress != 100 && (
-                      <span>{uploadProgress ? uploadProgress + "%" : ""}</span>
-                    )}
-                  </li>
-                </ul>
-              )}
-            </div>
+            ) : (
+              <ul>
+                <li className="p-2 flex justify-between">
+                  <span>{file.name}</span>
+                  {uploadProgress != 100 && (
+                    <span>{uploadProgress ? uploadProgress + "%" : ""}</span>
+                  )}
+                </li>
+              </ul>
+            )}
           </div>
-          <div className="flex justify-between">
-            <Button
-              type="button"
-              color="gray"
-              onClick={handleFormClear}
-              className="text-gray-500"
-            >
-              <div className="pt-1">{translation.reset}</div>
-            </Button>
-            <Button
-              type="button"
-              isProcessing={fetcher.state !== "idle"}
-              onClick={handleStartJob}
-              disabled={!alldone}
-            >
-              <div className="pt-1">{translation.submit}</div>
-            </Button>
-          </div>
+          <CancelButton
+            type="button"
+            color="gray"
+            onClick={handleFormClear}
+            hidden={!file}
+          >
+            <RxCross2 size={20} />
+          </CancelButton>
         </div>
-      </Card>
-      <Card className="lg:w-1/2">
+        <div className="flex justify-end">
+          <Button
+            type="button"
+            size="xs"
+            isProcessing={fetcher.state !== "idle"}
+            onClick={handleStartJob}
+            disabled={!alldone}
+          >
+            <IoSend size={18} />
+          </Button>
+        </div>
+      </CardComponent>
+      <CardComponent>
         <div className="w-full h-[50vh] p-3 text-black bg-slate-50 rounded-lg overflow-auto">
           {fetcher.data?.error && <div>{fetcher.data?.error}</div>}
 
@@ -145,7 +148,7 @@ export default function PDFInputSection({ fetcher }: props) {
             return <EachInference inference={inference} key={inference.id} />;
           })}
         </div>
-      </Card>
+      </CardComponent>
     </div>
   );
 }
