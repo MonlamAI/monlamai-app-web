@@ -80,7 +80,8 @@ export function CharacterOrFileSizeComponent({
 }: CharacterOrFileSizeComponentProps) {
   return (
     <div className="text-gray-400 text-xs p-2">
-      {selectedTool === "recording" && "Duration : " + charCount}
+      {(selectedTool === "recording" || selectedTool === "file") &&
+        "Duration : " + charCount}
       {selectedTool === "text" && (
         <>
           <span style={{ color: charCount > CHAR_LIMIT! ? "red" : "inherit" }}>
@@ -89,11 +90,13 @@ export function CharacterOrFileSizeComponent({
           / {CHAR_LIMIT}
         </>
       )}
-      {selectedTool !== "recording" && selectedTool !== "text" && (
-        <div className="text-gray-400 text-xs p-2">
-          max size: {MAX_SIZE_SUPPORT}
-        </div>
-      )}
+      {selectedTool !== "recording" &&
+        selectedTool !== "text" &&
+        selectedTool !== "file" && (
+          <div className="text-gray-400 text-xs p-2">
+            max size: {MAX_SIZE_SUPPORT}
+          </div>
+        )}
     </div>
   );
 }
