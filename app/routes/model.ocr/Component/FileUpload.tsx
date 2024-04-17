@@ -34,6 +34,7 @@ function FileUpload({
       let uniqueFilename = Date.now() + "-" + file.name;
       formData.append("filename", uniqueFilename);
       formData.append("filetype", file.type);
+      formData.append("bucket", "/OCR/input");
       setFilename(uniqueFilename);
       const response = await axios.post("/api/get_presigned_url", formData);
       const { url } = response.data;

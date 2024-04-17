@@ -34,7 +34,9 @@ function SingleInptSection({ fetcher }: any) {
 
   const editData = editfetcher.data?.edited;
   const data = fetcher?.data;
-  const text = data?.text;
+  const nonTibetanRegex = /[^\u0F00-\u0FFF]/g;
+  // Replace non-Tibetan characters with an empty string
+  const text = data?.text?.replace(nonTibetanRegex, "");
   const inferenceId = fetcher.data?.inferenceId;
   const isActionSubmission = fetcher.state !== "idle";
   const errorMessage = data?.error_message;
@@ -64,6 +66,8 @@ function SingleInptSection({ fetcher }: any) {
       let uniqueFilename = Date.now() + "-" + file.name;
       formData.append("filename", uniqueFilename);
       formData.append("filetype", file.type);
+      formData.append("bucket", "/OCR/input");
+
       const response = await axios.post("/api/get_presigned_url", formData);
       const { url } = response.data;
       // Use Axios to upload the file to S3
@@ -241,6 +245,12 @@ function SingleInptSection({ fetcher }: any) {
                       __html: text?.replaceAll("\n", "<br>"),
                     }}
                   />
+                )}
+                {text === "" && (
+                  <div className="text-red-500">
+                    {" "}
+                    provide image with tibetan text
+                  </div>
                 )}
               </div>
               {edit && (
