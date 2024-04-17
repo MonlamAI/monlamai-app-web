@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import { formatBytes } from "~/component/utils/formatSize";
 import { MAX_SIZE_SUPPORT_DOC } from "~/helper/const";
 
-function FileUpload({ setFile, setInputUrl }) {
+function FileUpload({ setFile, setInputUrl, supported, model }) {
   const [myFiles, setMyFiles] = useState([]);
   const [uploadProgress, setUploadProgress] = useState<number>(0);
 
@@ -34,7 +34,7 @@ function FileUpload({ setFile, setInputUrl }) {
     useDropzone({
       onDrop,
       accept: {
-        "text/html": [".txt", ".docx"],
+        "text/html": supported,
       },
       multiple: false,
     });
@@ -60,6 +60,10 @@ function FileUpload({ setFile, setInputUrl }) {
       let uniqueFilename = Date.now() + "-" + file.name;
       formData.append("filename", uniqueFilename);
       formData.append("filetype", file.type);
+      let bucket =
+        model === "mt" ? "/MT/input" : model === "tts" ? "/TTS/input" : "";
+      formData.append("bucket", bucket);
+
       const response = await axios.post("/api/get_presigned_url", formData);
       const { url } = response.data;
       // Use Axios to upload the file to S3
@@ -139,7 +143,7 @@ function FileUpload({ setFile, setInputUrl }) {
           className="w-1/2 "
           src="//ssl.gstatic.com/translate/drag_and_drop.png"
         />
-        <p>Drag and drop your file here, Supported .DOCX, .TXT</p>
+        <p>Drag and drop your file here, Supported {supported}</p>
       </p>
     </div>
   );

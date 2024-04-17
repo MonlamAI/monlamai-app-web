@@ -250,7 +250,7 @@ export default function Index() {
       <InferenceWrapper
         selectedTool={selectedTool}
         setSelectedTool={setSelectedTool}
-        options={["recording", "file"]}
+        options={["recording"]}
       >
         {actionError && <ErrorMessage error={actionError} />}
 

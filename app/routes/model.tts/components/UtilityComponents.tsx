@@ -6,9 +6,11 @@ import timeSince from "~/component/utils/timeSince";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import { Button } from "flowbite-react";
 import { IoSend } from "react-icons/io5";
+import useSocket from "~/component/hooks/useSocket";
 
 export function InferenceListTts() {
   let { inferences } = useLoaderData();
+
   if (!inferences) return null;
   return (
     <div className="space-y-2 h-full overflow-auto font-poppins">
@@ -19,56 +21,14 @@ export function InferenceListTts() {
   );
 }
 
-let interval;
-
 function EachInference({ inference }: any) {
-  const [progress, setProgress] = useState(0);
-  const [isProgressEmpty, setIsProgressEmpty] = useState(false);
-  const { fileUploadUrl } = useLoaderData();
   const deleteFetcher = useFetcher();
-  let filename = inference.input.split("/TTS/input/")[1].split("-%40-")[1];
+  console.log(inference);
+  let filename = inference.input?.split("/TTS/input/")[1];
   let filenameOnly = filename?.split(".")[0] + ".wav";
   let updatedAt = new Date(inference.updatedAt);
-  const revalidator = useRevalidator();
   let outputURL = inference.output;
   let isComplete = !!outputURL;
-
-  async function fetchJobProgress() {
-    try {
-      let res = await fetch(fileUploadUrl + `/tts/status/${inference.jobId}`);
-      let data = await res.json();
-      let progress = data?.job?.progress;
-      if (Object.keys(data).length === 0) {
-        setIsProgressEmpty(true);
-      } else {
-        if (progress) {
-          setProgress(progress);
-        }
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
-  useEffect(() => {
-    if (!isComplete && progress < 100) {
-      interval = setInterval(() => {
-        fetchJobProgress(); // Assuming this function updates the 'progress' state
-      }, 2000);
-    }
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    if (isProgressEmpty) {
-      setTimeout(() => {
-        revalidator.revalidate();
-      }, 2000);
-    }
-    if (isProgressEmpty && interval) {
-      clearInterval(interval);
-    }
-  }, [isProgressEmpty]); // Dependency array ensures this effect runs when 'progress' changes
 
   function deleteHandler() {
     deleteFetcher.submit(
@@ -100,15 +60,28 @@ function EachInference({ inference }: any) {
             <FaDownload />
           </a>
         ) : (
-          <div className="text-yellow-500">
-            <div>{progress}%</div>
-            <div role="status"></div>
-          </div>
+          <Progress inference={inference} />
         )}
         <button onClick={deleteHandler} className=" hover:text-red-400">
           <MdDeleteForever />
         </button>
       </div>
+    </div>
+  );
+}
+
+function Progress({ inference }) {
+  const { isConnected, socket, progress } = useSocket(inference?.jobId);
+  const revalidator = useRevalidator();
+  useEffect(() => {
+    if (progress?.progress === "complete") {
+      revalidator.revalidate();
+    }
+  }, [progress]);
+  return (
+    <div className="text-yellow-500">
+      <div>{progress?.progress}</div>
+      <div role="status"></div>
     </div>
   );
 }

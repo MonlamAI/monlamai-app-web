@@ -60,7 +60,14 @@ export function TextOrDocumentComponent({
       />
     );
   } else if (selectedTool === "document") {
-    return <FileUpload setFile={setFile} setInputUrl={setInputUrl} />;
+    return (
+      <FileUpload
+        setFile={setFile}
+        setInputUrl={setInputUrl}
+        supported={[".txt", ".docx"]}
+        model="mt"
+      />
+    );
   }
   return null;
 }

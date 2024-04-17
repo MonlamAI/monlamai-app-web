@@ -16,9 +16,10 @@ export const action: ActionFunction = async ({ request }) => {
   let fileName = formdata.get("filename");
   let fileType = formdata.get("filetype");
   let folderName = formdata.get("folder");
-  let bucket = awsConfig.bucketName + "/OCR/input";
+  let bucket_dir = formdata.get("bucket") as string;
+  let bucket = awsConfig.bucketName + bucket_dir;
   if (folderName) {
-    bucket = awsConfig.bucketName + "/OCR/input/" + folderName;
+    bucket = awsConfig.bucketName + bucket_dir + folderName;
   }
   const s3Params = {
     Bucket: bucket,
