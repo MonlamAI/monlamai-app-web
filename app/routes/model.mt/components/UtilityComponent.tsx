@@ -153,14 +153,14 @@ export function SubmitButton({
   charCount,
   CHAR_LIMIT,
   disabled,
-}) {
+}: any) {
   const { translation, locale } = uselitteraTranlation();
   const isFile = selectedTool === "document";
   const exceedsLimit = charCount > CHAR_LIMIT;
-
+  const empty_error = charCount === 0;
   return (
     <Button
-      disabled={!isFile ? exceedsLimit : disabled}
+      disabled={!isFile ? exceedsLimit || empty_error : disabled}
       size="xs"
       title={exceedsLimit ? "Character limit exceeded" : ""}
       onClick={isFile ? submitFile : trigger}

@@ -11,6 +11,7 @@ function EachInference({ inference }: any) {
   let displayname = filename.includes("/OCR/input/")
     ? filename.split("/OCR/input/")[1]
     : filename;
+
   let updatedAt = new Date(inference.updatedAt);
   let outputURL = inference.output;
   let isComplete = !!outputURL;

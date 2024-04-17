@@ -11,6 +11,7 @@ import { RxCross2 } from "react-icons/rx";
 import CardComponent from "~/component/Card";
 import { IoSend } from "react-icons/io5";
 import FileUpload from "./FileUpload";
+import ErrorMessage from "./ErrorMessage";
 
 function ZipInputSection({ fetcher }: any) {
   const { inferenceList } = useLoaderData();
@@ -68,7 +69,12 @@ function ZipInputSection({ fetcher }: any) {
       </CardComponent>
       <CardComponent>
         <div className="w-full h-[50vh] p-3 text-black bg-slate-50 rounded-lg overflow-auto">
-          {fetcher.data?.error && <div>{fetcher.data?.error}</div>}
+          {fetcher.data?.error && (
+            <ErrorMessage
+              message={fetcher.data?.error}
+              handleClose={handleClear}
+            />
+          )}
           {inferenceList.map((inference) => {
             return <EachInference inference={inference} key={inference.id} />;
           })}

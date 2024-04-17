@@ -11,6 +11,7 @@ import { CancelButton } from "~/component/Buttons";
 import { RxCross2 } from "react-icons/rx";
 import { IoSend } from "react-icons/io5";
 import FileUpload from "./FileUpload";
+import ErrorMessage from "./ErrorMessage";
 
 type props = {
   fetcher: any;
@@ -22,7 +23,7 @@ export default function PDFInputSection({ fetcher }: props) {
   const [fileName, setFileName] = useState("");
   const [filePath, setFilePath] = useState<string | null>();
 
-  function handleFormClear() {
+  function handleClear() {
     resetFetcher(fetcher);
     setFile(null);
     setFilePath(null);
@@ -56,7 +57,7 @@ export default function PDFInputSection({ fetcher }: props) {
           <CancelButton
             type="button"
             color="gray"
-            onClick={handleFormClear}
+            onClick={handleClear}
             hidden={!file}
           >
             <RxCross2 size={20} />
@@ -76,8 +77,12 @@ export default function PDFInputSection({ fetcher }: props) {
       </CardComponent>
       <CardComponent>
         <div className="w-full h-[50vh] p-3 text-black bg-slate-50 rounded-lg overflow-auto">
-          {fetcher.data?.error && <div>{fetcher.data?.error}</div>}
-
+          {fetcher.data?.error && (
+            <ErrorMessage
+              message={fetcher.data?.error}
+              handleClose={handleClear}
+            />
+          )}
           {inferenceList.map((inference) => {
             return <EachInference inference={inference} key={inference.id} />;
           })}

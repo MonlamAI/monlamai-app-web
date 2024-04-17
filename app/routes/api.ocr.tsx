@@ -3,12 +3,10 @@ import { saveInference } from "~/modal/inference.server";
 import applyReplacements from "./model.ocr/utils/replacements";
 import { getUserDetail } from "~/services/session.server";
 
-let FILE_SERVER_ISSUE_MESSAGE = "File upload server is not working !";
+let FILE_SERVER_ISSUE_MESSAGE = "File upload is not working temporarily!";
 
 export const action: ActionFunction = async ({ request }) => {
   let formdata = await request.formData();
-  let files = formdata.getAll("files") as string[] | File[];
-
   let user = await getUserDetail(request);
   let URL_File = process.env.FILE_SUBMIT_URL;
   let zip_input_url = formdata.get("zip_input_url") as string;
