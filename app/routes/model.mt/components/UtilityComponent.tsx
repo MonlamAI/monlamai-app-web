@@ -22,7 +22,7 @@ type TextOrDocumentComponentProps = {
 
 type CharacterOrFileSizeComponentProps = {
   selectedTool: string;
-  charCount: number;
+  charCount: number | string;
   CHAR_LIMIT: number | undefined;
   MAX_SIZE_SUPPORT: string;
 };
@@ -71,23 +71,24 @@ export function CharacterOrFileSizeComponent({
   CHAR_LIMIT,
   MAX_SIZE_SUPPORT,
 }: CharacterOrFileSizeComponentProps) {
-  if (selectedTool === "Recording") return <div />;
-  if (selectedTool === "text") {
-    return (
-      <div className="text-gray-400 text-xs p-2">
-        <span style={{ color: charCount > CHAR_LIMIT! ? "red" : "inherit" }}>
-          {charCount}
-        </span>{" "}
-        / {CHAR_LIMIT}
-      </div>
-    );
-  } else {
-    return (
-      <div className="text-gray-400 text-xs p-2">
-        max size: {MAX_SIZE_SUPPORT}
-      </div>
-    );
-  }
+  return (
+    <div className="text-gray-400 text-xs p-2">
+      {selectedTool === "recording" && "Duration : " + charCount}
+      {selectedTool === "text" && (
+        <>
+          <span style={{ color: charCount > CHAR_LIMIT! ? "red" : "inherit" }}>
+            {charCount}
+          </span>{" "}
+          / {CHAR_LIMIT}
+        </>
+      )}
+      {selectedTool !== "recording" && selectedTool !== "text" && (
+        <div className="text-gray-400 text-xs p-2">
+          max size: {MAX_SIZE_SUPPORT}
+        </div>
+      )}
+    </div>
+  );
 }
 
 export function LoadingAnimation() {
