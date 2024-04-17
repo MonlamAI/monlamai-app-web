@@ -66,7 +66,7 @@ function EachInference({ inference }: any) {
     }
   };
   return (
-    <div className="bg-white hover:bg-secondary-50 rounded-lg flex justify-between items-center">
+    <div className="bg-white rounded-lg flex justify-between items-center">
       <div className="flex gap-2 px-1">
         <button
           onClick={togglePlay}
