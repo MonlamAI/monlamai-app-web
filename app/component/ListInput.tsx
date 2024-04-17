@@ -33,7 +33,7 @@ export default function ListInput({
   const isTibetan = locale === "bo_TI";
   const isUserLoggedIn = !!user;
   const ShowList = ["text", "recording", "image"];
-
+  const BetaList = ["zip", "PDF", "document", "file"];
   return (
     <div className="flex relative top-[-4px] text-lg gap-2 mt-2">
       {options.map((option, index) => {
@@ -58,7 +58,12 @@ export default function ListInput({
           >
             <span className="mr-2 h-3 w-3">{icon}</span>
             <span className={isTibetan ? "pt-2" : ""}>
-              {translation[option] ? translation[option] : option}
+              {translation[option] ? translation[option] : option}{" "}
+              {BetaList.includes(option) ? (
+                <span className="italic">( beta ) </span>
+              ) : (
+                ""
+              )}
             </span>
           </Button>
         );
