@@ -65,12 +65,15 @@ function EachInference({ inference }: any) {
       setIsPlaying(!isPlaying);
     }
   };
+  let disabled = outputURL === "";
+  let isError = outputURL.startsWith("error");
   return (
     <div className="bg-white rounded-lg flex justify-between items-center">
       <div className="flex gap-2 px-1">
         <button
+          disabled={disabled}
           onClick={togglePlay}
-          className="mr-3 hover:text-blue-700 transition duration-150 ease-in-out"
+          className="mr-3 hover:text-blue-700 transition duration-150 ease-in-out disabled:text-gray-400"
         >
           {isPlaying ? <FaPause /> : <FaPlay />}
         </button>
@@ -97,8 +100,10 @@ function EachInference({ inference }: any) {
           >
             <FaDownload />
           </button>
-        ) : (
+        ) : !isError ? (
           <Progress inference={inference} />
+        ) : (
+          <div className="text-failure-600">error</div>
         )}
 
         <button onClick={deleteHandler} className=" hover:text-failure-400">
@@ -113,13 +118,13 @@ function Progress({ inference }) {
   const { isConnected, socket, progress } = useSocket(inference?.jobId);
   const revalidator = useRevalidator();
   useEffect(() => {
-    if (progress?.progress === "complete") {
+    if (progress?.progress === "complete" || isConnected) {
       revalidator.revalidate();
     }
   }, [progress]);
   return (
     <div className="text-yellow-500">
-      <div>{progress?.progress}</div>
+      <div>{isConnected ? progress?.progress : ""}</div>
       <div role="status"></div>
     </div>
   );
