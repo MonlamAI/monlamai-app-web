@@ -43,7 +43,7 @@ function FeedBucket() {
     return (
       <div
         className={`fixed right-2 ${
-          !show ? "bottom-1 md:top-[50%]" : "top-[58%] md:top-[65%]"
+          !show ? "bottom-1 md:top-[50%]" : " bottom-1  md:top-[65%]"
         } `}
       >
         {!show ? (
