@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { useFetcher, useLoaderData, useRevalidator } from "@remix-run/react";
 import { MdDeleteForever } from "react-icons/md";
-import { FaDownload } from "react-icons/fa";
+import { FaDownload, FaPause, FaPlay } from "react-icons/fa";
 import timeSince from "~/component/utils/timeSince";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import { Button } from "flowbite-react";
 import { IoSend } from "react-icons/io5";
 import useSocket from "~/component/hooks/useSocket";
+import axios from "axios";
 
 export function InferenceListTts() {
   let { inferences } = useLoaderData();
@@ -23,13 +24,13 @@ export function InferenceListTts() {
 
 function EachInference({ inference }: any) {
   const deleteFetcher = useFetcher();
-  console.log(inference);
+  const [isPlaying, setIsPlaying] = useState(false);
   let filename = inference.input?.split("/TTS/input/")[1];
   let filenameOnly = filename?.split(".")[0] + ".wav";
   let updatedAt = new Date(inference.updatedAt);
   let outputURL = inference.output;
   let isComplete = !!outputURL;
-
+  const audioRef = useRef(null);
   function deleteHandler() {
     deleteFetcher.submit(
       { id: inference.id },
@@ -39,30 +40,68 @@ function EachInference({ inference }: any) {
       }
     );
   }
-
+  function download(filename, url, e) {
+    e.preventDefault();
+    axios({
+      url,
+      method: "GET",
+      responseType: "blob",
+    }).then((response) => {
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", filename);
+      document.body.appendChild(link);
+      link.click();
+    });
+  }
+  const togglePlay = () => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause();
+      } else {
+        audioRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
   return (
-    <div className="bg-white rounded-lg flex justify-between items-center">
-      <div>
-        <span className="text-gray-800 truncate">
-          {decodeURIComponent(filenameOnly)}
-        </span>
-        <span className="text-gray-500 text-xs block">
-          {updatedAt ? timeSince(updatedAt) : ""}
-        </span>
+    <div className="bg-white hover:bg-secondary-50 rounded-lg flex justify-between items-center">
+      <div className="flex gap-2 px-1">
+        <button
+          onClick={togglePlay}
+          className="mr-3 hover:text-blue-700 transition duration-150 ease-in-out"
+        >
+          {isPlaying ? <FaPause /> : <FaPlay />}
+        </button>
+        <audio
+          ref={audioRef}
+          src={outputURL}
+          onEnded={() => setIsPlaying(false)}
+        />
+        <div>
+          <span className="text-gray-800 truncate">
+            {decodeURIComponent(filenameOnly)}
+          </span>
+          <span className="text-gray-500 text-xs block">
+            {updatedAt ? timeSince(updatedAt) : ""}
+          </span>
+        </div>
       </div>
-      <div className="flex gap-5 items-center">
+
+      <div className="flex gap-5 items-center px-2">
         {isComplete ? (
-          <a
-            href={outputURL}
+          <button
+            onClick={(e) => download(filenameOnly, outputURL, e)}
             className="text-blue-500 hover:text-blue-700 transition duration-150 ease-in-out"
-            download={filenameOnly}
           >
             <FaDownload />
-          </a>
+          </button>
         ) : (
           <Progress inference={inference} />
         )}
-        <button onClick={deleteHandler} className=" hover:text-red-400">
+
+        <button onClick={deleteHandler} className=" hover:text-failure-400">
           <MdDeleteForever />
         </button>
       </div>
