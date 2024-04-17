@@ -150,6 +150,8 @@ export default function Index() {
   const { show_mt_language_toggle } = useRouteLoaderData("root");
   const [edit, setEdit] = useState(false);
   const [editText, setEditText] = useState("");
+  const [inputUrl, setInputUrl] = useState("");
+
   const debounceSourceText = useDebounce(sourceText, 100);
   const likefetcher = useFetcher();
   const editfetcher = useFetcher();
@@ -226,13 +228,12 @@ export default function Index() {
 
   const handleFileSubmit = () => {
     let formdata = new FormData();
-    formdata.append("file", file as Blob);
+    formdata.append("fileUrl", inputUrl);
     formdata.append("target", target_lang as string);
 
     translationFetcher.submit(formdata, {
       method: "POST",
-      encType: "multipart/form-data",
-      action: "/testupload",
+      action: "/mtFileUpload",
     });
   };
 
@@ -278,6 +279,7 @@ export default function Index() {
                       setSourceText={setSourceText}
                       sourceLang={source_lang}
                       setFile={setFile}
+                      setInputUrl={setInputUrl}
                     />
                     {selectedTool === "text" && (
                       <CancelButton
@@ -317,6 +319,12 @@ export default function Index() {
                       : "font-poppins"
                   }`}
                 >
+                  {translationFetcher?.data?.error && (
+                    <ErrorMessage
+                      message={translationFetcher?.data?.error}
+                      handleClose={handleReset}
+                    />
+                  )}
                   {TextSelected && edit && (
                     <EditDisplay
                       editText={editText}

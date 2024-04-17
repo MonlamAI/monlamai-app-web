@@ -11,6 +11,7 @@ import { getUser } from "~/modal/user.server";
 import { auth } from "~/services/auth.server";
 import { getUserDetail } from "~/services/session.server";
 import { uploadFile } from "~/services/uploadFile.server";
+import { FILE_SERVER_ISSUE_MESSAGE } from "./api.ocr";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   if (request.method === "DELETE") {
@@ -22,17 +23,9 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     }
   }
 
-  const uploadHandler: UploadHandler = unstable_composeUploadHandlers(
-    uploadFile,
-    unstable_createMemoryUploadHandler()
-  );
-
   let user = await getUserDetail(request);
-  const formData = await unstable_parseMultipartFormData(
-    request,
-    uploadHandler
-  );
-  const inputFileUrl = formData.get("file") as string;
+  const formData = await request.formData();
+  const inputFileUrl = formData.get("fileUrl") as string;
   const targetLanguage = formData.get("target") as string;
 
   let inferenceData;
@@ -47,7 +40,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     });
     inferenceData = await res.json();
   } catch (e) {
-    console.log(e);
+    return { error: FILE_SERVER_ISSUE_MESSAGE };
   }
   if (inferenceData) {
     let inference_new = await addFileInference({

@@ -33,7 +33,7 @@ function EachInference({ inference }: any) {
       { id: inference.id },
       {
         method: "DELETE",
-        action: "/testupload",
+        action: "/mtFileUpload",
       }
     );
   }

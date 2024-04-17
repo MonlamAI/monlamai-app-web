@@ -3,7 +3,8 @@ import { saveInference } from "~/modal/inference.server";
 import applyReplacements from "./model.ocr/utils/replacements";
 import { getUserDetail } from "~/services/session.server";
 
-let FILE_SERVER_ISSUE_MESSAGE = "File upload is not working temporarily!";
+export let FILE_SERVER_ISSUE_MESSAGE =
+  "File upload is not working temporarily!";
 
 export const action: ActionFunction = async ({ request }) => {
   let formdata = await request.formData();

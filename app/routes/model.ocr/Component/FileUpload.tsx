@@ -1,7 +1,6 @@
 import axios from "axios";
 import { FileInput, Label, Progress } from "flowbite-react";
-import React, { useEffect, useState } from "react";
-import { BsTicket } from "react-icons/bs";
+import { useEffect, useState } from "react";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 
 function FileUpload({

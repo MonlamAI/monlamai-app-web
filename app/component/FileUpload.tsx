@@ -1,3 +1,5 @@
+import axios from "axios";
+import { Progress } from "flowbite-react";
 import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { FaFile } from "react-icons/fa6";
@@ -5,8 +7,10 @@ import { toast } from "react-toastify";
 import { formatBytes } from "~/component/utils/formatSize";
 import { MAX_SIZE_SUPPORT_DOC } from "~/helper/const";
 
-function FileUpload({ setFile }) {
+function FileUpload({ setFile, setInputUrl }) {
   const [myFiles, setMyFiles] = useState([]);
+  const [uploadProgress, setUploadProgress] = useState<number>(0);
+
   const maxSize = MAX_SIZE_SUPPORT_DOC.replace("KB", "");
   const onDrop = useCallback((acceptedFiles) => {
     // Do something with the files
@@ -40,27 +44,70 @@ function FileUpload({ setFile }) {
   };
   useEffect(() => {
     if (myFiles?.length === 0) setFile([]);
-    if (myFiles?.length) setFile(myFiles[0]);
+
+    if (myFiles?.length) {
+      const uploadFiles = async () => {
+        if (myFiles?.length) setFile(myFiles[0]);
+        await uploadFile(myFiles[0]);
+      };
+      uploadFiles();
+    }
   }, [myFiles.length]);
+
+  const uploadFile = async (file: File) => {
+    try {
+      let formData = new FormData();
+      let uniqueFilename = Date.now() + "-" + file.name;
+      formData.append("filename", uniqueFilename);
+      formData.append("filetype", file.type);
+      const response = await axios.post("/api/get_presigned_url", formData);
+      const { url } = response.data;
+      // Use Axios to upload the file to S3
+      const uploadStatus = await axios.put(url, file, {
+        headers: {
+          "Content-Type": file.type,
+        },
+        onUploadProgress: (progressEvent) => {
+          const percentCompleted = Math.round(
+            (progressEvent.loaded * 100) / progressEvent.total
+          );
+          setUploadProgress(percentCompleted);
+        },
+      });
+
+      if (uploadStatus.status === 200) {
+        const uploadedFilePath = uploadStatus.config.url;
+        const baseUrl = uploadedFilePath?.split("?")[0]!;
+        setInputUrl(baseUrl);
+        console.log(`File ${file.name} uploaded successfully.`, uploadStatus);
+      }
+    } catch (error) {
+      console.error(`Error uploading file ${file.name}:`, error);
+    }
+  };
+
   if (myFiles.length > 0)
     return (
-      <div className="bg-gray-200 p-4 rounded-lg shadow-md flex justify-between items-center">
-        <div className="flex gap-4">
-          <FaFile size="20px" />
-          {myFiles?.map((item) => (
-            <div key={item?.name}>
-              {item?.name}
-              <p>{formatBytes(item?.size)}</p>
-            </div>
-          ))}
+      <>
+        <div className="bg-gray-200 p-4 rounded-lg shadow-md flex justify-between items-center">
+          <div className="flex gap-4">
+            <FaFile size="20px" />
+            {myFiles?.map((item) => (
+              <div key={item?.name}>
+                {item?.name}
+                <p>{formatBytes(item?.size)}</p>
+              </div>
+            ))}
+          </div>
+          <button
+            className="bg-transparent text-black p-3 rounded-full hover:bg-gray-400"
+            onClick={removeAll}
+          >
+            X
+          </button>
         </div>
-        <button
-          className="bg-transparent text-black p-3 rounded-full hover:bg-gray-400"
-          onClick={removeAll}
-        >
-          X
-        </button>
-      </div>
+        <Progress progress={uploadProgress} />
+      </>
     );
 
   return (

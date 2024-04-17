@@ -17,6 +17,7 @@ type TextOrDocumentComponentProps = {
   setSourceText: (text: string) => void;
   sourceLang: string;
   setFile: (file: any) => void;
+  setInputUrl: (data: string) => void;
 };
 
 type CharacterOrFileSizeComponentProps = {
@@ -48,6 +49,7 @@ export function TextOrDocumentComponent({
   setSourceText,
   sourceLang,
   setFile,
+  setInputUrl,
 }: TextOrDocumentComponentProps) {
   if (selectedTool === "text") {
     return (
@@ -58,7 +60,7 @@ export function TextOrDocumentComponent({
       />
     );
   } else if (selectedTool === "document") {
-    return <FileUpload setFile={setFile} />;
+    return <FileUpload setFile={setFile} setInputUrl={setInputUrl} />;
   }
   return null;
 }
@@ -154,7 +156,7 @@ export function SubmitButton({
   CHAR_LIMIT,
   disabled,
 }: any) {
-  const { translation, locale } = uselitteraTranlation();
+  const { locale } = uselitteraTranlation();
   const isFile = selectedTool === "document";
   const exceedsLimit = charCount > CHAR_LIMIT;
   const empty_error = charCount === 0;
@@ -194,7 +196,7 @@ function EachInference({ inference }: any) {
       { id: inference.id },
       {
         method: "DELETE",
-        action: "/testupload",
+        action: "/mtFileUpload",
       }
     );
   }

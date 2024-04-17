@@ -11,7 +11,7 @@ import { RxCross2 } from "react-icons/rx";
 import CardComponent from "~/component/Card";
 import { IoSend } from "react-icons/io5";
 import FileUpload from "./FileUpload";
-import ErrorMessage from "./ErrorMessage";
+import ErrorMessage from "../../../component/ErrorMessage";
 
 function ZipInputSection({ fetcher }: any) {
   const { inferenceList } = useLoaderData();
