@@ -200,10 +200,10 @@ export default function Index() {
   };
 
   useEffect(() => {
-    if (audioBase64) {
+    if (audioBase64 || audioURL) {
       handleSubmit();
     }
-  }, [audioBase64]);
+  }, [audioBase64, audioURL]);
 
   const handleFileChange = (file) => {
     if (file) {
@@ -250,7 +250,7 @@ export default function Index() {
       <InferenceWrapper
         selectedTool={selectedTool}
         setSelectedTool={setSelectedTool}
-        options={["recording"]}
+        options={["recording", "file"]}
       >
         {actionError && <ErrorMessage error={actionError} />}
 
