@@ -123,7 +123,7 @@ function LanguageInput({
         <option value="detect language">Detect</option>
         {languagesOptions.map((lang) => (
           <option key={lang.code} value={lang.code}>
-            {lang.value} {beta.includes(lang.value) ? "(beta)" : ""}
+            {lang.value} {beta.includes(lang.value) ? "(BETA)" : ""}
           </option>
         ))}
       </Select>
@@ -138,7 +138,7 @@ function LanguageInput({
       <Select onChange={(e) => handleChange(e, "target")} value={targetLang}>
         {languagesOptions.map((lang) => (
           <option key={lang.code} value={lang.code}>
-            {lang.value} {beta.includes(lang.value) ? "(beta)" : ""}
+            {lang.value} {beta.includes(lang.value) ? "(BETA)" : ""}
           </option>
         ))}
       </Select>
