@@ -59,7 +59,7 @@ export default function ListInput({
             <span className={isTibetan ? "pt-2" : ""}>
               {translation[option] ? translation[option] : option}{" "}
               {BetaList.includes(option) ? (
-                <span className="italic">( beta ) </span>
+                <span className="italic">( BETA ) </span>
               ) : (
                 ""
               )}
