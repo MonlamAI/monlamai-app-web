@@ -26,6 +26,7 @@ function EachInference({ inference }: any) {
   const deleteFetcher = useFetcher();
   const [isPlaying, setIsPlaying] = useState(false);
   let filename = inference.input?.split("/TTS/input/")[1];
+  console.log(inference);
   let filenameOnly = filename?.split(".")[0] + ".wav";
   let updatedAt = new Date(inference.updatedAt);
   let outputURL = inference.output;

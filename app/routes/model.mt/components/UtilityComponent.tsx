@@ -197,7 +197,8 @@ export function InferenceList() {
 
 function EachInference({ inference }: any) {
   const deleteFetcher = useFetcher();
-  let filename = inference.input.split("/MT/input/")[1].split("-%40-")[1];
+  console.log(inference);
+  let filename = inference.input?.split("/MT/input/")[1]?.split("-")[1];
   let updatedAt = new Date(inference.updatedAt);
   let outputURL = inference.output;
   let isComplete = !!outputURL;

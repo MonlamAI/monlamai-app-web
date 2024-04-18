@@ -83,7 +83,6 @@ function FileUpload({ setFile, setInputUrl, supported, model }) {
         const uploadedFilePath = uploadStatus.config.url;
         const baseUrl = uploadedFilePath?.split("?")[0]!;
         setInputUrl(baseUrl);
-        console.log(`File ${file.name} uploaded successfully.`, uploadStatus);
       }
     } catch (error) {
       console.error(`Error uploading file ${file.name}:`, error);

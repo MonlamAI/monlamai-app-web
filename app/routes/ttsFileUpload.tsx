@@ -21,7 +21,6 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   let user = await getUser(userdata?._json.email);
   const formData = await request.formData();
   const inputFileUrl = formData.get("fileUrl") as string;
-  console.log(inputFileUrl);
   let inferenceData;
   try {
     var formdata = new FormData();
