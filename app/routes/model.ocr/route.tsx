@@ -51,11 +51,12 @@ export const action: ActionFunction = async ({ request }) => {
 };
 
 export default function Index() {
-  const { enable_ocr_model } = useRouteLoaderData("root");
   return (
     <ToolWraper title="OCR">
       <div className="flex flex-col md:flex-row gap-2">
-        {enable_ocr_model ? <OCR /> : <DummyOCR />}
+        {/* {enable_ocr_model ? <OCR /> : <DummyOCR />}
+         */}
+        <OCR />
       </div>
     </ToolWraper>
   );

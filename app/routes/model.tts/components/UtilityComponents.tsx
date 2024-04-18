@@ -55,6 +55,7 @@ function EachInference({ inference }: any) {
       link.click();
     });
   }
+
   const togglePlay = () => {
     if (audioRef.current) {
       if (isPlaying) {
@@ -65,6 +66,7 @@ function EachInference({ inference }: any) {
       setIsPlaying(!isPlaying);
     }
   };
+
   let disabled = outputURL === "";
   let isError = outputURL.startsWith("error");
   return (

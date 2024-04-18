@@ -147,7 +147,6 @@ export default function Index() {
 
   const [file, setFile] = useState<File | null>(null);
   const { limitMessage, CHAR_LIMIT, user } = useLoaderData();
-  const { show_mt_language_toggle } = useRouteLoaderData("root");
   const [edit, setEdit] = useState(false);
   const [editText, setEditText] = useState("");
   const [inputUrl, setInputUrl] = useState("");
@@ -245,22 +244,14 @@ export default function Index() {
         setSelectedTool={setSelectedTool}
       />
       {error && <ErrorMessage error={error} />}
-      {show_mt_language_toggle ? (
-        <LanguageSwitcher
-          data={data}
-          setSourceText={setSourceText}
-          setTranslated={setData}
-          likefetcher={likefetcher}
-        />
-      ) : (
-        <LanguageInput
-          setSourceText={setSourceText}
-          data={data}
-          setTranslated={setData}
-          likefetcher={likefetcher}
-          sourceText={debounceSourceText}
-        />
-      )}
+
+      <LanguageInput
+        setSourceText={setSourceText}
+        data={data}
+        setTranslated={setData}
+        likefetcher={likefetcher}
+        sourceText={debounceSourceText}
+      />
 
       {(selectedTool === "text" || selectedTool === "document") && (
         <div className="mt-3 flex flex-col gap-5 lg:flex-row">
