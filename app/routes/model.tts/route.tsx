@@ -71,9 +71,7 @@ export default function Index() {
   const isLoading = fetcher.state !== "idle";
   const data = fetcher.data?.data;
   const inferenceId = fetcher.data?.inferenceData?.id;
-  let sourceUrl = useMemo(() => {
-    return data ? `data:audio/wav;base64,${data}` : null;
-  }, [data]);
+  let sourceUrl = data;
   const audioRef = useRef<HTMLAudioElement>(null);
   let setting = useRef();
 
