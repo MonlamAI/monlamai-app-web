@@ -3,6 +3,7 @@ import { AiOutlineCloudDownload } from "react-icons/ai";
 import { BsFillStopFill, BsPauseFill, BsPlay } from "react-icons/bs";
 
 let timer;
+
 function AudioPlayer(props, ref) {
   let { sourceUrl } = props;
   const [playStatus, setPlayStatus] = useState("stop");
