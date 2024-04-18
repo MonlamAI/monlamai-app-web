@@ -56,7 +56,7 @@ export const action: ActionFunction = async ({ request }) => {
 
   return updated;
 };
-
+let stopRecordingTimeout;
 export default function Index() {
   const fetcher = useFetcher();
   const [audioChunks, setAudioChunks] = useState([]);
@@ -154,6 +154,11 @@ export default function Index() {
         });
         mediaRecorder.current = media;
         mediaRecorder.current.start();
+
+        stopRecordingTimeout = setTimeout(() => {
+          stopRecording();
+        }, 120000);
+
         mediaRecorder.current.ondataavailable = (event: any) => {
           if (typeof event.data === "undefined") return;
           if (event.data.size === 0) return;
@@ -167,6 +172,10 @@ export default function Index() {
   };
 
   const stopRecording = () => {
+    if (stopRecordingTimeout) {
+      clearTimeout(stopRecordingTimeout);
+    }
+
     setRecording(false);
     //stops the recording instance
     mediaRecorder.current.stop();
@@ -191,10 +200,10 @@ export default function Index() {
   };
 
   useEffect(() => {
-    if (audioBase64) {
+    if (audioBase64 || audioURL) {
       handleSubmit();
     }
-  }, [audioBase64]);
+  }, [audioBase64, audioURL]);
 
   const handleFileChange = (file) => {
     if (file) {
@@ -290,7 +299,7 @@ export default function Index() {
             <div className="flex justify-between">
               <CharacterOrFileSizeComponent
                 selectedTool={selectedTool}
-                charCount={0}
+                charCount={"2 min "}
                 CHAR_LIMIT={undefined}
                 MAX_SIZE_SUPPORT={MAX_SIZE_SUPPORT_AUDIO}
               />

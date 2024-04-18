@@ -2,42 +2,20 @@ import { useFetcher, useLoaderData, useRevalidator } from "@remix-run/react";
 import { useEffect, useState } from "react";
 import { FaDownload } from "react-icons/fa";
 import { MdDeleteForever } from "react-icons/md";
+import useSocket from "~/component/hooks/useSocket";
 import timeSince from "~/component/utils/timeSince";
 
-let interval;
-
 function EachInference({ inference }: any) {
-  const { fileUploadUrl } = useLoaderData();
-  const [isProgressEmpty, setIsProgressEmpty] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const revalidator = useRevalidator();
-
   const deleteFetcher = useFetcher();
   let filename = inference.input;
   let displayname = filename.includes("/OCR/input/")
     ? filename.split("/OCR/input/")[1]
     : filename;
+
   let updatedAt = new Date(inference.updatedAt);
   let outputURL = inference.output;
   let isComplete = !!outputURL;
-
-  async function fetchJobProgress() {
-    try {
-      let res = await fetch(fileUploadUrl + `/ocr/status/${inference.jobId}`);
-      let data = await res.json();
-      let progress = data?.job?.progress;
-      if (Object.keys(data).length === 0) {
-        setIsProgressEmpty(true);
-      } else {
-        if (progress) {
-          setProgress(progress);
-        }
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
+  let { fileUploadUrl } = useLoaderData();
   async function handleCancelJob() {
     try {
       let res = await fetch(fileUploadUrl + `/ocr/cancel/${inference.jobId}`);
@@ -49,33 +27,13 @@ function EachInference({ inference }: any) {
     }
   }
 
-  useEffect(() => {
-    if (!isComplete && progress < 100) {
-      interval = setInterval(() => {
-        fetchJobProgress(); // Assuming this function updates the 'progress' state
-      }, 3000);
-    }
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    if (isProgressEmpty) {
-      setTimeout(() => {
-        revalidator.revalidate();
-      }, 2000);
-    }
-    if (isProgressEmpty && interval) {
-      clearInterval(interval);
-    }
-  }, [isProgressEmpty]);
-
   async function deleteHandler() {
     await handleCancelJob();
     deleteFetcher.submit(
       { id: inference.id },
       {
         method: "DELETE",
-        action: "/testupload",
+        action: "/mtFileUpload",
       }
     );
   }
@@ -103,7 +61,7 @@ function EachInference({ inference }: any) {
             <FaDownload />
           </a>
         ) : (
-          <span>{progress !== 0 ? progress : "wait"}</span>
+          <Progress inference={inference} />
         )}
         <button onClick={deleteHandler} className=" hover:text-red-400">
           <MdDeleteForever />
@@ -114,3 +72,19 @@ function EachInference({ inference }: any) {
 }
 
 export default EachInference;
+
+function Progress({ inference }) {
+  const { isConnected, socket, progress } = useSocket(inference?.jobId);
+  const revalidator = useRevalidator();
+  useEffect(() => {
+    if (progress?.progress === "complete") {
+      revalidator.revalidate();
+    }
+  }, [progress]);
+  return (
+    <div className="text-yellow-500">
+      <div>{progress?.progress}</div>
+      <div role="status"></div>
+    </div>
+  );
+}

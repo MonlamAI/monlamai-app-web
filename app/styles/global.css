@@ -70,3 +70,10 @@ html {
   66% {background-size: 20% 100%,20% 100%,20% 10% }
   100%{background-size: 20% 100%,20% 100%,20% 100%}
 }
+
+feedbucket-app {
+  opacity: 0.6 !important;
+}
+feedbucket-app:hover {
+  opacity: 1 !important;
+}

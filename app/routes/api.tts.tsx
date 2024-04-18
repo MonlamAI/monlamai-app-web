@@ -21,19 +21,15 @@ export const action: ActionFunction = async ({ request }) => {
   const startTime = Date.now();
   // const voiceType = formdata.get("voice") as string;
   const userInput = formdata.get("sourceText") as string;
-  const API_URL = process.env.TTS_API_URL as string;
-  const headers = {
-    Authorization: process.env.MODEL_API_AUTH_TOKEN as string,
-    "Content-Type": "application/json",
-  };
+  const API_URL = process.env.FILE_SUBMIT_URL as string;
+
   let data;
   try {
-    const response = await fetch(API_URL, {
+    let formData = new FormData();
+    formData.append("input", inputReplace(userInput));
+    let response = await fetch(API_URL + "/tts/playground", {
       method: "POST",
-      headers,
-      body: JSON.stringify({
-        inputs: inputReplace(userInput),
-      }),
+      body: formData,
     });
     data = await response.json();
   } catch (e) {
@@ -41,13 +37,8 @@ export const action: ActionFunction = async ({ request }) => {
       error: API_ERROR_MESSAGE,
     };
   }
-  const { audio_base64 } = data;
+  const { output } = data;
 
-  // upload to s3 and get the url
-  const buffer = base64ToBuffer(audio_base64);
-  const key = `TTS/playground/${uuidv4()}.mp3`;
-  // Upload the audio and get the URL
-  const url = await uploadToS3(buffer, key, "audio/mpeg");
   const responseTime = Date.now() - startTime; // Calculate response time
   const checkifModelExist = await checkIfInferenceExist(
     userInput,
@@ -55,17 +46,17 @@ export const action: ActionFunction = async ({ request }) => {
     user?.id
   );
 
-  if (!checkifModelExist && audio_base64) {
+  if (!checkifModelExist) {
     const inferenceData = await saveInference({
       userId: user?.id,
       model: "tts",
       modelVersion: "v1",
       input: userInput,
-      output: url,
+      output,
       responseTime: responseTime,
     });
-    return { data: audio_base64, inferenceData };
+    return { data: output, inferenceData };
   } else {
-    return { data: audio_base64, inferenceData: checkifModelExist };
+    return { data: output, inferenceData: checkifModelExist };
   }
 };

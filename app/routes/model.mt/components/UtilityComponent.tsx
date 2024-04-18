@@ -2,13 +2,14 @@ import { Button, Textarea } from "flowbite-react";
 import TextComponent from "../../../component/TextComponent";
 import { motion } from "framer-motion";
 import FileUpload from "~/component/FileUpload";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import { useFetcher, useLoaderData, useRevalidator } from "@remix-run/react";
 import { MdDeleteForever } from "react-icons/md";
 import { FaDownload } from "react-icons/fa";
 import timeSince from "~/component/utils/timeSince";
 import { IoSend } from "react-icons/io5";
+import useSocket from "~/component/hooks/useSocket";
 
 type TextOrDocumentComponentProps = {
   selectedTool: string;
@@ -16,11 +17,12 @@ type TextOrDocumentComponentProps = {
   setSourceText: (text: string) => void;
   sourceLang: string;
   setFile: (file: any) => void;
+  setInputUrl: (data: string) => void;
 };
 
 type CharacterOrFileSizeComponentProps = {
   selectedTool: string;
-  charCount: number;
+  charCount: number | string;
   CHAR_LIMIT: number | undefined;
   MAX_SIZE_SUPPORT: string;
 };
@@ -47,6 +49,7 @@ export function TextOrDocumentComponent({
   setSourceText,
   sourceLang,
   setFile,
+  setInputUrl,
 }: TextOrDocumentComponentProps) {
   if (selectedTool === "text") {
     return (
@@ -57,7 +60,14 @@ export function TextOrDocumentComponent({
       />
     );
   } else if (selectedTool === "document") {
-    return <FileUpload setFile={setFile} />;
+    return (
+      <FileUpload
+        setFile={setFile}
+        setInputUrl={setInputUrl}
+        supported={[".txt", ".docx"]}
+        model="mt"
+      />
+    );
   }
   return null;
 }
@@ -68,23 +78,27 @@ export function CharacterOrFileSizeComponent({
   CHAR_LIMIT,
   MAX_SIZE_SUPPORT,
 }: CharacterOrFileSizeComponentProps) {
-  if (selectedTool === "Recording") return <div />;
-  if (selectedTool === "text") {
-    return (
-      <div className="text-gray-400 text-xs p-2">
-        <span style={{ color: charCount > CHAR_LIMIT! ? "red" : "inherit" }}>
-          {charCount}
-        </span>{" "}
-        / {CHAR_LIMIT}
-      </div>
-    );
-  } else {
-    return (
-      <div className="text-gray-400 text-xs p-2">
-        max size: {MAX_SIZE_SUPPORT}
-      </div>
-    );
-  }
+  return (
+    <div className="text-gray-400 text-xs p-2">
+      {(selectedTool === "recording" || selectedTool === "file") &&
+        "Duration : " + charCount}
+      {selectedTool === "text" && (
+        <>
+          <span style={{ color: charCount > CHAR_LIMIT! ? "red" : "inherit" }}>
+            {charCount}
+          </span>{" "}
+          / {CHAR_LIMIT}
+        </>
+      )}
+      {selectedTool !== "recording" &&
+        selectedTool !== "text" &&
+        selectedTool !== "file" && (
+          <div className="text-gray-400 text-xs p-2">
+            max size: {MAX_SIZE_SUPPORT}
+          </div>
+        )}
+    </div>
+  );
 }
 
 export function LoadingAnimation() {
@@ -152,14 +166,14 @@ export function SubmitButton({
   charCount,
   CHAR_LIMIT,
   disabled,
-}) {
-  const { translation, locale } = uselitteraTranlation();
+}: any) {
+  const { locale } = uselitteraTranlation();
   const isFile = selectedTool === "document";
   const exceedsLimit = charCount > CHAR_LIMIT;
-
+  const empty_error = charCount === 0;
   return (
     <Button
-      disabled={!isFile ? exceedsLimit : disabled}
+      disabled={!isFile ? exceedsLimit || empty_error : disabled}
       size="xs"
       title={exceedsLimit ? "Character limit exceeded" : ""}
       onClick={isFile ? submitFile : trigger}
@@ -170,42 +184,31 @@ export function SubmitButton({
   );
 }
 
-export function InferenceList({ completed }) {
+export function InferenceList() {
   let { inferences } = useLoaderData();
   return (
-    <div className="space-y-2 max-h-[50vh] overflow-auto font-poppins">
+    <div className="space-y-2 max-h-[45vh] overflow-auto font-poppins">
       {inferences.map((inference: any) => {
-        return (
-          <EachInference
-            inference={inference}
-            key={inference.id}
-            completed={completed}
-          />
-        );
+        return <EachInference inference={inference} key={inference.id} />;
       })}
     </div>
   );
 }
 
-function EachInference({ inference, completed }: any) {
-  const { fileUploadUrl } = useLoaderData();
+function EachInference({ inference }: any) {
   const deleteFetcher = useFetcher();
-  let filename = inference.input.split("/MT/input/")[1].split("-%40-")[1];
+  console.log(inference);
+  let filename = inference.input?.split("/MT/input/")[1]?.split("-")[1];
   let updatedAt = new Date(inference.updatedAt);
-  const revalidator = useRevalidator();
   let outputURL = inference.output;
   let isComplete = !!outputURL;
-
-  let progress = useMemo(() => {
-    return completed[inference?.jobId]?.progress;
-  }, [completed]);
 
   function deleteHandler() {
     deleteFetcher.submit(
       { id: inference.id },
       {
         method: "DELETE",
-        action: "/testupload",
+        action: "/mtFileUpload",
       }
     );
   }
@@ -229,15 +232,28 @@ function EachInference({ inference, completed }: any) {
             <FaDownload />
           </a>
         ) : (
-          <div className="text-yellow-500">
-            <div>{progress}%</div>
-            <div role="status"></div>
-          </div>
+          <Progress inference={inference} />
         )}
         <button onClick={deleteHandler} className=" hover:text-red-400">
           <MdDeleteForever />
         </button>
       </div>
+    </div>
+  );
+}
+
+function Progress({ inference }) {
+  const { isConnected, socket, progress } = useSocket(inference?.jobId);
+  const revalidator = useRevalidator();
+  useEffect(() => {
+    if (progress?.progress === "complete") {
+      revalidator.revalidate();
+    }
+  }, [progress]);
+  return (
+    <div className="text-yellow-500">
+      <div>{progress?.progress}</div>
+      <div role="status"></div>
     </div>
   );
 }

@@ -116,14 +116,14 @@ function LanguageInput({
       });
     }
   };
-
+  let beta = ["French", "Chinese", "Hindi"];
   return (
     <div className="flex items-center justify-center md:flex-row gap-3 mt-2 font-poppins">
       <Select onChange={(e) => handleChange(e, "source")} value={sourceLang}>
         <option value="detect language">Detect</option>
         {languagesOptions.map((lang) => (
           <option key={lang.code} value={lang.code}>
-            {lang.value}
+            {lang.value} {beta.includes(lang.value) ? "(beta)" : ""}
           </option>
         ))}
       </Select>
@@ -138,7 +138,7 @@ function LanguageInput({
       <Select onChange={(e) => handleChange(e, "target")} value={targetLang}>
         {languagesOptions.map((lang) => (
           <option key={lang.code} value={lang.code}>
-            {lang.value}
+            {lang.value} {beta.includes(lang.value) ? "(beta)" : ""}
           </option>
         ))}
       </Select>

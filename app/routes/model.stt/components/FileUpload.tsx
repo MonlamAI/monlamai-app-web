@@ -12,25 +12,36 @@ export function HandleAudioFile({ handleFileChange, reset }) {
   const onDrop = useCallback(
     (acceptedFiles) => {
       // Do something with the files
-      var file = acceptedFiles[0];
+      const file = acceptedFiles[0];
+
       if (!file) {
-        toast.error("Wrong file format. Please select .mp3 or .wav file.");
+        toast.error(
+          "Wrong file format. Please select an audio file (.mp3 or .wav)."
+        );
         return;
       }
 
-      if (file.size > parseInt(maxSize) * 1024 * 1024) {
-        toast.info("File size is too big.");
-        return;
-      }
+      const audio = new Audio(URL.createObjectURL(file));
+      audio.onloadedmetadata = () => {
+        console.log(`Duration: ${audio.duration} seconds`);
+        if (audio.duration > 120) {
+          // Example: Check if the audio is longer than 120 seconds
+          toast.info("Audio is too long.");
+          URL.revokeObjectURL(audio.src); // Clean up
+          return;
+        }
 
-      handleFileChange(file);
-      setMyFiles(file);
+        // If everything is fine, proceed with setting the file
+        handleFileChange(file);
+        setMyFiles(file); // Assuming setMyFiles is a state setter function
+        URL.revokeObjectURL(audio.src); // Clean up
+      };
     },
     [handleFileChange]
   );
   const removeFile = () => {
-    setMyFiles(null);
     reset();
+    setMyFiles(null);
   };
 
   let { getRootProps, getInputProps, isDragActive, open } = useDropzone({

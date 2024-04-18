@@ -5,7 +5,7 @@ import { Tooltip } from "flowbite-react";
 function TooltipComponent() {
   return (
     <>
-      <div className="absolute  top-2 right-2 cursor-pointer hover:text-orange-400  bg-gray-200 p-1 rounded-full">
+      <div className="absolute  top-2 left-2 cursor-pointer hover:text-orange-400  bg-gray-200 p-1 rounded-full">
         <Tooltip
           content="Please ensure that the image is of high quality and that it includes a lengthy text that is easily readable."
           animation="duration-500"

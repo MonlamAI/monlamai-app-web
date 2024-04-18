@@ -17,6 +17,7 @@ import CardComponent from "~/component/Card";
 import { RxCross2 } from "react-icons/rx";
 import { CancelButton } from "~/component/Buttons";
 import { NonEditButtons } from "~/component/ActionButtons";
+import TooltipComponent from "./Tooltip";
 
 function SingleInptSection({ fetcher }: any) {
   const [ImageUrl, setImageUrl] = useState<string | null>(null);
@@ -33,7 +34,9 @@ function SingleInptSection({ fetcher }: any) {
 
   const editData = editfetcher.data?.edited;
   const data = fetcher?.data;
-  const text = data?.text;
+  const nonTibetanRegex = /[^\u0F00-\u0FFF]/g;
+  // Replace non-Tibetan characters with an empty string
+  const text = data?.text?.replace(nonTibetanRegex, "");
   const inferenceId = fetcher.data?.inferenceId;
   const isActionSubmission = fetcher.state !== "idle";
   const errorMessage = data?.error_message;
@@ -63,6 +66,8 @@ function SingleInptSection({ fetcher }: any) {
       let uniqueFilename = Date.now() + "-" + file.name;
       formData.append("filename", uniqueFilename);
       formData.append("filetype", file.type);
+      formData.append("bucket", "/OCR/input");
+
       const response = await axios.post("/api/get_presigned_url", formData);
       const { url } = response.data;
       // Use Axios to upload the file to S3
@@ -126,10 +131,10 @@ function SingleInptSection({ fetcher }: any) {
   }
 
   return (
-    <div className="flex flex-col lg:flex-row  overflow-hidden max-w-[100vw] gap-3">
+    <div className="flex flex-col lg:flex-row overflow-hidden max-w-[100vw] gap-3">
       <CardComponent>
-        {/* <TooltipComponent /> */}
         <div className="w-full relative min-h-[45vh] flex flex-col items-center justify-center gap-5">
+          <TooltipComponent />
           <div className={ImageUrl || isCameraOpen ? "hidden" : ""}>
             <div className="mb-5 block">
               <Label
@@ -240,6 +245,12 @@ function SingleInptSection({ fetcher }: any) {
                       __html: text?.replaceAll("\n", "<br>"),
                     }}
                   />
+                )}
+                {text === "" && (
+                  <div className="text-red-500">
+                    {" "}
+                    provide image with tibetan text
+                  </div>
                 )}
               </div>
               {edit && (

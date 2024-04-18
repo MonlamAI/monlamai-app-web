@@ -27,6 +27,7 @@ import {
 } from "./components/UtilityComponents";
 import { toast } from "react-toastify";
 import { getUserSession } from "~/services/session.server";
+import { LoaderFunctionArgs } from "@remix-run/node";
 
 export const meta: MetaFunction = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -50,7 +51,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
   return {
     user,
-    fileUploadUrl: process.env?.FILE_SUBMIT_URL_DEV,
+    fileUploadUrl: process.env?.FILE_SUBMIT_URL,
     inferences,
     CHAR_LIMIT,
   };
@@ -59,6 +60,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export default function Index() {
   const [sourceText, setSourceText] = useState("");
   const [file, setFile] = useState<File | null>(null);
+  const [inputUrl, setInputUrl] = useState("");
   const [selectedTool, setSelectedTool] = useLocalStorage(
     "tts_selected_input",
     "text"
@@ -69,9 +71,7 @@ export default function Index() {
   const isLoading = fetcher.state !== "idle";
   const data = fetcher.data?.data;
   const inferenceId = fetcher.data?.inferenceData?.id;
-  let sourceUrl = useMemo(() => {
-    return data ? `data:audio/wav;base64,${data}` : null;
-  }, [data]);
+  let sourceUrl = data;
   const audioRef = useRef<HTMLAudioElement>(null);
   let setting = useRef();
 
@@ -104,11 +104,10 @@ export default function Index() {
 
   const handleFileSubmit = () => {
     let formdata = new FormData();
-    formdata.append("file", file as Blob);
+    formdata.append("fileUrl", inputUrl);
 
     fetcher.submit(formdata, {
       method: "POST",
-      encType: "multipart/form-data",
       action: "/ttsFileUpload",
     });
   };
@@ -130,6 +129,11 @@ export default function Index() {
   }
   let actionError = fetcher.data?.error as string;
 
+  useEffect(() => {
+    if (sourceText === "") {
+      resetFetcher(fetcher);
+    }
+  }, [sourceText]);
   return (
     <ToolWraper title="TTS">
       <InferenceWrapper
@@ -149,7 +153,14 @@ export default function Index() {
                   sourceLang={"bo"}
                 />
               )}
-              {selectedTool === "document" && <FileUpload setFile={setFile} />}
+              {selectedTool === "document" && (
+                <FileUpload
+                  setFile={setFile}
+                  setInputUrl={setInputUrl}
+                  supported={[".txt,.docx"]}
+                  model="tts"
+                />
+              )}
               {selectedTool === "text" && (
                 <CancelButton
                   onClick={handleReset}
@@ -204,8 +215,7 @@ export default function Index() {
                 {data?.error ? (
                   <div className="text-red-400">{data?.error}</div>
                 ) : (
-                  <AudioPlayer ref={audioRef} sourceUrl={sourceUrl} />
-                  // sourceUrl && <Waveform audio={sourceUrl} />
+                  <audio src={sourceUrl} controls />
                 )}
               </div>
             )}

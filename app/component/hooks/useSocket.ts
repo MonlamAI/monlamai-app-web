@@ -1,12 +1,12 @@
+import { useLoaderData } from "@remix-run/react";
 import { useEffect, useMemo, useState } from "react";
-import { io } from "socket.io-client";
+import { getSocket } from "~/services/socket";
 
-function useSocket(url: string, user: any) {
+function useSocket(inferenceId) {
   const [isConnected, setIsConnected] = useState(false);
-  const [completed, setCompleted] = useState({});
-  const socket = useMemo(() => {
-    return io(url);
-  }, [url]);
+  const [progress, setProgress] = useState(0);
+  const { user, fileUploadUrl } = useLoaderData();
+  const socket = useMemo(() => getSocket(fileUploadUrl), [fileUploadUrl]);
 
   useEffect(() => {
     function onConnect() {
@@ -16,6 +16,9 @@ function useSocket(url: string, user: any) {
     function onDisconnect() {
       setIsConnected(false);
     }
+    function onProgressUpdate(data) {
+      setProgress(data);
+    }
 
     socket.on("connect", function (data) {
       onConnect();
@@ -24,17 +27,14 @@ function useSocket(url: string, user: any) {
       });
     });
     socket.on("disconnect", onDisconnect);
-    socket.on("progressUpdate", (data) => {
-      let newdata = completed;
-      newdata[data.jobId] = data;
-      setCompleted(newdata);
-    });
+    socket.on("progressUpdate", onProgressUpdate);
     return () => {
       socket.off("connect", onConnect);
       socket.off("disconnect", onDisconnect);
+      socket.off("progressUpdate", onProgressUpdate);
     };
   }, []);
-  return { isConnected, socket, completed };
+  return { isConnected, socket, progress };
 }
 
 export default useSocket;
