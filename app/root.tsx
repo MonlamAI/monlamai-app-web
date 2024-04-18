@@ -43,19 +43,11 @@ export const loader: LoaderFunction = async ({ request }) => {
     console.log("flagsmith not available without internet");
   }
   const isJobEnabled = features?.job_link?.enabled;
-  const isFileUploadEnabled = features?.feat_file_upload?.enabled;
-  const show_mt_language_toggle = features?.show_mt_language_toggle?.enabled;
-  const show_feed_bucket = features?.show_feed_bucket?.enabled;
-  const enable_ocr_model = features?.enable_ocr_model?.enabled;
   const enable_replacement_mt = features?.enable_replacement_mt?.enabled;
   return json(
     {
       user: userdata ? await getUser(userdata?._json?.email) : null,
       isJobEnabled: isJobEnabled || false,
-      isFileUploadEnabled: isFileUploadEnabled || false,
-      show_mt_language_toggle: show_mt_language_toggle || false,
-      show_feed_bucket_to_all: show_feed_bucket || false,
-      enable_ocr_model: enable_ocr_model || false,
       enable_replacement_mt: enable_replacement_mt || false,
       feedBucketAccess,
       feedbucketToken,

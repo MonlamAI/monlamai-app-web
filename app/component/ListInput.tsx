@@ -28,7 +28,7 @@ export default function ListInput({
   setSelectedTool,
   options,
 }: ListInputProps) {
-  let { isFileUploadEnabled, user } = useRouteLoaderData("root");
+  let { user } = useRouteLoaderData("root");
   const { translation, locale } = uselitteraTranlation();
   const isTibetan = locale === "bo_TI";
   const isUserLoggedIn = !!user;
@@ -37,7 +37,6 @@ export default function ListInput({
   return (
     <div className="flex relative top-[-4px] text-lg gap-2 mt-2">
       {options.map((option, index) => {
-        if (!isFileUploadEnabled) return null;
         let icon = icons[option] ?? null;
         let disabled = !isUserLoggedIn ? !ShowList.includes(option) : false;
         function handleSelection(option) {

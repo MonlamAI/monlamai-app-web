@@ -4,8 +4,7 @@ import { MdFeedback } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
 
 function FeedBucket() {
-  let { show_feed_bucket_to_all, user, feedBucketAccess, feedbucketToken } =
-    useRouteLoaderData("root");
+  let { user, feedBucketAccess, feedbucketToken } = useRouteLoaderData("root");
   let [show, setShow] = useState(false);
   let feedFunction = () => {
     setShow(true);
@@ -37,8 +36,7 @@ function FeedBucket() {
   if (
     monlam_user ||
     esukhia_user ||
-    JSON.parse(feedBucketAccess).includes(user?.email) ||
-    show_feed_bucket_to_all
+    JSON.parse(feedBucketAccess).includes(user?.email)
   ) {
     return (
       <div
