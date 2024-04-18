@@ -215,8 +215,7 @@ export default function Index() {
                 {data?.error ? (
                   <div className="text-red-400">{data?.error}</div>
                 ) : (
-                  <AudioPlayer ref={audioRef} sourceUrl={sourceUrl} />
-                  // sourceUrl && <Waveform audio={sourceUrl} />
+                  <audio src={sourceUrl} controls />
                 )}
               </div>
             )}
