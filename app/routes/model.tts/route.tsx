@@ -129,6 +129,11 @@ export default function Index() {
   }
   let actionError = fetcher.data?.error as string;
 
+  useEffect(() => {
+    if (sourceText === "") {
+      resetFetcher(fetcher);
+    }
+  }, [sourceText]);
   return (
     <ToolWraper title="TTS">
       <InferenceWrapper
