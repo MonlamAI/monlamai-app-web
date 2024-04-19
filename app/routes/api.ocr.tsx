@@ -19,18 +19,25 @@ export const action: ActionFunction = async ({ request }) => {
   if (imageUrl) {
     let formData = new FormData();
     formData.append("imageUrl", imageUrl);
+    let data;
+    try {
+      let res = await fetch(URL_File + "/ocr/upload", {
+        method: "POST",
+        body: formData,
+      });
 
-    let res = await fetch(URL_File + "/ocr/upload", {
-      method: "POST",
-      body: formData,
-    });
-
-    let data = await res.json();
-    if (data?.error) {
+      data = await res.json();
+      if (data?.error) {
+        return {
+          error_message: data.error,
+        };
+      }
+    } catch (e) {
       return {
-        error_message: data.error,
+        error_message: "API not working.",
       };
     }
+
     const inferenceData = await saveInference({
       userId: user?.id,
       model: "ocr",

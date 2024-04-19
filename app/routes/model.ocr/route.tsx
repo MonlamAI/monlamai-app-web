@@ -54,8 +54,6 @@ export default function Index() {
   return (
     <ToolWraper title="OCR">
       <div className="flex flex-col md:flex-row gap-2">
-        {/* {enable_ocr_model ? <OCR /> : <DummyOCR />}
-         */}
         <OCR />
       </div>
     </ToolWraper>

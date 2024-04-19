@@ -25,7 +25,7 @@ function SingleInptSection({ fetcher }: any) {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [edit, setEdit] = useState(false);
   const [editText, setEditText] = useState("");
-  const [isCameraOpen, setCameraiOpen] = useState(false);
+  const [isCameraOpen, setCameraOpen] = useState(false);
 
   let { translation } = uselitteraTranlation();
   const likeFetcher = useFetcher();
@@ -123,7 +123,7 @@ function SingleInptSection({ fetcher }: any) {
   }
 
   const toggleCamera = () => {
-    setCameraiOpen(!isCameraOpen);
+    setCameraOpen(!isCameraOpen);
   };
 
   function handleCopy() {
@@ -153,24 +153,25 @@ function SingleInptSection({ fetcher }: any) {
             />
           </div>
           {!ImageUrl && !isCameraOpen && <div>OR</div>}
-          {!isMobile && (
+          {!isMobile && !isCameraOpen && (
             <Button
               color="dark"
               onClick={toggleCamera}
-              className={ImageUrl ? "hidden" : ""}
+              className={`${ImageUrl ? "hidden" : ""}`}
             >
-              {isCameraOpen ? (
-                <>
-                  <FiCameraOff className="mr-2" />
-                  <p>Camera off</p>
-                </>
-              ) : (
-                <>
-                  <FaCamera className="mr-2" />
-                  <p>Take Photo</p>
-                </>
-              )}
+              <FaCamera className="mr-2" />
+              <p>Take Photo</p>
             </Button>
+          )}
+          {!isMobile && isCameraOpen && (
+            <CancelButton
+              color="gray"
+              type="reset"
+              onClick={toggleCamera}
+              hidden={!!ImageUrl}
+            >
+              <RxCross2 />
+            </CancelButton>
           )}
           {isCameraOpen && !ImageUrl && !isMobile && (
             <WebcamCapture setFile={setFile} />
@@ -234,7 +235,7 @@ function SingleInptSection({ fetcher }: any) {
                     className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
                     role="alert"
                   >
-                    <strong className="font-bold">Error!</strong>
+                    <strong className="font-bold">Error: </strong>
                     <span className="block sm:inline">{errorMessage}</span>
                   </div>
                 )}
