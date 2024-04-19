@@ -164,15 +164,14 @@ function SingleInptSection({ fetcher }: any) {
             </Button>
           )}
           {!isMobile && isCameraOpen && (
-            <Button
-              color="dark"
+            <CancelButton
+              color="gray"
+              type="reset"
               onClick={toggleCamera}
-              className={`${
-                ImageUrl ? "hidden" : ""
-              } z-20 absolute top-1 right-1`}
+              hidden={!!ImageUrl}
             >
               <RxCross2 />
-            </Button>
+            </CancelButton>
           )}
           {isCameraOpen && !ImageUrl && !isMobile && (
             <WebcamCapture setFile={setFile} />
@@ -236,7 +235,7 @@ function SingleInptSection({ fetcher }: any) {
                     className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
                     role="alert"
                   >
-                    <strong className="font-bold">Error!</strong>
+                    <strong className="font-bold">Error: </strong>
                     <span className="block sm:inline">{errorMessage}</span>
                   </div>
                 )}
