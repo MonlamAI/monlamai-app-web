@@ -47,9 +47,7 @@ function Speak({
   };
 
   const audioSourceUrl = useMemo(() => {
-    return fetcher.data
-      ? `data:audio/wav;base64,${fetcher.data?.data}`
-      : undefined;
+    return fetcher.data ? fetcher.data?.data : undefined;
   }, [fetcher.data]);
 
   return (
