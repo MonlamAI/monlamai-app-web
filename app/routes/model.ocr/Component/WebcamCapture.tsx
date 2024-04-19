@@ -29,7 +29,7 @@ const WebcamCapture = ({ setFile }) => {
         }}
       />
       <div className="flex gap-4 absolute bottom-2">
-        <Button onClick={capture} color="dark">
+        <Button onClick={capture} color="dark" className="rounded-full">
           <TbCapture />
         </Button>
       </div>
