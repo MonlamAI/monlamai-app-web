@@ -1,10 +1,10 @@
 import { Spinner } from "flowbite-react";
 import { MetaFunction, useFetcher, useLoaderData } from "@remix-run/react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ReactionButtons from "~/component/ReactionButtons";
 import { amplifyMedia } from "~/component/utils/audioGain";
 import useLocalStorage from "~/component/hooks/useLocaleStorage";
-import AudioPlayer from "~/component/AudioPlayer";
+import AudioPlayerComponents from "~/routes/model.tts/components/AudioComponent";
 import ToolWraper from "~/component/ToolWraper";
 import { ErrorBoundary } from "../model.mt/route";
 import InferenceWrapper from "~/component/layout/InferenceWrapper";
@@ -18,7 +18,6 @@ import TextComponent from "~/component/TextComponent";
 import { CharacterOrFileSizeComponent } from "../model.mt/components/UtilityComponent";
 import ErrorMessage from "~/component/ErrorMessage";
 import CardComponent from "~/component/Card";
-import { auth } from "~/services/auth.server";
 import { getUser } from "~/modal/user.server";
 import { getUserFileInferences } from "~/modal/inference.server";
 import {
@@ -72,7 +71,6 @@ export default function Index() {
   const data = fetcher.data?.data;
   const inferenceId = fetcher.data?.inferenceData?.id;
   let sourceUrl = data;
-  const audioRef = useRef<HTMLAudioElement>(null);
   let setting = useRef();
 
   let charCount = sourceText?.length;
@@ -88,7 +86,7 @@ export default function Index() {
   useEffect(() => {
     setSourceText("");
   }, [selectedTool]);
-
+  const audioRef = useRef<HTMLAudioElement>(null);
   let likeFetcher = useFetcher();
   useEffect(() => {
     if (audioRef.current && !setting.current && data) {
@@ -141,8 +139,6 @@ export default function Index() {
         setSelectedTool={setSelectedTool}
         options={["text", "document"]}
       >
-        {actionError && <ErrorMessage error={actionError} />}
-
         <CardComponent>
           <div className="flex flex-col gap-2 flex-1 min-h-[30vh]">
             <div className="flex relative flex-col flex-1 justify-center">
@@ -190,6 +186,13 @@ export default function Index() {
         </CardComponent>
         <CardComponent>
           <div className="flex min-h-[15vh] lg:min-h-[30vh] h-auto w-full flex-1 flex-col gap-2 ">
+            {actionError && (
+              <ErrorMessage
+                message={actionError}
+                handleClose={() => resetFetcher(fetcher)}
+              />
+            )}
+
             {data && (
               <div className="flex justify-between mx-2">
                 <div className="flex items-center gap-3">
@@ -215,7 +218,7 @@ export default function Index() {
                 {data?.error ? (
                   <div className="text-red-400">{data?.error}</div>
                 ) : (
-                  <audio src={sourceUrl} controls />
+                  <AudioPlayerComponents audioUrl={sourceUrl} ref={audioRef} />
                 )}
               </div>
             )}

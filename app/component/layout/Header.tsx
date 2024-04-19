@@ -78,11 +78,18 @@ function Header() {
               />
               {translation.monlamAI}
             </NavLink>
-            <AboutLink />
-            <JobLink />
-            <TeamLink />
-
-            <TranslationSwitcher />
+            <div onClick={() => setShowMenu((p) => !p)}>
+              <AboutLink />
+            </div>
+            <div onClick={() => setShowMenu((p) => !p)}>
+              {data?.isJobEnabled && <JobLink />}
+            </div>
+            <div onClick={() => setShowMenu((p) => !p)}>
+              <TeamLink />
+            </div>
+            <div onClick={() => setShowMenu((p) => !p)}>
+              <TranslationSwitcher />
+            </div>
             <Menu />
           </div>
         </motion.div>
