@@ -8,7 +8,7 @@
 
 ## _Project Name_
 
-Monlam Ai Tools
+Monlam AI Tools
 
 ## Owner(s)
 
