@@ -1,7 +1,9 @@
-import Flagsmith from "flagsmith-nodejs";
-const flagsmith_provider = new Flagsmith({
-  environmentKey: process.env?.FEATURE_SDK_KEY,
-  apiUrl:process.env?.FEATURE_FLAG_URL
+import { initialize } from "unleash-client";
+
+const unleash = initialize({
+  url: process.env.UNLEASH_FLAG_URL!,
+  appName: "Default",
+  customHeaders: { Authorization: process.env.UNLEASH_FLAG_KEY! },
 });
 
-export default flagsmith_provider;
+export default unleash;

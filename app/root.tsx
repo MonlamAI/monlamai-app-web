@@ -25,30 +25,24 @@ import { getUser } from "./modal/user.server";
 import toastStyle from "react-toastify/dist/ReactToastify.css";
 import feedBucketStyle from "~/styles/feedbucket.css";
 import { ToastContainer } from "react-toastify";
-import flagsmith_provider from "./services/features.server";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import useLocalStorage from "./component/hooks/useLocaleStorage";
 import FeedBucket from "./component/FeedBucket";
 import LocationComponent from "./component/LocationDetect";
+import unleash from "./services/features.server";
 
 export const loader: LoaderFunction = async ({ request }) => {
   let userdata = await getUserSession(request);
   const feedBucketAccess = process.env.FEEDBUCKET_ACCESS;
   const feedbucketToken = process.env.FEEDBUCKET_TOKEN;
-  let features: any = {};
-  try {
-    let flagsmithdata = await flagsmith_provider.getEnvironmentFlags();
-    features = flagsmithdata.flags;
-  } catch (e) {
-    console.log("flagsmith not available without internet");
-  }
-  const isJobEnabled = features?.job_link?.enabled;
-  const enable_replacement_mt = features?.enable_replacement_mt?.enabled;
+
+  const isJobEnabled = unleash.isEnabled("isJobEnabled");
+  const enable_replacement_mt = unleash.isEnabled("enable_replacement_mt");
   return json(
     {
       user: userdata ? await getUser(userdata?._json?.email) : null,
-      isJobEnabled: isJobEnabled || false,
-      enable_replacement_mt: enable_replacement_mt || false,
+      isJobEnabled: isJobEnabled ?? false,
+      enable_replacement_mt: enable_replacement_mt ?? false,
       feedBucketAccess,
       feedbucketToken,
     },
