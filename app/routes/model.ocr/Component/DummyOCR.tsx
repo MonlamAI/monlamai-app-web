@@ -1,5 +1,5 @@
 import { Button, Card, Spinner } from "flowbite-react";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { dummydata } from "~/helper/dummy";
 import { FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
