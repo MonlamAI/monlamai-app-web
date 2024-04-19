@@ -17,13 +17,20 @@ _Change to the owner(s) of the new repo. (This template's owners are:)_
 - [@tenkus47](https://github.com/tenkus47)
 - [@tentamdin](https://github.com/tentamdin)
 
-# Welcome to Remix!
+# Welcome to Monlam AI web !
 
-- [Remix Docs](https://remix.run/docs)
+- [Docs](https://remix.run/docs)
 
 ## Development
 
 From your terminal:
+
+1. install the dependencies
+
+```sh
+npm install 
+```
+2. run app locally
 
 ```sh
 npm run dev
