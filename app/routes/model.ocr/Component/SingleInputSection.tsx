@@ -25,7 +25,7 @@ function SingleInptSection({ fetcher }: any) {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [edit, setEdit] = useState(false);
   const [editText, setEditText] = useState("");
-  const [isCameraOpen, setCameraiOpen] = useState(false);
+  const [isCameraOpen, setCameraOpen] = useState(false);
 
   let { translation } = uselitteraTranlation();
   const likeFetcher = useFetcher();
@@ -123,7 +123,7 @@ function SingleInptSection({ fetcher }: any) {
   }
 
   const toggleCamera = () => {
-    setCameraiOpen(!isCameraOpen);
+    setCameraOpen(!isCameraOpen);
   };
 
   function handleCopy() {
@@ -153,23 +153,25 @@ function SingleInptSection({ fetcher }: any) {
             />
           </div>
           {!ImageUrl && !isCameraOpen && <div>OR</div>}
-          {!isMobile && (
+          {!isMobile && !isCameraOpen && (
             <Button
               color="dark"
               onClick={toggleCamera}
-              className={ImageUrl ? "hidden" : ""}
+              className={`${ImageUrl ? "hidden" : ""}`}
             >
-              {isCameraOpen ? (
-                <>
-                  <FiCameraOff className="mr-2" />
-                  <p>Camera off</p>
-                </>
-              ) : (
-                <>
-                  <FaCamera className="mr-2" />
-                  <p>Take Photo</p>
-                </>
-              )}
+              <FaCamera className="mr-2" />
+              <p>Take Photo</p>
+            </Button>
+          )}
+          {!isMobile && isCameraOpen && (
+            <Button
+              color="dark"
+              onClick={toggleCamera}
+              className={`${
+                ImageUrl ? "hidden" : ""
+              } z-20 absolute top-1 right-1`}
+            >
+              <RxCross2 />
             </Button>
           )}
           {isCameraOpen && !ImageUrl && !isMobile && (

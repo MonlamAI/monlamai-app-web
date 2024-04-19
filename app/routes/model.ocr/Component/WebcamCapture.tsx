@@ -6,7 +6,7 @@ import { MdFlipCameraIos } from "react-icons/md";
 
 const WebcamCapture = ({ setFile }) => {
   const webcamRef = React.useRef(null);
-  const [facingMode, setFacingMode] = useState("environment");
+  const [facingMode, setFacingMode] = useState("user");
 
   const capture = React.useCallback(async () => {
     const imageSrc = webcamRef.current.getScreenshot();
@@ -16,14 +16,6 @@ const WebcamCapture = ({ setFile }) => {
     }
   }, [webcamRef, setFile]);
 
-  const toggleCamera = () => {
-    if (facingMode === "user") {
-      setFacingMode("environment");
-    } else {
-      setFacingMode("user");
-    }
-  };
-
   return (
     <>
       <Webcam
@@ -31,19 +23,14 @@ const WebcamCapture = ({ setFile }) => {
         ref={webcamRef}
         screenshotFormat="image/jpeg"
         screenshotQuality={1}
-        width="70%"
+        width="100%"
         videoConstraints={{
           facingMode: facingMode,
         }}
       />
-      <div className="flex gap-4">
-        <Button onClick={toggleCamera} color="dark">
-          <MdFlipCameraIos className="mr-2" />
-          Flip
-        </Button>
+      <div className="flex gap-4 absolute bottom-2">
         <Button onClick={capture} color="dark">
-          <TbCapture className="mr-2" />
-          Capture
+          <TbCapture />
         </Button>
       </div>
     </>
