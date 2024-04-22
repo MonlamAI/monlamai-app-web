@@ -1443,6 +1443,8 @@ export function bo_en_english_replaces(text: string) {
     "Tibet was not pure independence",
     "Tibet was pure independence"
   );
+  result = result.replaceAll("རྫོད་པ", "སྐྱོན་གཏོང་བ");
+  result = result.replaceAll("བརྫད་པ", "སྐྱོན་བཏང་བ");
 
   return result;
 }
