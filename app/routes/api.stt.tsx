@@ -2,10 +2,6 @@ import { ActionFunction, json } from "@remix-run/node";
 import { verifyDomain } from "~/component/utils/verifyDomain";
 import { API_ERROR_MESSAGE } from "~/helper/const";
 import { saveInference } from "~/modal/inference.server";
-import { getUser } from "~/modal/user.server";
-import { auth } from "~/services/auth.server";
-import { v4 as uuid } from "uuid";
-import { uploadToS3 } from "~/services/uploadToS3.server";
 import { getUserDetail } from "~/services/session.server";
 
 export const action: ActionFunction = async ({ request }) => {
@@ -17,47 +13,40 @@ export const action: ActionFunction = async ({ request }) => {
   }
   let user = await getUserDetail(request);
   const formData = await request.formData();
-  const apiUrl = process.env.STT_API_URL as string;
-  const headers = {
-    Authorization: process.env.MODEL_API_AUTH_TOKEN as string,
-    "Content-Type": "audio/flac",
-  };
-  let audio = formData.get("audio") as string;
-  let response;
-  const blob = await fetch(audio).then((res) => res.blob());
+  const API_URL = process.env.FILE_SUBMIT_URL as string;
+
+  let audioURL = formData.get("audioURL") as string;
+  let data;
+
   try {
-    response = await fetch(apiUrl, {
+    let formData = new FormData();
+    formData.append("audioURL", audioURL);
+    let response = await fetch(API_URL + "/stt/playground", {
       method: "POST",
-      headers: headers,
-      body: blob,
+      body: formData,
     });
-    console.log(response);
-  } catch (error) {
-    return { error: API_ERROR_MESSAGE };
+    data = await response.json();
+  } catch (e) {
+    return {
+      error: API_ERROR_MESSAGE,
+    };
   }
+  const { output } = data;
   const endTime = Date.now();
   const responseTime = endTime - startTime;
 
-  if (response.ok) {
-    const data = await response.json();
-
-    // Remove the Data URL part if present, and decode the base64 string to a buffer
-    const base64Data = audio.split(";base64,").pop(); // Remove the MIME type prefix
-    const buffer = Buffer.from(base64Data, "base64");
-
-    // upload audio to s3 and get the url
-    const key = `STT/playground/${uuid()}.mp3`;
-    const url = await uploadToS3(buffer, key, "audio/mpeg");
+  if (output) {
+    const { text } = output;
     // save inference to db
     const inferenceData = await saveInference({
       userId: user?.id,
       model: "stt",
       modelVersion: "wav2vec2_run10",
-      input: url,
-      output: data?.text,
+      input: audioURL,
+      output: text,
       responseTime: responseTime,
     });
-    return json({ text: data?.text, inferenceId: inferenceData?.id });
+    return json({ text, inferenceId: inferenceData?.id });
   } else {
     return json({ error_message: "Failed to send the audio to the server" });
   }

@@ -1,6 +1,9 @@
 import { useLoaderData, useRouteLoaderData } from "@remix-run/react";
 import { useState } from "react";
-import { en_bo_english_replaces, en_bo_tibetan_replaces } from "~/component/utils/replace";
+import {
+  en_bo_english_replaces,
+  en_bo_tibetan_replaces,
+} from "~/component/utils/replace";
 
 type useTranslateType = {
   target: string;
@@ -29,18 +32,19 @@ const useTranslate = ({ target, text, data, setData }: useTranslateType) => {
       setIsLoading(true);
       setDone(false);
       setError(null);
-
+      let replaced = en_bo_english_replaces(text);
+      console.log(replaced);
       try {
         const response = await fetch(url, {
           method: "POST",
-          mode:"cors",
+          mode: "cors",
           headers: {
             "Content-Type": "application/json",
             Authorization: `${token}`,
-            "Access-Control-Allow-Origin":"*"
+            "Access-Control-Allow-Origin": "*",
           },
           body: JSON.stringify({
-            inputs: `<2${target}>${enable_replacement_mt?en_bo_english_replaces(text):text}`,
+            inputs: `<2${target}>${enable_replacement_mt ? replaced : text}`,
             parameters: {
               max_new_tokens: 256,
             },
@@ -76,27 +80,27 @@ const useTranslate = ({ target, text, data, setData }: useTranslateType) => {
       const jsonResponse = await response.json();
       setData(jsonResponse[0].generated_text);
     } else if (contentType && contentType.includes("text/event-stream")) {
-      const reader =await response.body
-        .pipeThrough(new TextDecoderStream(
-          'utf-8'
-        ))
+      const reader = await response.body
+        .pipeThrough(new TextDecoderStream("utf-8"))
         .getReader();
       let streamData = "";
       while (true) {
         const { done, value } = await reader.read();
-      
+
         if (done) break;
-        
+
         try {
           let parsedData = parseCustomData(value);
-          streamData =parsedData.map(item => item.token.text).join('');
+          streamData = parsedData.map((item) => item.token.text).join("");
         } catch (e) {
-          console.log(chunk)
+          console.log(chunk);
         }
 
         setData((p) => {
-          let newChunk=p + streamData.replace("</s>", "");
-          return enable_replacement_mt?en_bo_tibetan_replaces(newChunk):newChunk
+          let newChunk = p + streamData.replace("</s>", "");
+          return enable_replacement_mt
+            ? en_bo_tibetan_replaces(newChunk)
+            : newChunk;
         });
       }
     }
@@ -107,19 +111,20 @@ const useTranslate = ({ target, text, data, setData }: useTranslateType) => {
 
 export default useTranslate;
 
-
 function parseCustomData(input) {
   // Split the input by "data:" to separate each JSON object string
-  const entries = input.split('data:').filter(entry => entry.trim() !== '');
+  const entries = input.split("data:").filter((entry) => entry.trim() !== "");
   // Map each entry to a parsed JSON object
-  const parsedData = entries.map(entry => {
-    try {
-      // Parse the JSON string to an object
-      return JSON.parse(entry);
-    } catch (error) {
-      console.error("Error parsing entry:", entry, error);
-      return null; // Return null if parsing fails
-    }
-  }).filter(entry => entry !== null); // Remove any null entries resulting from parsing errors
+  const parsedData = entries
+    .map((entry) => {
+      try {
+        // Parse the JSON string to an object
+        return JSON.parse(entry);
+      } catch (error) {
+        console.error("Error parsing entry:", entry, error);
+        return null; // Return null if parsing fails
+      }
+    })
+    .filter((entry) => entry !== null); // Remove any null entries resulting from parsing errors
   return parsedData;
 }

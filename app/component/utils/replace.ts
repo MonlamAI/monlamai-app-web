@@ -11,7 +11,7 @@ export function en_bo_english_replaces(text: string) {
   result = result.replaceAll("”", "");
   result = result.replaceAll("’", "");
   result = result.replaceAll("‘", "");
-  result = result.replaceAll((/[\n\r]/g, ","));
+  result = result.replaceAll(/[\n\r]/g, ",");
   result = result.replaceAll(/\bAI\b/g, "artificial intelligence ");
   result = result.replaceAll("(AI)", "");
   result = result.replaceAll("AI.)", "artificial intelligence.");
@@ -192,7 +192,6 @@ export function en_bo_english_replaces(text: string) {
   result = result.replaceAll(/\bft.\b/g, "Foot");
   result = result.replaceAll(/\bmi.\b/g, "Mile");
   result = result.replaceAll(/\bmph\b/g, "Miles per hour");
-  result = result.replaceAll(/\bn.m.\b/g, "Nautical miles");
   result = result.replaceAll(/\bsq.\b/g, "Square");
   result = result.replaceAll(/\byd.\b/g, "Yard");
   result = result.replaceAll(/\blb.\b/g, "Pound");
@@ -507,7 +506,7 @@ export function en_bo_english_replaces(text: string) {
   result = result.replaceAll(/(\.\s*)\bft.\b/g, "Foot");
   result = result.replaceAll(/(\.\s*)\bmi.\b/g, "Mile");
   result = result.replaceAll(/(\.\s*)\bmph\b/g, "Miles per hour");
-  result = result.replaceAll(/(\.\s*)\bn.m.\b/g, "Nautical miles");
+  result = result.replace(/(?<!\w)n\.m\.(?!\w)/g, "Nautical miles");
   result = result.replaceAll(/(\.\s*)\bsq.\b/g, "Square");
   result = result.replaceAll(/(\.\s*)\byd.\b/g, "Yard");
   result = result.replaceAll(/(\.\s*)\blb.\b/g, "Pound");
@@ -835,7 +834,7 @@ export function en_bo_tibetan_replaces(text: string) {
   result = result.replaceAll("ཀྲུང་གོ", "རྒྱ་ནག");
   result = result.replaceAll("ཆ་འཕྲིན", "བརྡ་འཕྲིན");
   result = result.replaceAll("བཅོས་མའི་རྣམ་དཔྱོད", "མིས་བཟོས་རིག་ནུས");
-  
+
   result = result.replaceAll("རྒྱུད་གཅིག་ལམ་གཅིག་གྱི", "རྒྱུད་གཅིག་ལམ་གཅིག་གི");
   result = result.replaceAll(
     "སྨོན་ལམ་རིག་གནས་ཞིབ་འཇུག་ལྟེ་གནས",
@@ -935,7 +934,7 @@ export function en_bo_tibetan_replaces(text: string) {
     "རྒྱ་ནག་རྒྱལ་སྤྱིའི་ཚོང་འབྲེལ་གྱི་སྲི་ཞུའི་ཚོང་འདུས་དང་"
   );
   result = result.replaceAll("ལག་ཐོགས་ཁ་པར", "ལག་འཁྱེར་ཁ་པར");
-  
+
   result = result.replaceAll("ཤིན་ཏཱ་ཞིང་ཆེན", "ཧྲན་ཏུང་ཞིང་ཆེན་");
   result = result.replaceAll(
     "བཟོ་ལས་རིག་པས་མིའི་འཕྲུལ་ཆས་ཀྱི",
@@ -1811,7 +1810,10 @@ export function en_bo_tibetan_replaces(text: string) {
   result = result.replaceAll("༸ཏཱ་ལའི་བླ་མ་གཤེགས", "སྐུ་གཤེགས");
   result = result.replaceAll("མཚན་ཉིད་ངེས་གསལ་མེད་པའི་", "");
   result = result.replaceAll("མཚན་ཉིད་མ་ཚང་བའི་", "");
-  result = result.replaceAll("༸ཏཱ་ལའི་བླ་མ་དྲན་གསོའི་དུས་དྲན་", "དྲན་གསོའི་དུས་དྲན་");
+  result = result.replaceAll(
+    "༸ཏཱ་ལའི་བླ་མ་དྲན་གསོའི་དུས་དྲན་",
+    "དྲན་གསོའི་དུས་དྲན་"
+  );
   result = result.replaceAll("ངེས་གཏན་བྲལ་བའི་", "");
   result = result.replaceAll("༡༩༥༩ ལོའི་", "");
   result = result.replaceAll("<unk>", "");
@@ -1825,7 +1827,10 @@ export function en_bo_tibetan_replaces(text: string) {
   result = result.replaceAll("ངེས་མེད་ཀྱི་", "");
   result = result.replaceAll("ངེས་གཏན་མེད་པའི་", "");
   result = result.replaceAll("གཏན་འཁེལ་མེད་པའི་", "");
-  result = result.replaceAll("བེེངྒ་ལོར་རྒྱལ་བའི་བླ་མ་མཐོ་རིམ་སློབ་གཉེར་ཁང་", "བྷེན་ལོར་ཏཱ་ལའི་བླ་མ་མཐོ་རིམ་སློབ་གཉེར་ཁང་");
+  result = result.replaceAll(
+    "བེེངྒ་ལོར་རྒྱལ་བའི་བླ་མ་མཐོ་རིམ་སློབ་གཉེར་ཁང་",
+    "བྷེན་ལོར་ཏཱ་ལའི་བླ་མ་མཐོ་རིམ་སློབ་གཉེར་ཁང་"
+  );
   result = result.replaceAll("མ་ངེས་", "");
   result = result.replaceAll("ངེས་ཚིག་མ་བཀོད་པའི་", "");
   result = result.replaceAll("ཨུ་ཡོན་གཞོན་པ", "དྲུང་ཆེ་གཞོན་པ");
@@ -1836,14 +1841,17 @@ export function en_bo_tibetan_replaces(text: string) {
   result = result.replaceAll("ངེས་ཚིག་མ་གཏུགས་པ་", "");
   result = result.replaceAll("འཕན་པ་ཚེ་རིང་", "སྤེན་པ་ཚེ་རིང་");
   result = result.replaceAll("དབྱི་རན", "ཨི་རན");
-//དབྱི་རན
+  //དབྱི་རན
 
   result = result.replaceAll(
     "༸ཏཱ་ལའི་བླ་མའི་དགོངས་པ་རྫོགས་ཚུལ་",
     "ཁོ་སྐུ་གཤེགས་པའི་སྐོར་"
   );
   result = result.replaceAll("MITRA", "Monlam AI");
-  result = result.replaceAll("API Error Try after sometime", "ཅུང་ཙམ་སྒུག་རོགས་གནང་། འདིར་མ་ལག་ལ་བཟོ་བཅོས་ཅུང་ཙམ་རྒྱག་བཞིན་པ་ཡིན།");
+  result = result.replaceAll(
+    "API Error Try after sometime",
+    "ཅུང་ཙམ་སྒུག་རོགས་གནང་། འདིར་མ་ལག་ལ་བཟོ་བཅོས་ཅུང་ཙམ་རྒྱག་བཞིན་པ་ཡིན།"
+  );
   //ཏཱ་ལའི་བླ་མ་མཆོག་གིས
   //སྲིད་འཛིན་སྐུ་ཕྲེང་བཞི་བཅུ་ང་བཞི
   result = result.replaceAll(/(\d+)([^\d]+)/g, "$1 $2");
@@ -1861,8 +1869,11 @@ export function bo_en_english_replaces(text: string) {
   let result = text.replaceAll("MITRA", "Monlam AI");
   result = result.replaceAll(/event: message data: /g, "");
   result = result.replaceAll("' event: message data: '", "");
-  result = result.replaceAll("Tibet was not pure independence", "Tibet was pure independence");
-  
+  result = result.replaceAll(
+    "Tibet was not pure independence",
+    "Tibet was pure independence"
+  );
+
   return result;
 }
 
