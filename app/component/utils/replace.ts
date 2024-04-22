@@ -110,7 +110,7 @@ export function en_bo_english_replaces(text: string) {
   result = result.replaceAll(/\bft\./g, "Foot");
   result = result.replaceAll(/\bmi\./g, "Mile");
   result = result.replaceAll(/\bmph\b/g, "Miles per hour");
-  result = result.replaceAll(/\bn.m\./g, "Nautical miles");
+  result = result.replaceAll(/\bn\.m\./g, "Nautical miles");
   result = result.replaceAll(/\bsq\./g, "Square");
   result = result.replaceAll(/\byd\./g, "Yard");
   result = result.replaceAll(/\blb\./g, "Pound");
