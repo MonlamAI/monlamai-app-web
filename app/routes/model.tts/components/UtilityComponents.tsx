@@ -25,7 +25,7 @@ export function InferenceListTts() {
 function EachInference({ inference }: any) {
   const deleteFetcher = useFetcher();
   const [isPlaying, setIsPlaying] = useState(false);
-  let filename = inference.input?.split("/TTS/input/")[1];
+  let filename = inference.input?.split("/TTS/input/")[1]?.split("-")[1];
   let filenameOnly = filename?.split(".")[0] + ".wav";
   let updatedAt = new Date(inference.updatedAt);
   let outputURL = inference.output;
@@ -126,7 +126,7 @@ function Progress({ inference }) {
   }, [progress]);
   return (
     <div className="text-yellow-500">
-      <div>{isConnected ? progress?.progress : ""}</div>
+      <div>{isConnected ? progress?.progress : "waiting"}</div>
       <div role="status"></div>
     </div>
   );

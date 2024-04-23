@@ -77,13 +77,13 @@ function Progress({ inference }) {
   const { isConnected, socket, progress } = useSocket(inference?.jobId);
   const revalidator = useRevalidator();
   useEffect(() => {
-    if (progress?.progress === "complete") {
+    if (progress?.progress === "complete" || isConnected) {
       revalidator.revalidate();
     }
   }, [progress]);
   return (
     <div className="text-yellow-500">
-      <div>{progress?.progress}</div>
+      <div>{isConnected ? progress?.progress : "waiting"}</div>
       <div role="status"></div>
     </div>
   );

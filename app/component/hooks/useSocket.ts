@@ -2,7 +2,7 @@ import { useLoaderData } from "@remix-run/react";
 import { useEffect, useMemo, useState } from "react";
 import { getSocket } from "~/services/socket";
 
-function useSocket(inferenceId) {
+function useSocket(jobID) {
   const [isConnected, setIsConnected] = useState(false);
   const [progress, setProgress] = useState(0);
   const { user, fileUploadUrl } = useLoaderData();
@@ -17,7 +17,9 @@ function useSocket(inferenceId) {
       setIsConnected(false);
     }
     function onProgressUpdate(data) {
-      setProgress(data);
+      if (data.jobId == jobID) {
+        setProgress(data);
+      }
     }
 
     socket.on("connect", function (data) {
