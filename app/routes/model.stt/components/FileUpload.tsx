@@ -24,12 +24,12 @@ export function HandleAudioFile({ handleFileChange, reset }) {
       const audio = new Audio(URL.createObjectURL(file));
       audio.onloadedmetadata = () => {
         console.log(`Duration: ${audio.duration} seconds`);
-        if (audio.duration > 120) {
-          // Example: Check if the audio is longer than 120 seconds
-          toast.info("Audio is too long.");
-          URL.revokeObjectURL(audio.src); // Clean up
-          return;
-        }
+        // if (audio.duration > 120) {
+        //   // Example: Check if the audio is longer than 120 seconds
+        //   toast.info("Audio is too long.");
+        //   URL.revokeObjectURL(audio.src); // Clean up
+        //   return;
+        // }
 
         // If everything is fine, proceed with setting the file
         handleFileChange(file);

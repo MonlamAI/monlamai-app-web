@@ -1,14 +1,6 @@
-import { Button, Card, Label, Spinner } from "flowbite-react";
-import { BsFillStopFill, BsFillMicFill } from "react-icons/bs";
-import { useState, useRef, useCallback, useEffect } from "react";
-import {
-  type LoaderFunction,
-  ActionFunction,
-  json,
-  LoaderFunctionArgs,
-} from "@remix-run/node";
-import { MetaFunction, useFetcher } from "@remix-run/react";
-import { getBrowser } from "~/component/utils/getBrowserDetail";
+import { useState, useEffect } from "react";
+import { ActionFunction, LoaderFunctionArgs } from "@remix-run/node";
+import { MetaFunction, useFetcher, useLoaderData } from "@remix-run/react";
 import ErrorMessage from "~/component/ErrorMessage";
 import ToolWraper from "~/component/ToolWraper";
 import CardComponent from "~/component/Card";
@@ -21,7 +13,7 @@ import {
 } from "../model.mt/components/UtilityComponent";
 import { ErrorBoundary } from "../model.mt/route";
 import { NonEditButtons, NonEditModeActions } from "~/component/ActionButtons";
-import { updateEdit } from "~/modal/inference.server";
+import { getUserFileInferences, updateEdit } from "~/modal/inference.server";
 import EditDisplay from "~/component/EditDisplay";
 import { resetFetcher } from "~/component/utils/resetFetcher";
 import { RxCross2 } from "react-icons/rx";
@@ -31,6 +23,9 @@ import { HandleAudioFile } from "./components/FileUpload";
 import { auth } from "~/services/auth.server";
 import { getUserSession } from "~/services/session.server";
 import AudioRecorder from "./components/AudioRecorder";
+import axios from "axios";
+import { InferenceListSTT } from "./components/UtilityComponents";
+import { getUser } from "~/modal/user.server";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -43,9 +38,13 @@ export async function loader({ request }: LoaderFunctionArgs) {
   let userdata = await getUserSession(request);
   let user = null;
   if (userdata) {
-    user = userdata;
+    user = await getUser(userdata?._json.email);
   }
-  return { user };
+  let inferences = await getUserFileInferences({
+    userId: user?.id,
+    model: "stt",
+  });
+  return { user, inferences };
 }
 
 export const action: ActionFunction = async ({ request }) => {
@@ -61,6 +60,8 @@ export default function Index() {
   const [selectedTool, setSelectedTool] = useState<"recording" | "file">(
     "recording"
   );
+  const [uploadProgress, setUploadProgress] = useState(0);
+
   const [audio, setAudio] = useState<Blob | null>(null);
   const [audioURL, setAudioURL] = useState<string | null>(null);
   const [edit, setEdit] = useState(false);
@@ -84,6 +85,7 @@ export default function Index() {
     if (!audioURL || audioURL === "") return;
     const form = new FormData();
     form.append("audioURL", audioURL);
+    form.append("isFile", selectedTool === "file" ? "file" : "audio");
     fetcher.submit(form, { method: "POST", action: "/api/stt" });
     resetFetcher(editfetcher);
   };
@@ -107,14 +109,7 @@ export default function Index() {
   const handleFileChange = (file) => {
     if (file) {
       setAudio(file);
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        setAudioURL(reader.result);
-      };
-      reader.onerror = (error) => {
-        console.error("Error: ", error);
-      };
+      uploadFile(file);
     }
   };
   let text = fetcher.data?.text;
@@ -141,28 +136,69 @@ export default function Index() {
     setEdit(false);
     setEditText("");
   }
-
+  useEffect(() => {
+    if (fetcher.data) {
+      resetFetcher(fetcher);
+      resetFetcher(editfetcher);
+    }
+  }, [selectedTool]);
   const errorMessage = fetcher.data?.error_message;
   const actionError = fetcher.data?.error ?? errorMessage;
+
+  const uploadFile = async (file: File) => {
+    try {
+      let formData = new FormData();
+      let uniqueFilename = Date.now() + "-" + "audio.mp3";
+      formData.append("filename", uniqueFilename);
+      formData.append("filetype", file.type);
+      formData.append("bucket", "/STT/input");
+
+      const response = await axios.post("/api/get_presigned_url", formData);
+      const { url } = response.data;
+      // Use Axios to upload the file to S3
+      const uploadStatus = await axios.put(url, file, {
+        headers: {
+          "Content-Type": file.type,
+        },
+        onUploadProgress: (progressEvent) => {
+          const percentCompleted = Math.round(
+            (progressEvent.loaded * 100) / progressEvent.total
+          );
+          setUploadProgress(percentCompleted);
+        },
+      });
+
+      if (uploadStatus.status === 200) {
+        const uploadedFilePath = uploadStatus.request.responseURL;
+        const baseUrl = uploadedFilePath?.split("?")[0]!;
+        console.log(baseUrl);
+        setAudioURL(baseUrl!);
+        console.log(`File ${file.name} uploaded successfully.`, uploadStatus);
+      }
+    } catch (error) {
+      console.error(`Error uploading file ${file.name}:`, error);
+    }
+  };
   return (
     <ToolWraper title="STT">
       <InferenceWrapper
         selectedTool={selectedTool}
         setSelectedTool={setSelectedTool}
-        options={["recording"]}
+        options={["recording", "file"]}
       >
         {actionError && <ErrorMessage error={actionError} />}
 
         <CardComponent>
           <div className="flex flex-col relative gap-2 flex-1 min-h-[30vh]">
-            {RecordingSelected && (
-              <AudioRecorder audioURL={audioURL} setAudioURL={setAudioURL} />
-            )}
+            {RecordingSelected && <AudioRecorder audioURL={audioURL} />}
             {fileSelected && (
               <HandleAudioFile
                 handleFileChange={handleFileChange}
                 reset={handleReset}
               />
+            )}
+            {uploadProgress > 0 && uploadProgress < 100 && (
+              <div>progress:{uploadProgress}</div>
             )}
             {RecordingSelected && (
               <CancelButton onClick={handleReset} hidden={!audioURL}>
@@ -186,7 +222,7 @@ export default function Index() {
             {edit && (
               <EditDisplay editText={editText} setEditText={setEditText} />
             )}
-            {!isLoading && (
+            {selectedTool !== "file" && !isLoading && (
               <OutputDisplay
                 edit={edit}
                 editData={editData}
@@ -195,6 +231,7 @@ export default function Index() {
                 targetLang="bo"
               />
             )}
+            {selectedTool === "file" && <InferenceListSTT />}
           </div>
           {edit && (
             <EditActionButtons
