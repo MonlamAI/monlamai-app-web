@@ -44,7 +44,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     userId: user?.id,
     model: "stt",
   });
-  return { user, inferences };
+  return { user, fileUploadUrl: process.env?.FILE_SUBMIT_URL, inferences };
 }
 
 export const action: ActionFunction = async ({ request }) => {
