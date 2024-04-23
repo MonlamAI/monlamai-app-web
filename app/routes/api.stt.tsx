@@ -86,7 +86,6 @@ export const action: ActionFunction = async ({ request }) => {
         responseTime: responseTime,
         jobId: id,
       });
-      console.log(inferenceData);
       return json({ text: "", inferenceId: inferenceData?.id });
     } else {
       return json({ error_message: "Failed to send the audio to the server" });

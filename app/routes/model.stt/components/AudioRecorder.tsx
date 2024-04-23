@@ -9,9 +9,10 @@ let stopRecordingTimeout: any;
 
 type AudioRecordProps = {
   audioURL: string | null;
+  uploadAudio: (file: File) => void;
 };
 
-function AudioRecorder({ audioURL }: AudioRecordProps) {
+function AudioRecorder({ audioURL, uploadAudio }: AudioRecordProps) {
   let mediaRecorder: any = useRef();
 
   const [recording, setRecording] = useState(false);
@@ -85,7 +86,7 @@ function AudioRecorder({ audioURL }: AudioRecordProps) {
     mediaRecorder.current.onstop = () => {
       //creates a blob file from the audiochunks data
       const audioBlob = new Blob(audioChunks);
-      uploadFile(audioBlob);
+      uploadAudio(audioBlob);
       setAudioChunks([]);
 
       const reader = new FileReader();

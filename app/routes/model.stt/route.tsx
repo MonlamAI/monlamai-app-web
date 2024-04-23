@@ -190,7 +190,9 @@ export default function Index() {
 
         <CardComponent>
           <div className="flex flex-col relative gap-2 flex-1 min-h-[30vh]">
-            {RecordingSelected && <AudioRecorder audioURL={audioURL} />}
+            {RecordingSelected && (
+              <AudioRecorder audioURL={audioURL} uploadAudio={uploadFile} />
+            )}
             {fileSelected && (
               <HandleAudioFile
                 handleFileChange={handleFileChange}
