@@ -1,6 +1,6 @@
 import { useState, useEffect, forwardRef } from "react";
 
-const AudioPlayerComponents = ({ audioUrl }, ref) => {
+const AudioPlayerComponents = ({ audioUrl, playbackRate }, ref) => {
   const [audioSource, setAudioSource] = useState(null);
 
   useEffect(() => {
@@ -14,6 +14,12 @@ const AudioPlayerComponents = ({ audioUrl }, ref) => {
       })
       .catch((error) => console.error("Error fetching audio:", error));
   }, [audioUrl]);
+
+  useEffect(() => {
+    if (ref.current) {
+      ref.current.playbackRate = playbackRate;
+    }
+  }, [audioSource, playbackRate, ref]);
 
   return (
     <div>

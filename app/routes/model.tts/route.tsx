@@ -234,7 +234,11 @@ export default function Index() {
                 {data?.error ? (
                   <div className="text-red-400">{data?.error}</div>
                 ) : (
-                  <AudioPlayerComponents audioUrl={sourceUrl} ref={audioRef} />
+                  <AudioPlayerComponents
+                    audioUrl={sourceUrl}
+                    playbackRate={playbackRate}
+                    ref={audioRef}
+                  />
                 )}
               </div>
             )}
