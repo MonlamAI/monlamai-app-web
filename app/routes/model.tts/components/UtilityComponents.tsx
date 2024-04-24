@@ -117,7 +117,10 @@ function EachInference({ inference }: any) {
 }
 
 function Progress({ inference }) {
-  const { isConnected, socket, progress } = useSocket(inference?.jobId);
+  const { isConnected, socket, progress } = useSocket(
+    inference?.jobId,
+    inference?.output
+  );
   const revalidator = useRevalidator();
   useEffect(() => {
     if (progress?.progress === "complete" || isConnected) {
