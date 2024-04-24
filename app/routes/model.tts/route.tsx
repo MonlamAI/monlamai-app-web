@@ -229,7 +229,7 @@ export default function Index() {
                 <Spinner />
               </div>
             )}
-            {selectedTool === "text" && data && (
+            {!isLoading && selectedTool === "text" && data && (
               <div className="flex-1 h-full flex justify-center items-center">
                 {data?.error ? (
                   <div className="text-red-400">{data?.error}</div>

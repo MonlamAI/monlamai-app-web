@@ -11,14 +11,6 @@ const AudioPlayerComponents = ({ audioUrl }, ref) => {
         // Create a local URL from the Blob and set it as the audio source
         const localUrl = URL.createObjectURL(blob);
         setAudioSource(localUrl);
-
-        // Optional: Set a timeout to revoke the Blob URL after 2 minutes
-        const timer = setTimeout(() => {
-          URL.revokeObjectURL(localUrl);
-          setAudioSource(null); // Clear the source after revocation
-        }, 120000); // 120000 milliseconds = 2 minutes
-
-        return () => clearTimeout(timer); // Clear the timeout if the component unmounts early
       })
       .catch((error) => console.error("Error fetching audio:", error));
   }, [audioUrl]);
