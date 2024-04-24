@@ -241,7 +241,7 @@ function SingleInptSection({ fetcher }: any) {
                 )}
                 {!edit && text && !editData && (
                   <div
-                    className="text-xl font-monlam"
+                    className="text-xl font-monlam leading-[normal]"
                     dangerouslySetInnerHTML={{
                       __html: text?.replaceAll("\n", "<br>"),
                     }}
