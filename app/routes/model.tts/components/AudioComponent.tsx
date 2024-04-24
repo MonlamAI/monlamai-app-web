@@ -20,7 +20,7 @@ const AudioPlayerComponents = ({ audioUrl, playbackRate }, ref) => {
       ref.current.playbackRate = playbackRate;
     }
   }, [audioSource, playbackRate, ref]);
-
+  console.log(audioUrl);
   return (
     <div>
       {audioSource ? (
