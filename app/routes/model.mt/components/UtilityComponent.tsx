@@ -197,7 +197,6 @@ export function InferenceList() {
 
 function EachInference({ inference }: any) {
   const deleteFetcher = useFetcher();
-  console.log(inference);
   let filename = inference.input?.split("/MT/input/")[1]?.split("-")[1];
   let updatedAt = new Date(inference.updatedAt);
   let outputURL = inference.output;
@@ -243,16 +242,19 @@ function EachInference({ inference }: any) {
 }
 
 function Progress({ inference }) {
-  const { isConnected, socket, progress } = useSocket(inference?.jobId);
+  const { isConnected, socket, progress } = useSocket(
+    inference?.jobId,
+    inference?.output
+  );
   const revalidator = useRevalidator();
   useEffect(() => {
-    if (progress?.progress === "complete") {
+    if (progress?.progress === "complete" || isConnected) {
       revalidator.revalidate();
     }
   }, [progress]);
   return (
     <div className="text-yellow-500">
-      <div>{progress?.progress}</div>
+      <div>{isConnected ? progress?.progress : "waiting"}</div>
       <div role="status"></div>
     </div>
   );

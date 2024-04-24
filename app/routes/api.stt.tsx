@@ -16,38 +16,79 @@ export const action: ActionFunction = async ({ request }) => {
   const API_URL = process.env.FILE_SUBMIT_URL as string;
 
   let audioURL = formData.get("audioURL") as string;
+  let selectedTool = formData.get("isFile") as string;
   let data;
+  if (selectedTool === "audio") {
+    try {
+      let formData = new FormData();
+      formData.append("audioURL", audioURL);
+      let response = await fetch(API_URL + "/stt/playground", {
+        method: "POST",
+        body: formData,
+      });
+      data = await response.json();
+    } catch (e) {
+      return {
+        error: API_ERROR_MESSAGE,
+      };
+    }
+    const { output } = data;
+    const endTime = Date.now();
+    const responseTime = endTime - startTime;
 
-  try {
-    let formData = new FormData();
-    formData.append("audioURL", audioURL);
-    let response = await fetch(API_URL + "/stt/playground", {
-      method: "POST",
-      body: formData,
-    });
-    data = await response.json();
-  } catch (e) {
-    return {
-      error: API_ERROR_MESSAGE,
-    };
+    if (output) {
+      const { text } = output;
+      // save inference to db
+      const inferenceData = await saveInference({
+        userId: user?.id,
+        model: "stt",
+        modelVersion: "wav2vec2_run10",
+        input: audioURL,
+        output: text,
+        responseTime: responseTime,
+        jobId: data?.id,
+      });
+
+      return json({ text, inferenceId: inferenceData?.id });
+    } else {
+      return json({ error_message: "Failed to send the audio to the server" });
+    }
   }
-  const { output } = data;
-  const endTime = Date.now();
-  const responseTime = endTime - startTime;
+  if (selectedTool === "file") {
+    try {
+      let formData = new FormData();
+      formData.append("link", audioURL);
+      let response = await fetch(API_URL + "/stt/synthesis", {
+        method: "POST",
+        body: formData,
+      });
+      data = await response.json();
+      console.log(audioURL, "audioUrl");
+    } catch (e) {
+      console.log(e);
+      return {
+        error: API_ERROR_MESSAGE,
+      };
+    }
+    const { id } = data;
+    const endTime = Date.now();
+    const responseTime = endTime - startTime;
 
-  if (output) {
-    const { text } = output;
-    // save inference to db
-    const inferenceData = await saveInference({
-      userId: user?.id,
-      model: "stt",
-      modelVersion: "wav2vec2_run10",
-      input: audioURL,
-      output: text,
-      responseTime: responseTime,
-    });
-    return json({ text, inferenceId: inferenceData?.id });
-  } else {
-    return json({ error_message: "Failed to send the audio to the server" });
+    if (id) {
+      // save inference to db
+      const inferenceData = await saveInference({
+        userId: user?.id,
+        model: "stt",
+        modelVersion: "wav2vec2_run10",
+        type: "file",
+        input: audioURL,
+        output: "",
+        responseTime: responseTime,
+        jobId: id,
+      });
+      return json({ text: "", inferenceId: inferenceData?.id });
+    } else {
+      return json({ error_message: "Failed to send the audio to the server" });
+    }
   }
 };

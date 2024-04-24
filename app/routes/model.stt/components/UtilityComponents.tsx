@@ -5,30 +5,27 @@ import { MdDeleteForever } from "react-icons/md";
 import useSocket from "~/component/hooks/useSocket";
 import timeSince from "~/component/utils/timeSince";
 
+export function InferenceListSTT() {
+  let { inferences } = useLoaderData();
+
+  if (!inferences) return null;
+  return (
+    <div className="space-y-2 h-full overflow-auto font-poppins">
+      {inferences.map((inference: any) => {
+        return <EachInference inference={inference} key={inference.id} />;
+      })}
+    </div>
+  );
+}
+
 function EachInference({ inference }: any) {
   const deleteFetcher = useFetcher();
-  let filename = inference.input;
-  let displayname = filename.includes("/OCR/input/")
-    ? filename.split("/OCR/input/")[1]
-    : filename;
-
+  let filename = inference.input?.split("/STT/input/")[1]?.split("-")[1];
   let updatedAt = new Date(inference.updatedAt);
   let outputURL = inference.output;
   let isComplete = !!outputURL;
-  let { fileUploadUrl } = useLoaderData();
-  async function handleCancelJob() {
-    try {
-      let res = await fetch(fileUploadUrl + `/ocr/cancel/${inference.jobId}`);
-      let data = await res.json();
-      let message = data?.message;
-      return message;
-    } catch (e) {
-      console.log(e);
-    }
-  }
 
-  async function deleteHandler() {
-    await handleCancelJob();
+  function deleteHandler() {
     deleteFetcher.submit(
       { id: inference.id },
       {
@@ -37,16 +34,12 @@ function EachInference({ inference }: any) {
       }
     );
   }
-  const truncateString = (str, maxLength, ending = "...") =>
-    str.length > maxLength
-      ? str.substring(0, maxLength - ending.length) + ending
-      : str;
 
   return (
-    <div className="rounded-lg font-poppins  flex  justify-between items-center px-1 mx-2 mb-2 pb-1 border-b-2 border-gray-400">
+    <div className="bg-white rounded-lg  flex  justify-between items-center">
       <div>
         <span className="text-gray-800 truncate">
-          {truncateString(decodeURIComponent(displayname), 40)}
+          {decodeURIComponent(filename)}
         </span>
         <span className="text-gray-500 text-xs block">
           {updatedAt ? timeSince(updatedAt) : ""}
@@ -70,8 +63,6 @@ function EachInference({ inference }: any) {
     </div>
   );
 }
-
-export default EachInference;
 
 function Progress({ inference }) {
   const { isConnected, socket, progress } = useSocket(

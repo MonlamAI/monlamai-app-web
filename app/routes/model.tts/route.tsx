@@ -60,6 +60,7 @@ export default function Index() {
   const [sourceText, setSourceText] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [inputUrl, setInputUrl] = useState("");
+  const [playbackRate, setPlaybackRate] = useState(1); // 1, 1.25, 1.5, 2, 0.5 (default 1)
   const [selectedTool, setSelectedTool] = useLocalStorage(
     "tts_selected_input",
     "text"
@@ -126,6 +127,15 @@ export default function Index() {
     }
   }
   let actionError = fetcher.data?.error as string;
+
+  const changePlaybackRate = () => {
+    const rates = [1, 1.25, 1.5, 2, 0.5];
+    const currentIndex = rates.indexOf(playbackRate);
+    const nextIndex = (currentIndex + 1) % rates.length;
+    const newRate = rates[nextIndex];
+    if (audioRef.current) audioRef.current.playbackRate = newRate;
+    setPlaybackRate(newRate);
+  };
 
   useEffect(() => {
     if (sourceText === "") {
@@ -206,6 +216,12 @@ export default function Index() {
                     onChange={handleVolumeChange}
                   />{" "}
                 </div>
+                <button
+                  className="flex item-center text-lg p-2 font-semibold"
+                  onClick={changePlaybackRate}
+                >
+                  <span>{playbackRate}X</span>
+                </button>
               </div>
             )}
             {isLoading && selectedTool === "text" && (
@@ -213,12 +229,16 @@ export default function Index() {
                 <Spinner />
               </div>
             )}
-            {selectedTool === "text" && data && (
+            {!isLoading && selectedTool === "text" && data && (
               <div className="flex-1 h-full flex justify-center items-center">
                 {data?.error ? (
                   <div className="text-red-400">{data?.error}</div>
                 ) : (
-                  <AudioPlayerComponents audioUrl={sourceUrl} ref={audioRef} />
+                  <AudioPlayerComponents
+                    audioUrl={sourceUrl}
+                    playbackRate={playbackRate}
+                    ref={audioRef}
+                  />
                 )}
               </div>
             )}
