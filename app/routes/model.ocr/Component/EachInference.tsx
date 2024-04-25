@@ -8,9 +8,12 @@ import timeSince from "~/component/utils/timeSince";
 function EachInference({ inference }: any) {
   const deleteFetcher = useFetcher();
   let filename = inference.input;
-  let displayname = filename.includes("/OCR/input/")
-    ? filename.split("/OCR/input/")[1]?.split("-")[1]
-    : filename;
+  function removeExtension(filename: string) {
+    return filename.replace(/\.[^/.]+$/, "");
+  }
+  let displayname = removeExtension(
+    filename?.split("/OCR/input/")[1]?.split("-")[1]
+  );
 
   let updatedAt = new Date(inference.updatedAt);
   let outputURL = inference.output;
@@ -46,7 +49,8 @@ function EachInference({ inference }: any) {
     <div className="rounded-lg font-poppins  flex  justify-between items-center px-1 mx-2 mb-2 pb-1 border-b-2 border-gray-400">
       <div>
         <span className="text-gray-800 truncate">
-          {truncateString(decodeURIComponent(displayname), 40)}
+          {truncateString(decodeURIComponent(displayname), 40)}{" "}
+          <span className="text-xs text-gray-500">ebook</span>
         </span>
         <span className="text-gray-500 text-xs block">
           {updatedAt ? timeSince(updatedAt) : ""}
