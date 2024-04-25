@@ -9,7 +9,7 @@ function EachInference({ inference }: any) {
   const deleteFetcher = useFetcher();
   let filename = inference.input;
   let displayname = filename.includes("/OCR/input/")
-    ? filename.split("/OCR/input/")[1]
+    ? filename.split("/OCR/input/")[1]?.split("-")[1]
     : filename;
 
   let updatedAt = new Date(inference.updatedAt);

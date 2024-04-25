@@ -61,7 +61,7 @@
     "react-webcam": "^7.2.0",
     "remix-auth-auth0": "^1.7.0",
     "remix-utils": "^7.5.0",
-    "socket.io-client": "^4.7.5",
+    "socket.io-client": "4.7.5",
     "source-map-support": "^0.5.21",
     "unleash-client": "^5.5.2",
     "use-image": "^1.1.1",
