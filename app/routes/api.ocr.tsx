@@ -92,7 +92,7 @@ export const action: ActionFunction = async ({ request }) => {
       await saveInference({
         userId: user?.id,
         model: "ocr",
-        input: filename,
+        input: PDFurls,
         type: "file",
         output: "",
         jobId: job?.jobId,
