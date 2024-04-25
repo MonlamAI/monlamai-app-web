@@ -244,11 +244,11 @@ export default function Index() {
               outputText={text}
             />
           )}
-          {!edit && inferenceId && (
+          {!edit && inferenceId && audioURL && (
             <NonEditButtons
               selectedTool={selectedTool}
               likefetcher={likefetcher}
-              sourceText={""}
+              sourceText={audioURL}
               inferenceId={inferenceId}
               setEdit={setEdit}
               text={newText ?? text}
