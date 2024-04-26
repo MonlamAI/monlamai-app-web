@@ -151,7 +151,7 @@ export default function Index() {
   const [editText, setEditText] = useState("");
   const [inputUrl, setInputUrl] = useState("");
 
-  const debounceSourceText = useDebounce(sourceText, 100);
+  const debounceSourceText = useDebounce(sourceText, 1000);
   const likefetcher = useFetcher();
   const editfetcher = useFetcher();
   const translationFetcher = useFetcher();
