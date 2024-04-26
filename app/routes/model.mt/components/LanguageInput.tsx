@@ -144,6 +144,11 @@ function LanguageInput({
         prevParams.set("source", detectedLang?.code || "en");
         return prevParams;
       });
+    } else {
+      setParams((prevParams) => {
+        prevParams.set("source", "en");
+        return prevParams;
+      });
     }
   };
 
