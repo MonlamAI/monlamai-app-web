@@ -1,8 +1,6 @@
-import { Button, Dropdown, Tooltip } from "flowbite-react";
-import { useEffect } from "react";
+import { Dropdown } from "flowbite-react";
 import { FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa";
 import { GoPencil } from "react-icons/go";
-import { toast } from "react-toastify";
 import CopyToClipboard from "~/component/CopyToClipboard";
 import ReactionButtons from "~/component/ReactionButtons";
 import ShareLink from "~/component/ShareLink";
@@ -133,7 +131,7 @@ export function NonEditButtons({
     <div
       className={`flex ${
         sourceLang == "en" ? "justify-between" : "justify-end"
-      } p-2`}
+      } `}
     >
       {selectedTool !== "File" && sourceLang == "en" && <Speak text={text} />}
       <div className="flex gap-3 justify-end items-center">

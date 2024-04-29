@@ -36,13 +36,14 @@ export const loader: LoaderFunction = async ({ request }) => {
   const feedBucketAccess = process.env.FEEDBUCKET_ACCESS;
   const feedbucketToken = process.env.FEEDBUCKET_TOKEN;
 
-  const isJobEnabled = unleash.isEnabled("isJobEnabled");
-  const enable_replacement_mt = unleash.isEnabled("enable_replacement_mt");
+  const isJobEnabled = unleash?.isEnabled("isJobEnabled") ?? false;
+  const enable_replacement_mt =
+    unleash?.isEnabled("enable_replacement_mt") ?? false;
   return json(
     {
       user: userdata ? await getUser(userdata?._json?.email) : null,
-      isJobEnabled: isJobEnabled ?? false,
-      enable_replacement_mt: enable_replacement_mt ?? false,
+      isJobEnabled: isJobEnabled,
+      enable_replacement_mt: enable_replacement_mt,
       feedBucketAccess,
       feedbucketToken,
     },
@@ -97,7 +98,7 @@ function Document({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body className="flex h-[100dvh] inset-0 overflow-y-auto overflow-x-hidden dark:bg-slate-700 dark:text-gray-200">
+      <body className="flex h-[100dvh] inset-0 overflow-y-auto overflow-x-hidden bg-surface-light dark:bg-secondary-900 dark:text-gray-200">
         {children}
         <FeedBucket />
         <Scripts />

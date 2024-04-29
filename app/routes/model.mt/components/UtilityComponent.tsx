@@ -118,7 +118,7 @@ export function OutputDisplay({ edit, editData, output, animate, targetLang }) {
   let isNotTib = targetLang !== "bo";
   return (
     <div
-      className={`p-2 text-[1.2rem] leading-[1.8] max-h-[40vh] overflow-y-auto first-letter 
+      className={`p-2 text-[1.2rem]  leading-[1.8] max-h-[40vh] overflow-y-auto first-letter 
       ${!isNotEng && "font-poppins text-xl"} ${
         !isNotTib && "text-lg leading-loose font-monlam"
       } ${isNotEng && isNotTib && "font-notosans"}`}
@@ -177,7 +177,9 @@ export function SubmitButton({
       size="xs"
       title={exceedsLimit ? "Character limit exceeded" : ""}
       onClick={isFile ? submitFile : trigger}
-      className={` ${locale !== "bo_TI" ? "font-poppins" : "font-monlam"}`}
+      className={` bg-secondary-500 dark:bg-primary-500 ${
+        locale !== "bo_TI" ? "font-poppins" : "font-monlam"
+      }`}
     >
       <IoSend size={18} />
     </Button>

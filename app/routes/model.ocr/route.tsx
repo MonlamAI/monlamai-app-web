@@ -5,8 +5,6 @@ import type {
 } from "@remix-run/node";
 import { ErrorBoundary } from "../model.mt/route";
 import ToolWraper from "~/component/ToolWraper";
-import { useRouteLoaderData } from "@remix-run/react";
-import DummyOCR from "~/routes/model.ocr/Component/DummyOCR";
 import OCR from "./Component/OCR";
 import { getUserFileInferences, updateEdit } from "~/modal/inference.server";
 import { getUser } from "~/modal/user.server";

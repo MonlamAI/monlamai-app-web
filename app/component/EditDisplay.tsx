@@ -1,5 +1,4 @@
 import { Textarea } from "flowbite-react";
-import React from "react";
 
 type EditDisplayProps = {
   editText: string;
