@@ -238,13 +238,12 @@ export default function Index() {
 
   return (
     <ToolWraper title="MT">
+      {error && <ErrorMessage error={error} />}
       <ListInput
         options={["text", "document"]}
         selectedTool={selectedTool}
         setSelectedTool={setSelectedTool}
       />
-      {error && <ErrorMessage error={error} />}
-
       <LanguageInput
         setSourceText={setSourceText}
         data={data}
@@ -263,7 +262,7 @@ export default function Index() {
                 </div>
               ) : (
                 <>
-                  <div className="flex relative h-auto md:min-h-[25vh] lg:min-h-[40vh] w-full flex-1 flex-col justify-center gap-2">
+                  <div className="flex  relative h-auto  w-full flex-1 flex-col justify-center gap-2">
                     <TextOrDocumentComponent
                       selectedTool={selectedTool}
                       sourceText={sourceText}
@@ -281,7 +280,7 @@ export default function Index() {
                       </CancelButton>
                     )}
                   </div>
-                  <div className="flex justify-between">
+                  <div className="flex justify-between mt-2">
                     <CharacterOrFileSizeComponent
                       selectedTool={selectedTool}
                       charCount={charCount}
@@ -301,10 +300,10 @@ export default function Index() {
               )}
             </CardComponent>
             <CardComponent>
-              <div className="flex min-h-[15vh] lg:min-h-[30vh] h-auto w-full flex-1 flex-col gap-2 ">
+              <div className="flex     h-auto w-full flex-1 flex-col gap-2 ">
                 <div
                   ref={targetRef}
-                  className={`h-full text-lg ${
+                  className={`md:min-h-[25vh] lg:min-h-[40vh] rounded-md  bg-neutral-50 border border-neutral-300 dark:bg-secondary-700 dark:border-secondary-600 text-lg ${
                     target_lang === "bo"
                       ? "leading-loose tracking-wide"
                       : "font-poppins"
@@ -321,6 +320,11 @@ export default function Index() {
                       editText={editText}
                       setEditText={setEditText}
                     />
+                  )}
+                  {TextSelected && !data && (
+                    <div className="font-poppins px-2 text-light_text-tertiary">
+                      Translation will appear here
+                    </div>
                   )}
                   {TextSelected && sourceText !== "" && (
                     <OutputDisplay

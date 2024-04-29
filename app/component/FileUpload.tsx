@@ -92,7 +92,7 @@ function FileUpload({ setFile, setInputUrl, supported, model }) {
   if (myFiles.length > 0)
     return (
       <>
-        <div className="bg-gray-200 p-4 rounded-lg shadow-md flex justify-between items-center">
+        <div className="bg-primary-50 dark:bg-secondary-700 p-4 rounded-lg shadow-md flex justify-between items-center">
           <div className="flex gap-4">
             <FaFile size="20px" />
             {myFiles?.map((item) => (
@@ -121,7 +121,6 @@ function FileUpload({ setFile, setInputUrl, supported, model }) {
       <input {...getInputProps()} />
       <p
         style={{
-          backgroundColor: isDragActive ? "#f5f5f5" : "transparent",
           borderColor: "#d3d3d3",
           borderWidth: "2px",
           borderStyle: "dashed",
@@ -136,7 +135,7 @@ function FileUpload({ setFile, setInputUrl, supported, model }) {
           height: "100%",
           width: "100%",
         }}
-        className="flex-1 flex flex-col justify-center items-center rounded text-slate-300 p-3"
+        className="flex-1 flex bg-primary-50 dark:bg-secondary-700 flex-col justify-center items-center rounded text-slate-300 p-3"
       >
         <img
           className="w-1/2 "

@@ -1,27 +1,9 @@
 import { useState, useEffect, useMemo } from "react";
-import { Button, Dropdown, TextInput } from "flowbite-react";
+import { Dropdown, TextInput } from "flowbite-react";
 import { FaFacebook, FaXTwitter, FaWhatsapp } from "react-icons/fa6";
 import CopyToClipboard from "./CopyToClipboard";
+import useShareUrl from "./hooks/useShareUrl";
 // Custom hook for getting share URLs
-function useShareUrl(link: string) {
-  const baseShareUrl = link;
-  const shareText = "Visit this link ";
-
-  const getPlatformShareUrl = (platformUrl: string) =>
-    platformUrl
-      .replace("{url}", encodeURIComponent(baseShareUrl))
-      .replace("{text}", encodeURIComponent(shareText));
-
-  return {
-    whatsappUrl: getPlatformShareUrl(`whatsapp://send?text={text}%20{url}`),
-    twitterUrl: getPlatformShareUrl(
-      `https://twitter.com/share?url={url}&text={text}`
-    ),
-    facebookUrl: getPlatformShareUrl(
-      `https://www.facebook.com/sharer/sharer.php?u={url}&t={text}`
-    ),
-  };
-}
 
 function SocialShareButton({ icon, onClick, color }) {
   return (

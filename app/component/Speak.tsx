@@ -3,30 +3,7 @@ import { Button } from "flowbite-react";
 import React, { useEffect, useMemo, useState, useRef } from "react";
 import { BiPause } from "react-icons/bi";
 import { RxSpeakerLoud } from "react-icons/rx";
-
-function useAudioPlayer(audioRef, fetcherData) {
-  const [isPlaying, setIsPlaying] = useState(false);
-
-  useEffect(() => {
-    if (fetcherData) {
-      audioRef.current?.play();
-      setIsPlaying(true);
-    }
-    return () => {
-      if (!audioRef.current?.paused) {
-        audioRef.current?.pause();
-        setIsPlaying(false);
-      }
-    };
-  }, [fetcherData, audioRef]);
-
-  const pauseAudio = () => {
-    audioRef.current?.pause();
-    setIsPlaying(false);
-  };
-
-  return { isPlaying, pauseAudio };
-}
+import useAudioPlayer from "./hooks/useAudioPlayer";
 
 function Speak({
   text,

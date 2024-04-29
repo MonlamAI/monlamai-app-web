@@ -1,6 +1,6 @@
 import { Form, NavLink, useRouteLoaderData, Link } from "@remix-run/react";
 import { IoLogInSharp } from "react-icons/io5";
-import { Dropdown } from "flowbite-react";
+import { Dropdown, Navbar } from "flowbite-react";
 import { useState } from "react";
 import { HiLogout } from "react-icons/hi";
 import { GiHamburgerMenu } from "react-icons/gi";
@@ -18,12 +18,12 @@ function Header() {
     closed: { opacity: 0, x: "-100%" },
   };
   return (
-    <nav
-      className={`flex flex-col lg:flex-row  ${
+    <Navbar
+      className={`flex bg-inherit dark:bg-inherit flex-col lg:flex-row  ${
         isEnglish ? "font-poppins" : "font-monlam"
       } `}
     >
-      <div className="flex px-1 py-2  items-center justify-between  w-full bg-white dark:bg-secondary-600 ">
+      <div className="flex px-1 py-2  items-center justify-between  w-full  ">
         <NavLink
           className="flex items-center gap-2 text-xl"
           prefetch="intent"
@@ -94,7 +94,7 @@ function Header() {
           </div>
         </motion.div>
       </div>
-    </nav>
+    </Navbar>
   );
 }
 

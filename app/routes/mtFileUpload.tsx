@@ -1,16 +1,7 @@
-import {
-  ActionFunctionArgs,
-  UploadHandler,
-  unstable_composeUploadHandlers,
-  unstable_createMemoryUploadHandler,
-  unstable_parseMultipartFormData,
-} from "@remix-run/node";
+import { ActionFunctionArgs } from "@remix-run/node";
 
 import { addFileInference, deleteInference } from "~/modal/inference.server";
-import { getUser } from "~/modal/user.server";
-import { auth } from "~/services/auth.server";
 import { getUserDetail } from "~/services/session.server";
-import { uploadFile } from "~/services/uploadFile.server";
 import { FILE_SERVER_ISSUE_MESSAGE } from "./api.ocr";
 
 export const action = async ({ request }: ActionFunctionArgs) => {

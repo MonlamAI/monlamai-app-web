@@ -36,8 +36,8 @@ function TextComponent({ sourceText, setSourceText, sourceLang }) {
       id="textAreaInput"
       name="sourceText"
       placeholder={translation.inputPlaceholder}
-      className={`w-full p-2 overflow-auto max-height-[300px] resize-none flex-1 md:min-h-[5em] bg-transparent border-0 focus:outline-none focus:ring-transparent caret-slate-500 placeholder:text-slate-300 placeholder:font-monlam placeholder:text-lg
-        ${!isNotEng && "font-poppins text-xl"} ${
+      className={`w-full md:min-h-[25vh] lg:min-h-[40vh] overflow-auto border bg-neutral-50 border-neutral-300 dark:bg-secondary-700 dark:border-secondary-600  resize-none flex-1  focus:outline-none focus:ring-transparent caret-slate-500 placeholder:text-slate-300 placeholder:font-monlam placeholder:text-lg
+      ${!isNotEng && "font-poppins text-xl"} ${
         !isNotTib && "text-lg leading-loose font-monlam"
       } ${isNotEng && isNotTib && "font-notosans"}`}
       required
