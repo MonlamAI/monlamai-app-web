@@ -10,9 +10,9 @@ import CardComponent from "~/component/Card";
 import { IoSend } from "react-icons/io5";
 import FileUpload from "./FileUpload";
 import ErrorMessage from "../../../component/ErrorMessage";
+import { InferenceList } from "~/component/InferenceList";
 
 function ZipInputSection({ fetcher }: any) {
-  const { inferenceList } = useLoaderData();
   const [file, setFile] = useState<File | null>(null);
   const [inputUrl, setInputUrl] = useState<string | null>(null);
 
@@ -73,9 +73,7 @@ function ZipInputSection({ fetcher }: any) {
               handleClose={handleClear}
             />
           )}
-          {inferenceList.map((inference) => {
-            return <EachInference inference={inference} key={inference.id} />;
-          })}
+          <InferenceList />
         </div>
       </CardComponent>
     </div>

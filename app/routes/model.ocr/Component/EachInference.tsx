@@ -18,7 +18,6 @@ function EachInference({ inference }: any) {
   let updatedAt = new Date(inference.updatedAt);
   let outputURL = inference.output;
   let isComplete = !!outputURL;
-  let isError = outputURL?.startsWith("error: ");
   let { fileUploadUrl } = useLoaderData();
   async function handleCancelJob() {
     try {
@@ -37,7 +36,7 @@ function EachInference({ inference }: any) {
       { id: inference.id },
       {
         method: "DELETE",
-        action: "/mtFileUpload",
+        action: "/api/inference/",
       }
     );
   }
@@ -58,9 +57,7 @@ function EachInference({ inference }: any) {
         </span>
       </div>
       <div className="flex gap-5 items-center">
-        {isError ? (
-          <span className="text-red-500">Error</span>
-        ) : isComplete ? (
+        {isComplete ? (
           <a
             href={outputURL}
             className="text-blue-500 hover:text-blue-700 transition duration-150 ease-in-out"

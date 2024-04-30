@@ -27,6 +27,7 @@ import {
 import { toast } from "react-toastify";
 import { getUserSession } from "~/services/session.server";
 import { LoaderFunctionArgs } from "@remix-run/node";
+import { InferenceList } from "~/component/InferenceList";
 
 export const meta: MetaFunction = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -247,7 +248,7 @@ export default function Index() {
                 <Spinner />
               </div>
             )}
-            {selectedTool === "document" && <InferenceListTts />}
+            {selectedTool === "document" && <InferenceList />}
           </div>
           <div className="flex justify-end">
             <div className="flex gap-3 md:gap-5 items-center p-2">

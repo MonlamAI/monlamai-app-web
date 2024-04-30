@@ -24,8 +24,8 @@ import { auth } from "~/services/auth.server";
 import { getUserSession } from "~/services/session.server";
 import AudioRecorder from "./components/AudioRecorder";
 import axios from "axios";
-import { InferenceListSTT } from "./components/UtilityComponents";
 import { getUser } from "~/modal/user.server";
+import { InferenceList } from "~/component/InferenceList";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -233,7 +233,7 @@ export default function Index() {
                 targetLang="bo"
               />
             )}
-            {selectedTool === "file" && <InferenceListSTT />}
+            {selectedTool === "file" && <InferenceList />}
           </div>
           {edit && (
             <EditActionButtons

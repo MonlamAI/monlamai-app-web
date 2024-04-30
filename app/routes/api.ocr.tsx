@@ -56,21 +56,24 @@ export const action: ActionFunction = async ({ request }) => {
   }
   if (zip_input_url) {
     let formData = new FormData();
+    const inferenceData = await saveInference({
+      userId: user?.id,
+      model: "ocr",
+      input: zip_input_url,
+      type: "file",
+      output: "",
+      jobId: null,
+    });
     try {
       formData.append("zip_input_url", zip_input_url);
+      formData.append("inference_id", inferenceData.id);
+
       let res = await fetch(URL_File + "/ocr/zip", {
         method: "POST",
         body: formData,
       });
       let job = await res.json();
-      const inferenceData = await saveInference({
-        userId: user?.id,
-        model: "ocr",
-        input: zip_input_url,
-        type: "file",
-        output: "",
-        jobId: job?.jobId,
-      });
+
       return inferenceData;
     } catch (e) {
       return { error: FILE_SERVER_ISSUE_MESSAGE };
@@ -79,24 +82,26 @@ export const action: ActionFunction = async ({ request }) => {
   if (PDFurls) {
     let job;
     console.log("filename", filename);
-    let formData = new FormData();
-    formData.append("PDFurls", PDFurls);
-    formData.append("filename", filename);
 
+    let inferenceData = await saveInference({
+      userId: user?.id,
+      model: "ocr",
+      input: PDFurls,
+      type: "file",
+      output: "",
+      jobId: null,
+    });
     try {
+      let formData = new FormData();
+      formData.append("PDFurls", PDFurls);
+      formData.append("filename", filename);
+      formData.append("inference_id", inferenceData.id);
       let res = await fetch(URL_File + "/ocr/pdf", {
         method: "POST",
         body: formData,
       });
       job = await res.json();
-      await saveInference({
-        userId: user?.id,
-        model: "ocr",
-        input: PDFurls,
-        type: "file",
-        output: "",
-        jobId: job?.jobId,
-      });
+
       return PDFurls;
     } catch (e) {
       return { error: FILE_SERVER_ISSUE_MESSAGE };

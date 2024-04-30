@@ -35,7 +35,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       userAgent
     );
   let fileUploadUrl = process.env?.FILE_SUBMIT_URL as string;
-  return { user: userdata, inferenceList, fileUploadUrl, isMobile };
+  return { user: userdata, inferences: inferenceList, fileUploadUrl, isMobile };
 }
 
 export const action: ActionFunction = async ({ request }) => {
