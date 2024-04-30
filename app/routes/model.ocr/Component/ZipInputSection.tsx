@@ -1,9 +1,7 @@
-import { Button, Card, FileInput, Label, Spinner } from "flowbite-react";
-import React, { useEffect, useState } from "react";
+import { Button } from "flowbite-react";
+import { useState } from "react";
 import TooltipComponent from "./Tooltip";
-import { useFetcher, useLoaderData } from "@remix-run/react";
-import axios from "axios";
-import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
+import { useLoaderData } from "@remix-run/react";
 import EachInference from "./EachInference";
 import { resetFetcher } from "~/component/utils/resetFetcher";
 import { CancelButton } from "~/component/Buttons";
@@ -43,7 +41,7 @@ function ZipInputSection({ fetcher }: any) {
             setFile={setFile}
             inputUrl={inputUrl}
             setInputUrl={setInputUrl}
-            supported={".zip, .gz"}
+            supported={[".zip", ".gz"]}
             setFilename={() => {}}
           />
           <CancelButton

@@ -2,6 +2,8 @@ import axios from "axios";
 import { FileInput, Label, Progress } from "flowbite-react";
 import { useEffect, useState } from "react";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
+import { fileSupported } from "~/component/utils/fileSizeFormat";
+import { formatBytes } from "~/component/utils/formatSize";
 
 function FileUpload({
   file,
@@ -13,6 +15,7 @@ function FileUpload({
 }: any) {
   const handleFileChange = (event) => {
     let file = event.target.files[0];
+    if (!fileSupported(file, supported)) return alert("Unsupported file type");
     setFile(file);
   };
   const [uploadProgress, setUploadProgress] = useState<number>(0);
@@ -35,6 +38,7 @@ function FileUpload({
       formData.append("filename", uniqueFilename);
       formData.append("filetype", file.type);
       formData.append("bucket", "/OCR/input");
+
       setFilename(uniqueFilename);
       const response = await axios.post("/api/get_presigned_url", formData);
       const { url } = response.data;
@@ -75,10 +79,10 @@ function FileUpload({
             helperText={`${translation.acceptedImage?.replace(
               "Image",
               "file"
-            )} ${supported?.replace(".", "")?.toUpperCase()}`}
+            )} ${supported?.join(",")?.replaceAll(".", "")?.toUpperCase()}`}
             id="file"
             name="files"
-            accept={supported}
+            accept={supported?.join(",")}
             onChange={handleFileChange}
             key={inputUrl}
           />
@@ -99,15 +103,3 @@ function FileUpload({
 }
 
 export default FileUpload;
-
-function formatBytes(bytes, decimals = 2) {
-  if (bytes === 0) return "0 Bytes";
-
-  const k = 1024;
-  const dm = decimals < 0 ? 0 : decimals;
-  const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
-
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
-}

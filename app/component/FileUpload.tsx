@@ -34,7 +34,7 @@ function FileUpload({ setFile, setInputUrl, supported, model }) {
     useDropzone({
       onDrop,
       accept: {
-        "text/html": supported,
+        "text/html": supported?.join(","),
       },
       multiple: false,
     });
@@ -142,7 +142,7 @@ function FileUpload({ setFile, setInputUrl, supported, model }) {
           className="w-1/2 "
           src="//ssl.gstatic.com/translate/drag_and_drop.png"
         />
-        <p>Drag and drop your file here, Supported {supported}</p>
+        <p>Drag and drop your file here, Supported {supported?.join(",")}</p>
       </p>
     </div>
   );

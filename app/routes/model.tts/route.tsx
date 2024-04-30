@@ -163,7 +163,7 @@ export default function Index() {
                 <FileUpload
                   setFile={setFile}
                   setInputUrl={setInputUrl}
-                  supported={[".txt,.docx"]}
+                  supported={[".txt", ".docx"]}
                   model="tts"
                 />
               )}

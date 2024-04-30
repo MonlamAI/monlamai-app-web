@@ -78,7 +78,7 @@ function EachInference({ inference }: any) {
 export default EachInference;
 
 function Progress({ inference }) {
-  const { isConnected, socket, progress } = useSocket(
+  const { isConnected, progress } = useSocket(
     inference?.jobId,
     inference?.output
   );

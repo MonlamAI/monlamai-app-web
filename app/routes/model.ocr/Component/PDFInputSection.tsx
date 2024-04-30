@@ -51,7 +51,7 @@ export default function PDFInputSection({ fetcher }: props) {
             setFile={setFile}
             inputUrl={filePath}
             setInputUrl={setFilePath}
-            supported=".pdf"
+            supported={[".pdf"]}
             setFilename={setFileName}
           />
           <CancelButton
