@@ -10,7 +10,7 @@ import { MAX_SIZE_SUPPORT_DOC } from "~/helper/const";
 function FileUpload({ setFile, setInputUrl, supported, model }) {
   const [myFiles, setMyFiles] = useState([]);
   const [uploadProgress, setUploadProgress] = useState<number>(0);
-
+  let supported_list = supported?.join(",");
   const maxSize = MAX_SIZE_SUPPORT_DOC.replace("KB", "");
   const onDrop = useCallback((acceptedFiles) => {
     // Do something with the files
@@ -24,7 +24,6 @@ function FileUpload({ setFile, setInputUrl, supported, model }) {
       toast.info("File size is too big.");
       return;
     }
-
     if (!file.name.endsWith(".txt") && !file.name.endsWith(".docx")) {
       toast.info("Unsupported file type.");
       return;
@@ -34,11 +33,10 @@ function FileUpload({ setFile, setInputUrl, supported, model }) {
     useDropzone({
       onDrop,
       accept: {
-        "text/html": supported?.join(","),
+        "text/html": supported,
       },
       multiple: false,
     });
-
   const removeAll = () => {
     setMyFiles([]);
   };
@@ -142,7 +140,7 @@ function FileUpload({ setFile, setInputUrl, supported, model }) {
           className="w-1/2 "
           src="//ssl.gstatic.com/translate/drag_and_drop.png"
         />
-        <p>Drag and drop your file here, Supported {supported?.join(",")}</p>
+        <p>Drag and drop your file here, Supported {supported_list}</p>
       </p>
     </div>
   );
