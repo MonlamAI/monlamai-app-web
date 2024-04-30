@@ -9,7 +9,7 @@ function EachInference({ inference }: any) {
   const deleteFetcher = useFetcher();
   let filename = inference.input;
   function removeExtension(filename: string) {
-    return filename.replace(/\.[^/.]+$/, "");
+    return filename?.replace(/\.[^/.]+$/, "");
   }
   let displayname = removeExtension(
     filename?.split("/OCR/input/")[1]?.split("-")[1]
