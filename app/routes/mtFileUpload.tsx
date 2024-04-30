@@ -1,16 +1,7 @@
-import {
-  ActionFunctionArgs,
-  UploadHandler,
-  unstable_composeUploadHandlers,
-  unstable_createMemoryUploadHandler,
-  unstable_parseMultipartFormData,
-} from "@remix-run/node";
+import { ActionFunctionArgs } from "@remix-run/node";
 
 import { addFileInference, deleteInference } from "~/modal/inference.server";
-import { getUser } from "~/modal/user.server";
-import { auth } from "~/services/auth.server";
 import { getUserDetail } from "~/services/session.server";
-import { uploadFile } from "~/services/uploadFile.server";
 import { FILE_SERVER_ISSUE_MESSAGE } from "./api.ocr";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
@@ -26,13 +17,14 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   let user = await getUserDetail(request);
   const formData = await request.formData();
   const inputFileUrl = formData.get("fileUrl") as string;
-  const targetLanguage = formData.get("target") as string;
+  const target_lang = formData.get("target_lang") as string;
+  const source_lang = formData.get("source_lang") as string;
 
   let inferenceData;
   try {
     var formdata = new FormData();
     formdata.append("link", inputFileUrl);
-    formdata.append("language", targetLanguage);
+    formdata.append("language", target_lang);
     const url = process.env.FILE_SUBMIT_URL;
     let res = await fetch(url + `/mt/translate`, {
       method: "POST",
@@ -49,6 +41,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       type: "file",
       model: "mt",
       jobId: inferenceData?.id,
+      target_lang,
+      source_lang,
     });
     return inference_new;
   }

@@ -228,7 +228,8 @@ export default function Index() {
   const handleFileSubmit = () => {
     let formdata = new FormData();
     formdata.append("fileUrl", inputUrl);
-    formdata.append("target", target_lang as string);
+    formdata.append("target_lang", target_lang as string);
+    formdata.append("source_lang", source_lang as string);
 
     translationFetcher.submit(formdata, {
       method: "POST",

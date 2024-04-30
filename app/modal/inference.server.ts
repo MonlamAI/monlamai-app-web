@@ -58,7 +58,15 @@ export async function getTodayInferenceByUserIdCountModel(
   });
 }
 
-export async function addFileInference({ input, userId, type, model, jobId }) {
+export async function addFileInference({
+  input,
+  userId,
+  type,
+  model,
+  target_lang,
+  source_lang,
+  jobId,
+}) {
   return await db.inference.create({
     data: {
       input,
@@ -67,6 +75,8 @@ export async function addFileInference({ input, userId, type, model, jobId }) {
       type,
       output: "",
       jobId,
+      inputLang: source_lang,
+      outputLang: target_lang,
     },
   });
 }
