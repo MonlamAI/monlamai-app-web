@@ -55,40 +55,35 @@ export const action: ActionFunction = async ({ request }) => {
     }
   }
   if (selectedTool === "file") {
+    const endTime = Date.now();
+    const responseTime = endTime - startTime;
+    const inferenceData = await saveInference({
+      userId: user?.id,
+      model: "stt",
+      modelVersion: "wav2vec2_run10",
+      type: "file",
+      input: audioURL,
+      output: "",
+      responseTime: responseTime,
+      jobId: null,
+    });
     try {
       let formData = new FormData();
       formData.append("link", audioURL);
+      formData.append("inference_id", inferenceData?.id);
       let response = await fetch(API_URL + "/stt/synthesis", {
         method: "POST",
         body: formData,
       });
       data = await response.json();
-      console.log(audioURL, "audioUrl");
     } catch (e) {
-      console.log(e);
       return {
         error: API_ERROR_MESSAGE,
       };
     }
-    const { id } = data;
-    const endTime = Date.now();
-    const responseTime = endTime - startTime;
 
-    if (id) {
-      // save inference to db
-      const inferenceData = await saveInference({
-        userId: user?.id,
-        model: "stt",
-        modelVersion: "wav2vec2_run10",
-        type: "file",
-        input: audioURL,
-        output: "",
-        responseTime: responseTime,
-        jobId: id,
-      });
-      return json({ text: "", inferenceId: inferenceData?.id });
-    } else {
-      return json({ error_message: "Failed to send the audio to the server" });
-    }
+    // save inference to db
+
+    return json({ text: "", inferenceId: inferenceData?.id });
   }
 };

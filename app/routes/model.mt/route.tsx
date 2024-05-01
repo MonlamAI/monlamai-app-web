@@ -30,7 +30,6 @@ import { API_ERROR_MESSAGE, MAX_SIZE_SUPPORT_DOC } from "~/helper/const";
 import {
   CharacterOrFileSizeComponent,
   EditActionButtons,
-  InferenceList,
   OutputDisplay,
   SubmitButton,
   TextOrDocumentComponent,
@@ -47,6 +46,7 @@ import { RxCross2 } from "react-icons/rx";
 import useTranslate from "./lib/useTranslate";
 import { getUserSession } from "~/services/session.server";
 import ImageTranslateComponent from "./components/ImageTranslateComponent";
+import { InferenceList } from "~/component/InferenceList";
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
   parentMeta.shift(1);
@@ -151,7 +151,7 @@ export default function Index() {
   const [editText, setEditText] = useState("");
   const [inputUrl, setInputUrl] = useState("");
 
-  const debounceSourceText = useDebounce(sourceText, 100);
+  const debounceSourceText = useDebounce(sourceText, 1000);
   const likefetcher = useFetcher();
   const editfetcher = useFetcher();
   const translationFetcher = useFetcher();
@@ -228,7 +228,8 @@ export default function Index() {
   const handleFileSubmit = () => {
     let formdata = new FormData();
     formdata.append("fileUrl", inputUrl);
-    formdata.append("target", target_lang as string);
+    formdata.append("target_lang", target_lang as string);
+    formdata.append("source_lang", source_lang as string);
 
     translationFetcher.submit(formdata, {
       method: "POST",
@@ -301,7 +302,7 @@ export default function Index() {
               )}
             </CardComponent>
             <CardComponent>
-              <div className="flex min-h-[15vh] lg:min-h-[30vh] h-auto w-full flex-1 flex-col gap-2 ">
+              <div className="flex min-h-[5vh] md:min-h-[15vh] lg:min-h-[30vh] h-auto w-full flex-1 flex-col gap-2 ">
                 <div
                   ref={targetRef}
                   className={`h-full text-lg ${

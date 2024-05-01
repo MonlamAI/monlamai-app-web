@@ -1,9 +1,7 @@
-import { Button, Card, FileInput, Label, Spinner } from "flowbite-react";
-import React, { useEffect, useState } from "react";
+import { Button } from "flowbite-react";
+import { useState } from "react";
 import TooltipComponent from "./Tooltip";
-import { useFetcher, useLoaderData } from "@remix-run/react";
-import axios from "axios";
-import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
+import { useLoaderData } from "@remix-run/react";
 import EachInference from "./EachInference";
 import { resetFetcher } from "~/component/utils/resetFetcher";
 import { CancelButton } from "~/component/Buttons";
@@ -12,9 +10,9 @@ import CardComponent from "~/component/Card";
 import { IoSend } from "react-icons/io5";
 import FileUpload from "./FileUpload";
 import ErrorMessage from "../../../component/ErrorMessage";
+import { InferenceList } from "~/component/InferenceList";
 
 function ZipInputSection({ fetcher }: any) {
-  const { inferenceList } = useLoaderData();
   const [file, setFile] = useState<File | null>(null);
   const [inputUrl, setInputUrl] = useState<string | null>(null);
 
@@ -43,7 +41,7 @@ function ZipInputSection({ fetcher }: any) {
             setFile={setFile}
             inputUrl={inputUrl}
             setInputUrl={setInputUrl}
-            supported={".zip, .gz"}
+            supported={[".zip", ".gz"]}
             setFilename={() => {}}
           />
           <CancelButton
@@ -75,9 +73,7 @@ function ZipInputSection({ fetcher }: any) {
               handleClose={handleClear}
             />
           )}
-          {inferenceList.map((inference) => {
-            return <EachInference inference={inference} key={inference.id} />;
-          })}
+          <InferenceList />
         </div>
       </CardComponent>
     </div>

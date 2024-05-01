@@ -2,13 +2,12 @@ import { useLoaderData } from "@remix-run/react";
 import { useEffect, useMemo, useState } from "react";
 import { getSocket } from "~/services/socket";
 
-function useSocket(jobID, output) {
+function useSocket() {
   const [isConnected, setIsConnected] = useState(false);
-  const [progress, setProgress] = useState(0);
+  const [progress, setProgress] = useState({});
   const { user, fileUploadUrl } = useLoaderData();
   const socket = useMemo(() => {
-    if (!output) return getSocket(fileUploadUrl);
-    return null;
+    return getSocket(fileUploadUrl);
   }, [fileUploadUrl]);
 
   useEffect(() => {
@@ -21,25 +20,26 @@ function useSocket(jobID, output) {
       setIsConnected(false);
     }
     function onProgressUpdate(data) {
-      if (data.jobId == jobID) {
-        setProgress(data);
-      }
+      let inferenceId = data.id;
+      let newProgress = { ...progress, [inferenceId]: data["progress"] };
+      setProgress(newProgress);
     }
 
     socket.on("connect", function (data) {
       onConnect();
       socket.emit("storeClientInfo", {
-        customId: user ? user?.emails[0]?.value : "default",
+        customId: user ? user?.email : "default",
       });
     });
     socket.on("disconnect", onDisconnect);
     socket.on("progressUpdate", onProgressUpdate);
+
     return () => {
       socket.off("connect", onConnect);
       socket.off("disconnect", onDisconnect);
       socket.off("progressUpdate", onProgressUpdate);
     };
-  }, [socket]);
+  }, [socket, user]);
   return { isConnected, socket, progress };
 }
 

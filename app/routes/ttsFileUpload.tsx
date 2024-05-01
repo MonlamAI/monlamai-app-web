@@ -21,11 +21,20 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   let user = await getUser(userdata?._json.email);
   const formData = await request.formData();
   const inputFileUrl = formData.get("fileUrl") as string;
-  let inferenceData;
+  let inference_new = await addFileInference({
+    userId: user?.id,
+    input: inputFileUrl,
+    type: "file",
+    model: "tts",
+    jobId: null,
+  });
   try {
     var formdata = new FormData();
     formdata.append("link", inputFileUrl);
+    formdata.append("inference_id", inference_new?.id);
+
     const url = process.env.FILE_SUBMIT_URL;
+    let inferenceData;
     let res = await fetch(url + `/tts/synthesis`, {
       method: "POST",
       body: formdata,
@@ -35,12 +44,5 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     console.log(e);
   }
 
-  let inference_new = await addFileInference({
-    userId: user?.id,
-    input: inputFileUrl,
-    type: "file",
-    model: "tts",
-    jobId: inferenceData?.id,
-  });
   return inference_new;
 };

@@ -1,4 +1,4 @@
-import { useSearchParams } from "@remix-run/react";
+import { useFetcher, useSearchParams } from "@remix-run/react";
 import { Select } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { FaArrowRightArrowLeft } from "react-icons/fa6";
@@ -24,6 +24,14 @@ function findFirstCommonElement(array1, array2) {
   return undefined;
 }
 
+function getLanguageFromOption(text, array2) {
+  let language = text.includes("zh") ? "zh" : text;
+  if (array2.includes(language)) {
+    return language;
+  }
+  return "en";
+}
+
 function LanguageInput({
   likefetcher,
   sourceText,
@@ -35,6 +43,7 @@ function LanguageInput({
   const sourceLang = params.get("source") || "detect language";
   const targetLang = params.get("target") || "bo";
   const [isRotated, setIsRotated] = useState(false);
+  const { submit, data: fetcherData } = useFetcher();
 
   function setTarget(lang: string) {
     setParams((prevParams) => {
@@ -83,9 +92,30 @@ function LanguageInput({
     });
   }
 
+  // Debounced function to handle input changes
+  const detectLanguage = (text: string) => {
+    submit(
+      {
+        inputText: text,
+      },
+      {
+        method: "POST",
+        action: "/api/detectLanguage",
+      }
+    );
+  };
+
   useEffect(() => {
-    if (sourceLang === "detect language") {
+    if (fetcherData?.info) {
       detectAndSetLanguage(sourceText);
+    } else if (fetcherData) {
+      setLanguage(fetcherData.language);
+    }
+  }, [fetcherData]);
+
+  useEffect(() => {
+    if (sourceLang === "detect language" && sourceText !== "") {
+      detectLanguage(sourceText);
     }
   }, [sourceText, sourceLang]);
 
@@ -114,8 +144,36 @@ function LanguageInput({
         prevParams.set("source", detectedLang?.code || "en");
         return prevParams;
       });
+    } else {
+      setParams((prevParams) => {
+        prevParams.set("source", "en");
+        return prevParams;
+      });
     }
   };
+
+  const setLanguage = (detectedLanguage) => {
+    if (sourceLang !== "detect language") return;
+
+    if (detectedLanguage == "bo") {
+      setParams((prevParams) => {
+        prevParams.set("source", "bo");
+        prevParams.set("target", "en");
+        return prevParams;
+      });
+      return;
+    }
+
+    let option = languagesOptions.map((l) => l.code.toLowerCase());
+    let common = getLanguageFromOption(detectedLanguage, option);
+    if (common) {
+      setParams((prevParams) => {
+        prevParams.set("source", common);
+        return prevParams;
+      });
+    }
+  };
+
   let beta = ["French", "Chinese", "Hindi"];
   return (
     <div className="flex items-center justify-center md:flex-row gap-3 mt-2 font-poppins">

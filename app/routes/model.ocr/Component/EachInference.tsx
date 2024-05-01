@@ -9,7 +9,7 @@ function EachInference({ inference }: any) {
   const deleteFetcher = useFetcher();
   let filename = inference.input;
   function removeExtension(filename: string) {
-    return filename.replace(/\.[^/.]+$/, "");
+    return filename?.replace(/\.[^/.]+$/, "");
   }
   let displayname = removeExtension(
     filename?.split("/OCR/input/")[1]?.split("-")[1]
@@ -36,7 +36,7 @@ function EachInference({ inference }: any) {
       { id: inference.id },
       {
         method: "DELETE",
-        action: "/mtFileUpload",
+        action: "/api/inference/",
       }
     );
   }
@@ -78,7 +78,7 @@ function EachInference({ inference }: any) {
 export default EachInference;
 
 function Progress({ inference }) {
-  const { isConnected, socket, progress } = useSocket(
+  const { isConnected, progress } = useSocket(
     inference?.jobId,
     inference?.output
   );

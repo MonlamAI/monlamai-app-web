@@ -1,24 +1,21 @@
-import { Button, Card, FileInput, Label } from "flowbite-react";
-import { useEffect, useState } from "react";
-import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
+import { Button } from "flowbite-react";
+import { useState } from "react";
 import { resetFetcher } from "~/component/utils/resetFetcher";
 import TooltipComponent from "./Tooltip";
 import { useLoaderData } from "@remix-run/react";
-import EachInference from "./EachInference";
-import axios from "axios";
 import CardComponent from "~/component/Card";
 import { CancelButton } from "~/component/Buttons";
 import { RxCross2 } from "react-icons/rx";
 import { IoSend } from "react-icons/io5";
 import FileUpload from "./FileUpload";
 import ErrorMessage from "../../../component/ErrorMessage";
+import { InferenceList } from "~/component/InferenceList";
 
 type props = {
   fetcher: any;
 };
 
 export default function PDFInputSection({ fetcher }: props) {
-  const { inferenceList } = useLoaderData();
   const [file, setFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState("");
   const [filePath, setFilePath] = useState<string | null>();
@@ -51,7 +48,7 @@ export default function PDFInputSection({ fetcher }: props) {
             setFile={setFile}
             inputUrl={filePath}
             setInputUrl={setFilePath}
-            supported=".pdf"
+            supported={[".pdf"]}
             setFilename={setFileName}
           />
           <CancelButton
@@ -83,9 +80,7 @@ export default function PDFInputSection({ fetcher }: props) {
               handleClose={handleClear}
             />
           )}
-          {inferenceList.map((inference) => {
-            return <EachInference inference={inference} key={inference.id} />;
-          })}
+          <InferenceList />
         </div>
       </CardComponent>
     </div>
