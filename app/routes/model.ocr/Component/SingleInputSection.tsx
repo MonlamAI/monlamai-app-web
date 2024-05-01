@@ -133,7 +133,7 @@ function SingleInptSection({ fetcher }: any) {
   return (
     <div className="flex flex-col lg:flex-row overflow-hidden max-w-[100vw] gap-3">
       <CardComponent>
-        <div className="w-full relative min-h-[35vh] md:min-h-[45vh] flex flex-col items-center justify-between py-3 gap-5">
+        <div className="w-full relative min-h-[35vh] md:min-h-[45vh] flex flex-col items-center justify-evenly py-3 gap-5">
           <TooltipComponent />
           <div className={ImageUrl || isCameraOpen ? "hidden" : ""}>
             <div className="mb-5 block">
