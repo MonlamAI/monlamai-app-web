@@ -148,7 +148,7 @@ export default function Index() {
   const uploadFile = async (file: File) => {
     try {
       let formData = new FormData();
-      let uniqueFilename = Date.now() + "-" + "audio.mp3";
+      let uniqueFilename = Date.now() + "-" + file?.name;
       formData.append("filename", uniqueFilename);
       formData.append("filetype", file.type);
       formData.append("bucket", "/STT/input");

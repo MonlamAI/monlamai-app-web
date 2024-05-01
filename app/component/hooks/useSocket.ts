@@ -28,7 +28,7 @@ function useSocket() {
     socket.on("connect", function (data) {
       onConnect();
       socket.emit("storeClientInfo", {
-        customId: user ? user?.emails[0]?.value : "default",
+        customId: user ? user?.email : "default",
       });
     });
     socket.on("disconnect", onDisconnect);
@@ -39,7 +39,7 @@ function useSocket() {
       socket.off("disconnect", onDisconnect);
       socket.off("progressUpdate", onProgressUpdate);
     };
-  }, [socket]);
+  }, [socket, user]);
   return { isConnected, socket, progress };
 }
 

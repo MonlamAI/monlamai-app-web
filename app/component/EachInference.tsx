@@ -3,6 +3,7 @@ import { Progress } from "./Progress";
 import { FaDownload } from "react-icons/fa";
 import timeSince from "./utils/timeSince";
 import { useFetcher } from "@remix-run/react";
+import AudioToggle from "./AudioToggle";
 
 export function EachInference({
   inference,
@@ -15,7 +16,9 @@ export function EachInference({
   let model = inference.model as "mt" | "ocr" | "stt" | "tts";
   let filename = inference.input
     ?.split(`/${model.toUpperCase()}/input/`)[1]
-    ?.split("-")[1];
+    ?.split("-")
+    ?.slice(1)
+    ?.join("-");
   let updatedAt = new Date(inference.updatedAt);
   let outputURL = inference.output;
   let isComplete = !!outputURL;
@@ -29,16 +32,18 @@ export function EachInference({
       }
     );
   }
-
   return (
     <div className="bg-white rounded-lg  flex  justify-between items-center">
-      <div>
-        <span className="text-gray-800 truncate">
-          {decodeURIComponent(filename)}
-        </span>
-        <span className="text-gray-500 text-xs block">
-          {updatedAt ? timeSince(updatedAt) : ""}
-        </span>
+      <div className="flex gap-2">
+        {model === "tts" && <AudioToggle output={outputURL} />}
+        <div>
+          <span className="text-gray-800 truncate">
+            {decodeURIComponent(filename)}
+          </span>
+          <span className="text-gray-500 text-xs block">
+            {updatedAt ? timeSince(updatedAt) : ""}
+          </span>
+        </div>
       </div>
       <div className="flex gap-5 items-center">
         {isError ? (
