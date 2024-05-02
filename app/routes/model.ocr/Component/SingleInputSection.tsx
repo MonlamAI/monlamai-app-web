@@ -133,7 +133,7 @@ function SingleInptSection({ fetcher }: any) {
   return (
     <div className="flex flex-col lg:flex-row overflow-hidden max-w-[100vw] gap-3">
       <CardComponent>
-        <div className="w-full relative min-h-[35vh] md:min-h-[45vh] flex flex-col items-center justify-evenly py-3 gap-5">
+        <div className="w-full relative min-h-[30vh] md:min-h-[45vh] flex flex-col items-center justify-center md:justify-center py-3 gap-5">
           <TooltipComponent />
           <div className={ImageUrl || isCameraOpen ? "hidden" : ""}>
             <div className="mb-5 block">
@@ -177,7 +177,7 @@ function SingleInptSection({ fetcher }: any) {
             <WebcamCapture setFile={setFile} />
           )}
           {!ImageUrl && isMobile && (
-            <div>
+            <>
               <Label
                 htmlFor="take_photo"
                 className="flex justify-center items-center bg-black rounded-md text-white py-2 px-3"
@@ -194,7 +194,7 @@ function SingleInptSection({ fetcher }: any) {
                 className="opacity-0 h-0"
                 onChange={handleFileChange}
               />
-            </div>
+            </>
           )}
           {uploadProgress > 0 && uploadProgress < 100 && (
             <div>progress:{uploadProgress}</div>
