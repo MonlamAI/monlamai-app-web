@@ -34,7 +34,7 @@ function SingleInptSection({ fetcher }: any) {
 
   const editData = editfetcher.data?.edited;
   const data = fetcher?.data;
-  const nonTibetanRegex = /[^\u0F00-\u0FFF]/g;
+  const nonTibetanRegex = /[^\u0F00-\u0FFF\s]/g;
   // Replace non-Tibetan characters with an empty string
   const text = data?.text?.replace(nonTibetanRegex, "");
   const inferenceId = fetcher.data?.inferenceId;

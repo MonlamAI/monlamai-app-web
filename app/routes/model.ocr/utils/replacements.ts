@@ -4,7 +4,7 @@ const replacements = [
   [" ་", "་"],
 ];
 
-function applyReplacements(input) {
+function applyReplacements(input: string) {
   let output = input;
   for (const [from, to] of replacements) {
     output = output?.replaceAll(from, to);
