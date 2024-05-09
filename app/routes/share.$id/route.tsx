@@ -75,10 +75,7 @@ function OutputCard({ content, className, model }) {
         <div className="h-full">
           <div className={`md:w-[600px] ${className} mt-4`}>
             <audio controls>
-              <source
-                src={`data:audio/wav;base64,${content}`}
-                type="audio/wav"
-              />
+              <source src={content} type="audio/wav" />
               Your browser does not support the audio element.
             </audio>
           </div>
