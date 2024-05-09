@@ -27,21 +27,22 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   return { id, data, user: userdata, langDir, model };
 };
 
-function Header({ user }) {
-  return !user ? (
-    <header className="text-2xl flex gap-3 p-4 justify-center font-medium text-gray-700 text-center dark:text-gray-200">
-      <img
-        src="/assets/logo.png"
-        width="40px"
-        alt="Monalm AI"
-        className="relative -top-1"
-      />
-      Monlam AI
-    </header>
-  ) : null;
-}
-
 function InputCard({ content, className, model }) {
+  if (model === "ocr") {
+    return (
+      <Card>
+        <div className="w-full">
+          <div className={`md:w-[600px] ${className} mt-4`}>
+            <img
+              src={content}
+              alt="input"
+              className="object-contain h-[35vh]"
+            />
+          </div>
+        </div>
+      </Card>
+    );
+  }
   if (model === "stt") {
     let audioURL = content;
     return (
@@ -63,6 +64,11 @@ function InputCard({ content, className, model }) {
   );
 }
 function OutputCard({ content, className, model }) {
+  let text = content;
+  if (model === "ocr") {
+    const nonTibetanRegex = /[^\u0F00-\u0FFF\s]/g;
+    text = text?.replace(nonTibetanRegex, "");
+  }
   if (model === "tts") {
     return (
       <Card>
@@ -83,7 +89,7 @@ function OutputCard({ content, className, model }) {
   return (
     <Card>
       <div className="h-full">
-        <div className={`md:w-[600px] ${className} mt-4`}>{content}</div>
+        <div className={`md:w-[600px] ${className} mt-4`}>{text}</div>
       </div>
     </Card>
   );
@@ -108,8 +114,7 @@ function TranslationRoute() {
   const targetLang = langDir === "en2bo" ? "bo" : "en";
   return (
     <div className="flex flex-col z-20">
-      <Header user={user} />
-      <div className="flex flex-col  md:mx-auto gap-3 justify-between ">
+      <div className="flex flex-col  md:mx-auto gap-3 justify-between mt-20">
         <ShareToolWraper title={model?.toUpperCase()}>
           {model === "mt" && (
             <LanguageSwitcher sourceLang={sourceLang} targetLang={targetLang} />

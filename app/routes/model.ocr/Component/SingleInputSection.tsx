@@ -18,48 +18,40 @@ import { RxCross2 } from "react-icons/rx";
 import { CancelButton } from "~/component/Buttons";
 import { NonEditButtons } from "~/component/ActionButtons";
 import TooltipComponent from "./Tooltip";
+import { ImageCropper } from "~/routes/model.ocr/Component/ImageCropper";
 
 function SingleInptSection({ fetcher }: any) {
   const [ImageUrl, setImageUrl] = useState<string | null>(null);
-  const [file, setFile] = useState<File | null>(null);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [edit, setEdit] = useState(false);
   const [editText, setEditText] = useState("");
-  const [isCameraOpen, setCameraOpen] = useState(false);
 
-  let { translation } = uselitteraTranlation();
   const likeFetcher = useFetcher();
   const editfetcher = useFetcher();
-  const { isMobile } = useLoaderData();
 
   const editData = editfetcher.data?.edited;
   const data = fetcher?.data;
-  const nonTibetanRegex = /[^\u0F00-\u0FFF\s]/g;
   // Replace non-Tibetan characters with an empty string
+  const nonTibetanRegex = /[^\u0F00-\u0FFF\s]/g;
   const text = data?.text?.replace(nonTibetanRegex, "");
   const inferenceId = fetcher.data?.inferenceId;
   const isActionSubmission = fetcher.state !== "idle";
   const errorMessage = data?.error_message;
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      setFile(file);
-    }
-  };
 
   const handleFormClear = () => {
     setImageUrl(null);
     resetFetcher(fetcher);
     resetFetcher(editfetcher);
   };
-  useEffect(() => {
-    if (file) {
-      const uploadFiles = async () => {
-        await uploadFile(file);
-      };
-      uploadFiles();
-    }
-  }, [file]);
+  const handleSubmit = () => {
+    fetcher.submit(
+      { imageUrl: ImageUrl },
+      {
+        method: "POST",
+        action: "/api/ocr",
+      }
+    );
+  };
   const uploadFile = async (file: File) => {
     try {
       let formData = new FormData();
@@ -93,15 +85,6 @@ function SingleInptSection({ fetcher }: any) {
       console.error(`Error uploading file ${file.name}:`, error);
     }
   };
-  const handleSubmit = () => {
-    fetcher.submit(
-      { imageUrl: ImageUrl },
-      {
-        method: "POST",
-        action: "/api/ocr",
-      }
-    );
-  };
 
   function handleCancelEdit() {
     setEdit(false);
@@ -122,10 +105,6 @@ function SingleInptSection({ fetcher }: any) {
     setEdit(false);
   }
 
-  const toggleCamera = () => {
-    setCameraOpen(!isCameraOpen);
-  };
-
   function handleCopy() {
     navigator.clipboard.writeText(text);
   }
@@ -135,87 +114,28 @@ function SingleInptSection({ fetcher }: any) {
       <CardComponent>
         <div className="w-full relative min-h-[30vh] md:min-h-[45vh] flex flex-col items-center justify-center md:justify-center py-3 gap-5">
           <TooltipComponent />
-          <div className={ImageUrl || isCameraOpen ? "hidden" : ""}>
+          {!ImageUrl ? (
             <div className="mb-5 block">
-              <Label
-                htmlFor="file"
-                value={translation.uploadImage}
-                className="text-lg text-slate-700"
-              />
+              <ImageCropper uploadFile={uploadFile} />
             </div>
-            <FileInput
-              key={ImageUrl}
-              helperText={`${translation.acceptedImage} JPG, PNG, JPEG`}
-              id="file"
-              name="image"
-              accept="image/png, image/jpeg, image/jpg"
-              onChange={handleFileChange}
-            />
-          </div>
-          {!ImageUrl && !isCameraOpen && <div>OR</div>}
-          {!isMobile && !isCameraOpen && (
-            <Button
-              color="dark"
-              onClick={toggleCamera}
-              className={`${ImageUrl ? "hidden" : ""}`}
-            >
-              <FaCamera className="mr-2" />
-              <p>Take Photo</p>
-            </Button>
-          )}
-          {!isMobile && isCameraOpen && (
-            <CancelButton
-              color="gray"
-              type="reset"
-              onClick={toggleCamera}
-              hidden={!!ImageUrl}
-            >
-              <RxCross2 />
-            </CancelButton>
-          )}
-          {isCameraOpen && !ImageUrl && !isMobile && (
-            <WebcamCapture setFile={setFile} />
-          )}
-          {!ImageUrl && isMobile && (
-            <>
-              <Label
-                htmlFor="take_photo"
-                className="flex justify-center items-center bg-black rounded-md text-white py-2 px-3"
-              >
-                <FaCamera className="mr-2" />
-                <p>Take Photo</p>
-              </Label>
-              <input
-                type="file"
-                accept="image/*"
-                capture="environment" // Use "user" for front camera if needed
-                id="take_photo"
-                name="take_photo"
-                className="opacity-0 h-0"
-                onChange={handleFileChange}
-              />
-            </>
-          )}
-          {uploadProgress > 0 && uploadProgress < 100 && (
-            <div>progress:{uploadProgress}</div>
-          )}
-          {ImageUrl && (
+          ) : (
             <img
               src={ImageUrl}
-              alt="selected file"
-              style={{
-                maxWidth: "100%",
-                maxHeight: "40vh",
-                objectFit: "contain",
-              }}
+              alt="uploaded image"
+              className="w-full  object-contain max-h-[35vh]"
               onLoad={handleSubmit}
             />
           )}
+
+          {uploadProgress > 0 && uploadProgress < 100 && (
+            <div>progress:{uploadProgress}</div>
+          )}
+
           <CancelButton
             type="reset"
             color="gray"
             onClick={handleFormClear}
-            hidden={!file || !ImageUrl}
+            hidden={!ImageUrl}
           >
             <RxCross2 size={20} />
           </CancelButton>
