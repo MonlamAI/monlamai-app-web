@@ -8,7 +8,7 @@ const Waveform = ({ audio }) => {
   const waveSurferRef = useRef({
     isPlaying: () => false,
   });
-  const [isPlaying, toggleIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
     const waveSurfer = WaveSurfer.create({
@@ -23,6 +23,10 @@ const Waveform = ({ audio }) => {
       waveSurferRef.current = waveSurfer;
     });
 
+    // Listen to "play" and "pause" events to accurately set isPlaying state
+    waveSurfer.on("play", () => setIsPlaying(true));
+    waveSurfer.on("pause", () => setIsPlaying(false));
+
     return () => {
       waveSurfer.destroy();
     };
@@ -34,7 +38,6 @@ const Waveform = ({ audio }) => {
       <button
         onClick={() => {
           waveSurferRef.current.playPause();
-          toggleIsPlaying(waveSurferRef.current.isPlaying());
         }}
         type="button"
         className="w-full flex justify-center"
