@@ -16,7 +16,10 @@ export function HandleAudioFile({ handleFileChange, reset }) {
 
       if (!file) {
         toast.error(
-          "Wrong file format. Please select an audio file (.mp3 or .wav)."
+          "Wrong file format. Please select an audio file (.mp3 or .wav).",
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+          }
         );
         return;
       }

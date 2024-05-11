@@ -122,7 +122,9 @@ export default function Index() {
 
   function submitHandler(e) {
     if (!sourceText || sourceText === "") {
-      toast.info("Text is required for TTS");
+      toast.info("Text is required for TTS", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
     } else {
       fetcher.submit(
         {

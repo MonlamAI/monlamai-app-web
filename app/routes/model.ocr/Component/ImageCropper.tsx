@@ -13,12 +13,14 @@ import { FaCamera } from "react-icons/fa";
 import { CancelButton, SubmitButton } from "~/component/Buttons";
 import { RxCross2 } from "react-icons/rx";
 import {
+  BiCross,
   BiRotateLeft,
   BiRotateRight,
   BiSave,
   BiZoomIn,
   BiZoomOut,
 } from "react-icons/bi";
+import { IoSend } from "react-icons/io5";
 const ORIENTATION_TO_ANGLE = {
   "3": 180,
   "6": 90,
@@ -36,14 +38,20 @@ export const ImageCropper = ({
   const [rotation, setRotation] = useState(0);
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
-
+  const [shouldCrop, setShouldCrop] = useState(false);
+  const [originalImage, setOriginalImage] = useState(null);
+  const [originalFile, setOriginalFile] = useState(null);
+  const [croppedFile, setCroppedFile] = useState(null);
   const onCropComplete = (croppedArea, croppedAreaPixels) => {
     setCroppedAreaPixels(croppedAreaPixels);
   };
   const onFileChange = async (e) => {
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
-      await newFile(file);
+      let imageUrl = await newFile(file);
+      setOriginalImage(imageUrl);
+      setOriginalFile(file);
+      setImageSrc(imageUrl);
     }
   };
   const newFile = async (file) => {
@@ -56,10 +64,10 @@ export const ImageCropper = ({
       if (rotation) {
         imageDataUrl = await getRotatedImage(imageDataUrl, rotation);
       }
+      return imageDataUrl;
     } catch (e) {
-      console.warn("failed to detect the orientation");
+      throw new Error("failed to detect the orientation");
     }
-    setImageSrc(imageDataUrl);
   };
 
   function readFile(file) {
@@ -77,7 +85,7 @@ export const ImageCropper = ({
   const toggleCamera = () => {
     setCameraOpen(!isCameraOpen);
   };
-  const submitCroppedImage = async () => {
+  const handleCroppedImage = async () => {
     try {
       const croppedImage = await getCroppedImg(
         imageSrc,
@@ -85,23 +93,45 @@ export const ImageCropper = ({
         rotation
       );
       let file = await convertBlobToFile(croppedImage, filename);
-      console.log(file);
-      uploadFile(file);
+      setCroppedFile(file);
+      let imageUrl = await newFile(file);
+      setImageSrc(imageUrl);
+      setShouldCrop(false);
     } catch (e) {
       console.error(e);
     }
   };
+  async function handleSubmitImage() {
+    let isCropped = croppedAreaPixels !== null;
+    if (!isCropped) return uploadFile(originalFile!);
 
+    uploadFile(croppedFile);
+  }
+  function cancelCrop() {
+    setImageSrc(originalImage);
+    setCameraOpen(false);
+    setShouldCrop(false);
+  }
+  function startCrop() {
+    setShouldCrop(true);
+    setImageSrc(originalImage);
+  }
   return (
     <>
-      {imageSrc ? (
+      {!shouldCrop && !!imageSrc && (
+        <Button onClick={startCrop} className="mb-3">
+          Crop Image
+        </Button>
+      )}
+      {shouldCrop ? (
         <div className="flex flex-col">
-          <div className="relative w-[35vw] h-[35vh]">
+          <div className="relative w-full  md:h-[35vh]">
             <Cropper
               image={imageSrc}
               crop={crop}
               rotation={rotation}
               zoom={zoom}
+              classes={{ cropAreaClassName: "border-2 border-primary-500" }}
               aspect={4 / 3}
               onCropChange={setCrop}
               onRotationChange={setRotation}
@@ -135,12 +165,25 @@ export const ImageCropper = ({
               </button>
             </div>
           </div>
-
-          <Button onClick={submitCroppedImage}>
-            <BiSave />
-          </Button>
+          <div className="flex gap-2 w-full mt-2 ">
+            <Button
+              onClick={cancelCrop}
+              title="reset"
+              className="flex-1"
+              color="failure"
+            >
+              <RxCross2 />
+            </Button>
+            <Button
+              onClick={handleCroppedImage}
+              title="save"
+              className="flex-1  "
+            >
+              <BiSave />
+            </Button>
+          </div>
         </div>
-      ) : (
+      ) : !imageSrc ? (
         <div className="flex flex-col items-center">
           {!isCameraOpen && (
             <>
@@ -197,6 +240,20 @@ export const ImageCropper = ({
               <RxCross2 />
             </CancelButton>
           )}
+        </div>
+      ) : null}
+      {!shouldCrop && imageSrc && (
+        <img
+          src={imageSrc}
+          alt="uploaded image"
+          className="w-full  object-contain max-h-[35vh]"
+        />
+      )}
+      {imageSrc && !shouldCrop && (
+        <div className="flex float-right mt-4">
+          <Button onClick={handleSubmitImage}>
+            <IoSend size={18} />
+          </Button>
         </div>
       )}
     </>

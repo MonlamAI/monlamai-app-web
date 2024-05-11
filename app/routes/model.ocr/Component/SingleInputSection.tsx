@@ -106,7 +106,8 @@ function SingleInptSection({ fetcher }: any) {
   }
 
   function handleCopy() {
-    navigator.clipboard.writeText(text);
+    let textToCopy = editData ?? text;
+    navigator.clipboard.writeText(textToCopy);
   }
 
   return (
@@ -114,18 +115,12 @@ function SingleInptSection({ fetcher }: any) {
       <CardComponent>
         <div className="w-full relative min-h-[30vh] md:min-h-[45vh] flex flex-col items-center justify-center md:justify-center py-3 gap-5">
           <TooltipComponent />
-          {!ImageUrl ? (
-            <div className="mb-5 block">
-              <ImageCropper uploadFile={uploadFile} />
-            </div>
-          ) : (
-            <img
-              src={ImageUrl}
-              alt="uploaded image"
-              className="w-full  object-contain max-h-[35vh]"
-              onLoad={handleSubmit}
-            />
-          )}
+          <div className="mb-5 block w-full">
+            {ImageUrl && (
+              <img src={ImageUrl} onLoad={handleSubmit} className="hidden" />
+            )}
+            <ImageCropper uploadFile={uploadFile} />
+          </div>
 
           {uploadProgress > 0 && uploadProgress < 100 && (
             <div>progress:{uploadProgress}</div>
