@@ -119,21 +119,15 @@ function SingleInptSection({ fetcher }: any) {
             {ImageUrl && (
               <img src={ImageUrl} onLoad={handleSubmit} className="hidden" />
             )}
-            <ImageCropper uploadFile={uploadFile} />
+            <ImageCropper
+              uploadFile={uploadFile}
+              handleReset={handleFormClear}
+            />
           </div>
 
           {uploadProgress > 0 && uploadProgress < 100 && (
             <div>progress:{uploadProgress}</div>
           )}
-
-          <CancelButton
-            type="reset"
-            color="gray"
-            onClick={handleFormClear}
-            hidden={!ImageUrl}
-          >
-            <RxCross2 size={20} />
-          </CancelButton>
         </div>
       </CardComponent>
       <CardComponent>

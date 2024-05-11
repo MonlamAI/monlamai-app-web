@@ -29,8 +29,10 @@ const ORIENTATION_TO_ANGLE = {
 
 export const ImageCropper = ({
   uploadFile,
+  handleReset,
 }: {
   uploadFile: (data: File) => void;
+  handleReset: () => void;
 }) => {
   const [imageSrc, setImageSrc] = useState(null);
   const [filename, setFilename] = useState("");
@@ -116,8 +118,24 @@ export const ImageCropper = ({
     setShouldCrop(true);
     setImageSrc(originalImage);
   }
+  function handleFormClear() {
+    handleReset();
+    setImageSrc(null);
+    setOriginalImage(null);
+    setOriginalFile(null);
+    setCroppedFile(null);
+    setShouldCrop(false);
+  }
   return (
     <>
+      <CancelButton
+        type="reset"
+        color="gray"
+        onClick={handleFormClear}
+        hidden={!imageSrc}
+      >
+        <RxCross2 size={20} />
+      </CancelButton>
       {!shouldCrop && !!imageSrc && (
         <Button onClick={startCrop} className="mb-3">
           Crop Image
