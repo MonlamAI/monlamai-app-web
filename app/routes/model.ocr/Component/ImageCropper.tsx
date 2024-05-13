@@ -104,15 +104,14 @@ export const ImageCropper = ({
     }
   };
   async function handleSubmitImage() {
-    let isCropped = croppedAreaPixels !== null;
-    if (!isCropped) return uploadFile(originalFile!);
-
+    if (!croppedFile) return uploadFile(originalFile!);
     uploadFile(croppedFile);
   }
   function cancelCrop() {
     setImageSrc(originalImage);
     setCameraOpen(false);
     setShouldCrop(false);
+    setCroppedFile(null);
   }
   function startCrop() {
     setShouldCrop(true);
