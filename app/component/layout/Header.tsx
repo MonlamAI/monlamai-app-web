@@ -23,7 +23,7 @@ function Header() {
         isEnglish ? "font-poppins" : "font-monlam"
       } `}
     >
-      <div className="flex px-1 py-2  items-center justify-between  w-full bg-white dark:bg-secondary-600 ">
+      <div className="flex px-1 py-2  items-center justify-between  w-full  ">
         <NavLink
           className="flex items-center gap-2 text-xl"
           prefetch="intent"
@@ -51,6 +51,7 @@ function Header() {
             <TeamLink />
           </div>
           <div className="flex items-center gap-4 mr-7">
+            <DarkModeSwitcher />
             <TranslationSwitcher />
             <Menu />
           </div>
@@ -87,6 +88,10 @@ function Header() {
             <div onClick={() => setShowMenu((p) => !p)}>
               <TeamLink />
             </div>
+            <div onClick={() => setShowMenu((p) => !p)}>
+              <DarkModeSwitcher />
+            </div>
+
             <div onClick={() => setShowMenu((p) => !p)}>
               <TranslationSwitcher />
             </div>
@@ -137,11 +142,6 @@ function Menu() {
         </span>
       </Dropdown.Header>
       <hr />
-      <Dropdown.Item className="px-3 py-2">
-        <DarkModeSwitcher />
-      </Dropdown.Item>
-      <hr />
-
       <Dropdown.Item icon={HiLogout} className="mt-2">
         <Form method="post" action="/logout">
           <button className={isEnglish ? "font-poppins" : "font-monlam"}>
