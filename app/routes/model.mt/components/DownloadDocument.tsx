@@ -48,7 +48,9 @@ function DownloadDocument({ source, lang }: { source: string; lang: string }) {
       >
         {(res) => {
           if (res?.error) {
-            toast("error api");
+            toast("error api", {
+              position: toast.POSITION.BOTTOM_RIGHT,
+            });
             return null;
           } else {
             return (

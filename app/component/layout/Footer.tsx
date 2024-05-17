@@ -37,7 +37,7 @@ function Footer() {
     <footer
       className={` ${
         !isAboutPage ? "lg:fixed" : ""
-      } bottom-0 w-full p-3 bg-primary-400 dark:bg-secondary-600 text-light_text-secondary dark:text-dark_text-secondary shadow-md dark:shadow-none transition-all duration-500 `}
+      } bottom-0 w-full p-3  text-light_text-secondary dark:text-dark_text-secondary shadow-md dark:shadow-none transition-all duration-500 `}
       style={{
         fontFamily: isEnglish ? "Inter" : "monlam",
         lineHeight: "normal",

@@ -385,10 +385,7 @@ export function ErrorBoundary() {
 
   useEffect(() => {
     toast.warn(API_ERROR_MESSAGE, {
-      position: toast.POSITION.TOP_RIGHT,
-      style: {
-        top: "5rem",
-      },
+      position: toast.POSITION.BOTTOM_RIGHT,
     });
     navigate(".", { replace: true });
   }, []);

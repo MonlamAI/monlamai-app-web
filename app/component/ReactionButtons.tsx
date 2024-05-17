@@ -42,7 +42,9 @@ function ReactionButtons({
   useEffect(() => {
     let message = data?.message;
     if (message && message !== "" && showMessage) {
-      toast.success(message);
+      toast.success(message, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
     }
     showMessage = false;
   }, [data]);

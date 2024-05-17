@@ -21,17 +21,17 @@ function TranslationSwitcher() {
       className="cursor-pointer flex gap-2 items-center mr-2"
     >
       {isEnglish && (
-        <span className=" flex gap-2 font-monlam rounded-full ">
-          <IoMdGlobe />
-          <div>བོད་ཡིག</div>
-        </span>
-      )}
-      {isTibetan && (
         <span className=" flex gap-2 font-poppins rounded-full ">
           <div className="mt-1">
             <IoMdGlobe />
           </div>
-          <div>English</div>
+          <div>Tibetan</div>
+        </span>
+      )}
+      {isTibetan && (
+        <span className=" flex gap-2 font-monlam rounded-full ">
+          <IoMdGlobe />
+          <div>དབྱིན་ཡིག་</div>
         </span>
       )}
     </div>

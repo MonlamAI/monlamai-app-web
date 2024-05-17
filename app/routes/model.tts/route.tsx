@@ -1,5 +1,10 @@
 import { Spinner } from "flowbite-react";
-import { MetaFunction, useFetcher, useLoaderData } from "@remix-run/react";
+import {
+  MetaFunction,
+  useFetcher,
+  useLoaderData,
+  useSearchParams,
+} from "@remix-run/react";
 import { useEffect, useRef, useState } from "react";
 import ReactionButtons from "~/component/ReactionButtons";
 import { amplifyMedia } from "~/component/utils/audioGain";
@@ -20,10 +25,7 @@ import ErrorMessage from "~/component/ErrorMessage";
 import CardComponent from "~/component/Card";
 import { getUser } from "~/modal/user.server";
 import { getUserFileInferences } from "~/modal/inference.server";
-import {
-  InferenceListTts,
-  TtsSubmitButton,
-} from "./components/UtilityComponents";
+import { TtsSubmitButton } from "./components/UtilityComponents";
 import { toast } from "react-toastify";
 import { getUserSession } from "~/services/session.server";
 import { LoaderFunctionArgs } from "@remix-run/node";
@@ -62,10 +64,16 @@ export default function Index() {
   const [file, setFile] = useState<File | null>(null);
   const [inputUrl, setInputUrl] = useState("");
   const [playbackRate, setPlaybackRate] = useState(1); // 1, 1.25, 1.5, 2, 0.5 (default 1)
-  const [selectedTool, setSelectedTool] = useLocalStorage(
-    "tts_selected_input",
-    "text"
-  );
+  const [params, setParams] = useSearchParams();
+
+  const selectedTool = params.get("tool") || "text";
+  const setSelectedTool = (tool: string) => {
+    setParams((p) => {
+      p.set("tool", tool);
+      return p;
+    });
+  };
+
   let { CHAR_LIMIT } = useLoaderData();
   const [volume, setVolume] = useLocalStorage("volume", 1);
   const fetcher = useFetcher();
@@ -114,7 +122,9 @@ export default function Index() {
 
   function submitHandler(e) {
     if (!sourceText || sourceText === "") {
-      toast.info("Text is required for TTS");
+      toast.info("Text is required for TTS", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
     } else {
       fetcher.submit(
         {

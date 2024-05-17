@@ -1,6 +1,6 @@
 import { Form, NavLink, useRouteLoaderData, Link } from "@remix-run/react";
 import { IoLogInSharp } from "react-icons/io5";
-import { Dropdown } from "flowbite-react";
+import { Button, CustomFlowbiteTheme, Dropdown } from "flowbite-react";
 import { useState } from "react";
 import { HiLogout } from "react-icons/hi";
 import { GiHamburgerMenu } from "react-icons/gi";
@@ -23,7 +23,7 @@ function Header() {
         isEnglish ? "font-poppins" : "font-monlam"
       } `}
     >
-      <div className="flex px-1 py-2  items-center justify-between  w-full bg-white dark:bg-secondary-600 ">
+      <div className="flex px-1 py-2  items-center justify-between  w-full  ">
         <NavLink
           className="flex items-center gap-2 text-xl"
           prefetch="intent"
@@ -51,6 +51,7 @@ function Header() {
             <TeamLink />
           </div>
           <div className="flex items-center gap-4 mr-7">
+            <DarkModeSwitcher />
             <TranslationSwitcher />
             <Menu />
           </div>
@@ -88,6 +89,10 @@ function Header() {
               <TeamLink />
             </div>
             <div onClick={() => setShowMenu((p) => !p)}>
+              <DarkModeSwitcher />
+            </div>
+
+            <div onClick={() => setShowMenu((p) => !p)}>
               <TranslationSwitcher />
             </div>
             <Menu />
@@ -105,16 +110,30 @@ function Menu() {
   const { translation, locale } = uselitteraTranlation();
   let isEnglish = locale === "en_US";
   const isTibetan = locale === "bo_TI";
+  const customTheme: CustomFlowbiteTheme["button"] = {
+    color: {
+      primary: "bg-primary-500 hover:bg-primary-600",
+      secondary: "bg-secondary-500 hover:bg-secondary-600 text-white",
+    },
+  };
   if (!user)
     return (
-      <Link
-        to="/login"
-        style={{ paddingTop: isEnglish ? "" : "5px" }}
-        className="font-medium flex items-center gap-2 py-1 px-2 rounded-md hover:underline bg-secondary-500 hover:bg-secondary-400 text-dark_text-default"
-      >
-        <IoLogInSharp />{" "}
-        <span className={isTibetan ? "pt-2" : ""}>{translation.login}</span>
-      </Link>
+      <Form method="post" action="/auth0">
+        <motion.div whileHover={{ scale: 1.1 }}>
+          <Button
+            type="submit"
+            className="p-3"
+            color="secondary"
+            pill
+            size="xs"
+            theme={customTheme}
+          >
+            <span style={{ fontSize: isEnglish ? "1.4rem" : "1.2rem" }}>
+              {translation.login}
+            </span>
+          </Button>
+        </motion.div>
+      </Form>
     );
   return (
     <Dropdown
@@ -137,11 +156,6 @@ function Menu() {
         </span>
       </Dropdown.Header>
       <hr />
-      <Dropdown.Item className="px-3 py-2">
-        <DarkModeSwitcher />
-      </Dropdown.Item>
-      <hr />
-
       <Dropdown.Item icon={HiLogout} className="mt-2">
         <Form method="post" action="/logout">
           <button className={isEnglish ? "font-poppins" : "font-monlam"}>

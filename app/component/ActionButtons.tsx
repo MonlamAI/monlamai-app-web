@@ -1,8 +1,6 @@
 import { Button, Dropdown, Tooltip } from "flowbite-react";
-import { useEffect } from "react";
 import { FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa";
 import { GoPencil } from "react-icons/go";
-import { toast } from "react-toastify";
 import CopyToClipboard from "~/component/CopyToClipboard";
 import ReactionButtons from "~/component/ReactionButtons";
 import ShareLink from "~/component/ShareLink";

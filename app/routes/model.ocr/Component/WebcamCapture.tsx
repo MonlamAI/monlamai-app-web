@@ -4,7 +4,7 @@ import Webcam from "react-webcam";
 import { TbCapture } from "react-icons/tb";
 import { MdFlipCameraIos } from "react-icons/md";
 
-const WebcamCapture = ({ setFile }) => {
+const WebcamCapture = ({ setImageUrl }) => {
   const webcamRef = React.useRef(null);
   const [facingMode, setFacingMode] = useState("user");
 
@@ -12,9 +12,9 @@ const WebcamCapture = ({ setFile }) => {
     const imageSrc = webcamRef.current.getScreenshot();
     const file = await base64ToFile(imageSrc, "capture-img");
     if (file) {
-      setFile(file);
+      setImageUrl(file);
     }
-  }, [webcamRef, setFile]);
+  }, [webcamRef, setImageUrl]);
 
   return (
     <>

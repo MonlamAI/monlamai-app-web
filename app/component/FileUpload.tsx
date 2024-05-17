@@ -17,15 +17,21 @@ function FileUpload({ setFile, setInputUrl, supported, model }) {
     setMyFiles([...myFiles, ...acceptedFiles]);
     var file = acceptedFiles[0];
     if (!file) {
-      toast.error("Wrong file format. Please upload a .txt or .docx file.");
+      toast.error("Wrong file format. Please upload a .txt or .docx file.", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
       return;
     }
     if (file.size > parseInt(maxSize) * 1024) {
-      toast.info("File size is too big.");
+      toast.info("File size is too big.", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
       return;
     }
     if (!file.name.endsWith(".txt") && !file.name.endsWith(".docx")) {
-      toast.info("Unsupported file type.");
+      toast.info("Unsupported file type.", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
       return;
     }
   }, []);

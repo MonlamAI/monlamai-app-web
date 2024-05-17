@@ -1,6 +1,11 @@
 import { useState, useEffect } from "react";
 import { ActionFunction, LoaderFunctionArgs } from "@remix-run/node";
-import { MetaFunction, useFetcher, useLoaderData } from "@remix-run/react";
+import {
+  MetaFunction,
+  useFetcher,
+  useLoaderData,
+  useSearchParams,
+} from "@remix-run/react";
 import ErrorMessage from "~/component/ErrorMessage";
 import ToolWraper from "~/component/ToolWraper";
 import CardComponent from "~/component/Card";
@@ -57,9 +62,16 @@ export const action: ActionFunction = async ({ request }) => {
 };
 export default function Index() {
   const fetcher = useFetcher();
-  const [selectedTool, setSelectedTool] = useState<"recording" | "file">(
-    "recording"
-  );
+  const [params, setParams] = useSearchParams();
+
+  const selectedTool = params.get("tool") || "recording";
+  const setSelectedTool = (tool: string) => {
+    setParams((p) => {
+      p.set("tool", tool);
+      return p;
+    });
+  };
+
   const [uploadProgress, setUploadProgress] = useState(0);
 
   const [audio, setAudio] = useState<Blob | null>(null);
