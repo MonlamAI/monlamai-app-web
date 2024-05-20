@@ -103,9 +103,7 @@ export const ImageCropper = ({
   const onFileChange = async (e) => {
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
-      let imageUrl = await newFile(file);
-      setOriginalImageSrc(imageUrl);
-      setImageSrc(imageUrl);
+      await newFile(file);
     }
   };
   return (
