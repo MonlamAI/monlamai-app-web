@@ -125,7 +125,7 @@ export const ImageCropper = ({
         <div className="flex flex-col">
           <div className="relative w-full  md:h-[35vh]">
             <Cropper ref={cropperRef} src={imageSrc} />
-            <div className="absolute z-50 flex gap-2  w-fit">
+            {/* <div className="absolute z-50 flex gap-2  w-fit">
               <button
                 className=" bg-neutral-800   text-white  p-2"
                 onClick={() => setZoom((prev) => prev - 2)}
@@ -150,7 +150,7 @@ export const ImageCropper = ({
               >
                 <BiRotateLeft />
               </button>
-            </div>
+            </div> */}
           </div>
           <div className="flex gap-2 w-full mt-2 ">
             <Button
