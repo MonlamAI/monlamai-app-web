@@ -90,6 +90,7 @@ export const ImageCropper = ({
         reader.onload = () => {
           setOriginalImageSrc(reader.result);
           setImageSrc(reader.result);
+          setShouldCrop(true);
           resolve(reader.result);
         };
         reader.onerror = (error) => {
@@ -99,7 +100,14 @@ export const ImageCropper = ({
       return await prom;
     }
   };
-
+  const onFileChange = async (e) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
+      let imageUrl = await newFile(file);
+      setOriginalImageSrc(imageUrl);
+      setImageSrc(imageUrl);
+    }
+  };
   return (
     <>
       <CancelButton
@@ -212,7 +220,7 @@ export const ImageCropper = ({
                 id="take_photo"
                 name="take_photo"
                 className="opacity-0 h-0"
-                onChange={onLoadImage}
+                onChange={onFileChange}
               />
             </>
           )}
