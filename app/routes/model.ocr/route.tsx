@@ -1,5 +1,6 @@
 import type {
   ActionFunction,
+  LinksFunction,
   LoaderFunctionArgs,
   MetaFunction,
 } from "@remix-run/node";
@@ -9,13 +10,16 @@ import OCR from "./Component/OCR";
 import { getUserFileInferences, updateEdit } from "~/modal/inference.server";
 import { getUser } from "~/modal/user.server";
 import { getUserSession } from "~/services/session.server";
+import crop_style from "react-advanced-cropper/dist/style.css";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
   parentMeta.shift(1);
   return [...parentMeta, { title: "Monlam | ཡིག་འཛིན་རིག་ནུས།" }];
 };
-
+export const links: LinksFunction = () => [
+  { rel: "stylesheet", href: crop_style },
+];
 export async function loader({ request }: LoaderFunctionArgs) {
   let userdata = await getUserSession(request);
 

@@ -1,19 +1,13 @@
-import React, { useState, useCallback } from "react";
-import Cropper from "react-easy-crop";
-import {
-  getCroppedImg,
-  getRotatedImage,
-} from "../../../component/utils/canvasUtils";
-import { getOrientation } from "get-orientation/browser";
-import { Button, FileInput, Label, RangeSlider } from "flowbite-react";
+import React, { useState, ChangeEvent } from "react";
+
+import { Button, FileInput, Label } from "flowbite-react";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import WebcamCapture from "./WebcamCapture";
 import { useLoaderData } from "@remix-run/react";
 import { FaCamera } from "react-icons/fa";
-import { CancelButton, SubmitButton } from "~/component/Buttons";
+import { CancelButton } from "~/component/Buttons";
 import { RxCross2 } from "react-icons/rx";
 import {
-  BiCross,
   BiRotateLeft,
   BiRotateRight,
   BiSave,
@@ -21,12 +15,8 @@ import {
   BiZoomOut,
 } from "react-icons/bi";
 import { IoSend } from "react-icons/io5";
-const ORIENTATION_TO_ANGLE = {
-  "3": 180,
-  "6": 90,
-  "8": -90,
-};
 
+import { Cropper, CropperRef } from "react-advanced-cropper";
 export const ImageCropper = ({
   uploadFile,
   handleReset,
@@ -34,52 +24,28 @@ export const ImageCropper = ({
   uploadFile: (data: File) => void;
   handleReset: () => void;
 }) => {
-  const [imageSrc, setImageSrc] = useState(null);
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
+  const cropperRef = React.useRef<CropperRef>(null);
+  const [cropped, setCropped] = useState(false);
+  const [imageSrc, setImageSrc] = useState<string | null>(null);
+  const [originalImageSrc, setOriginalImageSrc] = useState<string | null>(null);
   const [filename, setFilename] = useState("");
-  const [crop, setCrop] = useState({ x: 0, y: 0 });
-  const [rotation, setRotation] = useState(0);
-  const [zoom, setZoom] = useState(1);
-  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [shouldCrop, setShouldCrop] = useState(false);
-  const [originalImage, setOriginalImage] = useState(null);
-  const [originalFile, setOriginalFile] = useState(null);
-  const [croppedFile, setCroppedFile] = useState(null);
-  const onCropComplete = (croppedArea, croppedAreaPixels) => {
-    setCroppedAreaPixels(croppedAreaPixels);
-  };
-  const onFileChange = async (e) => {
-    if (e.target.files && e.target.files.length > 0) {
-      const file = e.target.files[0];
-      let imageUrl = await newFile(file);
-      setOriginalImage(imageUrl);
-      setOriginalFile(file);
-      setImageSrc(imageUrl);
-    }
-  };
-  const newFile = async (file) => {
-    let imageDataUrl = await readFile(file);
-
-    try {
-      // apply rotation if needed
-      const orientation = await getOrientation(file);
-      const rotation = ORIENTATION_TO_ANGLE[orientation];
-      if (rotation) {
-        imageDataUrl = await getRotatedImage(imageDataUrl, rotation);
-      }
-      return imageDataUrl;
-    } catch (e) {
-      throw new Error("failed to detect the orientation");
-    }
-  };
-
-  function readFile(file) {
-    return new Promise((resolve) => {
+  const onLoadImage = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files && event.target.files[0];
+    setFilename(file?.name || "");
+    if (file) {
+      setImageSrc(URL.createObjectURL(file));
       const reader = new FileReader();
-      reader.addEventListener("load", () => resolve(reader.result), false);
       reader.readAsDataURL(file);
-      setFilename(file.name);
-    });
-  }
+      reader.onload = () => {
+        setOriginalImageSrc(reader.result);
+      };
+    }
+    event.target.value = "";
+    setShouldCrop(true);
+  };
+
   let { translation } = uselitteraTranlation();
   const [isCameraOpen, setCameraOpen] = useState(false);
   const { isMobile } = useLoaderData();
@@ -87,44 +53,53 @@ export const ImageCropper = ({
   const toggleCamera = () => {
     setCameraOpen(!isCameraOpen);
   };
+
   const handleCroppedImage = async () => {
-    try {
-      const croppedImage = await getCroppedImg(
-        imageSrc,
-        croppedAreaPixels,
-        rotation
-      );
-      let file = await convertBlobToFile(croppedImage, filename);
-      setCroppedFile(file);
-      let imageUrl = await newFile(file);
-      setImageSrc(imageUrl);
-      setShouldCrop(false);
-    } catch (e) {
-      console.error(e);
+    const cropper = cropperRef.current;
+    if (cropper) {
+      const canvas = cropper.getCanvas();
+      const newSRC = canvas?.toDataURL();
+      if (newSRC) setImageSrc(newSRC);
     }
+    setShouldCrop(false);
+    setCropped(true);
   };
   async function handleSubmitImage() {
-    if (!croppedFile) return uploadFile(originalFile!);
-    uploadFile(croppedFile);
+    let cropped_image = base64toFile(imageSrc, filename, "image/jpeg");
+    uploadFile(cropped_image);
   }
   function cancelCrop() {
-    setImageSrc(originalImage);
+    setImageSrc(originalImageSrc);
     setCameraOpen(false);
+    setCropped(false);
     setShouldCrop(false);
-    setCroppedFile(null);
   }
-  function startCrop() {
-    setShouldCrop(true);
-    setImageSrc(originalImage);
-  }
+
   function handleFormClear() {
+    setCropped(false);
     handleReset();
     setImageSrc(null);
-    setOriginalImage(null);
-    setOriginalFile(null);
-    setCroppedFile(null);
     setShouldCrop(false);
   }
+  const newFile = async (file) => {
+    if (file) {
+      setFilename(file?.name || "");
+      let prom = new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+          setOriginalImageSrc(reader.result);
+          setImageSrc(reader.result);
+          resolve(reader.result);
+        };
+        reader.onerror = (error) => {
+          reject(error);
+        };
+      });
+      return await prom;
+    }
+  };
+
   return (
     <>
       <CancelButton
@@ -136,25 +111,14 @@ export const ImageCropper = ({
         <RxCross2 size={20} />
       </CancelButton>
       {!shouldCrop && !!imageSrc && (
-        <Button onClick={startCrop} className="mb-3">
+        <Button onClick={() => setShouldCrop(true)} className="mb-3">
           Crop Image
         </Button>
       )}
       {shouldCrop ? (
         <div className="flex flex-col">
           <div className="relative w-full  md:h-[35vh]">
-            <Cropper
-              image={imageSrc}
-              crop={crop}
-              rotation={rotation}
-              zoom={zoom}
-              classes={{ cropAreaClassName: "border-2 border-primary-500" }}
-              aspect={4 / 3}
-              onCropChange={setCrop}
-              onRotationChange={setRotation}
-              onCropComplete={onCropComplete}
-              onZoomChange={setZoom}
-            />
+            <Cropper ref={cropperRef} src={imageSrc} />
             <div className="absolute z-50 flex gap-2  w-fit">
               <button
                 className=" bg-neutral-800   text-white  p-2"
@@ -210,13 +174,14 @@ export const ImageCropper = ({
                 className="text-lg text-slate-700 "
               />
               <FileInput
+                ref={fileInputRef}
                 key={imageSrc}
                 helperText={`${translation.acceptedImage} JPG, PNG, JPEG`}
                 id="file"
                 name="image"
                 className="mt-2"
                 accept="image/png, image/jpeg, image/jpg"
-                onChange={onFileChange}
+                onChange={onLoadImage}
               />
               <div className="w-full mx-3 my-2 flex justify-center text-neutral-700">
                 OR
@@ -247,7 +212,7 @@ export const ImageCropper = ({
                 id="take_photo"
                 name="take_photo"
                 className="opacity-0 h-0"
-                onChange={onFileChange}
+                onChange={onLoadImage}
               />
             </>
           )}
@@ -277,14 +242,26 @@ export const ImageCropper = ({
   );
 };
 
-async function convertBlobToFile(url, filename) {
-  const response = await fetch(url);
-  if (!response.ok) {
-    throw new Error("Network response was not ok");
+function base64toFile(base64String, filename, mimeType) {
+  // Split the Base64 string into two parts
+  const parts = base64String.split(";base64,");
+  const contentType = parts[0].split(":")[1];
+  const rawBase64 = parts[1];
+
+  // Convert the Base64 string to a Blob
+  const byteCharacters = atob(rawBase64);
+  const byteArrays = [];
+  for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+    const slice = byteCharacters.slice(offset, offset + 512);
+    const byteNumbers = new Array(slice.length);
+    for (let i = 0; i < slice.length; i++) {
+      byteNumbers[i] = slice.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    byteArrays.push(byteArray);
   }
-  let blob = await response.blob();
-  return new File([blob], filename, {
-    type: blob.type,
-    lastModified: Date.now(),
-  });
+  const blob = new Blob(byteArrays, { type: mimeType });
+
+  // Convert Blob to File
+  return new File([blob], filename, { type: contentType });
 }
