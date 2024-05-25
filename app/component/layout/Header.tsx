@@ -119,20 +119,15 @@ function Menu() {
   if (!user)
     return (
       <Form method="post" action="/auth0">
-        <motion.div whileHover={{ scale: 1.1 }}>
-          <Button
-            type="submit"
-            className="p-3"
-            color="secondary"
-            pill
-            size="xs"
-            theme={customTheme}
-          >
-            <span style={{ fontSize: isEnglish ? "1.4rem" : "1.2rem" }}>
-              {translation.login}
-            </span>
-          </Button>
-        </motion.div>
+        <Button
+          type="submit"
+          className={` ${isEnglish ? "font-poppins " : "font-monlam"}`}
+          color="secondary"
+          pill
+          theme={customTheme}
+        >
+          {translation.login}
+        </Button>
       </Form>
     );
   return (
