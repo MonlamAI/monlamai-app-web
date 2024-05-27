@@ -62,3 +62,8 @@ export async function update_location(
   });
   return user;
 }
+export async function getUsersCount() {
+  //get total user count
+  let count = await db.user.count();
+  return count;
+}

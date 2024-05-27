@@ -136,3 +136,12 @@ export async function getInferences({
     },
   });
 }
+
+export async function getInferencesCount() {
+  return await db.inference.groupBy({
+    by: ["model"],
+    _count: {
+      _all: true,
+    },
+  });
+}
