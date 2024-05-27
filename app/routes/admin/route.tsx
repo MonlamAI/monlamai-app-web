@@ -6,10 +6,10 @@ import InferenceList from "./component/inferencesList";
 import { startOfMonth, endOfMonth } from "date-fns";
 import DateStyle from "react-date-range/dist/styles.css"; // default style
 import DateStyleDefault from "react-date-range/dist/theme/default.css";
-import { SelectionList } from "./component/selectionList";
 import { getUsersCount } from "~/modal/user.server";
 import UserCount from "./component/UserCount";
 import InferenceCount from "./component/InferenceCount";
+import { SelectionList } from "./component/SelectionList";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: DateStyle },
