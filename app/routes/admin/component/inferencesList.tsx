@@ -3,10 +3,16 @@ import { Virtuoso } from "react-virtuoso";
 import Papa from "papaparse";
 import { DateRangePicker } from "react-date-range";
 import { startOfMonth, endOfMonth, format } from "date-fns";
-import { useNavigation, useSearchParams } from "@remix-run/react";
+import {
+  useLoaderData,
+  useNavigation,
+  useSearchParams,
+} from "@remix-run/react";
 import { Spinner } from "flowbite-react";
 
-const InferenceList = ({ inferences }) => {
+const InferenceList = () => {
+  let { inferences } = useLoaderData();
+
   const [params, setParam] = useSearchParams();
   const { startDate, endDate } = useValidDateRange();
   const navigation = useNavigation();
