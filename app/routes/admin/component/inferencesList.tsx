@@ -35,7 +35,7 @@ const InferenceList = () => {
     });
   };
 
-  const filteredInferences = inferences.filter((inference) => {
+  const filteredInferences = inferences?.filter((inference) => {
     return filterModel ? inference.model === filterModel : true;
   });
 
@@ -67,6 +67,7 @@ const InferenceList = () => {
 
   const openDateModal = () => setDateModalOpen(true);
   const closeDateModal = () => setDateModalOpen(false);
+  if (inferences?.length === 0) return null;
   return (
     <div className="container mx-auto p-4">
       <div className="flex gap-4 mb-4">
