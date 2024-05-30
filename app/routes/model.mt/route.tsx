@@ -282,7 +282,7 @@ export default function Index() {
                       </CancelButton>
                     )}
                   </div>
-                  <div className="flex justify-between">
+                  <div className="flex justify-between py-2 px-1 border-t border-t-light_text-secondary">
                     <CharacterOrFileSizeComponent
                       selectedTool={selectedTool}
                       charCount={charCount}
