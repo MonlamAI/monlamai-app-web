@@ -176,7 +176,7 @@ function LanguageInput({
   let optionClass = "bg-white dark:bg-secondary-700 text-black dark:text-white";
   let beta = ["French", "Chinese", "Hindi"];
   return (
-    <div className="bg-white border-t border-r border-l border-s rounded-tr-md rounded-tl-md dark:bg-secondary-700 flex  items-center  md:flex-row gap-3 mt-2 font-poppins">
+    <div className="bg-white border-t border-r border-l dark:border-light_text-secondary border-dark_text-secondary rounded-tr-md rounded-tl-md dark:bg-secondary-700 flex  items-center  md:flex-row gap-3 mt-2 font-poppins">
       <div className="flex-1">
         <Select
           onChange={(e) => handleChange(e, "source")}
