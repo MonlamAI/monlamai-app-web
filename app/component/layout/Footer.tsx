@@ -37,13 +37,13 @@ function Footer() {
     <footer
       className={` ${
         !isAboutPage ? "lg:fixed" : ""
-      } bottom-0 left-0 w-full p-3  text-light_text-secondary dark:text-dark_text-secondary shadow-md dark:shadow-none transition-all duration-500 `}
+      } bg-neutral-100 bottom-0 left-0 w-full p-3 dark:bg-secondary-800  text-light_text-secondary dark:text-dark_text-secondary shadow-md dark:shadow-none transition-all duration-500 `}
       style={{
         fontFamily: isEnglish ? "Inter" : "monlam",
         lineHeight: "normal",
       }}
     >
-      <div className="mx-auto max-w-screen-xl flex flex-col md:flex-row items-center md:justify-between">
+      <div className="mx-auto flex flex-col max-w-[1280px]  md:flex-row items-center md:justify-between">
         <div className="text-sm   sm:text-center">
           <div className="hover:underline text-[1rem] cursor-default leading-relaxed text-center">
             {isEnglish

@@ -176,8 +176,13 @@ function LanguageInput({
 
   let beta = ["French", "Chinese", "Hindi"];
   return (
-    <div className="flex items-center justify-center md:flex-row gap-3 mt-2 font-poppins">
-      <Select onChange={(e) => handleChange(e, "source")} value={sourceLang}>
+    <div className="bg-white dark:bg-secondary-700 flex items-center  md:flex-row gap-3 mt-2 font-poppins">
+      <Select
+        onChange={(e) => handleChange(e, "source")}
+        value={sourceLang}
+        className="flex-1 focus:outline-none selector"
+        theme={selectedTheme}
+      >
         <option value="detect language">Detect</option>
         {languagesOptions.map((lang) => (
           <option key={lang.code} value={lang.code}>
@@ -193,7 +198,11 @@ function LanguageInput({
         <FaArrowRightArrowLeft size="20px" />
       </button>
 
-      <Select onChange={(e) => handleChange(e, "target")} value={targetLang}>
+      <Select
+        onChange={(e) => handleChange(e, "target")}
+        value={targetLang}
+        className="flex-1 focus:outline-none selector"
+      >
         {languagesOptions.map((lang) => (
           <option key={lang.code} value={lang.code}>
             {lang.value} {beta.includes(lang.value) ? "(BETA)" : ""}
@@ -205,3 +214,15 @@ function LanguageInput({
 }
 
 export default LanguageInput;
+
+const selectedTheme = {
+  root: {
+    base: "flex",
+  },
+  field: {
+    base: "relative w-full",
+    input: {
+      base: "block w-full overflow-hidden rounded-lg border disabled:cursor-not-allowed disabled:opacity-50",
+    },
+  },
+};
