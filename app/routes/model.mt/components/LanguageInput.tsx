@@ -173,56 +173,47 @@ function LanguageInput({
       });
     }
   };
-
+  let optionClass = "bg-white dark:bg-secondary-700 text-black dark:text-white";
   let beta = ["French", "Chinese", "Hindi"];
   return (
-    <div className="bg-white dark:bg-secondary-700 flex items-center  md:flex-row gap-3 mt-2 font-poppins">
-      <Select
-        onChange={(e) => handleChange(e, "source")}
-        value={sourceLang}
-        className="flex-1 focus:outline-none selector"
-        theme={selectedTheme}
-      >
-        <option value="detect language">Detect</option>
-        {languagesOptions.map((lang) => (
-          <option key={lang.code} value={lang.code}>
-            {lang.value} {beta.includes(lang.value) ? "(BETA)" : ""}
+    <div className="bg-white rounded-tr-md rounded-tl-md dark:bg-secondary-700 flex  items-center  md:flex-row gap-3 mt-2 font-poppins">
+      <div className="flex-1">
+        <Select
+          onChange={(e) => handleChange(e, "source")}
+          value={sourceLang}
+          className="selectHeader w-fit"
+        >
+          <option value="detect language" className={optionClass}>
+            Detect
           </option>
-        ))}
-      </Select>
-
+          {languagesOptions.map((lang) => (
+            <option key={lang.code} value={lang.code} className={optionClass}>
+              {lang.value} {beta.includes(lang.value) ? "(BETA)" : ""}
+            </option>
+          ))}
+        </Select>
+      </div>
       <button
         onClick={toggleDirection}
         className="group flex items-center py-1 justify-center text-center font-medium relative focus:z-10 focus:outline-none text-[#838585] border border-transparent enabled:hover:bg-primary-hover  dark:enabled:hover:bg-primary-hover  rounded-full  px-2"
       >
         <FaArrowRightArrowLeft size="20px" />
       </button>
-
-      <Select
-        onChange={(e) => handleChange(e, "target")}
-        value={targetLang}
-        className="flex-1 focus:outline-none selector"
-      >
-        {languagesOptions.map((lang) => (
-          <option key={lang.code} value={lang.code}>
-            {lang.value} {beta.includes(lang.value) ? "(BETA)" : ""}
-          </option>
-        ))}
-      </Select>
+      <div className="flex-1">
+        <Select
+          onChange={(e) => handleChange(e, "target")}
+          value={targetLang}
+          className="selectHeader w-fit"
+        >
+          {languagesOptions.map((lang) => (
+            <option key={lang.code} value={lang.code} className={optionClass}>
+              {lang.value} {beta.includes(lang.value) ? "(BETA)" : ""}
+            </option>
+          ))}
+        </Select>
+      </div>
     </div>
   );
 }
 
 export default LanguageInput;
-
-const selectedTheme = {
-  root: {
-    base: "flex",
-  },
-  field: {
-    base: "relative w-full",
-    input: {
-      base: "block w-full overflow-hidden rounded-lg border disabled:cursor-not-allowed disabled:opacity-50",
-    },
-  },
-};

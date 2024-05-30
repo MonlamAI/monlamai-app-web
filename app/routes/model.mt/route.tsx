@@ -255,7 +255,7 @@ export default function Index() {
       />
 
       {(selectedTool === "text" || selectedTool === "document") && (
-        <div className="mt-3 flex flex-col gap-5 lg:flex-row">
+        <div className="flex flex-col  lg:flex-row">
           <>
             <CardComponent>
               {limitMessage ? (
@@ -264,7 +264,7 @@ export default function Index() {
                 </div>
               ) : (
                 <>
-                  <div className="flex relative h-auto md:min-h-[25vh] lg:min-h-[40vh] w-full flex-1 flex-col justify-center gap-2">
+                  <div className="flex relative h-auto md:min-h-[25vh] lg:min-h-[40vh] w-full flex-1 flex-col justify-center">
                     <TextOrDocumentComponent
                       selectedTool={selectedTool}
                       sourceText={sourceText}
@@ -278,7 +278,7 @@ export default function Index() {
                         onClick={handleReset}
                         hidden={!sourceText || sourceText === ""}
                       >
-                        <RxCross2 size={20} />
+                        <RxCross2 size={16} />
                       </CancelButton>
                     )}
                   </div>
