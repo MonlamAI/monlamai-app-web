@@ -48,5 +48,7 @@
   "zip":"Zip",
   "PDF":"PDF",
   "team":"team",
-  "home":"home"
+  "home":"home",
+  "darkmode":"Dark",
+  "lightmode":"Light"
 }
