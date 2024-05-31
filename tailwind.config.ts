@@ -65,7 +65,7 @@ export default {
           950: "#4C1010",
         },
         neutral: {
-          DEFAULT: "#D32F2F",
+          DEFAULT: "#F2F2F2",
           50: "#F2F2F2",
           100: "#EDEDED",
           200: "#E0E0E0",
