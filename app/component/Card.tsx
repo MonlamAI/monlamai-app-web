@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 
 function Card(props) {
-  let enable = !!props?.focussed;
-  let [isFocussed, setIsFocussed] = useState(false);
+  const enable = !!props?.focussed;
+  const [isFocussed, setIsFocussed] = useState(false);
   const cardRef = useRef(null);
 
   function enableFocus() {
@@ -33,7 +33,7 @@ function Card(props) {
       className={`flex bg-white shadow-md dark:bg-secondary-700 flex-col lg:w-1/2 
     ${
       isFocussed
-        ? "border-2 border-secondary-500 dark:border-primary-500 rounded-bl-lg"
+        ? "outline -outline-offset-2 outline-secondary-100 dark:outline-primary-500 rounded-bl-lg"
         : props.className
     }`}
     >
