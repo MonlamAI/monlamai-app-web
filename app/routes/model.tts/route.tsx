@@ -161,37 +161,40 @@ export default function Index() {
         setSelectedTool={setSelectedTool}
         options={["text", "document"]}
       >
-        <div className=" rounded-[10px]  overflow-hidden border dark:border-light_text-secondary border-dark_text-secondary">
+        <div className="rounded-[10px]  overflow-hidden border dark:border-light_text-secondary border-dark_text-secondary">
           <HeaderComponent model="TTS" />
           <div className="flex flex-col lg:flex-row">
-            <CardComponent>
-              <div className="flex flex-col gap-2 flex-1 min-h-[30vh]">
-                <div className="flex relative flex-col flex-1 justify-center">
-                  {selectedTool === "text" && (
-                    <TextComponent
-                      setSourceText={setSourceText}
-                      sourceText={sourceText}
-                      sourceLang={"bo"}
-                    />
-                  )}
-                  {selectedTool === "document" && (
-                    <FileUpload
-                      setFile={setFile}
-                      setInputUrl={setInputUrl}
-                      supported={[".txt", ".docx"]}
-                      model="tts"
-                    />
-                  )}
-                  {selectedTool === "text" && (
-                    <CancelButton
-                      onClick={handleReset}
-                      hidden={!sourceText || sourceText === ""}
-                    >
-                      <RxCross2 size={20} />
-                    </CancelButton>
-                  )}
-                </div>
-                <div className="flex justify-between items-center">
+            <CardComponent
+              focussed={true}
+              className="h-[181px] md:h-auto flex-1 border-r border-b lg:border-b-0 dark:border-light_text-secondary border-dark_text-secondary"
+            >
+              <div className="flex relative h-full md:min-h-[25vh] lg:min-h-[40vh] w-full flex-1 flex-col justify-center">
+                {selectedTool === "text" && (
+                  <TextComponent
+                    setSourceText={setSourceText}
+                    sourceText={sourceText}
+                    sourceLang={"bo"}
+                  />
+                )}
+                {selectedTool === "document" && (
+                  <FileUpload
+                    setFile={setFile}
+                    setInputUrl={setInputUrl}
+                    supported={[".txt", ".docx"]}
+                    model="tts"
+                  />
+                )}
+                {selectedTool === "text" && (
+                  <CancelButton
+                    onClick={handleReset}
+                    hidden={!sourceText || sourceText === ""}
+                  >
+                    <RxCross2 size={20} />
+                  </CancelButton>
+                )}
+              </div>
+              {charCount > 0 && (
+                <div className="flex justify-between py-2 px-1 border-t border-t-dark_text-secondary dark:border-t-light_text-secondary">
                   <CharacterOrFileSizeComponent
                     selectedTool={selectedTool}
                     charCount={charCount}
@@ -207,7 +210,7 @@ export default function Index() {
                     disabled={!file || file.length === 0}
                   />
                 </div>
-              </div>
+              )}
             </CardComponent>
             <CardComponent>
               <div className="flex min-h-[15vh] lg:min-h-[30vh] h-auto w-full flex-1 flex-col gap-2 ">
