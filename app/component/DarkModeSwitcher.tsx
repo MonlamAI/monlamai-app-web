@@ -22,8 +22,17 @@ function DarkModeSwitcher() {
       onClick={handleClick}
       className="flex flex-1 gap-3 items-center   cursor-pointer"
     >
-      {isDarkMode ? <MdOutlineLightMode /> : <MdDarkMode />}
-      {translation.appearance}
+      {isDarkMode ? (
+        <>
+          <MdOutlineLightMode />
+          {translation.lightmode}
+        </>
+      ) : (
+        <>
+          <MdDarkMode />
+          {translation.darkmode}
+        </>
+      )}
     </div>
   );
 }
