@@ -34,6 +34,7 @@ function EachModel({ model }: EachProps) {
           <Card
             theme={{
               root: {
+                base: "flex rounded-lg border border-neutral-200 bg-shadow-md dark:border-secondary-700 bg-neutral dark:bg-secondary-800",
                 children: `flex flex-col justify-start items-start gap-2 md:gap-3 ${
                   isEnglish ? "font-poppins" : "font-monlam"
                 }`,
@@ -42,7 +43,7 @@ function EachModel({ model }: EachProps) {
             className="h-full w-full md:w-[450px] flex flex-col p-6"
             renderImage={() => (
               <div
-                className="flex justify-start mb-2 md:mb-3 dark:mix-blend-exclusion dark:rounded-lg "
+                className="flex justify-start mb-2 md:mb-3"
                 style={
                   isTransitioning
                     ? {
