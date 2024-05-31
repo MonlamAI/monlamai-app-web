@@ -182,7 +182,8 @@ function LanguageInput({
         <Select
           onChange={(e) => handleChange(e, "source")}
           value={sourceLang}
-          className="selectHeader w-fit"
+          className="selectHeader w-fit "
+          style={{ color: "gray" }}
         >
           <option value="detect language" className={optionClass}>
             Detect
@@ -207,6 +208,7 @@ function LanguageInput({
           onChange={(e) => handleChange(e, "target")}
           value={targetLang}
           className="selectHeader w-fit"
+          style={{ color: "gray" }}
         >
           {languagesOptions.map((lang) => (
             <option key={lang.code} value={lang.code} className={optionClass}>
