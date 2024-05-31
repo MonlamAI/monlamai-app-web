@@ -52,5 +52,7 @@
   "darkmode":"Dark",
   "lightmode":"Light",
   "audio": "Audio",
-  "transcript": "Transcript"
+  "transcript": "Transcript",
+  "scan":"Scan"
+
 }

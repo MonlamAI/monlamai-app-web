@@ -241,7 +241,10 @@ export default function Index() {
                 )}
                 {isLoading && selectedTool === "text" && (
                   <div className="h-full flex justify-center items-center">
-                    <Spinner />
+                    <Spinner
+                      size="lg"
+                      className={"fill-secondary-300 dark:fill-primary-500"}
+                    />
                   </div>
                 )}
                 {!isLoading && selectedTool === "text" && data && (
@@ -259,7 +262,10 @@ export default function Index() {
                 )}
                 {isLoading && selectedTool === "document" && (
                   <div className="w-full flex justify-center">
-                    <Spinner />
+                    <Spinner
+                      size="lg"
+                      className={"fill-secondary-300 dark:fill-primary-500"}
+                    />
                   </div>
                 )}
                 {selectedTool === "document" && <InferenceList />}

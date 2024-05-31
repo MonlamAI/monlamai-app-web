@@ -47,6 +47,7 @@ import useTranslate from "./lib/useTranslate";
 import { getUserSession } from "~/services/session.server";
 import ImageTranslateComponent from "./components/ImageTranslateComponent";
 import { InferenceList } from "~/component/InferenceList";
+import Devider from "~/component/Devider";
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
   parentMeta.shift(1);
@@ -258,10 +259,7 @@ export default function Index() {
         {(selectedTool === "text" || selectedTool === "document") && (
           <div className="flex flex-col  lg:flex-row ">
             <>
-              <CardComponent
-                focussed={true}
-                className=" h-[181px] md:h-auto flex-1 border-r border-b lg:border-b-0 dark:border-light_text-secondary border-dark_text-secondary"
-              >
+              <CardComponent focussed={true}>
                 {limitMessage ? (
                   <div className="text-gray-500">
                     {limitMessage} <br /> thank you for using MonlamAI
@@ -307,6 +305,7 @@ export default function Index() {
                   </>
                 )}
               </CardComponent>
+              <Devider />
               <CardComponent>
                 <div className="flex min-h-[5vh] md:min-h-[15vh] lg:min-h-[30vh] h-auto w-full flex-1 flex-col gap-2 ">
                   <div

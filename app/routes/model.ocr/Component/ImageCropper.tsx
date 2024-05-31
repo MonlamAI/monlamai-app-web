@@ -124,33 +124,11 @@ export const ImageCropper = ({
       {shouldCrop ? (
         <div className="flex flex-col">
           <div className="relative w-full  md:h-[35vh]">
-            <Cropper ref={cropperRef} src={imageSrc} />
-            {/* <div className="absolute z-50 flex gap-2  w-fit">
-              <button
-                className=" bg-neutral-800   text-white  p-2"
-                onClick={() => setZoom((prev) => prev - 2)}
-              >
-                <BiZoomOut />
-              </button>
-              <button
-                className=" bg-neutral-800 text-white  p-2"
-                onClick={() => setZoom((prev) => prev + 2)}
-              >
-                <BiZoomIn />
-              </button>
-              <button
-                className=" bg-neutral-800 text-white p-2"
-                onClick={() => setRotation((prev) => prev + 10)}
-              >
-                <BiRotateRight />
-              </button>
-              <button
-                className=" bg-neutral-800 text-white p-2"
-                onClick={() => setRotation((prev) => prev - 10)}
-              >
-                <BiRotateLeft />
-              </button>
-            </div> */}
+            <Cropper
+              ref={cropperRef}
+              backgroundClassName="bg-neutral-00 dark:bg-secondary-700"
+              src={imageSrc}
+            />
           </div>
           <div className="flex gap-2 w-full mt-2 ">
             <Button
@@ -171,7 +149,7 @@ export const ImageCropper = ({
           </div>
         </div>
       ) : !imageSrc ? (
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-start m-auto w-fit">
           {!isCameraOpen && (
             <>
               <Label
@@ -189,13 +167,13 @@ export const ImageCropper = ({
                 accept="image/png, image/jpeg, image/jpg"
                 onChange={onLoadImage}
               />
-              <div className="w-full mx-3 my-2 flex justify-center text-neutral-700">
-                OR
-              </div>
             </>
           )}
+          <div className="w-full mx-3 my-2 flex justify-center text-neutral-700">
+            OR
+          </div>
           {!isMobile && !isCameraOpen && (
-            <Button color="dark" onClick={toggleCamera}>
+            <Button color="dark" onClick={toggleCamera} className="self-center">
               <FaCamera className="mr-2" />
               <p>Take Photo</p>
             </Button>
@@ -238,8 +216,9 @@ export const ImageCropper = ({
         />
       )}
       {imageSrc && !shouldCrop && (
-        <div className="flex float-right mt-4">
+        <div className="flex justify-end py-2 px-1 border-t border-t-dark_text-secondary dark:border-t-light_text-secondary">
           <Button onClick={handleSubmitImage}>
+            <span className="pr-2">{translation?.scan}</span>
             <IoSend size={18} />
           </Button>
         </div>
