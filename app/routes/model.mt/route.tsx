@@ -134,6 +134,7 @@ export const clientLoader = async ({
 
 export default function Index() {
   const [params, setParams] = useSearchParams();
+
   const target_lang = params.get("target") || "bo";
   const source_lang = params.get("source") || "en";
   const [sourceText, setSourceText] = useState("");
@@ -257,7 +258,10 @@ export default function Index() {
         {(selectedTool === "text" || selectedTool === "document") && (
           <div className="flex flex-col  lg:flex-row ">
             <>
-              <CardComponent className=" h-[181px] md:h-auto flex-1 border-r border-b lg:border-b-0 dark:border-light_text-secondary border-dark_text-secondary">
+              <CardComponent
+                focussed={true}
+                className=" h-[181px] md:h-auto flex-1 border-r border-b lg:border-b-0 dark:border-light_text-secondary border-dark_text-secondary"
+              >
                 {limitMessage ? (
                   <div className="text-gray-500">
                     {limitMessage} <br /> thank you for using MonlamAI
