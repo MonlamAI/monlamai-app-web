@@ -50,5 +50,7 @@
   "team":"team",
   "home":"home",
   "darkmode":"Dark",
-  "lightmode":"Light"
+  "lightmode":"Light",
+  "audio": "Audio",
+  "transcript": "Transcript"
 }
