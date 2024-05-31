@@ -12,7 +12,7 @@ function Card(props) {
   }
 
   function handleClickOutside(event) {
-    if (cardRef.current && !cardRef.current.contains(event.target)) {
+    if (cardRef.current && !cardRef.current?.contains(event.target)) {
       setIsFocussed(false);
     }
   }
