@@ -43,7 +43,15 @@ function LanguageSwitcher({ likefetcher, setSourceText, data, setTranslated }) {
         animate={{ rotate: isRotated ? 180 : 0 }}
         transition={{ duration: 0.3 }}
       >
-        <FaArrowRightArrowLeft size="20px" />
+        <svg aria-hidden="true" className="text-neutral-100">
+          <path
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M8 7L20 7M20 7L16 3M20 7L16 11M16 17L4 17M4 17L8 21M4 17L8 13"
+          ></path>
+        </svg>
       </motion.button>
 
       <div

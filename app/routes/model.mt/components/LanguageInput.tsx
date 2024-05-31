@@ -5,6 +5,7 @@ import { FaArrowRightArrowLeft } from "react-icons/fa6";
 import { resetFetcher } from "~/component/utils/resetFetcher";
 import LanguageDetect from "languagedetect";
 import { languagesOptions } from "~/helper/const";
+import { GoArrowSwitch } from "react-icons/go";
 
 const lngDetector = new LanguageDetect();
 
@@ -173,33 +174,47 @@ function LanguageInput({
       });
     }
   };
-
+  let optionClass = "bg-white dark:bg-secondary-700 text-black dark:text-white";
   let beta = ["French", "Chinese", "Hindi"];
   return (
-    <div className="flex items-center justify-center md:flex-row gap-3 mt-2 font-poppins">
-      <Select onChange={(e) => handleChange(e, "source")} value={sourceLang}>
-        <option value="detect language">Detect</option>
-        {languagesOptions.map((lang) => (
-          <option key={lang.code} value={lang.code}>
-            {lang.value} {beta.includes(lang.value) ? "(BETA)" : ""}
+    <div className="bg-white border-b dark:border-light_text-secondary border-dark_text-secondary  dark:bg-secondary-700 flex  items-center  md:flex-row gap-3  font-poppins">
+      <div className="flex-1">
+        <Select
+          onChange={(e) => handleChange(e, "source")}
+          value={sourceLang}
+          className="selectHeader w-fit"
+        >
+          <option value="detect language" className={optionClass}>
+            Detect
           </option>
-        ))}
-      </Select>
-
+          {languagesOptions.map((lang) => (
+            <option key={lang.code} value={lang.code} className={optionClass}>
+              {lang.value} {beta.includes(lang.value) ? "(BETA)" : ""}
+            </option>
+          ))}
+        </Select>
+      </div>
       <button
         onClick={toggleDirection}
-        className="group flex items-center py-1 justify-center text-center font-medium relative focus:z-10 focus:outline-none text-[#838585] border border-transparent enabled:hover:bg-primary-hover  dark:enabled:hover:bg-primary-hover  rounded-full  px-2"
+        className="group p-1 flex focus:bg-neutral-100 items-center hover:text-neutral-800   justify-center text-center font-medium relative focus:z-10 focus:outline-none text-[#838585] border border-transparent enabled:hover:bg-primary-hover  dark:enabled:hover:bg-primary-hover rounded-md  "
       >
-        <FaArrowRightArrowLeft size="20px" />
+        <div className=" text-neutral-500">
+          <GoArrowSwitch size={20} />
+        </div>
       </button>
-
-      <Select onChange={(e) => handleChange(e, "target")} value={targetLang}>
-        {languagesOptions.map((lang) => (
-          <option key={lang.code} value={lang.code}>
-            {lang.value} {beta.includes(lang.value) ? "(BETA)" : ""}
-          </option>
-        ))}
-      </Select>
+      <div className="flex-1">
+        <Select
+          onChange={(e) => handleChange(e, "target")}
+          value={targetLang}
+          className="selectHeader w-fit"
+        >
+          {languagesOptions.map((lang) => (
+            <option key={lang.code} value={lang.code} className={optionClass}>
+              {lang.value} {beta.includes(lang.value) ? "(BETA)" : ""}
+            </option>
+          ))}
+        </Select>
+      </div>
     </div>
   );
 }

@@ -28,7 +28,7 @@ export function SubmitButton(props: ButtonProps<"button">) {
 export function CancelButton(props: any) {
   return (
     <div
-      className="absolute z-20 -top-1 -right-2 bg-slate-300 transition-colors duration-200 rounded-full p-1 cursor-pointer"
+      className="absolute z-20 top-1 right-2 text-neutral-500 hover:text-neutral-800 hover:bg-neutral-100 transition-colors duration-200 rounded-md p-1 cursor-pointer"
       {...props}
       title="reset"
     >

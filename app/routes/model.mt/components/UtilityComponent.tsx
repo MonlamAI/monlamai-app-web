@@ -10,6 +10,8 @@ import { FaDownload } from "react-icons/fa";
 import timeSince from "~/component/utils/timeSince";
 import { IoSend } from "react-icons/io5";
 import useSocket from "~/component/hooks/useSocket";
+import { BiArrowToRight } from "react-icons/bi";
+import { BsArrowRight } from "react-icons/bs";
 
 type TextOrDocumentComponentProps = {
   selectedTool: string;
@@ -167,7 +169,7 @@ export function SubmitButton({
   CHAR_LIMIT,
   disabled,
 }: any) {
-  const { locale } = uselitteraTranlation();
+  const { translation, locale } = uselitteraTranlation();
   const isFile = selectedTool === "document";
   const exceedsLimit = charCount > CHAR_LIMIT;
   const empty_error = charCount === 0;
@@ -177,9 +179,12 @@ export function SubmitButton({
       size="xs"
       title={exceedsLimit ? "Character limit exceeded" : ""}
       onClick={isFile ? submitFile : trigger}
-      className={` ${locale !== "bo_TI" ? "font-poppins" : "font-monlam"}`}
+      className={` bg-secondary-500 dark:bg-primary-500 hover:bg-secondary-400 dark:hover:bg-primary-400 
+         text-white dark:text-black 
+      ${locale !== "bo_TI" ? "font-poppins" : "font-monlam"}`}
     >
-      <IoSend size={18} />
+      <span className="pr-2">{translation["translate"]}</span>
+      <BsArrowRight size={18} />
     </Button>
   );
 }

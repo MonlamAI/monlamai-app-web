@@ -77,3 +77,30 @@ feedbucket-app {
 feedbucket-app:hover {
   opacity: 1 !important;
 }
+.selectHeader select:focus {
+  outline: none; /* Remove focus ring */
+  border-color: transparent; /* Custom focus border color (for example, purple) */
+  box-shadow: 0 0 0 3px transparent; /* Custom focus shadow */
+}
+.selectHeader select {
+  background-color: transparent; /* Custom background color */
+  border: 0; /* Custom border color */
+  padding: 0.5rem; /* Custom padding */
+  border-radius: 0.375rem; /* Custom border radius */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for focus state */
+}
+.dark .selectHeader select:focus {
+  outline: none; /* Remove focus ring */
+  border-color: transparent; /* Custom focus border color (for example, purple) */
+  box-shadow: 0 0 0 3px transparent; /* Custom focus shadow */
+}
+.dark .selectHeader select {
+  background-color: transparent; /* Custom background color */
+  border: 0; /* Custom border color */
+  padding: 0.5rem; /* Custom padding */
+  border-radius: 0.375rem; /* Custom border radius */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for focus state */
+}
+textarea{
+  background:transparent !important;
+}

@@ -7,11 +7,13 @@ let TTS_SUCCESS_MESSAGE = "TTS is working";
 let MT_FAILED_MESSAGE = "MT is not working";
 let STT_FAILED_MESSAGE = "STT is not working";
 let TTS_FAILED_MESSAGE = "TTS is not working";
+let OCR_FAILED_MESSAGE = "OCR is not working";
 
 async function testAPI() {
   testMT();
   testTTS();
   testSTT();
+  testOCR();
 }
 
 module.exports = { testAPI };
@@ -119,13 +121,24 @@ async function testSTT() {
       "https://playtht-website-assets.s3.amazonaws.com/voice-samples/pages/home/Play.ht+-+videos.wav"
     );
     if (text) {
-      console.log(" Stt success");
+      console.log(" ocr success");
+    }
+  } catch (error) {
+    announceToDiscord(OCR_FAILED_MESSAGE, "reject");
+  }
+}
+async function testOCR() {
+  try {
+    const text = await callApiWithImage(
+      "https://s3.ap-south-1.amazonaws.com/monlam.ai.website/OCR/input/1715844187384-IMG-20240516-WA0002.jpg"
+    );
+    if (text) {
+      console.log(" OCR success");
     }
   } catch (error) {
     announceToDiscord(STT_FAILED_MESSAGE, "reject");
   }
 }
-
 async function callApiWithAudio(audioUrl) {
   const apiUrl = process.env.STT_API_URL;
   const headers = {
@@ -144,6 +157,31 @@ async function callApiWithAudio(audioUrl) {
     return response.json(); // Assuming the API returns JSON
   } catch (error) {
     return { error: "API Error" }; // Use a constant or a meaningful error message
+  }
+}
+
+async function callApiWithImage(imageURL) {
+  let URL_File = process.env.FILE_SUBMIT_URL;
+
+  if (imageURL) {
+    let formData = new FormData();
+    formData.append("imageUrl", imageURL);
+    let data;
+    try {
+      let res = await fetch(URL_File + "/ocr/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      data = await res.json();
+      if (data?.error) {
+        throw new Error(data.error);
+      }
+    } catch (e) {
+      return {
+        error_message: "API not working.",
+      };
+    }
   }
 }
 

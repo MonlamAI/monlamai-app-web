@@ -1,6 +1,13 @@
 import React from "react";
 import { models } from "~/helper/models";
 import uselitteraTranlation from "./hooks/useLitteraTranslation";
+import { Breadcrumb } from "flowbite-react";
+import { HiHome } from "react-icons/hi";
+import { Link } from "@remix-run/react";
+
+export const HomeIconWrapper = () => {
+  return <HiHome className="dark:fill-primary-500 fill-secondary-500" />;
+};
 
 function ToolWraper({ title, children }) {
   let model = models.find((model) => model.name === title) ?? null;
@@ -8,26 +15,21 @@ function ToolWraper({ title, children }) {
   let isEnglish = locale === "en_US";
   return (
     <>
-      <div
-        className={`mx-auto w-11/12 md:w-4/5 mb-5 ${
-          isEnglish ? "font-poppins" : "font-monlam"
-        }`}
+      <Breadcrumb
+        aria-label="Default breadcrumb "
+        className={!isEnglish ? "font-monlam" : "font-poppins"}
       >
-        <h1
-          className={`text-lg md:text-[1.6rem] flex gap-4 justify-center items-center mb-2 text-center text-slate-700 dark:text-gray-200 `}
-        >
-          <div
-            className="dark:mix-blend-multiply "
-            style={{
-              viewTransitionName: "icon-transition",
-            }}
+        <Breadcrumb.Item icon={HomeIconWrapper}>
+          <Link
+            to="/"
+            className="dark:text-primary-500 px-1 text-secondary-500"
           >
-            {model?.icon}
-          </div>
-          {translation[title]}
-        </h1>
-        {children}
-      </div>
+            {translation["home"]}
+          </Link>
+        </Breadcrumb.Item>
+        <Breadcrumb.Item href="#">{translation[title]}</Breadcrumb.Item>
+      </Breadcrumb>
+      <div className="pt-[24px]">{children}</div>
     </>
   );
 }

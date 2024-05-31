@@ -97,7 +97,7 @@ function Document({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body className="flex h-[100dvh] max-w-[1280px] mx-auto inset-0 overflow-y-auto overflow-x-hidden dark:bg-slate-700 dark:text-gray-200">
+      <body className="flex h-[100dvh]  mx-auto inset-0 overflow-y-auto overflow-x-hidden dark:bg-slate-700 dark:text-gray-200">
         {children}
         <FeedBucket />
         <Scripts />
@@ -128,8 +128,10 @@ export default function App() {
         <div className="flex flex-col flex-1">
           {showHeader && <Header />}
           {user && <LocationComponent />}
-          <div className="flex-1">
-            <Outlet />
+          <div className="flex-1 flex justify-center pt-4  bg-neutral-50 dark:bg-surface-dark ">
+            <div className="flex-1 max-w-[1280px] px-2 ">
+              <Outlet />
+            </div>
           </div>
           {!isSteps && showHeader && <Footer />}
         </div>
