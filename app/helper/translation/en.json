@@ -41,12 +41,14 @@
   "acceptedImage": "Accepted Image",
   "translate": "Translate",
   "document": "Document",
-  "text":"Text",
-  "file":"file",
-  "recording":"Recording",
-  "image":"Image",
-  "zip":"Zip",
-  "PDF":"PDF",
-  "team":"team",
-  "home":"home"
+  "text": "Text",
+  "file": "file",
+  "recording": "Recording",
+  "image": "Image",
+  "zip": "Zip",
+  "PDF": "PDF",
+  "team": "team",
+  "home": "home",
+  "audio": "Audio",
+  "transcript": "Transcript"
 }

@@ -30,6 +30,7 @@ import { toast } from "react-toastify";
 import { getUserSession } from "~/services/session.server";
 import { LoaderFunctionArgs } from "@remix-run/node";
 import { InferenceList } from "~/component/InferenceList";
+import HeaderComponent from "../../component/HeaderComponent";
 
 export const meta: MetaFunction = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -160,119 +161,124 @@ export default function Index() {
         setSelectedTool={setSelectedTool}
         options={["text", "document"]}
       >
-        <CardComponent>
-          <div className="flex flex-col gap-2 flex-1 min-h-[30vh]">
-            <div className="flex relative flex-col flex-1 justify-center">
-              {selectedTool === "text" && (
-                <TextComponent
-                  setSourceText={setSourceText}
-                  sourceText={sourceText}
-                  sourceLang={"bo"}
-                />
-              )}
-              {selectedTool === "document" && (
-                <FileUpload
-                  setFile={setFile}
-                  setInputUrl={setInputUrl}
-                  supported={[".txt", ".docx"]}
-                  model="tts"
-                />
-              )}
-              {selectedTool === "text" && (
-                <CancelButton
-                  onClick={handleReset}
-                  hidden={!sourceText || sourceText === ""}
-                >
-                  <RxCross2 size={20} />
-                </CancelButton>
-              )}
-            </div>
-            <div className="flex justify-between items-center">
-              <CharacterOrFileSizeComponent
-                selectedTool={selectedTool}
-                charCount={charCount}
-                CHAR_LIMIT={CHAR_LIMIT}
-                MAX_SIZE_SUPPORT={MAX_SIZE_SUPPORT_DOC}
-              />
-              <TtsSubmitButton
-                charCount={charCount}
-                CHAR_LIMIT={CHAR_LIMIT}
-                trigger={submitHandler}
-                selectedTool={selectedTool}
-                submitFile={handleFileSubmit}
-                disabled={!file || file.length === 0}
-              />
-            </div>
-          </div>
-        </CardComponent>
-        <CardComponent>
-          <div className="flex min-h-[15vh] lg:min-h-[30vh] h-auto w-full flex-1 flex-col gap-2 ">
-            {actionError && (
-              <ErrorMessage
-                message={actionError}
-                handleClose={() => resetFetcher(fetcher)}
-              />
-            )}
-
-            {data && (
-              <div className="flex justify-between mx-2">
-                <div className="flex items-center gap-3">
-                  <span className="text-gray-400">སྒྲ་ཤུགས་ཆེ་ཆུང་།</span>
-                  <input
-                    type="range"
-                    min={1}
-                    max={20}
-                    step={0.1}
-                    value={volume}
-                    onChange={handleVolumeChange}
-                  />{" "}
+        <div className=" rounded-[10px]  overflow-hidden border dark:border-light_text-secondary border-dark_text-secondary">
+          <HeaderComponent model="TTS" />
+          <div className="flex flex-col lg:flex-row">
+            <CardComponent>
+              <div className="flex flex-col gap-2 flex-1 min-h-[30vh]">
+                <div className="flex relative flex-col flex-1 justify-center">
+                  {selectedTool === "text" && (
+                    <TextComponent
+                      setSourceText={setSourceText}
+                      sourceText={sourceText}
+                      sourceLang={"bo"}
+                    />
+                  )}
+                  {selectedTool === "document" && (
+                    <FileUpload
+                      setFile={setFile}
+                      setInputUrl={setInputUrl}
+                      supported={[".txt", ".docx"]}
+                      model="tts"
+                    />
+                  )}
+                  {selectedTool === "text" && (
+                    <CancelButton
+                      onClick={handleReset}
+                      hidden={!sourceText || sourceText === ""}
+                    >
+                      <RxCross2 size={20} />
+                    </CancelButton>
+                  )}
                 </div>
-                <button
-                  className="flex item-center text-lg p-2 font-semibold"
-                  onClick={changePlaybackRate}
-                >
-                  <span>{playbackRate}X</span>
-                </button>
+                <div className="flex justify-between items-center">
+                  <CharacterOrFileSizeComponent
+                    selectedTool={selectedTool}
+                    charCount={charCount}
+                    CHAR_LIMIT={CHAR_LIMIT}
+                    MAX_SIZE_SUPPORT={MAX_SIZE_SUPPORT_DOC}
+                  />
+                  <TtsSubmitButton
+                    charCount={charCount}
+                    CHAR_LIMIT={CHAR_LIMIT}
+                    trigger={submitHandler}
+                    selectedTool={selectedTool}
+                    submitFile={handleFileSubmit}
+                    disabled={!file || file.length === 0}
+                  />
+                </div>
               </div>
-            )}
-            {isLoading && selectedTool === "text" && (
-              <div className="h-full flex justify-center items-center">
-                <Spinner />
-              </div>
-            )}
-            {!isLoading && selectedTool === "text" && data && (
-              <div className="flex-1 h-full flex justify-center items-center">
-                {data?.error ? (
-                  <div className="text-red-400">{data?.error}</div>
-                ) : (
-                  <AudioPlayerComponents
-                    audioUrl={sourceUrl}
-                    playbackRate={playbackRate}
-                    ref={audioRef}
+            </CardComponent>
+            <CardComponent>
+              <div className="flex min-h-[15vh] lg:min-h-[30vh] h-auto w-full flex-1 flex-col gap-2 ">
+                {actionError && (
+                  <ErrorMessage
+                    message={actionError}
+                    handleClose={() => resetFetcher(fetcher)}
                   />
                 )}
-              </div>
-            )}
-            {isLoading && selectedTool === "document" && (
-              <div className="w-full flex justify-center">
-                <Spinner />
-              </div>
-            )}
-            {selectedTool === "document" && <InferenceList />}
-          </div>
-          <div className="flex justify-end">
-            <div className="flex gap-3 md:gap-5 items-center p-2">
-              <ReactionButtons
-                fetcher={likeFetcher}
-                output={data ? `data:audio/wav;base64,${data}` : null}
-                sourceText={sourceText}
-                inferenceId={inferenceId}
-              />
 
-              {inferenceId && <ShareLink inferenceId={inferenceId} />}
-            </div>
+                {data && (
+                  <div className="flex justify-between mx-2">
+                    <div className="flex items-center gap-3">
+                      <span className="text-gray-400">སྒྲ་ཤུགས་ཆེ་ཆུང་།</span>
+                      <input
+                        type="range"
+                        min={1}
+                        max={20}
+                        step={0.1}
+                        value={volume}
+                        onChange={handleVolumeChange}
+                      />{" "}
+                    </div>
+                    <button
+                      className="flex item-center text-lg p-2 font-semibold"
+                      onClick={changePlaybackRate}
+                    >
+                      <span>{playbackRate}X</span>
+                    </button>
+                  </div>
+                )}
+                {isLoading && selectedTool === "text" && (
+                  <div className="h-full flex justify-center items-center">
+                    <Spinner />
+                  </div>
+                )}
+                {!isLoading && selectedTool === "text" && data && (
+                  <div className="flex-1 h-full flex justify-center items-center">
+                    {data?.error ? (
+                      <div className="text-red-400">{data?.error}</div>
+                    ) : (
+                      <AudioPlayerComponents
+                        audioUrl={sourceUrl}
+                        playbackRate={playbackRate}
+                        ref={audioRef}
+                      />
+                    )}
+                  </div>
+                )}
+                {isLoading && selectedTool === "document" && (
+                  <div className="w-full flex justify-center">
+                    <Spinner />
+                  </div>
+                )}
+                {selectedTool === "document" && <InferenceList />}
+              </div>
+              <div className="flex justify-end">
+                <div className="flex gap-3 md:gap-5 items-center p-2">
+                  <ReactionButtons
+                    fetcher={likeFetcher}
+                    output={data ? `data:audio/wav;base64,${data}` : null}
+                    sourceText={sourceText}
+                    inferenceId={inferenceId}
+                  />
+
+                  {inferenceId && <ShareLink inferenceId={inferenceId} />}
+                </div>
+              </div>
+            </CardComponent>
           </div>
-        </CardComponent>
+        </div>
       </InferenceWrapper>
     </ToolWraper>
   );
