@@ -29,7 +29,7 @@ function OCR() {
   return (
     <div className="flex flex-col w-full">
       <ListInput
-        options={["image", "zip", "PDF"]}
+        options={["image", "file"]}
         selectedTool={selectedTool}
         setSelectedTool={setSelectedTool}
       />
@@ -38,8 +38,7 @@ function OCR() {
         {selectedTool === "image" && (
           <SingleInputSection fetcher={SingleFilefetcher} />
         )}
-        {selectedTool === "zip" && <ZipInputSection fetcher={zipFetcher} />}
-        {selectedTool === "PDF" && <PDFInputSection fetcher={pdfFetcher} />}
+        {selectedTool === "file" && <PDFInputSection fetcher={pdfFetcher} />}
       </div>
     </div>
   );

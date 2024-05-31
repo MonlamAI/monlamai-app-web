@@ -284,7 +284,7 @@ export default function Index() {
                         </CancelButton>
                       )}
                     </div>
-                    {charCount > 0 && (
+                    {charCount > 0 && !edit && (
                       <div className="flex justify-between py-2 px-1 border-t border-t-dark_text-secondary dark:border-t-light_text-secondary">
                         <CharacterOrFileSizeComponent
                           selectedTool={selectedTool}

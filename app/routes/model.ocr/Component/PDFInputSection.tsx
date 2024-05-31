@@ -29,13 +29,26 @@ export default function PDFInputSection({ fetcher }: props) {
   }
 
   function handleStartJob() {
-    let formData = new FormData();
-    formData.append("pdf_file", filePath!);
-    formData.append("file_name", fileName);
-    fetcher.submit(formData, {
-      method: "POST",
-      action: "/api/ocr",
-    });
+    let type = file?.type;
+    if (type === "application/pdf") {
+      let formData = new FormData();
+      formData.append("pdf_file", filePath!);
+      formData.append("file_name", fileName);
+      fetcher.submit(formData, {
+        method: "POST",
+        action: "/api/ocr",
+      });
+    } else if (type === "application/x-zip-compressed") {
+      fetcher.submit(
+        { zip_input_url: filePath! },
+        {
+          method: "POST",
+          action: "/api/ocr",
+        }
+      );
+    } else {
+      alert("Unsupported file type");
+    }
   }
   let { translation } = uselitteraTranlation();
 
@@ -50,7 +63,7 @@ export default function PDFInputSection({ fetcher }: props) {
             setFile={setFile}
             inputUrl={filePath}
             setInputUrl={setFilePath}
-            supported={[".pdf"]}
+            supported={[".pdf", ".zip", ".gz"]}
             setFilename={setFileName}
           />
           <CancelButton

@@ -22,7 +22,7 @@ function ToolWraper({ title, children }) {
         <Breadcrumb.Item icon={HomeIconWrapper}>
           <Link
             to="/"
-            className="dark:text-primary-500 px-1 text-secondary-500"
+            className="dark:text-primary-500 capitalize px-1 text-secondary-500"
           >
             {translation["home"]}
           </Link>

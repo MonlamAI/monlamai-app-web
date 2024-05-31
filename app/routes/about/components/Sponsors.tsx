@@ -11,14 +11,14 @@ function Sponsors() {
         {sponsor_list.map((sponsor, id) => {
           return (
             <div
-              className="my-4  dark:bg-gray-200 dark:rounded-sm h-fit"
+              className="my-4  dark:bg-gray-200 dark:rounded-lg"
               key={sponsor}
             >
               <img
                 loading="lazy"
                 src={sponsor}
-                className="w-[9rem]   object-contain hover:scale-110 transition-all duration-700"
-                style={{ aspectRatio: "3/2", mixBlendMode: "darken" }}
+                className="w-[9rem] p-3 h-fit object-contain hover:scale-110 transition-all duration-700"
+                style={{ mixBlendMode: "darken" }}
               />
             </div>
           );

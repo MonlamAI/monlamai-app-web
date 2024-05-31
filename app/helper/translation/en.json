@@ -53,6 +53,8 @@
   "lightmode":"Light",
   "audio": "Audio",
   "transcript": "Transcript",
-  "scan":"Scan"
+  "scan":"Scan",
+  "contribution_message":"Your contribution will be used to improve translation quality.",
+"save":"Save"
 
 }

@@ -1,10 +1,10 @@
 import { type LoaderFunction } from "@remix-run/node";
 import Instructor from "~/routes/about/components/Instructors";
-import { EnglishIntro, TibetanIntro } from "~/routes/about/components/Intro";
 import Lamas from "~/routes/about/components/Lama";
 import Sponsors from "~/routes/about/components/Sponsors";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import { getUserDetail } from "~/services/session.server";
+import { Intro } from "./components/Intro";
 
 export const loader: LoaderFunction = async ({ request }) => {
   let userdata = await getUserDetail(request);
@@ -12,11 +12,9 @@ export const loader: LoaderFunction = async ({ request }) => {
 };
 
 function About() {
-  let { locale } = uselitteraTranlation();
-  let isEnglish = locale === "en_US";
   return (
     <div className="py-10 m-auto w-[90%] md:w-[80%] font-monlam flex flex-col">
-      {isEnglish ? <EnglishIntro /> : <TibetanIntro />}
+      <Intro />
       <Lamas />
       <Instructor />
       <Sponsors />
