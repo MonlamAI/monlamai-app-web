@@ -20,7 +20,7 @@ function DarkModeSwitcher() {
   return (
     <div
       onClick={handleClick}
-      className="flex flex-1 gap-3 items-center  hover:bg-gray-100 dark:hover:bg-slate-600 cursor-pointer"
+      className="flex flex-1 gap-3 items-center   cursor-pointer"
     >
       {isDarkMode ? <MdOutlineLightMode /> : <MdDarkMode />}
       {translation.appearance}

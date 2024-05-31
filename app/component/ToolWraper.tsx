@@ -29,7 +29,7 @@ function ToolWraper({ title, children }) {
         </Breadcrumb.Item>
         <Breadcrumb.Item href="#">{translation[title]}</Breadcrumb.Item>
       </Breadcrumb>
-      <div className="pt-4">{children}</div>
+      <div className="pt-[24px]">{children}</div>
     </>
   );
 }

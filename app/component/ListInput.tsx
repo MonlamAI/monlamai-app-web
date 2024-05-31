@@ -54,7 +54,7 @@ export default function ListInput({
       aria-label="Tabs with underline"
       style="underline"
       onActiveTabChange={handleSelection}
-      className={` ${isTibetan ? "font-monlam " : "font-poppins"}`}
+      className={` w-fit ${isTibetan ? "font-monlam " : "font-poppins"}`}
     >
       {options.map((option, index) => {
         let icon = icons[option] ?? null;
@@ -69,8 +69,8 @@ export default function ListInput({
             key={option + index}
             title={innerText + isBeta}
             icon={icon}
-            active={selectedTool === option}
-            className={`capitalize flex items-center ${
+            active={isActive}
+            className={`text-sm capitalize flex items-center ${
               disabled && "  opacity-50 cursor-not-allowed  "
             }  `}
           ></Tabs.Item>
@@ -92,17 +92,10 @@ let theme = {
     tabitem: {
       base: "flex items-center justify-center rounded-t-lg p-4 text-sm font-medium disabled:cursor-not-allowed disabled:text-gray-400 disabled:dark:text-gray-500",
       styles: {
-        default: {
-          base: "rounded-t-lg",
-          active: {
-            on: "bg-gray-100 text-blue-500 dark:bg-gray-800 dark:text-secondary-500 dark:text-primary-500",
-            off: "text-gray-500 hover:bg-gray-50 hover:text-gray-600 dark:text-gray-400 dark:hover:bg-gray-800  dark:hover:text-gray-300",
-          },
-        },
         underline: {
-          base: "rounded-t-lg",
+          base: "rounded-t-lg py-0",
           active: {
-            on: "active rounded-t-lg text-secondary-600 dark:text-primary-500",
+            on: "active rounded-t-lg text-secondary-400 dark:text-primary-500 ",
             off: "border-b-2 border-transparent text-gray-500  ",
           },
         },
