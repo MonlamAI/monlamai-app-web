@@ -4,8 +4,9 @@ import { useEffect, useState } from "react";
 import { FaArrowRightArrowLeft } from "react-icons/fa6";
 import { resetFetcher } from "~/component/utils/resetFetcher";
 import LanguageDetect from "languagedetect";
-import { languagesOptions } from "~/helper/const";
+import { eng_languagesOptions, tib_languageOptions } from "~/helper/const";
 import { GoArrowSwitch } from "react-icons/go";
+import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 
 const lngDetector = new LanguageDetect();
 
@@ -45,7 +46,8 @@ function LanguageInput({
   const targetLang = params.get("target") || "bo";
   const [isRotated, setIsRotated] = useState(false);
   const { submit, data: fetcherData } = useFetcher();
-
+  const { isTibetan: isTib } = uselitteraTranlation();
+  const languagesOptions = isTib ? tib_languageOptions : eng_languagesOptions;
   function setTarget(lang: string) {
     setParams((prevParams) => {
       prevParams.set("target", lang);
@@ -175,14 +177,25 @@ function LanguageInput({
     }
   };
   let optionClass = "bg-white dark:bg-secondary-700 text-black dark:text-white";
-  let beta = ["French", "Chinese", "Hindi"];
+  let beta = [
+    "French",
+    "Chinese",
+    "Hindi",
+    "ཕ་རཱན་སིའི་",
+    "རྒྱ་ཡིག",
+    "ཧིན་དི།",
+  ];
   return (
-    <div className="bg-white border-b dark:border-light_text-secondary border-dark_text-secondary  dark:bg-secondary-700 flex  items-center  md:flex-row gap-3  font-poppins">
+    <div
+      className={`${
+        isTib ? "font-monlam text-base" : "font-poppins"
+      } bg-white border-b dark:border-light_text-secondary border-dark_text-secondary  dark:bg-secondary-700 flex  items-center  md:flex-row gap-3  `}
+    >
       <div className="flex-1 ">
         <Select
           onChange={(e) => handleChange(e, "source")}
           value={sourceLang}
-          className="selectHeader w-fit"
+          className="selectHeader w-fit "
         >
           <option value="detect language" className={optionClass}>
             Detect
