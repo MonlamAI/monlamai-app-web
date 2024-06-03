@@ -160,7 +160,11 @@ function SingleInptSection({ fetcher }: any) {
                 )}
               </div>
               {edit && (
-                <EditDisplay editText={editText} setEditText={setEditText} />
+                <EditDisplay
+                  targetLang="bo"
+                  editText={editText}
+                  setEditText={setEditText}
+                />
               )}
               {!edit && editData && (
                 <p className="text-xl font-monlam">{editData}</p>

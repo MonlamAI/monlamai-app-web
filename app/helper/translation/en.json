@@ -56,5 +56,7 @@
   "scan":"Scan",
   "contribution_message":"Your contribution will be used to improve translation quality.",
   "save":"Save",
-  "synthesis": "Synthesis"
+  "synthesis": "Synthesis",
+  "crop": "crop"
+
 }

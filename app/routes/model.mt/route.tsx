@@ -80,7 +80,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
   return {
     user: userdata,
     limitMessage: checkLimit ? limitMessage : null,
-    url: process.env?.MT_API_URL,
     token: process.env?.MODEL_API_AUTH_TOKEN,
     fileUploadUrl: process.env?.FILE_SUBMIT_URL,
     inferences,
@@ -247,7 +246,7 @@ export default function Index() {
         setSelectedTool={setSelectedTool}
       />
       {error && <ErrorMessage error={error} />}
-      <div className=" rounded-[10px] mb-20  overflow-hidden border dark:border-light_text-secondary border-dark_text-secondary">
+      <div className=" rounded-[10px] overflow-hidden border dark:border-light_text-secondary border-dark_text-secondary">
         <LanguageInput
           setSourceText={setSourceText}
           data={data}
@@ -382,7 +381,7 @@ export default function Index() {
 
       {selectedTool === "image" && <ImageTranslateComponent />}
 
-      <div className="mt-3 w-full text-center text-[0.7rem] text-xs text-slate-400 md:float-right md:w-fit">
+      <div className="mt-3 mb-20 w-full text-center text-[0.7rem] text-xs text-slate-400 md:float-right md:w-fit">
         Monlam-MITRA ཡིག་སྒྱུར་རིག་ནུས་དཔེ་གཞི་ཐོན་རིམ་ <small>v</small>10-16
       </div>
     </ToolWraper>

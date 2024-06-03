@@ -9,6 +9,7 @@ import { Cropper, CropperRef } from "react-advanced-cropper";
 import useLitteraTranslation from "~/component/hooks/useLitteraTranslation";
 import WebcamCapture from "./WebcamCapture";
 import { CancelButton } from "~/component/Buttons";
+import { BsCrop } from "react-icons/bs";
 
 export const ImageCropper = ({ uploadFile, handleReset, uploadProgress }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -191,17 +192,21 @@ export const ImageCropper = ({ uploadFile, handleReset, uploadProgress }) => {
           {!shouldCrop && !!imageSrc && (
             <div
               onClick={() => setShouldCrop(true)}
-              className="mb-3 underline cursor-pointer"
+              className={` flex gap-2 items-center cursor-pointer
+              ${!isTibetan ? "font-poppins" : "font-monlam"}`}
             >
-              Crop Image
+              <BsCrop size={18} />
+              {translation.crop}
             </div>
           )}
-          <Button onClick={handleSubmitImage}>
-            <span
-              className={`pr-2 ${isTibetan ? "font-monlam" : "font-poppins"}`}
-            >
-              {translation?.scan}
-            </span>
+          <Button
+            size="xs"
+            onClick={handleSubmitImage}
+            className={` bg-secondary-500 dark:bg-primary-500 hover:bg-secondary-400 dark:hover:bg-primary-400 
+            text-white dark:text-black 
+         ${!isTibetan ? "font-poppins" : "font-monlam"}`}
+          >
+            <span className={`pr-2`}>{translation?.scan}</span>
             <IoSend size={18} />
           </Button>
         </div>

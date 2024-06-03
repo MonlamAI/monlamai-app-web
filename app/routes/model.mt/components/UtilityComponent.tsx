@@ -116,8 +116,8 @@ export function LoadingAnimation() {
 
 export function OutputDisplay({ edit, editData, output, animate, targetLang }) {
   if (edit) return null;
-  let isNotEng = targetLang !== "en";
-  let isNotTib = targetLang !== "bo";
+  let isEng = targetLang == "en";
+  let isTib = targetLang == "bo";
   let fontSize =
     output.length < 600
       ? "text-lg"
@@ -126,11 +126,11 @@ export function OutputDisplay({ edit, editData, output, animate, targetLang }) {
       : "text-sm";
   return (
     <div
-      className={`p-2 text-[1.2rem] leading-[1.8]  first-letter 
+      className={`p-2 first-letter 
       ${fontSize}
-      ${!isNotEng && "font-poppins "} ${
-        !isNotTib && "leading-loose font-monlam"
-      } ${isNotEng && isNotTib && "font-notosans"}`}
+      ${isEng && "font-poppins "} ${isTib && "leading-loose font-monlam"} ${
+        !isEng && !isTib && "font-notosans"
+      }`}
     >
       <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
         {editData ? editData : output}
