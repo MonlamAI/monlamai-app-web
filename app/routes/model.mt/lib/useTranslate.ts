@@ -18,7 +18,7 @@ const useTranslate = ({ target, text, data, setData }: useTranslateType) => {
   const [done, setDone] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const { url, token } = useLoaderData();
+  const { fileUploadUrl } = useLoaderData();
   const controller = new AbortController();
   function trigger() {
     if (!text) {
@@ -33,22 +33,15 @@ const useTranslate = ({ target, text, data, setData }: useTranslateType) => {
       setDone(false);
       setError(null);
       let replaced = en_bo_english_replaces(text);
-      console.log(replaced);
+      let formData = new FormData();
+      let input = enable_replacement_mt ? replaced : text;
+      formData.append("input", input);
+      formData.append("direction", target);
       try {
+        let url = fileUploadUrl + "/mt/playground/stream";
         const response = await fetch(url, {
           method: "POST",
-          mode: "cors",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `${token}`,
-            "Access-Control-Allow-Origin": "*",
-          },
-          body: JSON.stringify({
-            inputs: `<2${target}>${enable_replacement_mt ? replaced : text}`,
-            parameters: {
-              max_new_tokens: 256,
-            },
-          }),
+          body: formData,
           signal: controller.signal,
         });
 
@@ -60,6 +53,7 @@ const useTranslate = ({ target, text, data, setData }: useTranslateType) => {
 
         await handleResponse(response);
       } catch (error) {
+        console.log(error);
         setError(error.message);
       } finally {
         setIsLoading(false);
