@@ -31,6 +31,7 @@ import AudioRecorder from "./components/AudioRecorder";
 import axios from "axios";
 import { getUser } from "~/modal/user.server";
 import { InferenceList } from "~/component/InferenceList";
+import HeaderComponent from "~/component/HeaderComponent";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -199,77 +200,81 @@ export default function Index() {
         options={["recording", "file"]}
       >
         {actionError && <ErrorMessage error={actionError} />}
+        <div className=" rounded-[10px]  overflow-hidden border dark:border-light_text-secondary border-dark_text-secondary">
+          <HeaderComponent model="STT" />
+          <div className="flex flex-col  lg:flex-row">
+            <CardComponent>
+              <div className="flex flex-col relative gap-2 flex-1 min-h-[30vh]">
+                {RecordingSelected && (
+                  <AudioRecorder audioURL={audioURL} uploadAudio={uploadFile} />
+                )}
+                {fileSelected && (
+                  <HandleAudioFile
+                    handleFileChange={handleFileChange}
+                    reset={handleReset}
+                  />
+                )}
+                {uploadProgress > 0 && uploadProgress < 100 && (
+                  <div>progress:{uploadProgress}</div>
+                )}
+                {RecordingSelected && (
+                  <CancelButton onClick={handleReset} hidden={!audioURL}>
+                    <RxCross2 size={20} />
+                  </CancelButton>
+                )}
 
-        <CardComponent>
-          <div className="flex flex-col relative gap-2 flex-1 min-h-[30vh]">
-            {RecordingSelected && (
-              <AudioRecorder audioURL={audioURL} uploadAudio={uploadFile} />
-            )}
-            {fileSelected && (
-              <HandleAudioFile
-                handleFileChange={handleFileChange}
-                reset={handleReset}
-              />
-            )}
-            {uploadProgress > 0 && uploadProgress < 100 && (
-              <div>progress:{uploadProgress}</div>
-            )}
-            {RecordingSelected && (
-              <CancelButton onClick={handleReset} hidden={!audioURL}>
-                <RxCross2 size={20} />
-              </CancelButton>
-            )}
-
-            <div className="flex justify-between">
-              <CharacterOrFileSizeComponent
-                selectedTool={selectedTool}
-                charCount={"2 min "}
-                CHAR_LIMIT={undefined}
-                MAX_SIZE_SUPPORT={MAX_SIZE_SUPPORT_AUDIO}
-              />
-            </div>
+                <div className="flex justify-between">
+                  <CharacterOrFileSizeComponent
+                    selectedTool={selectedTool}
+                    charCount={"2 min "}
+                    CHAR_LIMIT={undefined}
+                    MAX_SIZE_SUPPORT={MAX_SIZE_SUPPORT_AUDIO}
+                  />
+                </div>
+              </div>
+            </CardComponent>
+            <CardComponent>
+              <div className="w-full flex-1 min-h-[30vh] lp-3 text-black  dark:text-gray-200 dark:bg-slate-700 rounded-lg overflow-auto">
+                {RecordingSelected && isLoading && <LoadingAnimation />}
+                {edit && (
+                  <EditDisplay editText={editText} setEditText={setEditText} />
+                )}
+                {selectedTool !== "file" && !isLoading && (
+                  <OutputDisplay
+                    edit={edit}
+                    editData={editData}
+                    output={text}
+                    animate={false}
+                    targetLang="bo"
+                  />
+                )}
+                {selectedTool === "file" && <InferenceList />}
+              </div>
+              {edit && (
+                <EditActionButtons
+                  handleCancelEdit={handleCancelEdit}
+                  handleEditSubmit={handleEditSubmit}
+                  editfetcher={editfetcher}
+                  editText={editText}
+                  outputText={text}
+                />
+              )}
+              {!edit && inferenceId && audioURL && (
+                <NonEditButtons
+                  selectedTool={selectedTool}
+                  likefetcher={likefetcher}
+                  sourceText={audioURL}
+                  inferenceId={inferenceId}
+                  setEdit={setEdit}
+                  text={newText ?? text}
+                  handleCopy={handleCopy}
+                  setEditText={setEditText}
+                  sourceLang="bo"
+                />
+              )}
+            </CardComponent>
           </div>
-        </CardComponent>
-        <CardComponent>
-          <div className="w-full flex-1 min-h-[30vh] lp-3 text-black  dark:text-gray-200 dark:bg-slate-700 rounded-lg overflow-auto">
-            {RecordingSelected && isLoading && <LoadingAnimation />}
-            {edit && (
-              <EditDisplay editText={editText} setEditText={setEditText} />
-            )}
-            {selectedTool !== "file" && !isLoading && (
-              <OutputDisplay
-                edit={edit}
-                editData={editData}
-                output={text}
-                animate={false}
-                targetLang="bo"
-              />
-            )}
-            {selectedTool === "file" && <InferenceList />}
-          </div>
-          {edit && (
-            <EditActionButtons
-              handleCancelEdit={handleCancelEdit}
-              handleEditSubmit={handleEditSubmit}
-              editfetcher={editfetcher}
-              editText={editText}
-              outputText={text}
-            />
-          )}
-          {!edit && inferenceId && audioURL && (
-            <NonEditButtons
-              selectedTool={selectedTool}
-              likefetcher={likefetcher}
-              sourceText={audioURL}
-              inferenceId={inferenceId}
-              setEdit={setEdit}
-              text={newText ?? text}
-              handleCopy={handleCopy}
-              setEditText={setEditText}
-              sourceLang="bo"
-            />
-          )}
-        </CardComponent>
+        </div>
       </InferenceWrapper>
     </ToolWraper>
   );

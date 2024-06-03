@@ -1,6 +1,7 @@
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import { Button } from "flowbite-react";
 import { IoSend } from "react-icons/io5";
+import { BsArrowRight } from "react-icons/bs";
 
 export function TtsSubmitButton({
   selectedTool,
@@ -20,9 +21,12 @@ export function TtsSubmitButton({
       size="xs"
       title={exceedsLimit ? "Character limit exceeded" : ""}
       onClick={isFile ? submitFile : trigger}
-      className={locale !== "bo_TI" ? "font-poppins" : "font-monlam"}
+      className={` bg-secondary-500 dark:bg-primary-500 hover:bg-secondary-400 dark:hover:bg-primary-400 
+      text-white dark:text-black 
+   ${locale !== "bo_TI" ? "font-poppins" : "font-monlam"}`}
     >
-      <IoSend size={18} />
+      <span className="pr-2">{translation["synthesis"]}</span>
+      <BsArrowRight size={18} />
     </Button>
   );
 }

@@ -1,36 +1,27 @@
-import React, { useState, ChangeEvent } from "react";
-
+import React, { useState, ChangeEvent, useRef } from "react";
 import { Button, FileInput, Label } from "flowbite-react";
-import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
-import WebcamCapture from "./WebcamCapture";
 import { useLoaderData } from "@remix-run/react";
 import { FaCamera } from "react-icons/fa";
-import { CancelButton } from "~/component/Buttons";
 import { RxCross2 } from "react-icons/rx";
-import {
-  BiRotateLeft,
-  BiRotateRight,
-  BiSave,
-  BiZoomIn,
-  BiZoomOut,
-} from "react-icons/bi";
+import { BiSave } from "react-icons/bi";
 import { IoSend } from "react-icons/io5";
-
 import { Cropper, CropperRef } from "react-advanced-cropper";
-export const ImageCropper = ({
-  uploadFile,
-  handleReset,
-}: {
-  uploadFile: (data: File) => void;
-  handleReset: () => void;
-}) => {
-  const fileInputRef = React.useRef<HTMLInputElement>(null);
-  const cropperRef = React.useRef<CropperRef>(null);
+import useLitteraTranslation from "~/component/hooks/useLitteraTranslation";
+import WebcamCapture from "./WebcamCapture";
+import { CancelButton } from "~/component/Buttons";
+
+export const ImageCropper = ({ uploadFile, handleReset, uploadProgress }) => {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const cropperRef = useRef<CropperRef>(null);
   const [cropped, setCropped] = useState(false);
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [originalImageSrc, setOriginalImageSrc] = useState<string | null>(null);
   const [filename, setFilename] = useState("");
   const [shouldCrop, setShouldCrop] = useState(false);
+  const { translation, isTibetan } = useLitteraTranslation();
+  const [isCameraOpen, setCameraOpen] = useState(false);
+  const { isMobile } = useLoaderData();
+
   const onLoadImage = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files && event.target.files[0];
     setFilename(file?.name || "");
@@ -43,69 +34,60 @@ export const ImageCropper = ({
       };
     }
     event.target.value = "";
-    setShouldCrop(true);
   };
 
-  let { translation } = uselitteraTranlation();
-  const [isCameraOpen, setCameraOpen] = useState(false);
-  const { isMobile } = useLoaderData();
+  const toggleCamera = () => setCameraOpen(!isCameraOpen);
 
-  const toggleCamera = () => {
-    setCameraOpen(!isCameraOpen);
-  };
-
-  const handleCroppedImage = async () => {
+  const handleCroppedImage = () => {
     const cropper = cropperRef.current;
     if (cropper) {
       const canvas = cropper.getCanvas();
-      const newSRC = canvas?.toDataURL();
-      if (newSRC) setImageSrc(newSRC);
+      const newSrc = canvas?.toDataURL();
+      if (newSrc) setImageSrc(newSrc);
     }
     setShouldCrop(false);
     setCropped(true);
   };
+
   async function handleSubmitImage() {
-    let cropped_image = base64toFile(imageSrc, filename, "image/jpeg");
+    let image_src = cropped ? imageSrc : originalImageSrc;
+    let cropped_image = base64toFile(image_src, filename, "image/jpeg");
     uploadFile(cropped_image);
   }
-  function cancelCrop() {
+
+  const cancelCrop = () => {
     setImageSrc(originalImageSrc);
     setCameraOpen(false);
     setCropped(false);
     setShouldCrop(false);
-  }
+  };
 
-  function handleFormClear() {
-    setCropped(false);
+  const handleFormClear = () => {
     handleReset();
+    setCropped(false);
     setImageSrc(null);
     setShouldCrop(false);
-  }
-  const newFile = async (file) => {
-    if (file) {
-      setFilename(file?.name || "");
-      let prom = new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => {
-          setOriginalImageSrc(reader.result);
-          setImageSrc(reader.result);
-          setShouldCrop(true);
-          resolve(reader.result);
-        };
-        reader.onerror = (error) => {
-          reject(error);
-        };
-      });
-      return await prom;
-    }
   };
-  const onFileChange = async (e) => {
-    if (e.target.files && e.target.files.length > 0) {
-      const file = e.target.files[0];
-      await newFile(file);
-    }
+
+  const newFile = (file: File) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setOriginalImageSrc(reader.result as string);
+        setImageSrc(reader.result as string);
+        setShouldCrop(true);
+        resolve(reader.result);
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
   };
+
+  const onFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) await newFile(file);
+  };
+
   return (
     <>
       <CancelButton
@@ -116,72 +98,35 @@ export const ImageCropper = ({
       >
         <RxCross2 size={20} />
       </CancelButton>
-      {!shouldCrop && !!imageSrc && (
-        <Button onClick={() => setShouldCrop(true)} className="mb-3">
-          Crop Image
-        </Button>
-      )}
       {shouldCrop ? (
-        <div className="flex flex-col">
-          <div className="relative w-full  md:h-[35vh]">
-            <Cropper ref={cropperRef} src={imageSrc} />
-            {/* <div className="absolute z-50 flex gap-2  w-fit">
-              <button
-                className=" bg-neutral-800   text-white  p-2"
-                onClick={() => setZoom((prev) => prev - 2)}
-              >
-                <BiZoomOut />
-              </button>
-              <button
-                className=" bg-neutral-800 text-white  p-2"
-                onClick={() => setZoom((prev) => prev + 2)}
-              >
-                <BiZoomIn />
-              </button>
-              <button
-                className=" bg-neutral-800 text-white p-2"
-                onClick={() => setRotation((prev) => prev + 10)}
-              >
-                <BiRotateRight />
-              </button>
-              <button
-                className=" bg-neutral-800 text-white p-2"
-                onClick={() => setRotation((prev) => prev - 10)}
-              >
-                <BiRotateLeft />
-              </button>
-            </div> */}
+        <div className="flex-1 flex flex-col">
+          <div className="relative w-full max-h-[40vh] flex-1 ">
+            <Cropper
+              ref={cropperRef}
+              backgroundClassName="bg-neutral dark:bg-secondary-700"
+              src={imageSrc}
+            />
           </div>
-          <div className="flex gap-2 w-full mt-2 ">
-            <Button
-              onClick={cancelCrop}
-              title="reset"
-              className="flex-1"
-              color="failure"
-            >
+          <div className="flex gap-2 w-full justify-between px-2 py-1">
+            <Button onClick={cancelCrop} title="reset" color="neutral">
               <RxCross2 />
             </Button>
-            <Button
-              onClick={handleCroppedImage}
-              title="save"
-              className="flex-1  "
-            >
-              <BiSave />
+            <Button onClick={handleCroppedImage} title="save">
+              <BiSave /> {translation.save}
             </Button>
           </div>
         </div>
       ) : !imageSrc ? (
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-start m-auto w-fit">
           {!isCameraOpen && (
             <>
               <Label
                 htmlFor="file"
                 value={translation.uploadImage}
-                className="text-lg text-slate-700 "
+                className="text-lg text-slate-700"
               />
               <FileInput
                 ref={fileInputRef}
-                key={imageSrc}
                 helperText={`${translation.acceptedImage} JPG, PNG, JPEG`}
                 id="file"
                 name="image"
@@ -189,18 +134,17 @@ export const ImageCropper = ({
                 accept="image/png, image/jpeg, image/jpg"
                 onChange={onLoadImage}
               />
-              <div className="w-full mx-3 my-2 flex justify-center text-neutral-700">
-                OR
-              </div>
             </>
           )}
+          <div className="w-full mx-3 my-2 flex justify-center text-neutral-700">
+            OR
+          </div>
           {!isMobile && !isCameraOpen && (
-            <Button color="dark" onClick={toggleCamera}>
+            <Button color="dark" onClick={toggleCamera} className="self-center">
               <FaCamera className="mr-2" />
               <p>Take Photo</p>
             </Button>
           )}
-
           {isCameraOpen && !isMobile && <WebcamCapture setImageUrl={newFile} />}
           {isMobile && (
             <>
@@ -214,7 +158,7 @@ export const ImageCropper = ({
               <input
                 type="file"
                 accept="image/*"
-                capture="environment" // Use "user" for front camera if needed
+                capture="environment"
                 id="take_photo"
                 name="take_photo"
                 className="opacity-0 h-0"
@@ -222,7 +166,6 @@ export const ImageCropper = ({
               />
             </>
           )}
-
           {!isMobile && isCameraOpen && (
             <CancelButton color="gray" type="reset" onClick={toggleCamera}>
               <RxCross2 />
@@ -234,12 +177,31 @@ export const ImageCropper = ({
         <img
           src={imageSrc}
           alt="uploaded image"
-          className="w-full  object-contain max-h-[35vh]"
+          className="w-full max-h-[40vh] flex-1 object-contain "
+          style={{
+            opacity:
+              uploadProgress && uploadProgress < 100
+                ? 0.2 + (uploadProgress / 100) * 0.8
+                : 1,
+          }}
         />
       )}
       {imageSrc && !shouldCrop && (
-        <div className="flex float-right mt-4">
+        <div className="flex justify-between items-center py-2 px-1 border-t border-t-dark_text-secondary dark:border-t-light_text-secondary">
+          {!shouldCrop && !!imageSrc && (
+            <div
+              onClick={() => setShouldCrop(true)}
+              className="mb-3 underline cursor-pointer"
+            >
+              Crop Image
+            </div>
+          )}
           <Button onClick={handleSubmitImage}>
+            <span
+              className={`pr-2 ${isTibetan ? "font-monlam" : "font-poppins"}`}
+            >
+              {translation?.scan}
+            </span>
             <IoSend size={18} />
           </Button>
         </div>

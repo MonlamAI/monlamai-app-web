@@ -60,7 +60,7 @@ function Header() {
         <motion.div
           animate={showMenu ? "open" : "closed"}
           variants={variants}
-          className="block md:hidden absolute top-0 left-0 right-0 w-full h-full bg-white shadow-lg z-40"
+          className="block md:hidden absolute top-0 left-0 right-0 w-full h-full bg-neutral-100 dark:bg-secondary-900 shadow-lg z-40"
           transition={{ duration: 0.5 }}
         >
           <div className="flex flex-col gap-4 p-5">

@@ -61,7 +61,10 @@ function dashboard() {
         <Table.Body className=" h-full mt-2">
           {navigation.state !== "idle" ? (
             <div className="flex justify-center py-4">
-              <Spinner />
+              <Spinner
+                size="lg"
+                className={"fill-secondary-300 dark:fill-primary-500"}
+              />
             </div>
           ) : (
             users?.map((user) => {

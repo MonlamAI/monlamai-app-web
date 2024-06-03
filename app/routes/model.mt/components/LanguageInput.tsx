@@ -178,7 +178,7 @@ function LanguageInput({
   let beta = ["French", "Chinese", "Hindi"];
   return (
     <div className="bg-white border-b dark:border-light_text-secondary border-dark_text-secondary  dark:bg-secondary-700 flex  items-center  md:flex-row gap-3  font-poppins">
-      <div className="flex-1">
+      <div className="flex-1 ">
         <Select
           onChange={(e) => handleChange(e, "source")}
           value={sourceLang}
@@ -206,7 +206,7 @@ function LanguageInput({
         <Select
           onChange={(e) => handleChange(e, "target")}
           value={targetLang}
-          className="selectHeader w-fit"
+          className="selectHeader w-fit "
         >
           {languagesOptions.map((lang) => (
             <option key={lang.code} value={lang.code} className={optionClass}>

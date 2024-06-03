@@ -139,14 +139,24 @@ export function EditActionButtons({
   editText,
   outputText,
 }: EditActionButtonsProps) {
+  const { translation, locale, isEnglish } = uselitteraTranlation();
+
   return (
     <>
-      <p className="px-2 py-1 bg-[#F5F6B0] dark:bg-yellow-500 rounded-md text-sm my-2 text-black dark:text-white">
-        Your contribution will be used to improve translation quality.
-      </p>
-      <div className="flex justify-between">
+      <div className=" h-6 inline-flex mx-2 my-3">
+        <div className="h-6 flex-1 px-9 py-1 bg-primary-200 dark:bg-primary-500 text-black rounded-lg justify-start items-center gap-2.5 flex">
+          <div className=" text-xs font-normal font-['Inter'] leading-none">
+            {translation.contribution_message}
+          </div>
+        </div>
+      </div>
+      <div
+        className={`${
+          isEnglish ? "font-poppins" : "font-monlam"
+        } flex justify-between p-2`}
+      >
         <Button color="gray" onClick={handleCancelEdit}>
-          cancel
+          x
         </Button>
         <Button
           color="blue"
@@ -154,7 +164,7 @@ export function EditActionButtons({
           isProcessing={editfetcher.state !== "idle"}
           disabled={editText === outputText}
         >
-          submit
+          {translation.save}
         </Button>
       </div>
     </>

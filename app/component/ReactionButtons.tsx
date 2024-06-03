@@ -36,7 +36,13 @@ function ReactionButtons({
     );
   };
 
-  if (isLoading) return <Spinner />;
+  if (isLoading)
+    return (
+      <Spinner
+        size="lg"
+        className={"fill-secondary-300 dark:fill-primary-500"}
+      />
+    );
   let data = fetcher.data;
 
   useEffect(() => {
