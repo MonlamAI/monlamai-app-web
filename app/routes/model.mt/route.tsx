@@ -247,7 +247,7 @@ export default function Index() {
         setSelectedTool={setSelectedTool}
       />
       {error && <ErrorMessage error={error} />}
-      <div className=" rounded-[10px]  overflow-hidden border dark:border-light_text-secondary border-dark_text-secondary">
+      <div className=" rounded-[10px] mb-20  overflow-hidden border dark:border-light_text-secondary border-dark_text-secondary">
         <LanguageInput
           setSourceText={setSourceText}
           data={data}
@@ -266,7 +266,7 @@ export default function Index() {
                   </div>
                 ) : (
                   <>
-                    <div className="flex relative h-full md:min-h-[25vh] lg:min-h-[40vh] w-full flex-1 flex-col justify-center">
+                    <div className="flex relative h-auto md:min-h-[25vh] lg:min-h-[40vh] w-full flex-1 flex-col justify-center">
                       <TextOrDocumentComponent
                         selectedTool={selectedTool}
                         sourceText={sourceText}
@@ -326,6 +326,7 @@ export default function Index() {
                       <EditDisplay
                         editText={editText}
                         setEditText={setEditText}
+                        targetLang={target_lang}
                       />
                     )}
                     {TextSelected && sourceText !== "" && (

@@ -118,11 +118,18 @@ export function OutputDisplay({ edit, editData, output, animate, targetLang }) {
   if (edit) return null;
   let isNotEng = targetLang !== "en";
   let isNotTib = targetLang !== "bo";
+  let fontSize =
+    output.length < 600
+      ? "text-lg"
+      : output.length < 1000
+      ? "text-base"
+      : "text-sm";
   return (
     <div
-      className={`p-2 text-[1.2rem] leading-[1.8] max-h-[40vh] overflow-y-auto first-letter 
-      ${!isNotEng && "font-poppins text-xl"} ${
-        !isNotTib && "text-lg leading-loose font-monlam"
+      className={`p-2 text-[1.2rem] leading-[1.8]  first-letter 
+      ${fontSize}
+      ${!isNotEng && "font-poppins "} ${
+        !isNotTib && "leading-loose font-monlam"
       } ${isNotEng && isNotTib && "font-notosans"}`}
     >
       <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
@@ -143,11 +150,13 @@ export function EditActionButtons({
 
   return (
     <>
-      <div className=" h-6 inline-flex mx-2 my-3">
+      <div
+        className={`${
+          isEnglish ? "font-poppins" : "font-monlam"
+        } h-fit inline-flex m-1 text-xs`}
+      >
         <div className="h-6 flex-1 px-9 py-1 bg-primary-200 dark:bg-primary-500 text-black rounded-lg justify-start items-center gap-2.5 flex">
-          <div className=" text-xs font-normal font-['Inter'] leading-none">
-            {translation.contribution_message}
-          </div>
+          {translation.contribution_message}
         </div>
       </div>
       <div
