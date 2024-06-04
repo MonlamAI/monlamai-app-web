@@ -32,6 +32,7 @@ function Lamas() {
 function EachLama({ lama }) {
   const [loaded, setLoaded] = useState(false);
   const imageRef = useRef<HTMLImageElement>(null);
+  const { translation, isTibetan } = uselitteraTranlation();
 
   useEffect(() => {
     const img = new Image();
@@ -65,7 +66,13 @@ function EachLama({ lama }) {
           onLoad={() => setLoaded(true)}
           className="rounded-full h-24 w-24 object-cover shadow-md p-1 hover:scale-105 transition-all duration-500"
         />
-        <p className="text-center text-sm py-2 font-poppins">{lama.name}</p>
+        <p
+          className={`text-center text-sm py-2 ${
+            isTibetan ? "font-monlam" : "font-poppins"
+          }`}
+        >
+          {isTibetan ? lama.tibetan_name : lama.name}
+        </p>
       </div>
     </Card>
   );

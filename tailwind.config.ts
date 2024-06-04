@@ -95,7 +95,7 @@ export default {
       },
     },
     fontFamily: {
-      poppins: ["Poppins", "sans-serif"],
+      poppins: ["Inter", "Poppins", "sans-serif"],
       monlam: ["Monlam", "sans-serif"],
       notosans: ["Noto Sans", "sans-serif"],
     },
