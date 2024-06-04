@@ -60,13 +60,15 @@ function ReactionButtons({
 
   return (
     <>
-      <ReactionButton
-        disabled={!output}
-        enabled={!!output}
-        icon={<FaPencil size={ICON_SIZE} />}
-        onClick={clickEdit}
-        className=""
-      />
+      {clickEdit !== undefined && (
+        <ReactionButton
+          disabled={!output}
+          enabled={!!output}
+          icon={<FaPencil size={ICON_SIZE} />}
+          onClick={clickEdit}
+          className=""
+        />
+      )}
       <ReactionButton
         enabled={!!output}
         disabled={liked}

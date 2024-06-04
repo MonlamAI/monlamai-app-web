@@ -4,6 +4,7 @@ import React, { useRef, useState } from "react";
 import { LiveAudioVisualizer } from "react-audio-visualize";
 import { BsFillMicFill, BsFillStopFill } from "react-icons/bs";
 import { getBrowser } from "~/component/utils/getBrowserDetail";
+import AudioPlayer from "~/routes/model.tts/components/AudioPlayer";
 
 let stopRecordingTimeout: any;
 
@@ -120,12 +121,7 @@ function AudioRecorder({ audioURL, uploadAudio }: AudioRecordProps) {
         </Button>
       )}
 
-      {audioURL && (
-        <audio controls className="mt-4 md:mt-0">
-          <source src={audioURL} type="audio/mpeg"></source>
-          <source src={audioURL} type="audio/ogg"></source>
-        </audio>
-      )}
+      {audioURL && <AudioPlayer audioURL={audioURL} />}
     </div>
   );
 }
