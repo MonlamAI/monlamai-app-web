@@ -14,9 +14,11 @@ const WaveformPlayer = ({ audioUrl, playbackRate }, audioRef) => {
     const waveSurfer = WaveSurfer.create({
       container: containerRef.current,
       responsive: true,
-      barWidth: 2,
-      barHeight: 10,
+      barHeight: 12,
       cursorWidth: 0,
+      waveColor: "#5290F4",
+      barGap: 4,
+      barWidth: 4,
     });
     waveSurfer.load(audioUrl);
     waveSurfer.on("ready", () => {
@@ -67,7 +69,7 @@ const WaveformPlayer = ({ audioUrl, playbackRate }, audioRef) => {
           onClick={() => {
             waveSurferRef.current.playPause();
           }}
-          className="text-secondary-50 dark:text-black rounded-full bg-secondary-700"
+          className="text-secondary-50 dark:text-black rounded-full bg-secondary-700 dark:bg-secondary-50"
         >
           {isPlaying ? <MdPause size={36} /> : <MdPlayArrow size={36} />}
         </button>
