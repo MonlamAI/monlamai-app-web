@@ -157,7 +157,15 @@ export function EditActionButtons({
           isEnglish ? "font-poppins" : "font-monlam"
         } flex justify-between p-2 text-sm border-t-2 border-t-dark_text-secondary dark:border-t-light_text-secondary`}
       >
-        <Button color="gray" size="sm" onClick={handleCancelEdit}>
+        <Button
+          color="gray"
+          className={` bg-secondary-500 dark:bg-primary-500 hover:bg-secondary-400 dark:hover:bg-primary-400 
+         enabled:hover:bg-secondary-400 enabled:dark:hover:bg-primary-400
+            text-white dark:text-black 
+         `}
+          size="sm"
+          onClick={handleCancelEdit}
+        >
           x
         </Button>
         <Button
@@ -166,6 +174,10 @@ export function EditActionButtons({
           onClick={handleEditSubmit}
           isProcessing={editfetcher.state !== "idle"}
           disabled={editText === outputText}
+          className={` bg-secondary-500 dark:bg-primary-500 hover:bg-secondary-400 dark:hover:bg-primary-400 
+          enabled:hover:bg-secondary-400 enabled:dark:hover:bg-primary-400
+             text-white dark:text-black 
+         `}
         >
           <FiFile size={18} /> {translation.save}
         </Button>
