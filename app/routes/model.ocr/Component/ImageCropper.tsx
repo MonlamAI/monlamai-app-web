@@ -112,7 +112,7 @@ export const ImageCropper = ({ uploadFile, handleReset, uploadProgress }) => {
             <Button onClick={cancelCrop} title="reset" color="neutral">
               <RxCross2 />
             </Button>
-            <Button onClick={handleCroppedImage} title="save">
+            <Button onClick={handleCroppedImage} title="save" size="sm">
               <BiSave /> {translation.save}
             </Button>
           </div>

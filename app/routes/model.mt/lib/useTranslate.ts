@@ -82,20 +82,20 @@ const useTranslate = ({ target, text, data, setData }: useTranslateType) => {
         const { done, value } = await reader.read();
 
         if (done) break;
-
         try {
-          let parsedData = parseCustomData(value);
-          streamData = parsedData.map((item) => item.token.text).join("");
+          let { streamData, generated_text } = parseCustomData(value);
+
+          setData((p) => {
+            let newChunk = !!generated_text
+              ? generated_text
+              : p + streamData.replace("</s>", "");
+            return enable_replacement_mt
+              ? en_bo_tibetan_replaces(newChunk)
+              : newChunk;
+          });
         } catch (e) {
           console.log(chunk);
         }
-
-        setData((p) => {
-          let newChunk = p + streamData.replace("</s>", "");
-          return enable_replacement_mt
-            ? en_bo_tibetan_replaces(newChunk)
-            : newChunk;
-        });
       }
     }
   }
@@ -120,5 +120,7 @@ function parseCustomData(input) {
       }
     })
     .filter((entry) => entry !== null); // Remove any null entries resulting from parsing errors
-  return parsedData;
+  let streamData = parsedData.map((item) => item.token.text).join("");
+  let generated_text = parsedData.find((item) => item.generated_text);
+  return { streamData, generated_text: generated_text?.generated_text };
 }

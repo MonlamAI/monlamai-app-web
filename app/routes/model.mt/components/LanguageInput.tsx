@@ -189,7 +189,7 @@ function LanguageInput({
     <div
       className={`${
         isTib ? "font-monlam text-base" : "font-poppins"
-      } bg-white border-b dark:border-light_text-secondary border-dark_text-secondary  dark:bg-secondary-700 flex  items-center  md:flex-row gap-3  `}
+      } bg-white border-b py-1 px-2 font-normal  dark:border-light_text-secondary border-dark_text-secondary  dark:bg-secondary-700 flex  items-center  md:flex-row gap-3  `}
     >
       <div className="flex-1 ">
         <Select
@@ -197,7 +197,10 @@ function LanguageInput({
           value={sourceLang}
           className="selectHeader w-fit "
         >
-          <option value="detect language" className={optionClass}>
+          <option
+            value="detect language"
+            className={optionClass + "font-poppins"}
+          >
             Detect
           </option>
           {languagesOptions.map((lang) => (

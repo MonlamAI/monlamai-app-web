@@ -34,7 +34,7 @@ function OCR() {
         setSelectedTool={setSelectedTool}
       />
       <div className="rounded-lg overflow-hidden">
-        <HeaderComponent model="OCR" />
+        <HeaderComponent model="OCR" selectedTool={selectedTool} />
         {selectedTool === "image" && (
           <SingleInputSection fetcher={SingleFilefetcher} />
         )}

@@ -124,7 +124,7 @@ function SingleInptSection({ fetcher }: any) {
       </CardComponent>
       <Devider />
       <CardComponent>
-        <div className="w-full flex flex-1 max-h-[45vh] p-3 text-black bg-neutral dark:bg-secondary-700  overflow-auto">
+        <div className="w-full flex flex-1 max-h-[45vh] p-3 text-black bg-neutral dark:bg-secondary-700 dark:text-neutral  overflow-auto">
           {isActionSubmission ? (
             <div className="w-full flex justify-center items-center">
               <Spinner
