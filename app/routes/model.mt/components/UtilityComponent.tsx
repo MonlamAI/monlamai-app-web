@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import FileUpload from "~/component/FileUpload";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import { BsArrowRight } from "react-icons/bs";
+import { FiFile } from "react-icons/fi";
 
 type TextOrDocumentComponentProps = {
   selectedTool: string;
@@ -154,18 +155,19 @@ export function EditActionButtons({
       <div
         className={`${
           isEnglish ? "font-poppins" : "font-monlam"
-        } flex justify-between p-2`}
+        } flex justify-between p-2 text-sm border-t-2 border-t-dark_text-secondary dark:border-t-light_text-secondary`}
       >
-        <Button color="gray" onClick={handleCancelEdit}>
+        <Button color="gray" size="sm" onClick={handleCancelEdit}>
           x
         </Button>
         <Button
+          size="sm"
           color="blue"
           onClick={handleEditSubmit}
           isProcessing={editfetcher.state !== "idle"}
           disabled={editText === outputText}
         >
-          {translation.save}
+          <FiFile size={18} /> {translation.save}
         </Button>
       </div>
     </>

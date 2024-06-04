@@ -1,10 +1,16 @@
 import { Button, Dropdown, Tooltip } from "flowbite-react";
-import { FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa";
+import {
+  FaPenAlt,
+  FaPencilAlt,
+  FaRegThumbsDown,
+  FaRegThumbsUp,
+} from "react-icons/fa";
 import { GoPencil } from "react-icons/go";
 import CopyToClipboard from "~/component/CopyToClipboard";
 import ReactionButtons from "~/component/ReactionButtons";
 import ShareLink from "~/component/ShareLink";
 import Speak from "~/component/Speak";
+import { ICON_SIZE } from "~/helper/const";
 import LikeDislike from "~/styles/LikeDislike";
 
 type NonEditModeActionsProps = {
@@ -126,49 +132,25 @@ export function NonEditButtons({
   let isOutputNull = !text || text === "";
   if (isOutputNull || !isSelected) return null;
   const { liked, disliked } = likefetcher.data?.vote || {};
-
+  const ClickEdit = () => {
+    setEditText(text);
+    setEdit(true);
+  };
   return (
     <div
-      className={`flex ${
+      className={`flex  ${
         sourceLang == "en" ? "justify-between" : "justify-end"
-      } p-2`}
+      } py-2.5 px-5 border-t dark:border-t-light_text-secondary border-t-dark_text-secondary`}
     >
       {selectedTool !== "File" && sourceLang == "en" && <Speak text={text} />}
-      <div className="flex gap-3 justify-end items-center">
-        <button
-          onClick={() => {
-            setEditText(text);
-            setEdit(true);
-          }}
-          className="flex justify-center items-center"
-        >
-          {/* <GoPencil size={20} /> */}
-          <svg
-            className="w-6 h-6 text-gray-800 dark:text-white"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M10.779 17.779 4.36 19.918 6.5 13.5m4.279 4.279 8.364-8.643a3.027 3.027 0 0 0-2.14-5.165 3.03 3.03 0 0 0-2.14.886L6.5 13.5m4.279 4.279L6.499 13.5m2.14 2.14 6.213-6.504M12.75 7.04 17 11.28"
-            />
-          </svg>
-        </button>
-        <div className="flex justify-center py-2 gap-3">
-          <ReactionButtons
-            fetcher={likefetcher}
-            output={text}
-            sourceText={sourceText}
-            inferenceId={inferenceId}
-          />
-        </div>
+      <div className="flex gap-3 justify-end items-center p-[4px]">
+        <ReactionButtons
+          fetcher={likefetcher}
+          output={text}
+          sourceText={sourceText}
+          inferenceId={inferenceId}
+          clickEdit={ClickEdit}
+        />
         <CopyToClipboard textToCopy={text} onClick={handleCopy} />
         <ShareLink inferenceId={inferenceId} />
       </div>

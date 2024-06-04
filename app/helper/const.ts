@@ -31,3 +31,5 @@ export const tib_languageOptions = [
   { value: "རྒྱ་ཡིག", code: "zh" },
   { value: "ཧིན་དི།", code: "hi" },
 ];
+
+export const ICON_SIZE = 16;
