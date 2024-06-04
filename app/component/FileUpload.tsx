@@ -96,7 +96,7 @@ function FileUpload({ setFile, setInputUrl, supported, model }) {
   if (myFiles.length > 0)
     return (
       <>
-        <div className="bg-gray-200 p-4 rounded-lg shadow-md flex justify-between items-center">
+        <div className="bg-gray-200 rounded-lg shadow-md flex justify-between items-center">
           <div className="flex gap-4">
             <FaFile size="20px" />
             {myFiles?.map((item) => (
@@ -118,18 +118,11 @@ function FileUpload({ setFile, setInputUrl, supported, model }) {
     );
 
   return (
-    <div
-      className="min-h-full flex-1 flex cursor-pointer mb-3"
-      {...getRootProps()}
-    >
+    <div className="flex-1 flex cursor-pointer " {...getRootProps()}>
       <input {...getInputProps()} />
       <p
         style={{
           backgroundColor: isDragActive ? "#f5f5f5" : "transparent",
-          borderColor: "#d3d3d3",
-          borderWidth: "2px",
-          borderStyle: "dashed",
-          borderRadius: "5px",
           color: "#666",
           display: "flex",
           flexDirection: "column",
@@ -140,13 +133,15 @@ function FileUpload({ setFile, setInputUrl, supported, model }) {
           height: "100%",
           width: "100%",
         }}
-        className="flex-1 flex flex-col justify-center items-center rounded text-slate-300 p-3"
+        className="flex-1 flex flex-col justify-center items-center rounded text-neutral-300 p-3"
       >
         <img
           className="w-1/2 "
           src="//ssl.gstatic.com/translate/drag_and_drop.png"
         />
-        <p>Drag and drop your file here, Supported {supported_list}</p>
+        <p className="dark:text-neutral mt-2">
+          Drag and drop your file here, Supported {supported_list}
+        </p>
       </p>
     </div>
   );

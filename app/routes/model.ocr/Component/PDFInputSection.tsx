@@ -11,6 +11,7 @@ import FileUpload from "./FileUpload";
 import ErrorMessage from "../../../component/ErrorMessage";
 import { InferenceList } from "~/component/InferenceList";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
+import Devider from "~/component/Devider";
 
 type props = {
   fetcher: any;
@@ -50,13 +51,15 @@ export default function PDFInputSection({ fetcher }: props) {
       alert("Unsupported file type");
     }
   }
-  let { translation } = uselitteraTranlation();
+  let { translation, isTibetan } = uselitteraTranlation();
 
   let alldone = !!filePath;
   return (
     <div className="flex flex-col lg:flex-row overflow-hidden max-w-[100vw] ">
-      <CardComponent>
-        <div className="w-full relative min-h-[45vh] flex flex-col items-center justify-center gap-5">
+      <CardComponent
+        className={`${isTibetan ? "font-monlam" : "font-poppins"}`}
+      >
+        <div className="w-full relative h-full  min-h-[30vh] md:min-h-[45vh] flex flex-col items-center  justify-center  gap-5">
           {/* <TooltipComponent /> */}
           <FileUpload
             file={file}
@@ -89,8 +92,10 @@ export default function PDFInputSection({ fetcher }: props) {
           </div>
         )}
       </CardComponent>
+      <Devider />
+
       <CardComponent>
-        <div className="w-full h-[50vh] p-3 text-black bg-neutral dark:bg-secondary-700   overflow-auto">
+        <div className="w-full flex flex-1 max-h-[45vh] p-3 text-black bg-neutral dark:bg-secondary-700 dark:text-neutral  overflow-auto">
           {fetcher.data?.error && (
             <ErrorMessage
               message={fetcher.data?.error}
