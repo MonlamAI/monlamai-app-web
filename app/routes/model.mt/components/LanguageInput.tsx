@@ -197,7 +197,10 @@ function LanguageInput({
           value={sourceLang}
           className="selectHeader w-fit "
         >
-          <option value="detect language" className={optionClass}>
+          <option
+            value="detect language"
+            className={optionClass + "font-poppins"}
+          >
             Detect
           </option>
           {languagesOptions.map((lang) => (
