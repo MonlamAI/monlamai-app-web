@@ -193,6 +193,7 @@ export function SubmitButton({
       title={exceedsLimit ? "Character limit exceeded" : ""}
       onClick={isFile ? submitFile : trigger}
       className={` bg-secondary-500 dark:bg-primary-500 hover:bg-secondary-400 dark:hover:bg-primary-400 
+      enabled:hover:bg-secondary-400 enabled:dark:hover:bg-primary-400
          text-white dark:text-black 
       ${locale !== "bo_TI" ? "font-poppins" : "font-monlam"}`}
     >
