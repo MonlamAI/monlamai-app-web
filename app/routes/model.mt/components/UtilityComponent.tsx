@@ -2,15 +2,7 @@ import { Button, Textarea } from "flowbite-react";
 import TextComponent from "../../../component/TextComponent";
 import { motion } from "framer-motion";
 import FileUpload from "~/component/FileUpload";
-import { useEffect, useMemo, useState } from "react";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
-import { useFetcher, useLoaderData, useRevalidator } from "@remix-run/react";
-import { MdDeleteForever } from "react-icons/md";
-import { FaDownload } from "react-icons/fa";
-import timeSince from "~/component/utils/timeSince";
-import { IoSend } from "react-icons/io5";
-import useSocket from "~/component/hooks/useSocket";
-import { BiArrowToRight } from "react-icons/bi";
 import { BsArrowRight } from "react-icons/bs";
 
 type TextOrDocumentComponentProps = {
@@ -119,9 +111,9 @@ export function OutputDisplay({ edit, editData, output, animate, targetLang }) {
   let isEng = targetLang == "en";
   let isTib = targetLang == "bo";
   let fontSize =
-    output.length < 600
+    output?.length < 600
       ? "text-lg"
-      : output.length < 1000
+      : output?.length < 1000
       ? "text-base"
       : "text-sm";
   return (
