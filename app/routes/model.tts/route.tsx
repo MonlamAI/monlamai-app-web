@@ -143,15 +143,6 @@ export default function Index() {
   }
   let actionError = fetcher.data?.error as string;
 
-  const changePlaybackRate = () => {
-    const rates = [1, 1.25, 1.5, 2, 0.5];
-    const currentIndex = rates.indexOf(playbackRate);
-    const nextIndex = (currentIndex + 1) % rates.length;
-    const newRate = rates[nextIndex];
-    if (audioRef.current) audioRef.current.playbackRate = newRate;
-    setPlaybackRate(newRate);
-  };
-
   useEffect(() => {
     if (sourceText === "") {
       resetFetcher(fetcher);
@@ -214,7 +205,7 @@ export default function Index() {
             </CardComponent>
             <Devider />
             <CardComponent>
-              <div className="flex min-h-[15vh] lg:min-h-[30vh] h-auto w-full flex-1 flex-col gap-2 p-4">
+              <div className="flex min-h-[15vh] lg:min-h-[30vh] h-auto w-full flex-1 flex-col gap-2">
                 {actionError && (
                   <ErrorMessage
                     message={actionError}
