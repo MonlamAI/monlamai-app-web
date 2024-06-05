@@ -42,7 +42,7 @@
   "translate": "Translate",
   "document": "Document",
   "text": "Text",
-  "file": "file",
+  "file": "File",
   "recording": "Recording",
   "image": "Image",
   "zip": "Zip",
@@ -53,10 +53,9 @@
   "lightmode": "Light",
   "audio": "Audio",
   "transcript": "Transcript",
-  "scan":"Scan",
-  "contribution_message":"Your contribution will be used to improve translation quality.",
-  "save":"Save",
+  "scan": "Scan",
+  "contribution_message": "Your contribution will be used to improve translation quality.",
+  "save": "Save",
   "synthesis": "Synthesis",
   "crop": "crop"
-
 }

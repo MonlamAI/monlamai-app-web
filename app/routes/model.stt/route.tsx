@@ -201,10 +201,13 @@ export default function Index() {
       >
         {actionError && <ErrorMessage error={actionError} />}
         <div className=" rounded-[10px]  overflow-hidden border dark:border-light_text-secondary border-dark_text-secondary">
-          <HeaderComponent model="STT" />
+          <HeaderComponent model="STT" selectedTool={selectedTool} />
           <div className="flex flex-col  lg:flex-row">
-            <CardComponent>
-              <div className="flex flex-col relative gap-2 flex-1 min-h-[30vh]">
+            <CardComponent
+              focussed={true}
+              className=" md:h-auto flex-1 border-r border-b lg:border-b-0 dark:border-light_text-secondary border-dark_text-secondary"
+            >
+              <div className="flex relative min-h-[20vh] lg:min-h-[45vh] w-full flex-1 flex-col justify-center">
                 {RecordingSelected && (
                   <AudioRecorder audioURL={audioURL} uploadAudio={uploadFile} />
                 )}
@@ -234,12 +237,16 @@ export default function Index() {
               </div>
             </CardComponent>
             <CardComponent>
-              <div className="w-full flex-1 min-h-[30vh] lp-3 text-black  dark:text-gray-200 dark:bg-slate-700 rounded-lg overflow-auto">
+              <div className="w-full flex-1 min-h-[30vh] text-black dark:text-gray-200 rounded-lg overflow-auto">
                 {RecordingSelected && isLoading && <LoadingAnimation />}
                 {edit && (
-                  <EditDisplay editText={editText} setEditText={setEditText} />
+                  <EditDisplay
+                    editText={editText}
+                    setEditText={setEditText}
+                    targetLang="bo"
+                  />
                 )}
-                {selectedTool !== "file" && !isLoading && (
+                {RecordingSelected && !isLoading && (
                   <OutputDisplay
                     edit={edit}
                     editData={editData}
@@ -248,7 +255,7 @@ export default function Index() {
                     targetLang="bo"
                   />
                 )}
-                {selectedTool === "file" && <InferenceList />}
+                {fileSelected && <InferenceList />}
               </div>
               {edit && (
                 <EditActionButtons

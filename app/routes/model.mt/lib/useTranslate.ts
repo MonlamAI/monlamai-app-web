@@ -94,7 +94,7 @@ const useTranslate = ({ target, text, data, setData }: useTranslateType) => {
               : newChunk;
           });
         } catch (e) {
-          console.log(chunk);
+          throw new Error(e);
         }
       }
     }
@@ -115,8 +115,7 @@ function parseCustomData(input) {
         // Parse the JSON string to an object
         return JSON.parse(entry);
       } catch (error) {
-        console.error("Error parsing entry:", entry, error);
-        return null; // Return null if parsing fails
+        throw new Error("Error parsing entry:", entry);
       }
     })
     .filter((entry) => entry !== null); // Remove any null entries resulting from parsing errors

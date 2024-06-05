@@ -2,16 +2,9 @@ import { Button, Textarea } from "flowbite-react";
 import TextComponent from "../../../component/TextComponent";
 import { motion } from "framer-motion";
 import FileUpload from "~/component/FileUpload";
-import { useEffect, useMemo, useState } from "react";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
-import { useFetcher, useLoaderData, useRevalidator } from "@remix-run/react";
-import { MdDeleteForever } from "react-icons/md";
-import { FaDownload } from "react-icons/fa";
-import timeSince from "~/component/utils/timeSince";
-import { IoSend } from "react-icons/io5";
-import useSocket from "~/component/hooks/useSocket";
-import { BiArrowToRight } from "react-icons/bi";
 import { BsArrowRight } from "react-icons/bs";
+import { FiFile } from "react-icons/fi";
 
 type TextOrDocumentComponentProps = {
   selectedTool: string;
@@ -84,7 +77,7 @@ export function CharacterOrFileSizeComponent({
     <div className="text-gray-400 text-xs p-2">
       {(selectedTool === "recording" || selectedTool === "file") &&
         "Duration : " + charCount}
-      {selectedTool === "text" && (
+      {selectedTool === "text" && typeof charCount === "number" && (
         <>
           <span style={{ color: charCount > CHAR_LIMIT! ? "red" : "inherit" }}>
             {charCount}
@@ -114,14 +107,26 @@ export function LoadingAnimation() {
   );
 }
 
-export function OutputDisplay({ edit, editData, output, animate, targetLang }) {
+export function OutputDisplay({
+  edit,
+  editData,
+  output,
+  animate,
+  targetLang,
+}: {
+  edit: boolean;
+  editData: string;
+  output: string;
+  animate: boolean;
+  targetLang: string;
+}) {
   if (edit) return null;
   let isEng = targetLang == "en";
   let isTib = targetLang == "bo";
   let fontSize =
-    output.length < 600
+    output?.length < 600
       ? "text-lg"
-      : output.length < 1000
+      : output?.length < 1000
       ? "text-base"
       : "text-sm";
   return (
@@ -162,18 +167,31 @@ export function EditActionButtons({
       <div
         className={`${
           isEnglish ? "font-poppins" : "font-monlam"
-        } flex justify-between p-2`}
+        } flex justify-between p-2 text-sm border-t-2 border-t-dark_text-secondary dark:border-t-light_text-secondary`}
       >
-        <Button color="gray" onClick={handleCancelEdit}>
+        <Button
+          color="gray"
+          className={` bg-secondary-500 dark:bg-primary-500 hover:bg-secondary-400 dark:hover:bg-primary-400 
+         enabled:hover:bg-secondary-400 enabled:dark:hover:bg-primary-400
+            text-white dark:text-black 
+         `}
+          size="sm"
+          onClick={handleCancelEdit}
+        >
           x
         </Button>
         <Button
+          size="sm"
           color="blue"
           onClick={handleEditSubmit}
           isProcessing={editfetcher.state !== "idle"}
           disabled={editText === outputText}
+          className={` bg-secondary-500 dark:bg-primary-500 hover:bg-secondary-400 dark:hover:bg-primary-400 
+          enabled:hover:bg-secondary-400 enabled:dark:hover:bg-primary-400
+             text-white dark:text-black 
+         `}
         >
-          {translation.save}
+          <FiFile size={18} /> {translation.save}
         </Button>
       </div>
     </>
@@ -199,6 +217,7 @@ export function SubmitButton({
       title={exceedsLimit ? "Character limit exceeded" : ""}
       onClick={isFile ? submitFile : trigger}
       className={` bg-secondary-500 dark:bg-primary-500 hover:bg-secondary-400 dark:hover:bg-primary-400 
+      enabled:hover:bg-secondary-400 enabled:dark:hover:bg-primary-400
          text-white dark:text-black 
       ${locale !== "bo_TI" ? "font-poppins" : "font-monlam"}`}
     >

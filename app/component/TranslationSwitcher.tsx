@@ -18,19 +18,17 @@ function TranslationSwitcher() {
   return (
     <div
       onClick={SwitchLanguage}
-      className="cursor-pointer flex gap-2 items-center mr-2"
+      className="cursor-pointer text-[14px] mr-2 text-light_text-secondary dark:text-dark_text-secondary"
     >
       {isEnglish && (
-        <span className=" flex gap-2 font-poppins rounded-full ">
-          <div className="mt-1">
-            <IoMdGlobe />
-          </div>
-          <div>Tibetan</div>
+        <span className=" flex gap-1 font-monlam rounded-full ">
+          <IoMdGlobe size={20} />
+          <div>བོད་ཡིག་</div>
         </span>
       )}
       {isTibetan && (
-        <span className=" flex gap-2 font-monlam rounded-full ">
-          <IoMdGlobe />
+        <span className=" flex gap-1 font-monlam rounded-full ">
+          <IoMdGlobe size={20} />
           <div>དབྱིན་ཡིག་</div>
         </span>
       )}

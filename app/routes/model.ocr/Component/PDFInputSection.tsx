@@ -85,6 +85,11 @@ export default function PDFInputSection({ fetcher }: props) {
               size="xs"
               onClick={handleStartJob}
               disabled={!alldone}
+              className="
+              bg-secondary-500 dark:bg-primary-500 hover:bg-secondary-400 dark:hover:bg-primary-400 
+              text-white dark:text-black 
+              enabled:hover:bg-secondary-400 enabled:dark:hover:bg-primary-400
+            "
             >
               <span className="pr-2">{translation?.scan}</span>
               <IoSend size={18} />

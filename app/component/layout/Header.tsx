@@ -19,11 +19,11 @@ function Header() {
   };
   return (
     <nav
-      className={`flex h-20 bg-neutral-100 dark:bg-surface-dark justify-center  flex-col lg:flex-row  ${
+      className={`flex p-[24px] bg-neutral-100 dark:bg-surface-dark justify-center  flex-col lg:flex-row  ${
         isEnglish ? "font-poppins" : "font-monlam"
       } `}
     >
-      <div className="flex px-1 py-2  items-center justify-between  max-w-[1280px] w-full  ">
+      <div className="flex  items-center justify-between  max-w-[1280px] w-full  ">
         <NavLink
           className="flex items-center gap-2 text-xl"
           prefetch="intent"

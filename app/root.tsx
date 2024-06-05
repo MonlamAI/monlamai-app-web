@@ -111,8 +111,6 @@ function Document({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   let { user } = useLoaderData();
-  let location = useLocation();
-  let isSteps = location.pathname.includes("steps");
   let [isDarkMode, setIsDarkMode] = useLocalStorage("Darktheme", false);
   useEffect(() => {
     if (isDarkMode) {
@@ -121,19 +119,18 @@ export default function App() {
       document.documentElement.classList.remove("dark");
     }
   }, []);
-  let showHeader = !location.pathname.includes("/login");
   return (
     <Document>
       <LitteraProvider locales={["en_US", "bo_TI"]}>
         <div className="flex flex-col flex-1">
-          {showHeader && <Header />}
+          <Header />
           {user && <LocationComponent />}
           <div className="flex-1 flex justify-center pt-4  bg-neutral-50 dark:bg-surface-dark ">
             <div className="flex-1 max-w-[1280px] px-2 ">
               <Outlet />
             </div>
           </div>
-          {!isSteps && showHeader && <Footer />}
+          <Footer />
         </div>
       </LitteraProvider>
       <ToastContainer />

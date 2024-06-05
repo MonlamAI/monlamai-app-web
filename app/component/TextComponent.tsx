@@ -3,10 +3,10 @@ import { useEffect, useRef } from "react";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 
 function TextComponent({ sourceText, setSourceText, sourceLang }) {
-  let { translation } = uselitteraTranlation();
+  let { translation, isEnglish } = uselitteraTranlation();
   let textAreaRef = useRef<HTMLTextAreaElement>(null);
-  let isNotEng = sourceLang !== "en";
-  let isNotTib = sourceLang !== "bo";
+  let isEng = sourceLang === "en";
+  let isTib = sourceLang === "bo";
   let prevTextRef = useRef(sourceText);
   useEffect(() => {
     const textRf = document.getElementById("textAreaInput");
@@ -57,10 +57,12 @@ function TextComponent({ sourceText, setSourceText, sourceLang }) {
       id="textAreaInput"
       name="sourceText"
       placeholder={translation.inputPlaceholder}
-      className={`w-full rounded-none resize-none  flex-1 md:min-h-[5em] bg-transparent border-0 dark:border:0 focus:outline-none dark:focus:outline-none focus:ring-transparent dark:focus:ring-transparent caret-slate-500 placeholder:text-slate-300 placeholder:font-monlam placeholder:text-lg
-       ${fontSize} ${!isNotEng && "font-poppins placeholder:font-poppins "} ${
-        !isNotTib && "leading-loose font-monlam placeholder:font-monlam"
-      } ${isNotEng && isNotTib && "font-notosans placeholder:font-notosans"}`}
+      className={`${
+        isEnglish ? "placeholder:font-poppins" : "placeholder:font-monlam"
+      } w-full rounded-none resize-none  flex-1 md:min-h-[5em] bg-transparent border-0 dark:border:0 focus:outline-none dark:focus:outline-none focus:ring-transparent dark:focus:ring-transparent caret-slate-500 placeholder:text-slate-300 placeholder:font-monlam placeholder:text-lg
+       ${fontSize} ${isEng && "font-poppins  "} ${
+        isTib && "leading-loose font-monlam "
+      } ${!isEng && !isTib && "font-notosans "}`}
       required
       value={sourceText}
       onInput={(e) => {
