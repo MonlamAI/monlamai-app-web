@@ -120,7 +120,7 @@ function FileUpload({ setFile, setInputUrl, supported, model }) {
   return (
     <div className="flex-1 flex cursor-pointer " {...getRootProps()}>
       <input {...getInputProps()} />
-      <p
+      <div
         style={{
           backgroundColor: isDragActive ? "#f5f5f5" : "transparent",
           color: "#666",
@@ -142,7 +142,7 @@ function FileUpload({ setFile, setInputUrl, supported, model }) {
         <p className="dark:text-neutral mt-2">
           Drag and drop your file here, Supported {supported_list}
         </p>
-      </p>
+      </div>
     </div>
   );
 }
