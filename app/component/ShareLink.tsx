@@ -65,46 +65,45 @@ function ShareLink({ inferenceId }) {
   };
 
   return (
-    <Dropdown
-      className="mt-2 w-52 px-1 z-30"
-      label="shareLink"
-      placement="bottom-end"
-      dismissOnClick={true}
-      renderTrigger={() => (
-        <ReactionButton
-          enabled={true}
-          disabled={false}
-          icon={<FaShareAlt size={ICON_SIZE} />}
-          onClick={() => {}}
-        />
-      )}
-      size="md"
-    >
-      <Dropdown.Header>Share</Dropdown.Header>
-      <div className="">
-        <div className="flex gap-2 justify-center items-center mb-2 p-2 ">
-          <TextInput type="text" value={link} readOnly />
-          <CopyToClipboard textToCopy={link} />
+    <div className="flex flex-wrap gap-4">
+      <Dropdown
+        className=" mt-2 w-52 px-1 z-30"
+        label="shareLink"
+        placement="bottom"
+        dismissOnClick={true}
+        renderTrigger={() => (
+          <span className="focus:outline-none cursor-pointer text-gray-500 disabled:opacity-20 ">
+            <FaShareAlt size={ICON_SIZE} />
+          </span>
+        )}
+        size="md"
+      >
+        <Dropdown.Header>Share</Dropdown.Header>
+        <div className="">
+          <div className="flex gap-2 justify-center items-center mb-2 p-2 ">
+            <TextInput type="text" value={link} readOnly />
+            <CopyToClipboard textToCopy={link} />
+          </div>
+          <div className="flex justify-around mb-2">
+            <SocialShareButton
+              icon={<FaFacebook className="fill-[white]" />}
+              color="#1877f2"
+              onClick={() => openShareWindow(facebookUrl)}
+            />
+            <SocialShareButton
+              color="black"
+              icon={<FaXTwitter className="fill-[white]" />}
+              onClick={() => openShareWindow(twitterUrl)}
+            />
+            <SocialShareButton
+              color="#075e54"
+              icon={<FaWhatsapp className="fill-[white]" />}
+              onClick={() => openShareWindow(whatsappUrl)}
+            />
+          </div>
         </div>
-        <div className="flex justify-around mb-2">
-          <SocialShareButton
-            icon={<FaFacebook className="fill-[white]" />}
-            color="#1877f2"
-            onClick={() => openShareWindow(facebookUrl)}
-          />
-          <SocialShareButton
-            color="black"
-            icon={<FaXTwitter className="fill-[white]" />}
-            onClick={() => openShareWindow(twitterUrl)}
-          />
-          <SocialShareButton
-            color="#075e54"
-            icon={<FaWhatsapp className="fill-[white]" />}
-            onClick={() => openShareWindow(whatsappUrl)}
-          />
-        </div>
-      </div>
-    </Dropdown>
+      </Dropdown>
+    </div>
   );
 }
 

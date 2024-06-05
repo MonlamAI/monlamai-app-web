@@ -12,6 +12,7 @@ type ListInputProps = {
   selectedTool: string;
   setSelectedTool: (tool: any) => void;
   options: string[];
+  reset: () => void;
 };
 
 let icons = {
@@ -28,6 +29,7 @@ export default function ListInput({
   selectedTool,
   setSelectedTool,
   options,
+  reset,
 }: ListInputProps) {
   const tabsRef = useRef<TabsRef>(null);
   let { user } = useRouteLoaderData("root");
@@ -45,6 +47,7 @@ export default function ListInput({
     } else {
       setSelectedTool(options[option]);
     }
+    reset();
   }
 
   return (
