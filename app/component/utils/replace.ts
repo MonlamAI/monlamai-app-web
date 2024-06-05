@@ -13,6 +13,7 @@ export function en_bo_english_replaces(text: string) {
     "Central Tibetan Administration"
   );
   result = result.replaceAll(/\bEV\b/g, "Electric vehicle");
+  result = result.replaceAll(/\bBJP\b/g, "Bharatiya Janata Party");
   result = result.replaceAll(/\bASAP\b/g, "As soon as possible");
   result = result.replaceAll(/\bRSVP\b/g, "Répondez s’il vous plaît");
   result = result.replaceAll(/\bFAQs\b/g, "Frequently asked questions");
