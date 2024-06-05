@@ -16,10 +16,11 @@ function ToolWraper({ title, children }) {
   return (
     <>
       <Breadcrumb
+        theme={breadcrumb_theme.root}
         aria-label="Default breadcrumb "
-        className={!isEnglish ? "font-monlam" : "font-poppins"}
+        className={`${!isEnglish ? "font-monlam" : "font-poppins"} text-[14px]`}
       >
-        <Breadcrumb.Item icon={HomeIconWrapper}>
+        <Breadcrumb.Item icon={HomeIconWrapper} theme={breadcrumb_theme.item}>
           <Link
             to="/"
             className="dark:text-primary-500 capitalize px-1 text-secondary-500"
@@ -27,7 +28,9 @@ function ToolWraper({ title, children }) {
             {translation["home"]}
           </Link>
         </Breadcrumb.Item>
-        <Breadcrumb.Item href="#">{translation[title]}</Breadcrumb.Item>
+        <Breadcrumb.Item href="#" theme={breadcrumb_theme.item}>
+          {translation[title]}
+        </Breadcrumb.Item>
       </Breadcrumb>
       <div className="pt-[24px]">{children}</div>
     </>
@@ -56,3 +59,19 @@ export function ShareToolWraper({ title, children }) {
 }
 
 export default ToolWraper;
+
+let breadcrumb_theme = {
+  root: {
+    base: "",
+    list: "flex items-center",
+  },
+  item: {
+    base: "group flex items-center",
+    chevron: "mx-1 h-4 w-4 text-gray-400 group-first:hidden md:mx-2",
+    href: {
+      off: "flex items-center font-medium text-gray-500 dark:text-gray-400",
+      on: "flex items-center font-medium text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white",
+    },
+    icon: "mr-2 h-4 w-4 ",
+  },
+};

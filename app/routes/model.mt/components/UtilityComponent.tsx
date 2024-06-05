@@ -77,7 +77,7 @@ export function CharacterOrFileSizeComponent({
     <div className="text-gray-400 text-xs p-2">
       {(selectedTool === "recording" || selectedTool === "file") &&
         "Duration : " + charCount}
-      {selectedTool === "text" && (
+      {selectedTool === "text" && typeof charCount === "number" && (
         <>
           <span style={{ color: charCount > CHAR_LIMIT! ? "red" : "inherit" }}>
             {charCount}
@@ -107,7 +107,19 @@ export function LoadingAnimation() {
   );
 }
 
-export function OutputDisplay({ edit, editData, output, animate, targetLang }) {
+export function OutputDisplay({
+  edit,
+  editData,
+  output,
+  animate,
+  targetLang,
+}: {
+  edit: boolean;
+  editData: string;
+  output: string;
+  animate: boolean;
+  targetLang: string;
+}) {
   if (edit) return null;
   let isEng = targetLang == "en";
   let isTib = targetLang == "bo";

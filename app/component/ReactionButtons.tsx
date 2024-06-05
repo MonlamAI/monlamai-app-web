@@ -15,8 +15,6 @@ interface ReactionButtonsProps {
 const API_ENDPOINT = "/api/feedback";
 const IDLE_STATE = "idle";
 
-let showMessage = false;
-
 function ReactionButtons({
   fetcher,
   output,
@@ -31,8 +29,8 @@ function ReactionButtons({
     fetcher.state !== IDLE_STATE && fetcher.formData?.get("action");
 
   const handleReaction = async (action: "liked" | "disliked") => {
+    if (liked || disliked) return;
     if (!output || !sourceText) return;
-    showMessage = true;
     fetcher.submit(
       { inferenceId, action },
       { method: "POST", action: API_ENDPOINT }
@@ -46,17 +44,6 @@ function ReactionButtons({
         className={"fill-secondary-300 dark:fill-primary-500"}
       />
     );
-  let data = fetcher.data;
-
-  useEffect(() => {
-    let message = data?.message;
-    if (message && message !== "" && showMessage) {
-      toast.success(message, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-      });
-    }
-    showMessage = false;
-  }, [data]);
 
   return (
     <>
@@ -71,16 +58,16 @@ function ReactionButtons({
       )}
       <ReactionButton
         enabled={!!output}
-        disabled={liked}
+        disabled={disliked}
         icon={<FaRegThumbsUp size={ICON_SIZE} />}
         onClick={() => handleReaction("liked")}
-        className="hover:text-green-400 "
+        className={`hover:text-green-400 ${liked && "text-green-400"}`}
       />
       <ReactionButton
         enabled={!!output}
-        disabled={disliked}
+        disabled={liked}
         icon={<FaRegThumbsDown size={ICON_SIZE} />}
-        className="hover:text-red-400 "
+        className={`hover:text-red-400 ${disliked && "text-red-400"}`}
         onClick={() => handleReaction("disliked")}
       />
     </>
@@ -112,7 +99,7 @@ export function ReactionButton({
       disabled={disabled}
     >
       {React.cloneElement(icon, {
-        size: "20px",
+        size: "16px",
       })}
     </button>
   );
