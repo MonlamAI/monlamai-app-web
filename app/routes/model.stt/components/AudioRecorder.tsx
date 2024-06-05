@@ -120,8 +120,11 @@ function AudioRecorder({ audioURL, uploadAudio }: AudioRecordProps) {
           )}
         </Button>
       )}
-
-      {audioURL && <AudioPlayer audioURL={audioURL} />}
+      {audioURL && (
+        <div className="pt-8 w-full h-full">
+          <AudioPlayer audioURL={audioURL} />
+        </div>
+      )}
     </div>
   );
 }

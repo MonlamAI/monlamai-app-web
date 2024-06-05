@@ -50,9 +50,7 @@ function InputCard({ content, className, model }) {
     let audioURL = content;
     return (
       <CardComponent>
-        <div className={`-mt-8`}>
-          <AudioPlayer audioURL={audioURL} />
-        </div>
+        <AudioPlayer audioURL={audioURL} />
       </CardComponent>
     );
   }
@@ -73,9 +71,7 @@ function OutputCard({ content, className, model }) {
   if (model === "tts") {
     return (
       <CardComponent>
-        <div className="-mt-8">
-          {content && <AudioPlayer audioURL={content} />}
-        </div>
+        {content && <AudioPlayer audioURL={content} />}
       </CardComponent>
     );
   }
@@ -106,14 +102,14 @@ function TranslationRoute() {
   const sourceLang = langDir === "en2bo" ? "en" : "bo";
   const targetLang = langDir === "en2bo" ? "bo" : "en";
   return (
-    <div className="flex flex-col z-20">
-      <div className="rounded-sm overflow-hidden flex flex-col  md:mx-auto  justify-between mt-20">
+    <div className="w-full flex flex-col z-20 mt-20 ">
+      <div className="w-full rounded-sm overflow-hidden flex flex-col  md:mx-auto  md:min-h-[516px]  ">
         {model === "mt" ? (
           <MTHeader sourceLang={sourceLang} targetLang={targetLang} />
         ) : (
           <HeaderComponent model="STT" selectedTool="" />
         )}
-        <div className="flex rounded-sm overflow-hidden flex-col md:flex-row h-[40vh] ">
+        <div className="flex flex-1 rounded-sm overflow-hidden flex-col md:flex-row h-auto ">
           <InputCard
             content={data.input}
             className="font-poppins"
