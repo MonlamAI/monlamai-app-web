@@ -10,7 +10,6 @@ import {
   useLoaderData,
   useNavigate,
   useRouteError,
-  useRouteLoaderData,
   useSearchParams,
 } from "@remix-run/react";
 import { useState, useRef, useEffect } from "react";
@@ -37,7 +36,6 @@ import {
 import { NonEditButtons, NonEditModeActions } from "~/component/ActionButtons";
 import EditDisplay from "~/component/EditDisplay";
 import CardComponent from "~/component/Card";
-import LanguageSwitcher from "./components/LanguageSwitcher";
 import { getUser } from "~/modal/user.server";
 import { resetFetcher } from "~/component/utils/resetFetcher";
 import LanguageInput from "./components/LanguageInput";
@@ -224,6 +222,7 @@ export default function Index() {
     setSourceText("");
     resetFetcher(translationFetcher);
     resetFetcher(editfetcher);
+    setEdit(false);
   };
 
   const handleFileSubmit = () => {
@@ -244,6 +243,7 @@ export default function Index() {
         options={["text", "document"]}
         selectedTool={selectedTool}
         setSelectedTool={setSelectedTool}
+        reset={handleReset}
       />
       {error && <ErrorMessage error={error} />}
       <div className=" rounded-[10px] overflow-hidden border dark:border-light_text-secondary border-dark_text-secondary">

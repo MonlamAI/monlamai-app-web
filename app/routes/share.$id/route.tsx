@@ -3,9 +3,12 @@ import { Link, useLoaderData } from "@remix-run/react";
 import { Button, Card } from "flowbite-react";
 import { FaArrowRightArrowLeft, FaUniregistry } from "react-icons/fa6";
 import Waveform from "~/component/AudioPlayerWithWave";
-import { ShareToolWraper } from "~/component/ToolWraper";
 import { auth } from "~/services/auth.server";
 import { db } from "~/services/db.server";
+import CardComponent from "~/component/Card";
+import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
+import AudioPlayer from "~/routes/model.tts/components/AudioPlayer";
+import HeaderComponent from "~/component/HeaderComponent";
 
 const langLabels = {
   bo: "བོད་སྐད།",
@@ -46,21 +49,19 @@ function InputCard({ content, className, model }) {
   if (model === "stt") {
     let audioURL = content;
     return (
-      <Card>
-        <div className="h-full">
-          <div className={`md:w-[600px] ${className} mt-4`}>
-            <Waveform audio={audioURL} />
-          </div>
+      <CardComponent>
+        <div className={`-mt-8`}>
+          <AudioPlayer audioURL={audioURL} />
         </div>
-      </Card>
+      </CardComponent>
     );
   }
   return (
-    <Card>
-      <div className="h-full">
-        <div className={`md:w-[600px] ${className} mt-4`}>{content}</div>
+    <CardComponent>
+      <div className="h-full p-3">
+        <div className={`md:w-[600px] ${className} `}>{content}</div>
       </div>
-    </Card>
+    </CardComponent>
   );
 }
 function OutputCard({ content, className, model }) {
@@ -71,24 +72,19 @@ function OutputCard({ content, className, model }) {
   }
   if (model === "tts") {
     return (
-      <Card>
-        <div className="h-full">
-          <div className={`md:w-[600px] ${className} mt-4`}>
-            <audio controls>
-              <source src={content} type="audio/wav" />
-              Your browser does not support the audio element.
-            </audio>
-          </div>
+      <CardComponent>
+        <div className="-mt-8">
+          {content && <AudioPlayer audioURL={content} />}
         </div>
-      </Card>
+      </CardComponent>
     );
   }
   return (
-    <Card>
-      <div className="h-full">
-        <div className={`md:w-[600px] ${className} mt-4`}>{text}</div>
+    <CardComponent>
+      <div className="h-full p-3">
+        <div className={`md:w-[600px] ${className} `}>{text}</div>
       </div>
-    </Card>
+    </CardComponent>
   );
 }
 function TranslationRoute() {
@@ -111,66 +107,48 @@ function TranslationRoute() {
   const targetLang = langDir === "en2bo" ? "bo" : "en";
   return (
     <div className="flex flex-col z-20">
-      <div className="flex flex-col  md:mx-auto gap-3 justify-between mt-20">
-        <ShareToolWraper title={model?.toUpperCase()}>
-          {model === "mt" && (
-            <LanguageSwitcher sourceLang={sourceLang} targetLang={targetLang} />
-          )}
-          <div className="flex flex-col md:flex-row h-[40vh] gap-3">
-            <InputCard
-              content={data.input}
-              className="font-poppins"
-              model={model}
-            />
-            <OutputCard
-              content={data.output}
-              className="font-monlam"
-              model={model}
-            />
-          </div>
-          <div className="self-end mt-4">
-            <Link to="/">
-              <Button color="blue" type="button">
-                <FaUniregistry className="mr-2" />
-                Try it yourself
-              </Button>
-            </Link>
-          </div>
-        </ShareToolWraper>
+      <div className="rounded-sm overflow-hidden flex flex-col  md:mx-auto  justify-between mt-20">
+        {model === "mt" ? (
+          <MTHeader sourceLang={sourceLang} targetLang={targetLang} />
+        ) : (
+          <HeaderComponent model="STT" selectedTool="" />
+        )}
+        <div className="flex rounded-sm overflow-hidden flex-col md:flex-row h-[40vh] ">
+          <InputCard
+            content={data.input}
+            className="font-poppins"
+            model={model}
+          />
+          <OutputCard
+            content={data.output}
+            className="font-monlam"
+            model={model}
+          />
+        </div>
+        <div className="self-end mt-4">
+          <Link to="/">
+            <Button color="blue" type="button">
+              <FaUniregistry className="mr-2" />
+              Try it yourself
+            </Button>
+          </Link>
+        </div>
       </div>
     </div>
   );
 }
 
-function LanguageSwitcher({ sourceLang, targetLang }) {
+function MTHeader({ sourceLang, targetLang }) {
+  const { isTibetan: isTib } = uselitteraTranlation();
+
   return (
-    <div className="w-full text-center">
-      <div className="flex justify-center items-center gap-2">
-        <div
-          className={`inline-block text-lg text-gray-500 dark:text-gray-300 ${
-            sourceLang === "en"
-              ? "font-poppins text-xl"
-              : "text-lg leading-loose font-monlam"
-          }`}
-        >
-          {langLabels[sourceLang]}
-        </div>
-        <button
-          disabled
-          className="group flex items-center justify-center text-center font-medium relative focus:z-10 focus:outline-none text-white bg-primary border border-transparent enabled:hover:bg-primary-hover focus:ring-primary dark:bg-primary dark:enabled:hover:bg-primary-hover dark:focus:ring-primary rounded-full focus:ring-2 px-2"
-        >
-          <FaArrowRightArrowLeft size="20px" />
-        </button>
-        <div
-          className={`inline-block text-lg text-right text-gray-500 dark:text-gray-300 ${
-            sourceLang !== "en"
-              ? "font-poppins text-xl"
-              : "text-lg leading-loose font-monlam"
-          }`}
-        >
-          {langLabels[targetLang]}
-        </div>
-      </div>
+    <div
+      className={`${
+        isTib ? "font-monlam text-base" : "font-poppins"
+      } bg-white border-b py-2 px-2 font-normal  dark:border-light_text-secondary border-dark_text-secondary  dark:bg-secondary-700 flex  items-center  md:flex-row gap-3  `}
+    >
+      <div className="flex-1 ">{langLabels[sourceLang]}</div>
+      <div className="flex-1">{langLabels[targetLang]}</div>
     </div>
   );
 }

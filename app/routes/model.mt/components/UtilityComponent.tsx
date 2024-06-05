@@ -158,9 +158,9 @@ export function EditActionButtons({
       <div
         className={`${
           isEnglish ? "font-poppins" : "font-monlam"
-        } h-fit inline-flex m-1 text-xs`}
+        }  h-fit inline-flex m-2 text-xs`}
       >
-        <div className="h-6 flex-1 px-9 py-1 bg-primary-200 dark:bg-primary-500 text-black rounded-lg justify-start items-center gap-2.5 flex">
+        <div className="h-6 flex-1 px-2 py-1 bg-primary-200 dark:bg-primary-500 text-black rounded-lg justify-start items-center gap-2.5 flex">
           {translation.contribution_message}
         </div>
       </div>
@@ -169,29 +169,22 @@ export function EditActionButtons({
           isEnglish ? "font-poppins" : "font-monlam"
         } flex justify-between p-2 text-sm border-t-2 border-t-dark_text-secondary dark:border-t-light_text-secondary`}
       >
-        <Button
-          color="gray"
-          className={` bg-secondary-500 dark:bg-primary-500 hover:bg-secondary-400 dark:hover:bg-primary-400 
-         enabled:hover:bg-secondary-400 enabled:dark:hover:bg-primary-400
-            text-white dark:text-black 
-         `}
-          size="sm"
-          onClick={handleCancelEdit}
-        >
+        <Button color="gray" size="xs" onClick={handleCancelEdit}>
           x
         </Button>
         <Button
-          size="sm"
+          size="xs"
           color="blue"
           onClick={handleEditSubmit}
           isProcessing={editfetcher.state !== "idle"}
           disabled={editText === outputText}
-          className={` bg-secondary-500 dark:bg-primary-500 hover:bg-secondary-400 dark:hover:bg-primary-400 
+          className={`p-0  bg-secondary-500 dark:bg-primary-500 hover:bg-secondary-400 dark:hover:bg-primary-400 
           enabled:hover:bg-secondary-400 enabled:dark:hover:bg-primary-400
              text-white dark:text-black 
          `}
         >
-          <FiFile size={18} /> {translation.save}
+          <FiFile size={18} />{" "}
+          <span className="pl-2 text-[12px]">{translation.save}</span>
         </Button>
       </div>
     </>
