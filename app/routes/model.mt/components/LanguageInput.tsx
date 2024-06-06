@@ -1,5 +1,5 @@
 import { useFetcher, useSearchParams } from "@remix-run/react";
-import { Select } from "flowbite-react";
+import { Select, Tooltip } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { FaArrowRightArrowLeft } from "react-icons/fa6";
 import { resetFetcher } from "~/component/utils/resetFetcher";
@@ -210,14 +210,21 @@ function LanguageInput({
           ))}
         </Select>
       </div>
-      <button
-        onClick={toggleDirection}
-        className="group p-1 flex focus:bg-neutral-100 items-center hover:text-neutral-800   justify-center text-center font-medium relative focus:z-10 focus:outline-none text-[#838585] border border-transparent enabled:hover:bg-primary-hover  dark:enabled:hover:bg-primary-hover rounded-md  "
+      <Tooltip
+        content="Swap source with target language"
+        placement="top"
+        style="light"
+        animation="duration-500"
       >
-        <div className=" text-neutral-500">
-          <GoArrowSwitch size={20} />
-        </div>
-      </button>
+        <button
+          onClick={toggleDirection}
+          className="group p-1 flex focus:bg-neutral-100 items-center hover:text-neutral-800   justify-center text-center font-medium relative focus:z-10 focus:outline-none text-[#838585] border border-transparent enabled:hover:bg-primary-hover  dark:enabled:hover:bg-primary-hover rounded-md  "
+        >
+          <div className=" text-neutral-500">
+            <GoArrowSwitch size={20} />
+          </div>
+        </button>
+      </Tooltip>
       <div className="flex-1">
         <Select
           onChange={(e) => handleChange(e, "target")}

@@ -11,13 +11,16 @@ function OCR() {
   const [params, setParams] = useSearchParams();
   const selectedTool = params.get("tool") || "image";
   const SingleFilefetcher = useFetcher();
-  const pdfFetcher = useFetcher();
-  const zipFetcher = useFetcher();
+  const fileFetcher = useFetcher();
+
+  const reset = () => {
+    resetFetcher(SingleFilefetcher);
+    resetFetcher(fileFetcher);
+  };
+
   useEffect(() => {
     if (selectedTool !== "image") {
-      resetFetcher(pdfFetcher);
-      resetFetcher(zipFetcher);
-      resetFetcher(SingleFilefetcher);
+      reset();
     }
   }, [selectedTool]);
   const setSelectedTool = (tool: string) => {
@@ -27,8 +30,9 @@ function OCR() {
     });
   };
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col w-full mb-20">
       <ListInput
+        reset={reset}
         options={["image", "file"]}
         selectedTool={selectedTool}
         setSelectedTool={setSelectedTool}
@@ -38,7 +42,7 @@ function OCR() {
         {selectedTool === "image" && (
           <SingleInputSection fetcher={SingleFilefetcher} />
         )}
-        {selectedTool === "file" && <PDFInputSection fetcher={pdfFetcher} />}
+        {selectedTool === "file" && <PDFInputSection fetcher={fileFetcher} />}
       </div>
     </div>
   );

@@ -9,10 +9,14 @@ import CardComponent from "~/component/Card";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import AudioPlayer from "~/routes/model.tts/components/AudioPlayer";
 import HeaderComponent from "~/component/HeaderComponent";
+import Devider from "~/component/Devider";
 
 const langLabels = {
   bo: "བོད་སྐད།",
   en: "English",
+  hi: "Hindi",
+  zh: "Chinese",
+  fr: "French",
 };
 
 export const loader: LoaderFunction = async ({ request, params }) => {
@@ -33,17 +37,9 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 function InputCard({ content, className, model }) {
   if (model === "ocr") {
     return (
-      <Card>
-        <div className="w-full">
-          <div className={`md:w-[600px] ${className} mt-4`}>
-            <img
-              src={content}
-              alt="input"
-              className="object-contain h-[35vh]"
-            />
-          </div>
-        </div>
-      </Card>
+      <CardComponent>
+        <img src={content} alt="input" className="object-contain p-3" />
+      </CardComponent>
     );
   }
   if (model === "stt") {
@@ -115,6 +111,7 @@ function TranslationRoute() {
             className="font-poppins"
             model={model}
           />
+          <Devider />
           <OutputCard
             content={data.output}
             className="font-monlam"
@@ -143,8 +140,12 @@ function MTHeader({ sourceLang, targetLang }) {
         isTib ? "font-monlam text-base" : "font-poppins"
       } bg-white border-b py-2 px-2 font-normal  dark:border-light_text-secondary border-dark_text-secondary  dark:bg-secondary-700 flex  items-center  md:flex-row gap-3  `}
     >
-      <div className="flex-1 ">{langLabels[sourceLang]}</div>
-      <div className="flex-1">{langLabels[targetLang]}</div>
+      <div className={`flex-1 ${sourceLang === "bo" && " font-monlam"}`}>
+        {langLabels[sourceLang]}
+      </div>
+      <div className={`md:flex-1 " ${targetLang === "bo" && " font-monlam"}`}>
+        {langLabels[targetLang]}
+      </div>
     </div>
   );
 }

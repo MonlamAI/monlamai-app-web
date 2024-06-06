@@ -62,8 +62,9 @@ function SingleInptSection({ fetcher }: any) {
         },
         onUploadProgress: (progressEvent) => {
           const percentCompleted = Math.round(
-            (progressEvent.loaded * 100) / progressEvent.total
+            (progressEvent.loaded * 100) / progressEvent?.total
           );
+          console.log(percentCompleted);
           setUploadProgress(percentCompleted);
         },
       });
@@ -124,7 +125,7 @@ function SingleInptSection({ fetcher }: any) {
       </CardComponent>
       <Devider />
       <CardComponent>
-        <div className="w-full flex flex-1 max-h-[45vh] p-3 text-black bg-neutral dark:bg-secondary-700 dark:text-neutral  overflow-auto">
+        <div className="w-full  flex flex-1  p-3 text-black bg-neutral dark:bg-secondary-700 dark:text-neutral  overflow-auto">
           {isActionSubmission ? (
             <div className="w-full flex justify-center items-center">
               <Spinner
@@ -146,7 +147,7 @@ function SingleInptSection({ fetcher }: any) {
                 )}
                 {!edit && text && !editData && (
                   <div
-                    className="text-xl font-monlam leading-[normal]"
+                    className="text-xl font-monlam leading-[normal] max-h-[50vh]"
                     dangerouslySetInnerHTML={{
                       __html: text?.replaceAll("\n", "<br>"),
                     }}

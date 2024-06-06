@@ -57,5 +57,7 @@
   "contribution_message": "Your contribution will be used to improve translation quality.",
   "save": "Save",
   "synthesis": "Synthesis",
-  "crop": "crop"
+  "crop": "crop",
+  "login_message":"to use our beta feature."
+
 }
