@@ -1,5 +1,5 @@
-import { useRouteLoaderData } from "@remix-run/react";
-import { Tabs, TabsRef } from "flowbite-react";
+import { Form, Link, useRouteLoaderData } from "@remix-run/react";
+import { Button, Tabs, TabsRef } from "flowbite-react";
 import uselitteraTranlation from "./hooks/useLitteraTranslation";
 import { IoMdDocument } from "react-icons/io";
 import { MdSpatialAudioOff } from "react-icons/md";
@@ -7,6 +7,8 @@ import { FaFileLines, FaFilePdf } from "react-icons/fa6";
 import { FaFileZipper } from "react-icons/fa6";
 import { FaImage } from "react-icons/fa";
 import { useRef } from "react";
+import { toast } from "react-toastify";
+
 import { TbTextSize } from "react-icons/tb";
 type ListInputProps = {
   selectedTool: string;
@@ -33,8 +35,7 @@ export default function ListInput({
 }: ListInputProps) {
   const tabsRef = useRef<TabsRef>(null);
   let { user } = useRouteLoaderData("root");
-  const { translation, locale } = uselitteraTranlation();
-  const isTibetan = locale === "bo_TI";
+  const { translation, locale, isTibetan } = uselitteraTranlation();
   const isUserLoggedIn = !!user;
   const ShowList = ["text", "recording", "image"];
   const BetaList = ["zip", "PDF", "document", "file"];
@@ -43,7 +44,30 @@ export default function ListInput({
     let showMessage = !isUserLoggedIn && !allowedTab;
     if (showMessage) {
       tabsRef.current?.setActiveTab(0);
-      alert("login to use this feature");
+
+      toast.info(
+        <div className={isTibetan ? "font-monlam" : "font-poppins"}>
+          <span className="flex">
+            {" "}
+            <Form method="post" action="/auth0">
+              <button
+                className="bg-transparent focus:outline-none focus:border-none underline text-blue-500"
+                type="submit"
+              >
+                {translation.login}
+              </button>
+            </Form>
+            <span className={!isTibetan ? "ml-2" : ""}>
+              {translation.login_message}
+            </span>
+          </span>
+        </div>,
+        {
+          position: toast.POSITION.TOP_RIGHT,
+          pauseOnHover: true,
+          closeOnClick: false,
+        }
+      );
     } else {
       setSelectedTool(options[option]);
     }

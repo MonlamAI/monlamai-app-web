@@ -2,17 +2,19 @@
 import React, { useEffect, useRef, useState } from "react";
 import { MdPlayArrow, MdPause } from "react-icons/md";
 import WaveSurfer from "wavesurfer.js";
+import useLocalStorage from "~/component/hooks/useLocaleStorage";
+import { amplifyMedia } from "~/component/utils/audioGain";
 
 const AudioPlayer = ({ audioURL }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [volume, setVolume] = useState(0.5);
   const [playbackRate, setPlaybackRate] = useState(1); // 1, 1.25, 1.5, 2, 0.5 (default 1)
+  const [volume, setVolume] = useLocalStorage("volume", 1);
 
   const containerRef = useRef();
   const waveSurferRef = useRef(null);
-  const audioRef = useRef();
+  let setting = useRef();
 
   useEffect(() => {
     const waveSurfer = WaveSurfer.create({
@@ -21,6 +23,7 @@ const AudioPlayer = ({ audioURL }) => {
       barHeight: 12,
       cursorWidth: 0,
       waveColor: "#5290F4",
+      progressColor: "#1E3A8A",
       barGap: 4,
       barWidth: 4,
     });
@@ -29,6 +32,7 @@ const AudioPlayer = ({ audioURL }) => {
       waveSurferRef.current = waveSurfer;
       setDuration(waveSurfer.getDuration());
       waveSurfer.setPlaybackRate(playbackRate);
+      waveSurfer.setVolume(volume);
     });
 
     // Listen to "play" and "pause" events to accurately set isPlaying state
@@ -50,7 +54,6 @@ const AudioPlayer = ({ audioURL }) => {
     const currentIndex = rates.indexOf(playbackRate);
     const nextIndex = (currentIndex + 1) % rates.length;
     const newRate = rates[nextIndex];
-    if (audioRef.current) audioRef.current.playbackRate = newRate;
     setPlaybackRate(newRate);
   };
 
@@ -60,22 +63,32 @@ const AudioPlayer = ({ audioURL }) => {
     }
   }, [playbackRate]);
 
-  const handleVolumeChange = (event) => {
-    const newVolume = parseFloat(event.target.value);
-    setVolume(newVolume);
-    audioRef.current.volume = newVolume;
+  const handleVolumeChange = (e) => {
+    setVolume(e.target.value);
+    amplify(e.target.value);
   };
 
-  const handleTimeUpdate = () => {
-    setCurrentTime(audioRef.current.currentTime);
-  };
+  useEffect(() => {
+    if (waveSurferRef.current && !setting.current && audioURL) {
+      const media = waveSurferRef.current.getMediaElement();
+      setting.current = amplifyMedia(media, volume);
+    }
+  }, [audioURL, waveSurferRef.current, setting.current]);
 
-  const handleLoadedMetadata = () => {
-    setDuration(audioRef.current.duration);
+  function amplify(number) {
+    if (setting.current) {
+      setting.current?.amplify(number);
+    }
+  }
+
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = Math.floor(seconds % 60);
+    return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
   };
 
   return (
-    <div className="p-4 w-full h-full flex flex-col">
+    <div className="p-2 w-full h-full flex flex-col">
       <div className="flex items-center justify-between">
         <div className="flex items-center">
           <svg
@@ -89,9 +102,9 @@ const AudioPlayer = ({ audioURL }) => {
           >
             <path d="M15 6.037c0-1.724-1.978-2.665-3.28-1.562L7.638 7.933H6c-1.105 0-2 .91-2 2.034v4.066c0 1.123.895 2.034 2 2.034h1.638l4.082 3.458c1.302 1.104 3.28.162 3.28-1.562V6.037Z" />
             <path
-              fill-rule="evenodd"
+              fillRule="evenodd"
               d="M16.786 7.658a.988.988 0 0 1 1.414-.014A6.135 6.135 0 0 1 20 12c0 1.662-.655 3.17-1.715 4.27a.989.989 0 0 1-1.414.014 1.029 1.029 0 0 1-.014-1.437A4.085 4.085 0 0 0 18 12a4.085 4.085 0 0 0-1.2-2.904 1.029 1.029 0 0 1-.014-1.438Z"
-              clip-rule="evenodd"
+              clipRule="evenodd"
             />
           </svg>
           <input
@@ -114,14 +127,14 @@ const AudioPlayer = ({ audioURL }) => {
           >
             <path d="M13 6.037c0-1.724-1.978-2.665-3.28-1.562L5.638 7.933H4c-1.105 0-2 .91-2 2.034v4.066c0 1.123.895 2.034 2 2.034h1.638l4.082 3.458c1.302 1.104 3.28.162 3.28-1.562V6.037Z" />
             <path
-              fill-rule="evenodd"
+              fillRule="evenodd"
               d="M14.786 7.658a.988.988 0 0 1 1.414-.014A6.135 6.135 0 0 1 18 12c0 1.662-.655 3.17-1.715 4.27a.989.989 0 0 1-1.414.014 1.029 1.029 0 0 1-.014-1.437A4.085 4.085 0 0 0 16 12a4.085 4.085 0 0 0-1.2-2.904 1.029 1.029 0 0 1-.014-1.438Z"
-              clip-rule="evenodd"
+              clipRule="evenodd"
             />
             <path
-              fill-rule="evenodd"
+              fillRule="evenodd"
               d="M17.657 4.811a.988.988 0 0 1 1.414 0A10.224 10.224 0 0 1 22 12c0 2.807-1.12 5.35-2.929 7.189a.988.988 0 0 1-1.414 0 1.029 1.029 0 0 1 0-1.438A8.173 8.173 0 0 0 20 12a8.173 8.173 0 0 0-2.343-5.751 1.029 1.029 0 0 1 0-1.438Z"
-              clip-rule="evenodd"
+              clipRule="evenodd"
             />
           </svg>
         </div>
@@ -146,7 +159,7 @@ const AudioPlayer = ({ audioURL }) => {
             {isPlaying ? <MdPause size={36} /> : <MdPlayArrow size={36} />}
           </button>
           <div className="flex flex-1 justify-center items-center">
-            <div className="text-sm">{currentTime.toFixed(2)}</div>
+            <div className="text-sm">{formatTime(currentTime)}</div>
             <input
               type="range"
               min="0"
@@ -154,23 +167,16 @@ const AudioPlayer = ({ audioURL }) => {
               step="0.1"
               value={currentTime}
               onChange={(e) => {
+                // update the current time of the audio per second and seek to the new time
                 const newTime = parseFloat(e.target.value);
                 waveSurferRef.current.seekTo(newTime / duration);
                 setCurrentTime(newTime);
               }}
               className="mx-2 h-1 w-full appearance-none bg-gray-300 rounded-full"
             />
-            <div className="text-sm">{duration.toFixed(2)}</div>
+            <div className="text-sm">{formatTime(duration)}</div>
           </div>
         </div>
-        <audio
-          ref={audioRef}
-          onTimeUpdate={handleTimeUpdate}
-          onLoadedMetadata={handleLoadedMetadata}
-        >
-          <source src="your-audio-file.mp3" type="audio/mp3" />
-          Your browser does not support the audio element.
-        </audio>
       </div>
     </div>
   );

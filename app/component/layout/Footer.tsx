@@ -45,7 +45,8 @@ function Footer() {
     >
       <div className="mx-auto flex flex-col max-w-[1280px]  md:flex-row items-center md:justify-between">
         <div className="text-sm   sm:text-center">
-          <div className="hover:underline text-[1rem] cursor-default leading-relaxed text-center">
+          <span className="block md:hidden">© Monlam AI</span>
+          <div className="hidden md:block hover:underline text-[1rem] cursor-default leading-relaxed text-center">
             {isEnglish
               ? "© Monlam AI 2024"
               : "བདག་དབང་། © སྨོན་ལམ་བརྡ་འཕྲིན་ཞིབ་འཇུག་ཁང་། ༢༠༢༤"}

@@ -137,9 +137,11 @@ export const ImageCropper = ({ uploadFile, handleReset, uploadProgress }) => {
               />
             </>
           )}
-          <div className="w-full mx-3 my-2 flex justify-center text-neutral-700">
-            OR
-          </div>
+          {!isCameraOpen && (
+            <div className="w-full mx-3 my-2 flex justify-center text-neutral-700">
+              OR
+            </div>
+          )}
           {!isMobile && !isCameraOpen && (
             <Button color="dark" onClick={toggleCamera} className="self-center">
               <FaCamera className="mr-2" />
@@ -178,7 +180,7 @@ export const ImageCropper = ({ uploadFile, handleReset, uploadProgress }) => {
         <img
           src={imageSrc}
           alt="uploaded image"
-          className="w-full max-h-[40vh] flex-1 object-contain "
+          className="w-full  flex-1 object-contain "
           style={{
             opacity:
               uploadProgress && uploadProgress < 100

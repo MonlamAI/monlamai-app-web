@@ -22,7 +22,7 @@ function HeaderComponent({
       }`}
     >
       <div className="flex-1"> {translation[inputHeader]}</div>
-      <div className="flex-1">
+      <div className="md:flex-1">
         {isFileSelected || isDocumentSelected
           ? translation["file"]
           : translation[outputHeader]}
