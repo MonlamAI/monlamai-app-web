@@ -198,6 +198,7 @@ export default function Index() {
         selectedTool={selectedTool}
         setSelectedTool={setSelectedTool}
         options={["recording", "file"]}
+        reset={handleReset}
       >
         {actionError && <ErrorMessage error={actionError} />}
         <div className=" rounded-[10px]  overflow-hidden border dark:border-light_text-secondary border-dark_text-secondary">
