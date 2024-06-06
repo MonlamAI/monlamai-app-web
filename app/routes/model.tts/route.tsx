@@ -7,9 +7,6 @@ import {
 } from "@remix-run/react";
 import { useEffect, useRef, useState } from "react";
 import ReactionButtons from "~/component/ReactionButtons";
-import { amplifyMedia } from "~/component/utils/audioGain";
-import useLocalStorage from "~/component/hooks/useLocaleStorage";
-import AudioPlayerComponents from "~/routes/model.tts/components/AudioComponent";
 import ToolWraper from "~/component/ToolWraper";
 import { ErrorBoundary } from "../model.mt/route";
 import InferenceWrapper from "~/component/layout/InferenceWrapper";
@@ -31,7 +28,6 @@ import { getUserSession } from "~/services/session.server";
 import { LoaderFunctionArgs } from "@remix-run/node";
 import { InferenceList } from "~/component/InferenceList";
 import HeaderComponent from "../../component/HeaderComponent";
-import WaveformPlayer from "./components/WaveformPlayer";
 import Devider from "~/component/Devider";
 import AudioPlayer from "./components/AudioPlayer";
 
@@ -67,7 +63,6 @@ export default function Index() {
   const [sourceText, setSourceText] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [inputUrl, setInputUrl] = useState("");
-  const [playbackRate, setPlaybackRate] = useState(1); // 1, 1.25, 1.5, 2, 0.5 (default 1)
   const [params, setParams] = useSearchParams();
 
   const selectedTool = params.get("tool") || "text";
@@ -79,7 +74,6 @@ export default function Index() {
   };
 
   let { CHAR_LIMIT } = useLoaderData();
-  const [volume, setVolume] = useLocalStorage("volume", 1);
   const fetcher = useFetcher();
   const isLoading = fetcher.state !== "idle";
   const data = fetcher.data?.data;
@@ -89,10 +83,6 @@ export default function Index() {
 
   let charCount = sourceText?.length;
 
-  const handleVolumeChange = (e) => {
-    setVolume(e.target.value);
-    amplify(e.target.value);
-  };
   const handleReset = () => {
     setSourceText("");
     resetFetcher(fetcher);
@@ -100,19 +90,7 @@ export default function Index() {
   useEffect(() => {
     setSourceText("");
   }, [selectedTool]);
-  const audioRef = useRef<HTMLAudioElement>(null);
   let likeFetcher = useFetcher();
-  useEffect(() => {
-    if (audioRef.current && !setting.current && data) {
-      setting.current = amplifyMedia(audioRef.current, volume);
-    }
-  }, [data, audioRef.current, setting.current]);
-
-  function amplify(number) {
-    if (setting.current) {
-      setting.current?.amplify(number);
-    }
-  }
 
   const handleFileSubmit = () => {
     let formdata = new FormData();
@@ -155,7 +133,7 @@ export default function Index() {
         setSelectedTool={setSelectedTool}
         options={["text", "document"]}
       >
-        <div className="rounded-[10px]  overflow-hidden border dark:border-light_text-secondary border-dark_text-secondary">
+        <div className="rounded-[10px] overflow-hidden border dark:border-light_text-secondary border-dark_text-secondary">
           <HeaderComponent model="TTS" selectedTool={selectedTool} />
           <div className="flex flex-col lg:flex-row">
             <CardComponent focussed={true}>
@@ -240,8 +218,8 @@ export default function Index() {
                 {selectedTool === "document" && <InferenceList />}
               </div>
               {data && (
-                <div className="flex justify-end p-2 border-t border-t-dark_text-secondary dark:border-t-light_text-secondary">
-                  <div className="flex gap-3 md:gap-5 items-center p-1">
+                <div className="flex justify-end py-2.5 px-5 border-t border-t-dark_text-secondary dark:border-t-light_text-secondary">
+                  <div className="flex gap-3 justify-end md:gap-5 items-center p-1">
                     <ReactionButtons
                       fetcher={likeFetcher}
                       output={data ? `data:audio/wav;base64,${data}` : null}
