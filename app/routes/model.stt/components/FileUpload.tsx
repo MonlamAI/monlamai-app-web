@@ -53,7 +53,6 @@ export function HandleAudioFile({ handleFileChange, reset }) {
       "audio/*": [".mp3", ".wav"],
     },
     multiple: false,
-    noClick: true,
   });
   if (myFiles)
     return (

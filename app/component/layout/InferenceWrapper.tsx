@@ -6,6 +6,7 @@ function InferenceWrapper({
   selectedTool,
   setSelectedTool,
   options,
+  reset,
 }) {
   return (
     <main>
@@ -15,6 +16,7 @@ function InferenceWrapper({
             selectedTool={selectedTool}
             setSelectedTool={setSelectedTool}
             options={options}
+            reset={reset}
           />
         </div>
       )}
