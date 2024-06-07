@@ -79,7 +79,6 @@ export default function Index() {
   const data = fetcher.data?.data;
   const inferenceId = fetcher.data?.inferenceData?.id;
   let sourceUrl = data;
-  let setting = useRef();
 
   let charCount = sourceText?.length;
 
@@ -132,6 +131,7 @@ export default function Index() {
         selectedTool={selectedTool}
         setSelectedTool={setSelectedTool}
         options={["text", "document"]}
+        reset={handleReset}
       >
         <div className="rounded-[10px] overflow-hidden border dark:border-light_text-secondary border-dark_text-secondary">
           <HeaderComponent model="TTS" selectedTool={selectedTool} />
@@ -190,14 +190,15 @@ export default function Index() {
                     handleClose={() => resetFetcher(fetcher)}
                   />
                 )}
-                {isLoading && selectedTool === "text" && (
-                  <div className="h-full flex justify-center items-center">
-                    <Spinner
-                      size="lg"
-                      className={"fill-secondary-300 dark:fill-primary-500"}
-                    />
-                  </div>
-                )}
+                {isLoading &&
+                  (selectedTool === "text" || selectedTool === "document") && (
+                    <div className="h-full flex justify-center items-center">
+                      <Spinner
+                        size="lg"
+                        className={"fill-secondary-300 dark:fill-primary-500"}
+                      />
+                    </div>
+                  )}
                 {!isLoading && selectedTool === "text" && data && (
                   <div className="flex-1 h-full flex justify-center items-center">
                     {data?.error ? (
@@ -207,18 +208,10 @@ export default function Index() {
                     )}
                   </div>
                 )}
-                {isLoading && selectedTool === "document" && (
-                  <div className="w-full flex justify-center">
-                    <Spinner
-                      size="lg"
-                      className={"fill-secondary-300 dark:fill-primary-500"}
-                    />
-                  </div>
-                )}
                 {selectedTool === "document" && <InferenceList />}
               </div>
               {data && (
-                <div className="flex justify-end py-2.5 px-5 border-t border-t-dark_text-secondary dark:border-t-light_text-secondary">
+                <div className="flex justify-end py-3 px-5 border-t border-t-dark_text-secondary dark:border-t-light_text-secondary">
                   <div className="flex gap-3 justify-end md:gap-5 items-center p-1">
                     <ReactionButtons
                       fetcher={likeFetcher}

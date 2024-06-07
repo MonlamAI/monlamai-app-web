@@ -23,13 +23,13 @@ function TranslationSwitcher() {
       {isEnglish && (
         <span className=" flex gap-1 font-monlam rounded-full ">
           <IoMdGlobe size={20} />
-          <div>བོད་ཡིག་</div>
+          <div>བོད་ཡིག</div>
         </span>
       )}
       {isTibetan && (
         <span className=" flex gap-1 font-monlam rounded-full ">
           <IoMdGlobe size={20} />
-          <div>དབྱིན་ཡིག་</div>
+          <div>དབྱིན་ཡིག</div>
         </span>
       )}
     </div>
