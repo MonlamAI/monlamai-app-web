@@ -38,11 +38,14 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   const isJobEnabled = unleash.isEnabled("isJobEnabled");
   const enable_replacement_mt = unleash.isEnabled("enable_replacement_mt");
+  const show_about_lama = unleash.isEnabled("show_about_lama");
+
   return json(
     {
       user: userdata ? await getUser(userdata?._json?.email) : null,
       isJobEnabled: isJobEnabled ?? false,
       enable_replacement_mt: enable_replacement_mt ?? false,
+      show_about_lama: show_about_lama ?? false,
       feedBucketAccess,
       feedbucketToken,
     },

@@ -3,10 +3,12 @@ import { Card } from "flowbite-react";
 import { Blurhash } from "react-blurhash";
 import uselitteraTranlation from "../../../component/hooks/useLitteraTranslation";
 import { lamas } from "~/routes/about/data/lama";
+import { useRouteLoaderData } from "@remix-run/react";
 
 function Lamas() {
   const { translation } = uselitteraTranlation();
-
+  const { show_about_lama } = useRouteLoaderData("root");
+  if (!show_about_lama) return null;
   return (
     <div className="container mx-auto p-4">
       <h2 className="lg:text-3xl text-xl font-bold my-10 lg:my-20 flex justify-center">
@@ -43,8 +45,8 @@ function EachLama({ lama }) {
   }, [lama.image]);
 
   return (
-    <Card className="w-full md:max-w-xs mx-auto max-h-[250px]">
-      <div className="flex flex-col items-center p-2">
+    <div className="flex rounded-lg border border-gray-200 md:h-[25vh] bg-white shadow-md dark:border-gray-700 dark:bg-gray-800 flex-col relative w-full md:max-w-xs  max-h-[250px] p-2">
+      <div className="flex flex-col justify-start items-center gap-3 ">
         <div
           style={{ display: loaded ? "none" : "" }}
           className="overflow-hidden rounded-full h-24 w-24 object-cover shadow-md p-1 hover:scale-105 transition-all duration-500"
@@ -64,17 +66,17 @@ function EachLama({ lama }) {
           src={lama.image}
           style={{ opacity: !loaded ? 0 : 1, height: !loaded ? 0 : "" }}
           onLoad={() => setLoaded(true)}
-          className="rounded-full h-24 w-24 object-cover shadow-md p-1 hover:scale-105 transition-all duration-500"
+          className="rounded-full h-24 w-24 object-cover  shadow-md p-1 hover:scale-105 transition-all duration-500"
         />
         <p
-          className={`text-center text-sm py-2 ${
-            isTibetan ? "font-monlam" : "font-poppins"
+          className={`text-center text-sm py-2 font-semibold ${
+            isTibetan ? "font-monlam leading-loose" : "font-poppins"
           }`}
         >
           {isTibetan ? lama.tibetan_name : lama.name}
         </p>
       </div>
-    </Card>
+    </div>
   );
 }
 

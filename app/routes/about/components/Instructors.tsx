@@ -13,7 +13,7 @@ function Instructor() {
         {instructors.map((instructor) => {
           return (
             <div
-              className="h-fit w-24  md:w-28  md:my-4 font-poppins"
+              className="flex flex-col justify-between gap-2 h-fit w-24  md:w-28  md:my-4 font-poppins"
               key={instructor.name}
             >
               <img
@@ -22,8 +22,8 @@ function Instructor() {
                 className="rounded-full h-24 w-24 object-cover shadow-md p-1 "
               />
               <p
-                className={`text-center text-[14px] pt-2 ${
-                  isTibetan ? "font-monlam" : "font-poppins"
+                className={`text-center text-[14px] pt-2 font-bold ${
+                  isTibetan ? "font-monlam leading-loose" : "font-poppins"
                 }`}
               >
                 {!isTibetan ? instructor.name : instructor.tibetan_name}
