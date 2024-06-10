@@ -89,7 +89,9 @@ export default function ListInput({
         let disabled = !isUserLoggedIn && !allowedTab;
 
         let innerText = translation[option] ? translation[option] : option;
-        let isBeta = BetaList.includes(option) ? " ( BETA )" : " ";
+        let isBeta = BetaList.includes(option)
+          ? ` ( ${translation?.beta} )`
+          : " ";
         let isActive = selectedTool === option;
         return (
           <Tabs.Item

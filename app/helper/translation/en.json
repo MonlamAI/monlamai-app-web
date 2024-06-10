@@ -58,6 +58,7 @@
   "save": "Save",
   "synthesis": "Synthesis",
   "crop": "crop",
-  "login_message":"to use our beta feature."
+  "login_message":"to use our beta feature.",
+  "beta":"BETA"
 
 }

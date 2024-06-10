@@ -46,7 +46,7 @@ function LanguageInput({
   const targetLang = params.get("target") || "bo";
   const [isRotated, setIsRotated] = useState(false);
   const { submit, data: fetcherData } = useFetcher();
-  const { isTibetan: isTib } = uselitteraTranlation();
+  const { isTibetan: isTib, translation } = uselitteraTranlation();
   const languagesOptions = isTib ? tib_languageOptions : eng_languagesOptions;
   function setTarget(lang: string) {
     setParams((prevParams) => {
@@ -205,7 +205,8 @@ function LanguageInput({
           </option>
           {languagesOptions.map((lang) => (
             <option key={lang.code} value={lang.code} className={optionClass}>
-              {lang.value} {beta.includes(lang.value) ? "(BETA)" : ""}
+              {lang.value}{" "}
+              {beta.includes(lang.value) ? `(${translation?.beta})` : ""}
             </option>
           ))}
         </Select>
@@ -233,7 +234,8 @@ function LanguageInput({
         >
           {languagesOptions.map((lang) => (
             <option key={lang.code} value={lang.code} className={optionClass}>
-              {lang.value} {beta.includes(lang.value) ? "(BETA)" : ""}
+              {lang.value}{" "}
+              {beta.includes(lang.value) ? `(${translation?.beta})` : ""}
             </option>
           ))}
         </Select>
