@@ -32,6 +32,7 @@ import axios from "axios";
 import { getUser } from "~/modal/user.server";
 import { InferenceList } from "~/component/InferenceList";
 import HeaderComponent from "~/component/HeaderComponent";
+import { Spinner } from "flowbite-react";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -192,6 +193,7 @@ export default function Index() {
       console.error(`Error uploading file ${file.name}:`, error);
     }
   };
+  let isUploading = uploadProgress > 0 && uploadProgress < 100;
   return (
     <ToolWraper title="STT">
       <InferenceWrapper
@@ -210,36 +212,45 @@ export default function Index() {
             >
               <div className="flex relative min-h-[20vh] lg:min-h-[45vh] w-full flex-1 flex-col justify-center">
                 {RecordingSelected && (
-                  <AudioRecorder audioURL={audioURL} uploadAudio={uploadFile} />
+                  <AudioRecorder
+                    audioURL={audioURL}
+                    uploadAudio={uploadFile}
+                    uploadProgress={uploadProgress}
+                    isLoading={isLoading}
+                  />
                 )}
+
                 {fileSelected && (
                   <HandleAudioFile
                     handleFileChange={handleFileChange}
                     reset={handleReset}
                   />
                 )}
-                {uploadProgress > 0 && uploadProgress < 100 && (
-                  <div>progress:{uploadProgress}</div>
-                )}
+
                 {RecordingSelected && (
                   <CancelButton onClick={handleReset} hidden={!audioURL}>
                     <RxCross2 size={20} />
                   </CancelButton>
                 )}
-
-                <div className="flex justify-between">
-                  <CharacterOrFileSizeComponent
-                    selectedTool={selectedTool}
-                    charCount={"2 min "}
-                    CHAR_LIMIT={undefined}
-                    MAX_SIZE_SUPPORT={MAX_SIZE_SUPPORT_AUDIO}
-                  />
-                </div>
+                {!isUploading && (
+                  <div className="flex justify-between">
+                    <CharacterOrFileSizeComponent
+                      selectedTool={selectedTool}
+                      charCount={"2 min "}
+                      CHAR_LIMIT={undefined}
+                      MAX_SIZE_SUPPORT={MAX_SIZE_SUPPORT_AUDIO}
+                    />
+                  </div>
+                )}
               </div>
             </CardComponent>
             <CardComponent>
               <div className="w-full flex-1 min-h-[30vh] text-black dark:text-gray-200 rounded-lg overflow-auto">
-                {RecordingSelected && isLoading && <LoadingAnimation />}
+                {RecordingSelected && isLoading && (
+                  <div className="p-2">
+                    <LoadingAnimation />
+                  </div>
+                )}
                 {edit && (
                   <EditDisplay
                     editText={editText}

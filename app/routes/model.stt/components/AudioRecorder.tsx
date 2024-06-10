@@ -1,8 +1,9 @@
 import axios from "axios";
-import { Button } from "flowbite-react";
+import { Button, Progress } from "flowbite-react";
 import React, { useRef, useState } from "react";
 import { LiveAudioVisualizer } from "react-audio-visualize";
 import { BsFillMicFill, BsFillStopFill } from "react-icons/bs";
+import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import { getBrowser } from "~/component/utils/getBrowserDetail";
 import AudioPlayer from "~/routes/model.tts/components/AudioPlayer";
 
@@ -11,14 +12,21 @@ let stopRecordingTimeout: any;
 type AudioRecordProps = {
   audioURL: string | null;
   uploadAudio: (file: File) => void;
+  uploadProgress: number;
+  isLoading: boolean;
 };
 
-function AudioRecorder({ audioURL, uploadAudio }: AudioRecordProps) {
+function AudioRecorder({
+  audioURL,
+  uploadAudio,
+  uploadProgress,
+  isLoading,
+}: AudioRecordProps) {
   let mediaRecorder: any = useRef();
 
   const [recording, setRecording] = useState(false);
   const [audioChunks, setAudioChunks] = useState([]);
-
+  const { isTibetan } = uselitteraTranlation();
   const toggleRecording = () => {
     if (!recording) {
       startRecording();
@@ -101,6 +109,7 @@ function AudioRecorder({ audioURL, uploadAudio }: AudioRecordProps) {
       reader.readAsDataURL(audioBlob);
     };
   };
+  let isUploading = uploadProgress > 0 && uploadProgress < 100;
 
   return (
     <div className="flex flex-col items-center gap-5 flex-1 justify-center md:min-h-[30vh]">
@@ -111,7 +120,7 @@ function AudioRecorder({ audioURL, uploadAudio }: AudioRecordProps) {
           height={75}
         />
       )}
-      {!audioURL && (
+      {!audioURL && !isUploading && !isLoading && (
         <Button size="lg" color="gray" onClick={toggleRecording}>
           {recording ? (
             <BsFillStopFill className="w-[25px] h-[25px] md:w-[50px] md:h-[50px]" />
@@ -120,10 +129,42 @@ function AudioRecorder({ audioURL, uploadAudio }: AudioRecordProps) {
           )}
         </Button>
       )}
-      {audioURL && (
+      {audioURL && !isUploading && (
         <div className="pt-8 w-full h-full">
           <AudioPlayer audioURL={audioURL} />
         </div>
+      )}
+      {isUploading && (
+        <Progress
+          progress={uploadProgress}
+          progressLabelPosition="inside"
+          className={isTibetan ? "font-monlam" : "font-poppins"}
+          textLabel={
+            !isTibetan
+              ? "please wait while audio is uploading..."
+              : "སྒྲ་གསར་སྣོན་བྱེད་བཞིན་ཡོད་པས་ཅུང་ཙམ་སྒུག་རོགས་གནང་།"
+          }
+          textLabelPosition="outside"
+          size="lg"
+          labelProgress
+          labelText
+        />
+      )}
+      {isLoading && (
+        <Progress
+          progress={99}
+          progressLabelPosition="inside"
+          className={isTibetan ? "font-monlam" : "font-poppins"}
+          textLabel={
+            !isTibetan
+              ? "please wait while audio is uploading..."
+              : "སྒྲ་གསར་སྣོན་བྱེད་བཞིན་ཡོད་པས་ཅུང་ཙམ་སྒུག་རོགས་གནང་།"
+          }
+          textLabelPosition="outside"
+          size="lg"
+          labelProgress
+          labelText
+        />
       )}
     </div>
   );
