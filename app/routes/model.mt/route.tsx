@@ -192,7 +192,7 @@ export default function Index() {
   }
   const [data, setData] = useState("");
 
-  let { isLoading, error, done, trigger } = useTranslate({
+  let { isLoading, error, done, trigger, responseTime } = useTranslate({
     target: target_lang,
     text: debounceSourceText,
     data,
@@ -204,7 +204,7 @@ export default function Index() {
         {
           source: debounceSourceText,
           translation: data,
-          responseTime: 5,
+          responseTime: responseTime,
           inputLang: source_lang,
           targetLang: target_lang,
         },
