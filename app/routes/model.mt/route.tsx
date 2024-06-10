@@ -201,7 +201,7 @@ export default function Index() {
     if (done === true && data) {
       savefetcher.submit(
         {
-          source: debounceSourceText,
+          source: sourceText,
           translation: data,
           responseTime: responseTime,
           inputLang: source_lang,
