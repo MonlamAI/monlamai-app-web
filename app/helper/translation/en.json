@@ -59,6 +59,6 @@
   "synthesis": "Synthesis",
   "crop": "crop",
   "login_message":"to use our beta feature.",
-  "beta":"BETA"
-
+  "beta":"BETA",
+  "uploading_audio_message":"please wait while audio is uploading... "
 }

@@ -26,7 +26,7 @@ function AudioRecorder({
 
   const [recording, setRecording] = useState(false);
   const [audioChunks, setAudioChunks] = useState([]);
-  const { isTibetan } = uselitteraTranlation();
+  const { isTibetan, translation } = uselitteraTranlation();
   const toggleRecording = () => {
     if (!recording) {
       startRecording();
@@ -139,11 +139,7 @@ function AudioRecorder({
           progress={uploadProgress}
           progressLabelPosition="inside"
           className={isTibetan ? "font-monlam" : "font-poppins"}
-          textLabel={
-            !isTibetan
-              ? "please wait while audio is uploading..."
-              : "སྒྲ་གསར་སྣོན་བྱེད་བཞིན་ཡོད་པས་ཅུང་ཙམ་སྒུག་རོགས་གནང་།"
-          }
+          textLabel={translation?.uploading_audio_message}
           textLabelPosition="outside"
           size="lg"
           labelProgress
