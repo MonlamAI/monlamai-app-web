@@ -1,5 +1,5 @@
 import { useLoaderData, useRouteLoaderData } from "@remix-run/react";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import {
   en_bo_english_replaces,
   en_bo_tibetan_replaces,
@@ -20,11 +20,12 @@ const useTranslate = ({ target, text, data, setData }: useTranslateType) => {
   const [error, setError] = useState(null);
   const { fileUploadUrl } = useLoaderData();
   const controller = new AbortController();
-  async function trigger() {
-    setData("");
+  let trigger = useCallback(triggerfunction, [text]);
+  async function triggerfunction() {
     setResponseTime(0);
     if (!text) {
       // Avoid fetching if text is empty or not provided
+      setData("");
       setError("Text is required for translation.");
       return;
     }
@@ -33,6 +34,8 @@ const useTranslate = ({ target, text, data, setData }: useTranslateType) => {
       setIsLoading(true);
       setDone(false);
       setError(null);
+      setData("");
+
       let replaced = en_bo_english_replaces(text);
       let formData = new FormData();
       let input = enable_replacement_mt ? replaced : text;

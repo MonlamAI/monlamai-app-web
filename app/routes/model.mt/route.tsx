@@ -78,7 +78,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
   return {
     user: userdata,
     limitMessage: checkLimit ? limitMessage : null,
-    token: process.env?.MODEL_API_AUTH_TOKEN,
     fileUploadUrl: process.env?.FILE_SUBMIT_URL,
     inferences,
     CHAR_LIMIT,
