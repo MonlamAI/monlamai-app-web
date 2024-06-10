@@ -57,7 +57,7 @@ export default function ListInput({
                 {translation.login}
               </button>
             </Form>
-            <span className={!isTibetan ? "ml-2" : ""}>
+            <span className={!isTibetan ? "ml-2" : ""} hidden={isTibetan}>
               {translation.login_message}
             </span>
           </span>
