@@ -193,7 +193,7 @@ export default function Index() {
 
   let { isLoading, error, done, trigger, responseTime } = useTranslate({
     target: target_lang,
-    text: debounceSourceText,
+    text: sourceText,
     data,
     setData,
   });

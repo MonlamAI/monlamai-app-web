@@ -20,8 +20,7 @@ const useTranslate = ({ target, text, data, setData }: useTranslateType) => {
   const [error, setError] = useState(null);
   const { fileUploadUrl } = useLoaderData();
   const controller = new AbortController();
-  let trigger = useCallback(triggerfunction, [text]);
-  async function triggerfunction() {
+  async function trigger() {
     setResponseTime(0);
     if (!text) {
       // Avoid fetching if text is empty or not provided
