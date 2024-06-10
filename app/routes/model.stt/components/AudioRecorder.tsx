@@ -150,22 +150,6 @@ function AudioRecorder({
           labelText
         />
       )}
-      {isLoading && (
-        <Progress
-          progress={99}
-          progressLabelPosition="inside"
-          className={isTibetan ? "font-monlam" : "font-poppins"}
-          textLabel={
-            !isTibetan
-              ? "please wait while audio is uploading..."
-              : "སྒྲ་གསར་སྣོན་བྱེད་བཞིན་ཡོད་པས་ཅུང་ཙམ་སྒུག་རོགས་གནང་།"
-          }
-          textLabelPosition="outside"
-          size="lg"
-          labelProgress
-          labelText
-        />
-      )}
     </div>
   );
 }
