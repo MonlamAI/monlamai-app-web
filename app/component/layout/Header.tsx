@@ -1,5 +1,4 @@
 import { Form, NavLink, useRouteLoaderData, Link } from "@remix-run/react";
-import { IoLogInSharp } from "react-icons/io5";
 import { Button, CustomFlowbiteTheme, Dropdown } from "flowbite-react";
 import { useState } from "react";
 import { HiLogout } from "react-icons/hi";
@@ -8,15 +7,11 @@ import { RxCross1 } from "react-icons/rx";
 import uselitteraTranlation from "../hooks/useLitteraTranslation";
 import TranslationSwitcher from "../TranslationSwitcher";
 import DarkModeSwitcher from "../DarkModeSwitcher";
-import { motion } from "framer-motion";
 function Header() {
   const [showMenu, setShowMenu] = useState(false);
   const { isEnglish, translation } = uselitteraTranlation();
   const data = useRouteLoaderData("root");
-  const variants = {
-    open: { opacity: 1, x: 0 },
-    closed: { opacity: 0, x: "-100%" },
-  };
+
   return (
     <nav
       className={`flex p-[24px] bg-neutral-100 dark:bg-surface-dark justify-center  flex-col lg:flex-row  ${
@@ -57,19 +52,16 @@ function Header() {
           </div>
         </div>
         {/* mobile view */}
-        <motion.div
-          animate={showMenu ? "open" : "closed"}
-          variants={variants}
-          className="block md:hidden absolute top-0 left-0 right-0 w-full h-full bg-neutral-100 dark:bg-secondary-900 shadow-lg z-40"
-          transition={{ duration: 0.5 }}
+        <div
+          className="hidden absolute top-0 left-0 right-0 w-full h-full bg-neutral-100 dark:bg-secondary-900 shadow-lg z-40"
+          style={{ display: showMenu ? "block" : "" }}
         >
-          <div className="flex flex-col gap-4 p-5">
+          <div className="flex flex-col gap-4 p-[24px]">
             <NavLink
               className="flex items-center gap-2 text-xl"
               prefetch="intent"
               unstable_viewTransition
               to="/"
-              onClick={() => setShowMenu((p) => !p)}
             >
               <img
                 src="/assets/logo.png"
@@ -97,7 +89,7 @@ function Header() {
             </div>
             <Menu />
           </div>
-        </motion.div>
+        </div>
       </div>
     </nav>
   );
