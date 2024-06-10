@@ -27,9 +27,9 @@ export const eng_languagesOptions = [
 export const tib_languageOptions = [
   { value: "དབྱིན་ཡིག", code: "en" },
   { value: "བོད་ཡིག", code: "bo" },
-  { value: "ཕ་རཱན་སིའི་", code: "fr" },
+  { value: "ཧྥ་རན་སི།", code: "fr" },
   { value: "རྒྱ་ཡིག", code: "zh" },
-  { value: "ཧིན་དི།", code: "hi" },
+  { value: "ཧིན་དྷི།", code: "hi" },
 ];
 
 export const ICON_SIZE = 16;
