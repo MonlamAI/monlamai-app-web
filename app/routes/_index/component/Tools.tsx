@@ -12,7 +12,7 @@ type EachProps = {
 function Tools() {
   return (
     <main className="flex lg:h-[80vh] justify-center items-center">
-      <div className="text-center max-w-7xl mx-auto">
+      <div className="text-center w-full lg:max-w-7xl mx-auto p-2 md:p-0">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 ">
           {models.map((model, index) => (
             <EachModel key={model.name} model={model} />
@@ -28,7 +28,12 @@ function EachModel({ model }: EachProps) {
   const { translation, locale } = uselitteraTranlation();
   const isEnglish = locale === "en_US";
   return (
-    <NavLink prefetch="intent" to={"/model/" + link} unstable_viewTransition>
+    <NavLink
+      prefetch="intent"
+      to={"/model/" + link}
+      className="w-full"
+      unstable_viewTransition
+    >
       {({ isTransitioning }) => (
         <motion.div whileHover={{ scale: 0.95 }}>
           <Card
@@ -40,7 +45,7 @@ function EachModel({ model }: EachProps) {
                 }`,
               },
             }}
-            className="h-full w-full md:w-[450px] flex flex-col p-6"
+            className="h-full w-full  flex flex-col p-6"
             renderImage={() => (
               <div
                 className="flex justify-start mb-2 md:mb-3"
