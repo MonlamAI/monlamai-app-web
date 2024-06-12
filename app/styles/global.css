@@ -23,7 +23,12 @@
   font-style: normal;
   font-display: swap;
 }
-
+.custom-fileinput input::file-selector-button { 
+ background-color: #707070;
+}
+.custom-fileinput input::file-selector-button:hover { 
+  background-color: #707080;
+ }
 .wizard-card-footer {
   display: flex;
   justify-content: space-between;

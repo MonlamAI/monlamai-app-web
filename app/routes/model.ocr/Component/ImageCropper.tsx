@@ -131,19 +131,22 @@ export const ImageCropper = ({ uploadFile, handleReset, uploadProgress }) => {
                 helperText={`${translation.acceptedImage} JPG, PNG, JPEG`}
                 id="file"
                 name="image"
-                className="mt-2"
+                className="mt-2 custom-fileinput"
                 accept="image/png, image/jpeg, image/jpg"
                 onChange={onLoadImage}
               />
             </>
           )}
           {!isCameraOpen && (
-            <div className="w-full mx-3 my-2 flex justify-center text-neutral-700">
+            <div className="w-full text-2xl md:text-xl  mx-3 my-2 flex justify-center text-neutral-700">
               OR
             </div>
           )}
           {!isMobile && !isCameraOpen && (
-            <Button color="dark" onClick={toggleCamera} className="self-center">
+            <Button
+              onClick={toggleCamera}
+              className="self-center bg-neutral-700 hover:bg-neutral-700 focus:hover:bg-neutral-700 enabled:hover:bg-neutral-600"
+            >
               <FaCamera className="mr-2" />
               <p>Take Photo</p>
             </Button>
@@ -153,7 +156,7 @@ export const ImageCropper = ({ uploadFile, handleReset, uploadProgress }) => {
             <>
               <Label
                 htmlFor="take_photo"
-                className="flex justify-center items-center bg-black rounded-md text-white py-2 px-3"
+                className="mx-auto flex justify-center items-center  rounded-md text-white py-2 px-3 bg-neutral-700 hover:bg-neutral-700 focus:hover:bg-neutral-700 enabled:hover:bg-neutral-600"
               >
                 <FaCamera className="mr-2" />
                 <p>Take Photo</p>
