@@ -7,7 +7,6 @@ import { RxCross1 } from "react-icons/rx";
 import uselitteraTranlation from "../hooks/useLitteraTranslation";
 import TranslationSwitcher from "../TranslationSwitcher";
 import DarkModeSwitcher from "../DarkModeSwitcher";
-import Devider from "../Devider";
 import { FaQuoteRight } from "react-icons/fa";
 import { ICON_SIZE } from "~/helper/const";
 import { FaArrowRightFromBracket } from "react-icons/fa6";
@@ -18,7 +17,7 @@ function Header() {
 
   return (
     <nav
-      className={`flex p-[24px] bg-neutral-100 dark:bg-surface-dark justify-center  flex-col lg:flex-row  ${
+      className={`flex p-4 md:p-[24px] bg-neutral-100 dark:bg-surface-dark justify-center  flex-col lg:flex-row  ${
         isEnglish ? "font-poppins" : "font-monlam"
       } `}
     >
@@ -57,11 +56,11 @@ function Header() {
         </div>
         {/* mobile view */}
         <div
-          className="hidden absolute bg-surface-light  top-0 left-0 right-0 w-full h-full  dark:bg-secondary-500 shadow-lg z-40"
+          className="hidden absolute bg-surface-light  top-0 left-0 right-0 w-full h-full  dark:bg-secondary-900 shadow-lg z-40"
           style={{ display: showMenu ? "block" : "" }}
         >
           <NavLink
-            className="flex bg-neutral-100 dark:bg-secondary-900 items-center gap-2 text-xl min-h-[84px] p-[24px]"
+            className="flex bg-neutral-100 dark:bg-secondary-900 items-center gap-2 text-xl min-h-[84px] p-4"
             prefetch="intent"
             unstable_viewTransition
             to="/"
@@ -78,7 +77,7 @@ function Header() {
             <div onClick={() => setShowMenu((p) => !p)} className="px-3 pt-3 ">
               <AboutLink />
             </div>
-            <div className="Separator self-stretch h-px bg-stone-300" />
+            <Devider />
             <div onClick={() => setShowMenu((p) => !p)} className="px-3 ">
               {data?.isJobEnabled && <JobLink />}
             </div>
@@ -86,15 +85,15 @@ function Header() {
             <div onClick={() => setShowMenu((p) => !p)} className="px-3">
               <TeamLink />
             </div> */}
-            <div className="Separator self-stretch h-px bg-stone-300" />
+            <Devider />
             <div onClick={() => setShowMenu((p) => !p)} className="px-3">
               <DarkModeSwitcher />
             </div>
-            <div className="Separator self-stretch h-px bg-stone-300" />
+            <Devider />
             <div className="px-3">
               <TranslationSwitcher />
             </div>
-            <div className="Separator self-stretch h-px bg-stone-300" />
+            <Devider />
             <Menu />
           </div>
         </div>
@@ -104,6 +103,12 @@ function Header() {
 }
 
 export default Header;
+
+function Devider() {
+  return (
+    <div className="Separator self-stretch h-px bg-stone-300 dark:bg-secondary-700" />
+  );
+}
 
 function Menu() {
   const { user } = useRouteLoaderData("root");
@@ -162,7 +167,7 @@ function Menu() {
       </Dropdown>
       <Form method="post" action="/logout" className="md:hidden">
         <button
-          className={`flex gap-1 px-3 ${
+          className={`flex gap-2 px-3 text-secondary-500 dark:text-primary-500 ${
             isEnglish ? "font-poppins" : "font-monlam"
           }`}
         >
@@ -178,7 +183,7 @@ function JobLink() {
   return (
     <NavLink
       to="/jobs"
-      className="text-base  flex gap-1"
+      className="text-base  flex gap-2"
       prefetch="intent"
       unstable_viewTransition
     >
@@ -192,7 +197,7 @@ function AboutLink() {
   return (
     <NavLink
       to="/about"
-      className="text-base flex gap-1 "
+      className="text-base flex gap-2 "
       prefetch="intent"
       unstable_viewTransition
     >

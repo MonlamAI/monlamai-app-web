@@ -21,7 +21,7 @@ function DarkModeSwitcher() {
   return (
     <div
       onClick={handleClick}
-      className="flex flex-1 gap-1 items-center text-[14px] text-light_text-secondary dark:text-dark_text-secondary  cursor-pointer"
+      className="flex flex-1 gap-2 items-center text-[14px] text-light_text-secondary dark:text-dark_text-secondary  cursor-pointer"
     >
       {isDarkMode ? (
         <>
