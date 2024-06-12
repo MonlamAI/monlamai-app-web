@@ -25,12 +25,12 @@ function DarkModeSwitcher() {
     >
       {isDarkMode ? (
         <>
-          <MdOutlineLightMode size={20} />
+          <MdOutlineLightMode size={ICON_SIZE} />
           {translation.lightmode}
         </>
       ) : (
         <>
-          <MdDarkMode size={20} />
+          <MdDarkMode size={ICON_SIZE} />
           {translation.darkmode}
         </>
       )}

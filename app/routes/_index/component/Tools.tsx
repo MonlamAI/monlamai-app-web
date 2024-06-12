@@ -13,7 +13,7 @@ function Tools() {
   return (
     <main className="flex lg:h-[80vh] justify-center items-center">
       <div className="text-center max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 m-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 ">
           {models.map((model, index) => (
             <EachModel key={model.name} model={model} />
           ))}

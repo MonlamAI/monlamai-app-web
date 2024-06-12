@@ -1,12 +1,16 @@
 import { Form, NavLink, useRouteLoaderData, Link } from "@remix-run/react";
 import { Button, CustomFlowbiteTheme, Dropdown } from "flowbite-react";
 import { useState } from "react";
-import { HiLogout } from "react-icons/hi";
+import { HiBriefcase, HiLogout } from "react-icons/hi";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { RxCross1 } from "react-icons/rx";
 import uselitteraTranlation from "../hooks/useLitteraTranslation";
 import TranslationSwitcher from "../TranslationSwitcher";
 import DarkModeSwitcher from "../DarkModeSwitcher";
+import Devider from "../Devider";
+import { FaQuoteRight } from "react-icons/fa";
+import { ICON_SIZE } from "~/helper/const";
+import { FaArrowRightFromBracket } from "react-icons/fa6";
 function Header() {
   const [showMenu, setShowMenu] = useState(false);
   const { isEnglish, translation } = uselitteraTranlation();
@@ -53,40 +57,44 @@ function Header() {
         </div>
         {/* mobile view */}
         <div
-          className="hidden absolute top-0 left-0 right-0 w-full h-full bg-neutral-100 dark:bg-secondary-900 shadow-lg z-40"
+          className="hidden absolute bg-surface-light  top-0 left-0 right-0 w-full h-full  dark:bg-secondary-500 shadow-lg z-40"
           style={{ display: showMenu ? "block" : "" }}
         >
-          <div className="flex flex-col gap-4 p-[24px]">
-            <NavLink
-              className="flex items-center gap-2 text-xl"
-              prefetch="intent"
-              unstable_viewTransition
-              to="/"
-            >
-              <img
-                src="/assets/logo.png"
-                width="40px"
-                alt="Monalm AI"
-                className="relative -top-1"
-              />
-              {translation.monlamAI}
-            </NavLink>
-            <div onClick={() => setShowMenu((p) => !p)}>
+          <NavLink
+            className="flex bg-neutral-100 dark:bg-secondary-900 items-center gap-2 text-xl min-h-[84px] p-[24px]"
+            prefetch="intent"
+            unstable_viewTransition
+            to="/"
+          >
+            <img
+              src="/assets/logo.png"
+              width="40px"
+              alt="Monalm AI"
+              className="relative -top-1"
+            />
+            {translation.monlamAI}
+          </NavLink>
+          <div className="flex flex-col gap-4 text-light_text-secondary dark:text-dark_text-secondary">
+            <div onClick={() => setShowMenu((p) => !p)} className="px-3 pt-3 ">
               <AboutLink />
             </div>
-            <div onClick={() => setShowMenu((p) => !p)}>
+            <div className="Separator self-stretch h-px bg-stone-300" />
+            <div onClick={() => setShowMenu((p) => !p)} className="px-3 ">
               {data?.isJobEnabled && <JobLink />}
             </div>
-            <div onClick={() => setShowMenu((p) => !p)}>
+            {/* <div className="Separator self-stretch h-px bg-stone-300" />
+            <div onClick={() => setShowMenu((p) => !p)} className="px-3">
               <TeamLink />
-            </div>
-            <div onClick={() => setShowMenu((p) => !p)}>
+            </div> */}
+            <div className="Separator self-stretch h-px bg-stone-300" />
+            <div onClick={() => setShowMenu((p) => !p)} className="px-3">
               <DarkModeSwitcher />
             </div>
-
-            <div onClick={() => setShowMenu((p) => !p)}>
+            <div className="Separator self-stretch h-px bg-stone-300" />
+            <div className="px-3">
               <TranslationSwitcher />
             </div>
+            <div className="Separator self-stretch h-px bg-stone-300" />
             <Menu />
           </div>
         </div>
@@ -113,7 +121,7 @@ function Menu() {
       <Form method="post" action="/auth0">
         <Button
           type="submit"
-          className={` ${isEnglish ? "font-poppins " : "font-monlam"}`}
+          className={`w-full ${isEnglish ? "font-poppins " : "font-monlam"}`}
           color="secondary"
           pill
           theme={customTheme}
@@ -123,34 +131,45 @@ function Menu() {
       </Form>
     );
   return (
-    <Dropdown
-      label={user.email}
-      dismissOnClick={false}
-      className="bg-white"
-      renderTrigger={() => (
-        <img
-          className="h-8 w-8 rounded-full cursor-pointer"
-          src={user.picture}
-          title={user.email}
-          alt={user.email}
-          referrerPolicy="no-referrer"
-        />
-      )}
-    >
-      <Dropdown.Header>
-        <span className="block truncate text-sm font-medium font-poppins">
-          {user.email}
-        </span>
-      </Dropdown.Header>
-      <hr />
-      <Dropdown.Item icon={HiLogout} className="mt-2">
-        <Form method="post" action="/logout">
-          <button className={isEnglish ? "font-poppins" : "font-monlam"}>
-            {translation.logout}
-          </button>
-        </Form>
-      </Dropdown.Item>
-    </Dropdown>
+    <>
+      <Dropdown
+        label={user.email}
+        dismissOnClick={false}
+        className="bg-white hidden md:block"
+        renderTrigger={() => (
+          <img
+            className="h-8 w-8 rounded-full hidden md:block  cursor-pointer"
+            src={user.picture}
+            title={user.email}
+            alt={user.email}
+            referrerPolicy="no-referrer"
+          />
+        )}
+      >
+        <Dropdown.Header>
+          <span className="block truncate text-sm font-medium font-poppins">
+            {user.email}
+          </span>
+        </Dropdown.Header>
+        <hr />
+        <Dropdown.Item icon={HiLogout} className="mt-2">
+          <Form method="post" action="/logout">
+            <button className={isEnglish ? "font-poppins" : "font-monlam"}>
+              {translation.logout}
+            </button>
+          </Form>
+        </Dropdown.Item>
+      </Dropdown>
+      <Form method="post" action="/logout" className="md:hidden">
+        <button
+          className={`flex gap-1 px-3 ${
+            isEnglish ? "font-poppins" : "font-monlam"
+          }`}
+        >
+          <FaArrowRightFromBracket /> {translation.logout}
+        </button>
+      </Form>
+    </>
   );
 }
 
@@ -159,11 +178,11 @@ function JobLink() {
   return (
     <NavLink
       to="/jobs"
-      className="text-base"
+      className="text-base  flex gap-1"
       prefetch="intent"
       unstable_viewTransition
     >
-      {translation.jobs}
+      <HiBriefcase size={ICON_SIZE} /> {translation.jobs}
     </NavLink>
   );
 }
@@ -173,11 +192,11 @@ function AboutLink() {
   return (
     <NavLink
       to="/about"
-      className="text-base"
+      className="text-base flex gap-1 "
       prefetch="intent"
       unstable_viewTransition
     >
-      {translation.aboutUs}
+      <FaQuoteRight size={ICON_SIZE} /> {translation.aboutUs}
     </NavLink>
   );
 }
