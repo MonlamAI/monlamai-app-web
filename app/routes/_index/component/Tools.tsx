@@ -11,7 +11,7 @@ type EachProps = {
 
 function Tools() {
   return (
-    <main className="flex lg:h-[80vh] justify-center items-center">
+    <main className="flex lg:h-[80vh] justify-center pt-[100px]">
       <div className="text-center w-full lg:max-w-7xl mx-auto p-2 md:p-0">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 ">
           {models.map((model, index) => (
@@ -35,7 +35,7 @@ function EachModel({ model }: EachProps) {
       unstable_viewTransition
     >
       {({ isTransitioning }) => (
-        <motion.div whileHover={{ scale: 0.95 }}>
+        <motion.div whileHover={{ scale: 0.98 }}>
           <Card
             theme={{
               root: {
@@ -62,10 +62,10 @@ function EachModel({ model }: EachProps) {
             )}
           >
             <h2
-              className={`${
+              className={` ${
                 isEnglish
-                  ? "text-2xl md:text-3xl font-bold"
-                  : "text-xl md:text-2xl font-bold mt-2 md:mt-3"
+                  ? "text-2xl md:text-3xl "
+                  : "text-xl md:text-2xl  mt-2 md:mt-3"
               }`}
             >
               {translation[name]}

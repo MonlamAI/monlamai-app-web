@@ -187,7 +187,7 @@ function JobLink() {
       prefetch="intent"
       unstable_viewTransition
     >
-      <HiBriefcase size={ICON_SIZE} /> {translation.jobs}
+      <HiBriefcase size={ICON_SIZE} className="md:hidden" /> {translation.jobs}
     </NavLink>
   );
 }
@@ -201,7 +201,8 @@ function AboutLink() {
       prefetch="intent"
       unstable_viewTransition
     >
-      <FaQuoteRight size={ICON_SIZE} /> {translation.aboutUs}
+      <FaQuoteRight size={ICON_SIZE} className="md:hidden" />{" "}
+      {translation.aboutUs}
     </NavLink>
   );
 }
