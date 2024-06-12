@@ -1,4 +1,4 @@
-import { Link, NavLink } from "@remix-run/react";
+import { NavLink } from "@remix-run/react";
 import { Card } from "flowbite-react";
 
 import { motion } from "framer-motion";
@@ -64,7 +64,7 @@ function EachModel({ model }: EachProps) {
             <h2
               className={` ${
                 isEnglish
-                  ? "text-2xl md:text-3xl "
+                  ? "text-2xl md:text-3xl font-[500]"
                   : "text-xl md:text-2xl  mt-2 md:mt-3"
               }`}
             >
