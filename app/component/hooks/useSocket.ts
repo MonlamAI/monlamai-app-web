@@ -14,6 +14,7 @@ function useSocket() {
     if (!socket) return;
     function onConnect() {
       setIsConnected(true);
+      console.log("connected to socket");
     }
 
     function onDisconnect() {
