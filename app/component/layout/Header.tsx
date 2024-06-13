@@ -17,7 +17,7 @@ function Header() {
 
   return (
     <nav
-      className={`flex p-4 md:p-[24px] bg-neutral-100 dark:bg-surface-dark justify-center  flex-col lg:flex-row  ${
+      className={`flex p-4 md:p-[24px] border-b border-b-neutral-200 bg-neutral-100 dark:bg-surface-dark justify-center  flex-col lg:flex-row  ${
         isEnglish ? "font-poppins" : "font-monlam"
       } `}
     >
@@ -60,7 +60,7 @@ function Header() {
           style={{ display: showMenu ? "block" : "" }}
         >
           <NavLink
-            className="flex bg-neutral-100 dark:bg-secondary-900 items-center gap-2 text-xl min-h-[84px] p-4"
+            className="flex bg-neutral-100 border-b border-b-neutral-200 dark:bg-secondary-900 items-center gap-2 text-xl min-h-[84px] p-4"
             prefetch="intent"
             unstable_viewTransition
             to="/"
@@ -71,7 +71,7 @@ function Header() {
               alt="Monalm AI"
               className="relative -top-1"
             />
-            {translation.monlamAI}
+            <span className="font-bold">{translation.monlamAI}</span>
           </NavLink>
           <div className="flex flex-col gap-4 text-light_text-secondary dark:text-dark_text-secondary">
             <div onClick={() => setShowMenu((p) => !p)} className="px-3 pt-3 ">
