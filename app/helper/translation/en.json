@@ -60,5 +60,9 @@
   "crop": "crop",
   "login_message":"to use our beta feature.",
   "beta":"BETA",
-  "uploading_audio_message":"please wait while audio is uploading... "
+  "uploading_audio_message":"please wait while audio is uploading... ",
+  "or":"OR",
+  "take-photo":"Take photo",
+  "choose-file":"Choose file",
+  "no-file-chosen":"No file chosen"
 }

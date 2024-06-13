@@ -112,8 +112,18 @@ export const ImageCropper = ({ uploadFile, handleReset, uploadProgress }) => {
             <Button onClick={cancelCrop} title="reset" color="neutral">
               <RxCross2 />
             </Button>
-            <Button onClick={handleCroppedImage} title="save" size="sm">
-              <BiSave /> {translation.save}
+            <Button
+              onClick={handleCroppedImage}
+              title="save"
+              size="sm"
+              className={` bg-secondary-500 dark:bg-primary-500 hover:bg-secondary-400 dark:hover:bg-primary-400 
+            text-white dark:text-black 
+            enabled:hover:bg-secondary-400 enabled:dark:hover:bg-primary-400
+         ${!isTibetan ? "font-poppins" : "font-monlam"} `}
+            >
+              <div className="flex gap-2 items-center">
+                <BiSave /> {translation.save}
+              </div>
             </Button>
           </div>
         </div>
@@ -138,17 +148,23 @@ export const ImageCropper = ({ uploadFile, handleReset, uploadProgress }) => {
             </>
           )}
           {!isCameraOpen && (
-            <div className="w-full text-2xl md:text-xl  mx-3 my-2 flex justify-center text-neutral-700">
-              OR
+            <div
+              className={`w-full flex items-center  md:text-xl  my-2  justify-between text-neutral-700 ${
+                isTibetan ? "text-lg" : "text-xl"
+              }`}
+            >
+              <div className="flex-grow border-t border-gray-500"></div>
+              <span className="mx-4 text-gray-400">{translation["or"]}</span>
+              <div className="flex-grow border-t border-gray-500"></div>
             </div>
           )}
           {!isMobile && !isCameraOpen && (
             <Button
               onClick={toggleCamera}
-              className="self-center bg-neutral-700 hover:bg-neutral-700 focus:hover:bg-neutral-700 enabled:hover:bg-neutral-600"
+              className="self-center bg-neutral-700 hover:bg-neutral-700 focus:hover:bg-neutral-700 dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:focus:hover:bg-neutral-700 enabled:hover:bg-neutral-700 dark:enabled:hover:bg-neutral-700"
             >
               <FaCamera className="mr-2" />
-              <p>Take Photo</p>
+              <p>{translation["take-photo"]}</p>
             </Button>
           )}
           {isCameraOpen && !isMobile && <WebcamCapture setImageUrl={newFile} />}
@@ -156,10 +172,10 @@ export const ImageCropper = ({ uploadFile, handleReset, uploadProgress }) => {
             <>
               <Label
                 htmlFor="take_photo"
-                className="mx-auto flex justify-center items-center  rounded-md text-white py-2 px-3 bg-neutral-700 hover:bg-neutral-700 focus:hover:bg-neutral-700 enabled:hover:bg-neutral-600"
+                className="mx-auto flex justify-center items-center  rounded-md  py-2 px-3 text-white bg-neutral-900 "
               >
                 <FaCamera className="mr-2" />
-                <p>Take Photo</p>
+                <p>{translation["take-photo"]}</p>
               </Label>
               <input
                 type="file"
