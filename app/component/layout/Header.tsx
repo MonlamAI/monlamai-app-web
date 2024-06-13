@@ -34,7 +34,7 @@ function Header() {
             alt="Monalm AI"
             className="relative -top-1"
           />
-          {translation.monlamAI}
+          <span className="font-bold">{translation.monlamAI}</span>
         </NavLink>
         <button
           className="block lg:hidden z-50 pr-2"
