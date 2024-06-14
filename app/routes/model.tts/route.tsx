@@ -137,7 +137,7 @@ export default function Index() {
           <HeaderComponent model="TTS" selectedTool={selectedTool} />
           <div className="flex flex-col lg:flex-row">
             <CardComponent focussed={true}>
-              <div className="flex relative h-full md:min-h-[25vh] lg:min-h-[40vh] w-full flex-1 flex-col justify-center">
+              <div className="flex relative h-full min-h-[100px] lg:min-h-[40vh] w-full flex-1 flex-col justify-center">
                 {selectedTool === "text" && (
                   <TextComponent
                     setSourceText={setSourceText}
@@ -183,22 +183,21 @@ export default function Index() {
             </CardComponent>
             <Devider />
             <CardComponent>
-              <div className="flex min-h-[15vh] lg:min-h-[30vh] h-auto w-full flex-1 flex-col gap-2">
+              <div className="flex min-h-[156px] lg:min-h-[30vh] h-full w-full flex-1 flex-col gap-2">
                 {actionError && (
                   <ErrorMessage
                     message={actionError}
                     handleClose={() => resetFetcher(fetcher)}
                   />
                 )}
-                {isLoading &&
-                  (selectedTool === "text" || selectedTool === "document") && (
-                    <div className="h-full flex justify-center items-center">
-                      <Spinner
-                        size="lg"
-                        className={"fill-secondary-300 dark:fill-primary-500"}
-                      />
-                    </div>
-                  )}
+                {isLoading && (
+                  <div className="flex flex-1 justify-center items-center">
+                    <Spinner
+                      size="xl"
+                      className={"fill-secondary-500 dark:fill-primary-500"}
+                    />
+                  </div>
+                )}
                 {!isLoading && selectedTool === "text" && data && (
                   <div className="flex-1 h-full flex justify-center items-center">
                     {data?.error ? (

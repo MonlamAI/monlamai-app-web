@@ -88,7 +88,7 @@ const AudioPlayer = ({ audioURL }) => {
   };
 
   return (
-    <div className="p-2 w-full h-full flex flex-col">
+    <div className="px-3 py-2 w-full h-full flex flex-col gap-2">
       <div className="flex items-center justify-between">
         <div className="flex items-center">
           <svg
@@ -145,7 +145,7 @@ const AudioPlayer = ({ audioURL }) => {
           <span>{playbackRate} X</span>
         </button>
       </div>
-      <div className="flex flex-1 flex-col justify-between">
+      <div className="flex flex-1 flex-col justify-between gap-2">
         {/* Placeholder for the waveform */}
         <div className="my-auto" ref={containerRef} />
 
