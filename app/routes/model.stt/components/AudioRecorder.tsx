@@ -112,7 +112,7 @@ function AudioRecorder({
   let isUploading = uploadProgress > 0 && uploadProgress < 100;
 
   return (
-    <div className="flex flex-col items-center gap-5 flex-1 justify-center md:min-h-[30vh]">
+    <div className="flex flex-col items-center gap-5 flex-1 justify-center">
       {recording && mediaRecorder.current && getBrowser() !== "Safari" && (
         <LiveAudioVisualizer
           mediaRecorder={mediaRecorder.current}
@@ -121,11 +121,16 @@ function AudioRecorder({
         />
       )}
       {!audioURL && !isUploading && !isLoading && (
-        <Button size="lg" color="gray" onClick={toggleRecording}>
+        <Button
+          size="lg"
+          color="gray"
+          onClick={toggleRecording}
+          className="border-secondary-500 dark:border-primary-500 text-secondary-500 dark:text-primary-500 enabled:hover:bg-neutral enabled:hover:text-secondary-600 dark:enabled:hover:bg-secondary-700 dark:enabled:hover:text-primary-600"
+        >
           {recording ? (
-            <BsFillStopFill className="w-[25px] h-[25px] md:w-[50px] md:h-[50px]" />
+            <BsFillStopFill className="w-[32px] h-[34px] md:w-[50px] md:h-[50px]" />
           ) : (
-            <BsFillMicFill className="w-[25px] h-[25px] md:w-[50px] md:h-[50px]" />
+            <BsFillMicFill className="w-[32px] h-[34px] md:w-[50px] md:h-[50px]" />
           )}
         </Button>
       )}
