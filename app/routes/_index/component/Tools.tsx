@@ -62,16 +62,16 @@ function EachModel({ model }: EachProps) {
             )}
           >
             <h2
-              className={` ${
+              className={`${
                 isEnglish
-                  ? "text-2xl md:text-3xl font-[500]"
+                  ? "text-xl md:text-3xl font-bold"
                   : "text-xl md:text-2xl  mt-2 md:mt-3"
               }`}
             >
               {translation[name]}
             </h2>
             <p
-              className={`text-gray-400 ${
+              className={`text-light_text-secondary dark:text-gray-400 ${
                 isEnglish ? "text-base font-normal" : "text-[0.7rem]"
               }`}
             >
