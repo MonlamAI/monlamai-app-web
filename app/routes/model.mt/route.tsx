@@ -236,6 +236,11 @@ export default function Index() {
     });
   };
 
+  function handleErrorClose() {
+    resetFetcher(translationFetcher);
+    resetFetcher(editfetcher);
+  }
+
   return (
     <ToolWraper title="MT">
       <ListInput
@@ -244,7 +249,7 @@ export default function Index() {
         setSelectedTool={setSelectedTool}
         reset={handleReset}
       />
-      {error && <ErrorMessage error={error} />}
+      {error && <ErrorMessage message={error} handleClose={handleErrorClose} />}
       <div className=" rounded-[10px] overflow-hidden border dark:border-[--card-border] border-dark_text-secondary">
         <LanguageInput
           setSourceText={setSourceText}
