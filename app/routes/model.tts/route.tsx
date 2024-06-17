@@ -133,7 +133,7 @@ export default function Index() {
         options={["text", "document"]}
         reset={handleReset}
       >
-        <div className="rounded-[10px] overflow-hidden border dark:border-light_text-secondary border-dark_text-secondary">
+        <div className="rounded-[10px] overflow-hidden border dark:border-[--card-border] border-dark_text-secondary">
           <HeaderComponent model="TTS" selectedTool={selectedTool} />
           <div className="flex flex-col lg:flex-row">
             <CardComponent focussed={true}>

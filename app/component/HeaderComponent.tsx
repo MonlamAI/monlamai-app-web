@@ -17,7 +17,7 @@ function HeaderComponent({
   let isDocumentSelected = selectedTool === "document";
   return (
     <div
-      className={`bg-white text-light_text-secondary dark:text-dark_text-secondary border-b lig dark:border-light_text-secondary border-dark_text-secondary dark:bg-secondary-700 flex items-center md:flex-row gap-14 py-3 px-5 text-base font-normal ${
+      className={`bg-white text-light_text-secondary dark:text-dark_text-secondary border-b lig dark:border-[--card-border] border-dark_text-secondary dark:bg-[--card-bg] flex items-center md:flex-row gap-14 py-3 px-5 text-base font-normal ${
         !isEnglish ? "font-monlam" : "font-poppins"
       }`}
     >

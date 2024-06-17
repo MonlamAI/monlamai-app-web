@@ -39,7 +39,7 @@ function EachModel({ model }: EachProps) {
           <Card
             theme={{
               root: {
-                base: "flex rounded-lg border border-neutral-200 bg-shadow-md dark:border-secondary-700 bg-neutral dark:bg-secondary-800",
+                base: "flex rounded-lg border border-neutral-200 bg-shadow-md dark:border-[--card-border] bg-neutral dark:bg-[--card-bg]",
                 children: `flex flex-col justify-start items-start gap-2 md:gap-3 ${
                   isEnglish ? "font-poppins" : "font-monlam"
                 }`,
@@ -62,7 +62,7 @@ function EachModel({ model }: EachProps) {
             )}
           >
             <h2
-              className={`text-neutral-900 ${
+              className={`text-neutral-900 dark:text-neutral-400 ${
                 isEnglish
                   ? "text-xl md:text-3xl font-bold"
                   : "text-xl md:text-2xl  mt-2 md:mt-3"

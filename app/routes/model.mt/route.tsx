@@ -245,7 +245,7 @@ export default function Index() {
         reset={handleReset}
       />
       {error && <ErrorMessage error={error} />}
-      <div className=" rounded-[10px] overflow-hidden border dark:border-light_text-secondary border-dark_text-secondary">
+      <div className=" rounded-[10px] overflow-hidden border dark:border-[--card-border] border-dark_text-secondary">
         <LanguageInput
           setSourceText={setSourceText}
           data={data}

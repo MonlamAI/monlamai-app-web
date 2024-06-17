@@ -18,7 +18,7 @@ function Header() {
 
   return (
     <nav
-      className={`flex p-4 md:p-[24px] border-b border-b-neutral-200 bg-neutral-100 dark:bg-surface-dark dark:border-b-secondary-600 justify-center  flex-col lg:flex-row  ${
+      className={`flex p-4 md:p-[24px] border-b border-b-neutral-200 bg-neutral-100 dark:bg-[--card-bg] dark:border-b-[--card-border] justify-center  flex-col lg:flex-row  ${
         isEnglish ? "font-poppins" : "font-monlam"
       } `}
     >
@@ -131,7 +131,7 @@ function Menu() {
       <Form method="post" action="/auth0">
         <Button
           type="submit"
-          className={`w-full p-1 ${
+          className={`w-full p-1 pb-[1px] ${
             isEnglish ? "font-poppins " : "font-monlam"
           }`}
           color="secondary"

@@ -23,6 +23,13 @@
   font-style: normal;
   font-display: swap;
 }
+
+:root{
+  --main-bg: rgb(24,24,24);
+  --card-bg: rgb(32,32,32);
+  --card-border: rgb(40,40,40);
+}
+
 .custom-fileinput input::file-selector-button { 
  background-color: #707070;
 }

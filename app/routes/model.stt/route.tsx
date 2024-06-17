@@ -33,6 +33,7 @@ import { getUser } from "~/modal/user.server";
 import { InferenceList } from "~/component/InferenceList";
 import HeaderComponent from "~/component/HeaderComponent";
 import { Spinner } from "flowbite-react";
+import Devider from "~/component/Devider";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -205,12 +206,12 @@ export default function Index() {
         reset={handleReset}
       >
         {actionError && <ErrorMessage error={actionError} />}
-        <div className=" rounded-[10px]  overflow-hidden border dark:border-light_text-secondary border-dark_text-secondary">
+        <div className=" rounded-[10px]  overflow-hidden border dark:border-[--card-border] border-dark_text-secondary">
           <HeaderComponent model="STT" selectedTool={selectedTool} />
           <div className="flex flex-col  lg:flex-row">
             <CardComponent
               focussed={true}
-              className="flex-1 border-r border-b lg:border-b-0 dark:border-light_text-secondary border-dark_text-secondary"
+              className="flex-1  border-b lg:border-b-0 dark:border-[--card-border] border-dark_text-secondary"
             >
               <div className="flex w-full flex-1 flex-col justify-center relative min-h-[150px] lg:min-h-[45vh]">
                 {RecordingSelected && (
@@ -246,6 +247,7 @@ export default function Index() {
                 )}
               </div>
             </CardComponent>
+            <Devider />
             <CardComponent>
               <div className="w-full flex flex-1 min-h-[150px] lg:min-h-[30vh] text-black dark:text-gray-200 rounded-lg overflow-auto">
                 {RecordingSelected && isLoading && (

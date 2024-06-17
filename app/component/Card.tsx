@@ -30,7 +30,7 @@ function Card(props) {
     <div
       ref={cardRef}
       onClick={enableFocus}
-      className={`flex bg-white shadow-md dark:bg-secondary-700 flex-col lg:w-1/2 
+      className={`flex bg-white shadow-md dark:bg-[--card-bg] flex-col lg:w-1/2 
     ${
       isFocussed
         ? "outline -outline-offset-2 outline-secondary-100 dark:outline-primary-500 lg:rounded-bl-lg"

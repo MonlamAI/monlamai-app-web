@@ -128,7 +128,7 @@ export default function App() {
         <div className="flex flex-col flex-1">
           <Header />
           {user && <LocationComponent />}
-          <div className="flex-1 flex justify-center pt-4  bg-neutral-50 dark:bg-surface-dark ">
+          <div className="flex-1 flex justify-center pt-4  bg-neutral-50 dark:bg-[--main-bg] ">
             <div className="flex-1 max-w-[1280px] px-2 ">
               <Outlet />
             </div>
