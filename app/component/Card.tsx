@@ -33,7 +33,7 @@ function Card(props) {
       className={`flex bg-white shadow-md dark:bg-[--card-bg] flex-col lg:w-1/2 
     ${
       isFocussed
-        ? "outline -outline-offset-2 outline-secondary-100 dark:outline-primary-500 lg:rounded-bl-lg"
+        ? "border border-1 border-secondary-100 dark:border-primary-900 lg:rounded-bl-lg"
         : props.className
     }`}
     >

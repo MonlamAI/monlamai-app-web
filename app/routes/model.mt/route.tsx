@@ -337,8 +337,8 @@ export default function Index() {
                   )}
                   {selectedTool === "document" && <InferenceList />}
                   {isLoading && (
-                    <div className="w-full flex justify-center">
-                      <div className=" loader_animation"></div>
+                    <div className="w-full flex justify-center pt-3">
+                      <div className=" loader_animation "></div>
                     </div>
                   )}
                   {selectedTool === "document" && sourceText !== "" && (

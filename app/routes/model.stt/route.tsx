@@ -205,7 +205,10 @@ export default function Index() {
         options={["recording", "file"]}
         reset={handleReset}
       >
-        {actionError && <ErrorMessage error={actionError} />}
+        {actionError && (
+          <ErrorMessage message={actionError} handleClose={() => {}} />
+        )}
+
         <div className=" rounded-[10px]  overflow-hidden border dark:border-[--card-border] border-dark_text-secondary">
           <HeaderComponent model="STT" selectedTool={selectedTool} />
           <div className="flex flex-col  lg:flex-row">

@@ -60,6 +60,37 @@ html {
     66% {box-shadow: 20px 0 #0002,-20px 0 #000; background: #0002}
     100%{box-shadow: 20px 0 #0002,-20px 0 #000; background: #000 }
 }
+.dark .loader_animation {
+  width: 15px;
+  aspect-ratio: 1;
+
+  border-radius: 50%;
+  animation: dark_l5 1s infinite linear alternate;
+}
+@keyframes dark_l5 {
+  0% {
+      box-shadow: 20px 0 #fff, -20px 0 #fff5;
+      background: #fff;
+  }
+  33% {
+      box-shadow: 20px 0 #fff, -20px 0 #fff5;
+      background: #fff5;
+  }
+  66% {
+      box-shadow: 20px 0 #fff5, -20px 0 #fff;
+      background: #fff5;
+  }
+  100% {
+      box-shadow: 20px 0 #fff5, -20px 0 #fff;
+      background: #fff;
+  }
+}
+
+
+
+
+
+
 /* HTML: <div class="loader"></div> */
 .speaker_loading {
   width: 15px;
