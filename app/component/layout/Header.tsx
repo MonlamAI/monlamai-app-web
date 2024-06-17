@@ -10,6 +10,7 @@ import DarkModeSwitcher from "../DarkModeSwitcher";
 import { FaQuoteRight } from "react-icons/fa";
 import { ICON_SIZE } from "~/helper/const";
 import { FaArrowRightFromBracket } from "react-icons/fa6";
+
 function Header() {
   const [showMenu, setShowMenu] = useState(false);
   const { isEnglish, translation } = uselitteraTranlation();
@@ -17,13 +18,13 @@ function Header() {
 
   return (
     <nav
-      className={`flex p-4 md:p-[24px] border-b border-b-neutral-200 bg-neutral-100 dark:bg-surface-dark justify-center  flex-col lg:flex-row  ${
+      className={`flex p-4 md:p-[24px] border-b border-b-neutral-200 bg-neutral-100 dark:bg-surface-dark dark:border-b-secondary-600 justify-center  flex-col lg:flex-row  ${
         isEnglish ? "font-poppins" : "font-monlam"
       } `}
     >
-      <div className="flex  items-center justify-between  max-w-[1280px] w-full  ">
+      <div className="flex items-center justify-between  max-w-[1280px] w-full">
         <NavLink
-          className="flex items-center gap-2 text-xl"
+          className="flex items-center gap-2"
           prefetch="intent"
           unstable_viewTransition
           to="/"
@@ -34,7 +35,9 @@ function Header() {
             alt="Monalm AI"
             className="relative -top-1"
           />
-          <span className="font-bold">{translation.monlamAI}</span>
+          <span className="text-xl md:text-2xl font-semibold">
+            {translation.monlamAI}
+          </span>
         </NavLink>
         <button
           className="block lg:hidden z-50 pr-2"
@@ -56,11 +59,11 @@ function Header() {
         </div>
         {/* mobile view */}
         <div
-          className="hidden absolute bg-surface-light  top-0 left-0 right-0 w-full h-full  dark:bg-secondary-900 shadow-lg z-40"
+          className="hidden absolute bg-neutral-100 top-0 left-0 right-0 w-full h-full  dark:bg-secondary-900 shadow-lg z-40"
           style={{ display: showMenu ? "block" : "" }}
         >
           <NavLink
-            className="flex bg-neutral-100 border-b border-b-neutral-200 dark:bg-secondary-900 items-center gap-2 text-xl min-h-[84px] p-4"
+            className="flex bg-neutral-100 border-b border-b-neutral-200 dark:bg-secondary-900 items-center gap-2 min-h-[84px] p-4"
             prefetch="intent"
             unstable_viewTransition
             to="/"
@@ -71,7 +74,9 @@ function Header() {
               alt="Monalm AI"
               className="relative -top-1"
             />
-            <span className="font-bold">{translation.monlamAI}</span>
+            <span className="text-xl font-semibold">
+              {translation.monlamAI}
+            </span>
           </NavLink>
           <div className="flex flex-col gap-4 text-light_text-secondary dark:text-dark_text-secondary">
             <div onClick={() => setShowMenu((p) => !p)} className="px-3 pt-3 ">
@@ -170,7 +175,7 @@ function Menu() {
       </Dropdown>
       <Form method="post" action="/logout" className="md:hidden">
         <button
-          className={`flex gap-2 px-3 text-secondary-500 dark:text-primary-500 ${
+          className={`flex gap-2 items-center px-3 text-secondary-500 dark:text-primary-500 ${
             isEnglish ? "font-poppins" : "font-monlam"
           }`}
         >
@@ -186,7 +191,7 @@ function JobLink() {
   return (
     <NavLink
       to="/jobs"
-      className="text-base  flex gap-2"
+      className="text-base flex items-center gap-2"
       prefetch="intent"
       unstable_viewTransition
     >
@@ -200,7 +205,7 @@ function AboutLink() {
   return (
     <NavLink
       to="/about"
-      className="text-base flex gap-2 "
+      className="text-base flex gap-2 items-center"
       prefetch="intent"
       unstable_viewTransition
     >

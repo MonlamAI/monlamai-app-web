@@ -110,13 +110,13 @@ export default function ListInput({
 }
 
 let theme = {
-  base: "flex flex-col gap-2",
+  base: "flex flex-col",
   tablist: {
     base: "flex text-center",
     styles: {
-      default: "flex-wrap border-b border-gray-200 dark:border-secondary-700",
+      default: "flex-wrap border-b border-gray-200 dark:border-secondary-600",
       underline:
-        "-mb-px flex-wrap border-b border-gray-200 dark:border-secondary-700",
+        "-mb-px flex-wrap border-b border-gray-200 dark:border-secondary-600",
     },
     tabitem: {
       base: "flex items-center justify-center rounded-t-lg p-4 text-sm font-medium disabled:cursor-not-allowed disabled:text-gray-400 disabled:dark:text-gray-500",

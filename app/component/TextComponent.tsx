@@ -59,7 +59,7 @@ function TextComponent({ sourceText, setSourceText, sourceLang }) {
       placeholder={translation.inputPlaceholder}
       className={`${
         isEnglish ? "placeholder:font-poppins" : "placeholder:font-monlam"
-      } w-full rounded-none resize-none  flex-1 md:min-h-[5em] bg-transparent border-0 dark:border:0 focus:outline-none dark:focus:outline-none focus:ring-transparent dark:focus:ring-transparent caret-slate-500 placeholder:text-slate-300 placeholder:font-monlam placeholder:text-lg
+      } w-full rounded-none resize-none flex-1 bg-transparent border-0 dark:border:0 focus:outline-none dark:focus:outline-none focus:ring-transparent dark:focus:ring-transparent caret-slate-500 placeholder:text-slate-300 placeholder:font-monlam placeholder:text-lg
        ${fontSize} ${isEng && "font-poppins  "} ${
         isTib && "leading-loose font-monlam "
       } ${!isEng && !isTib && "font-notosans "}`}

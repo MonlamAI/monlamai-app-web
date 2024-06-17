@@ -210,9 +210,9 @@ export default function Index() {
           <div className="flex flex-col  lg:flex-row">
             <CardComponent
               focussed={true}
-              className=" md:h-auto flex-1 border-r border-b lg:border-b-0 dark:border-light_text-secondary border-dark_text-secondary"
+              className="flex-1 border-r border-b lg:border-b-0 dark:border-light_text-secondary border-dark_text-secondary"
             >
-              <div className="flex relative min-h-[20vh] lg:min-h-[45vh] w-full flex-1 flex-col justify-center">
+              <div className="flex w-full flex-1 flex-col justify-center relative min-h-[150px] lg:min-h-[45vh]">
                 {RecordingSelected && (
                   <AudioRecorder
                     audioURL={audioURL}
@@ -247,10 +247,13 @@ export default function Index() {
               </div>
             </CardComponent>
             <CardComponent>
-              <div className="w-full flex-1 min-h-[30vh] text-black dark:text-gray-200 rounded-lg overflow-auto">
+              <div className="w-full flex flex-1 min-h-[150px] lg:min-h-[30vh] text-black dark:text-gray-200 rounded-lg overflow-auto">
                 {RecordingSelected && isLoading && (
-                  <div className="p-2">
-                    <LoadingAnimation />
+                  <div className="flex flex-1 justify-center items-center">
+                    <Spinner
+                      size="xl"
+                      className={"fill-secondary-500 dark:fill-primary-500"}
+                    />
                   </div>
                 )}
                 {edit && (

@@ -10,7 +10,7 @@ function Lamas() {
   const { show_about_lama } = useRouteLoaderData("root");
   if (!show_about_lama) return null;
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto">
       <h2 className="lg:text-3xl text-xl font-bold my-10 lg:my-20 flex justify-center">
         {translation.lamas}
       </h2>

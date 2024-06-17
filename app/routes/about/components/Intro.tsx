@@ -5,7 +5,7 @@ export function Intro() {
   let isEnglish = locale === "en_US";
 
   return (
-    <div className=" flex flex-col  mb-20 justify-center items-center gap-10 px-4 lg:flex-row">
+    <div className="flex flex-col mb-20 justify-center items-center gap-10 lg:flex-row">
       <div
         className={`leading-8 text-md ${
           isEnglish ? "font-poppins" : "font-monlam leading-loose"

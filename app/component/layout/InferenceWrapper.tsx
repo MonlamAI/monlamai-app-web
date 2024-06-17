@@ -11,7 +11,7 @@ function InferenceWrapper({
   return (
     <main>
       {selectedTool && (
-        <div className="flex justify-between mb-3">
+        <div className="flex justify-between">
           <ListInput
             selectedTool={selectedTool}
             setSelectedTool={setSelectedTool}
