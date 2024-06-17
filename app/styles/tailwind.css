@@ -1,7 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+:root{
+  --main-bg: rgb(24,24,24);
+  --card-bg: rgb(32,32,32);
+  --card-border: rgb(40,40,40);
+}
 /* width */
 ::-webkit-scrollbar {
   width: 10px;
