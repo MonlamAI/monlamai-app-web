@@ -23,7 +23,7 @@ function AudioRecorder({
   isLoading,
 }: AudioRecordProps) {
   let mediaRecorder: any = useRef();
-
+  const [tempAudioURL, setTempAudioURL] = useState<string | null>(null);
   const [recording, setRecording] = useState(false);
   const [audioChunks, setAudioChunks] = useState([]);
   const { isTibetan, translation } = uselitteraTranlation();
@@ -96,6 +96,7 @@ function AudioRecorder({
       //creates a blob file from the audiochunks data
       const audioBlob = new Blob(audioChunks);
       uploadAudio(audioBlob);
+      setTempAudioURL(URL.createObjectURL(audioBlob));
       setAudioChunks([]);
 
       const reader = new FileReader();
@@ -136,7 +137,7 @@ function AudioRecorder({
       )}
       {audioURL && !isUploading && (
         <div className="pt-8 w-full h-full">
-          <AudioPlayer audioURL={audioURL} />
+          <AudioPlayer audioURL={tempAudioURL} />
         </div>
       )}
       {isUploading && (
