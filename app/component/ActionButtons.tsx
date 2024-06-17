@@ -140,7 +140,7 @@ export function NonEditButtons({
     <div
       className={`flex  ${
         sourceLang == "en" ? "justify-between" : "justify-end"
-      } py-2.5 px-5 border-t dark:border-t-light_text-secondary border-t-dark_text-secondary`}
+      } py-2.5 px-5 border-t dark:border-t-[--card-border] border-t-dark_text-secondary`}
     >
       {selectedTool !== "File" && sourceLang == "en" && <Speak text={text} />}
       <div className="flex gap-3 justify-end items-center p-[4px]">

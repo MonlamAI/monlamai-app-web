@@ -197,6 +197,10 @@ export default function Index() {
     }
   };
   let isUploading = uploadProgress > 0 && uploadProgress < 100;
+  const handleClose = () => {
+    resetFetcher(fetcher);
+    resetFetcher(editfetcher);
+  };
   return (
     <ToolWraper title="STT">
       <InferenceWrapper
@@ -206,7 +210,7 @@ export default function Index() {
         reset={handleReset}
       >
         {actionError && (
-          <ErrorMessage message={actionError} handleClose={() => {}} />
+          <ErrorMessage message={actionError} handleClose={handleClose} />
         )}
 
         <div className=" rounded-[10px]  overflow-hidden border dark:border-[--card-border] border-dark_text-secondary">
