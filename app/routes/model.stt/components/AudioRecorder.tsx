@@ -125,7 +125,7 @@ function AudioRecorder({
           size="lg"
           color="gray"
           onClick={toggleRecording}
-          className="border-secondary-500 dark:border-primary-500 text-secondary-500 dark:text-primary-500 enabled:hover:bg-neutral enabled:hover:text-secondary-600 dark:enabled:hover:bg-secondary-700 dark:enabled:hover:text-primary-600"
+          className="border-secondary-500 dark:border-primary-500 text-secondary-500 dark:text-primary-500 enabled:hover:bg-neutral dark:enabled:hover:bg-[--card-bg] enabled:hover:text-secondary-600  dark:enabled:hover:text-primary-600"
         >
           {recording ? (
             <BsFillStopFill className="w-[32px] h-[34px] md:w-[50px] md:h-[50px]" />
