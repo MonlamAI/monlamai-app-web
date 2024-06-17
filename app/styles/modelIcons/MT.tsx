@@ -1,10 +1,10 @@
 import React from "react";
 
-function MT() {
+function MT({ size }) {
   return (
     <svg
-      width="20"
-      height="20"
+      width={size || 32}
+      height={size || 32}
       viewBox="0 0 20 20"
       xmlns="http://www.w3.org/2000/svg"
       fill="currentColor"

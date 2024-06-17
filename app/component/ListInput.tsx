@@ -124,7 +124,7 @@ let theme = {
         underline: {
           base: "rounded-t-lg py-0",
           active: {
-            on: "active rounded-t-lg text-secondary-400 dark:text-primary-500 ",
+            on: "active rounded-t-lg text-secondary-500 dark:text-primary-500 ",
             off: "border-b-2 border-transparent text-gray-500  ",
           },
         },

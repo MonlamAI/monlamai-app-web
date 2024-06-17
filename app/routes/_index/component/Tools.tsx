@@ -48,7 +48,7 @@ function EachModel({ model }: EachProps) {
             className="h-full w-full  flex flex-col p-6"
             renderImage={() => (
               <div
-                className="flex justify-start mb-2 md:mb-3"
+                className="flex justify-start mb-2 md:mb-3 text-secondary-700 dark:text-secondary-400"
                 style={
                   isTransitioning
                     ? {
@@ -62,7 +62,7 @@ function EachModel({ model }: EachProps) {
             )}
           >
             <h2
-              className={` ${
+              className={`text-neutral-900 ${
                 isEnglish
                   ? "text-2xl md:text-3xl font-[500]"
                   : "text-xl md:text-2xl  mt-2 md:mt-3"

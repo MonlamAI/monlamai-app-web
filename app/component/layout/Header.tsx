@@ -126,10 +126,13 @@ function Menu() {
       <Form method="post" action="/auth0">
         <Button
           type="submit"
-          className={`w-full ${isEnglish ? "font-poppins " : "font-monlam"}`}
+          className={`w-full p-1 ${
+            isEnglish ? "font-poppins " : "font-monlam"
+          }`}
           color="secondary"
           pill
           theme={customTheme}
+          size={"xs"}
         >
           {translation.login}
         </Button>
