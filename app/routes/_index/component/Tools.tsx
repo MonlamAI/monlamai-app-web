@@ -48,7 +48,7 @@ function EachModel({ model }: EachProps) {
             className="h-full w-full  flex flex-col p-6"
             renderImage={() => (
               <div
-                className="flex justify-start mb-2 md:mb-3 text-secondary-700 dark:text-secondary-400"
+                className="flex justify-start mb-2 md:mb-3 text-secondary-700 dark:text-primary-500"
                 style={
                   isTransitioning
                     ? {
