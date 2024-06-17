@@ -26,14 +26,14 @@ function DarkModeSwitcher() {
       {isDarkMode ? (
         <>
           <MdOutlineLightMode size={ICON_SIZE} />
-          <span style={{ position: "relative", top: isTibetan ? "-3px" : "0" }}>
+          <span style={{ position: "relative", top: isTibetan ? "3px" : "0" }}>
             {translation.lightmode}
           </span>
         </>
       ) : (
         <>
           <MdDarkMode size={ICON_SIZE} />
-          <span style={{ position: "relative", top: isTibetan ? "-3px" : "0" }}>
+          <span style={{ position: "relative", top: isTibetan ? "3px" : "0" }}>
             {translation.darkmode}
           </span>
         </>
