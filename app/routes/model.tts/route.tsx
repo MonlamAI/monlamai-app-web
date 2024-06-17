@@ -163,7 +163,7 @@ export default function Index() {
                 )}
               </div>
               {charCount > 0 && (
-                <div className="flex justify-between p-2 border-t border-t-dark_text-secondary dark:border-t-light_text-secondary">
+                <div className="flex justify-between p-2 border-t border-t-dark_text-secondary dark:border-t-[--card-border]">
                   <CharacterOrFileSizeComponent
                     selectedTool={selectedTool}
                     charCount={charCount}
@@ -210,13 +210,14 @@ export default function Index() {
                 {selectedTool === "document" && <InferenceList />}
               </div>
               {data && (
-                <div className="flex justify-end py-3 px-5 border-t border-t-dark_text-secondary dark:border-t-light_text-secondary">
+                <div className="flex justify-end py-3 px-5 border-t border-t-dark_text-secondary dark:border-t-[--card-border]">
                   <div className="flex gap-3 justify-end md:gap-5 items-center p-1">
                     <ReactionButtons
                       fetcher={likeFetcher}
                       output={data ? `data:audio/wav;base64,${data}` : null}
                       sourceText={sourceText}
                       inferenceId={inferenceId}
+                      clickEdit={() => {}}
                     />
 
                     {inferenceId && <ShareLink inferenceId={inferenceId} />}
