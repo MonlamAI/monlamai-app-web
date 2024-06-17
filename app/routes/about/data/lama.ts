@@ -2,7 +2,7 @@ export const lamas = [
   {
     id: 1,
     name: "H.H. GYANA VAJRA RINPOCHE",
-    tibetan_name: "ས་སྐྱའི་ཁྲི་འཛིན་ཛྙ་ན་བཛྲ་རིན་པོ་ཆེ།",
+    tibetan_name: "དཔལ་ས་སྐྱའི་ཁྲི་འཛིན་ཛྙན་བཛྲ་མཆོག།",
     image: "/assets/lamas/1.jpg",
     description: "Lama 1 description",
     blurhash: "LKMi$Q_K?[Nby;8}V@Wm4okSv}%1",
@@ -10,7 +10,7 @@ export const lamas = [
   {
     id: 2,
     name: "H.H. GANDEN TRI RINPOCHE",
-    tibetan_name: "དགའ་ལྡན་ཁྲི་རིན་པོ་ཆེ།",
+    tibetan_name: "དགའ་ལྡན་ཁྲི་རིན་པོ་ཆེ་རྗེ་བཙུན་བློ་བཟང་བསྟན་འཛིན་མཆོག",
     image: "/assets/lamas/2.png",
     description: "Lama 1 description",
     blurhash: "LMO_+Yb:%%x9~Ts~NZtRX0aeauM{",
@@ -18,7 +18,7 @@ export const lamas = [
   {
     id: 3,
     name: "H.H. KARMAPA OGYEN TRINLEY DORJE",
-    tibetan_name: "ཀརྨ་པ་ཨོ་རྒྱན་ཕྲིན་ལས་རྡོ་རྗེ།",
+    tibetan_name: "དཔལ་རྒྱལ་དབང་ཀརྨ་པ་ཨོ་རྒྱན་ཕྲིན་ལས་རྡོ་རྗེ་མཆོག",
     image: "/assets/lamas/3.png",
     description: "Lama 1 description",
     blurhash: "LTEeGTR%?Zskx?f~skt4~AjY^jV?",
@@ -26,7 +26,7 @@ export const lamas = [
   {
     id: 4,
     name: "H.H. MENRI TRIZIN",
-    tibetan_name: "སྨན་རིའི་ཁྲི་འཛིན་རིན་པོ་ཆེ།",
+    tibetan_name: "རྒྱལ་བ་སྨན་རིའི་ཁྲི་འཛིན་ལུང་རྟོགས་ཟླ་བ་དར་རྒྱས་མཆོག",
     image: "/assets/lamas/4.jpg",
     description: "Lama 1 description",
     blurhash: "LgFh7UNg19%1KnawSjj?M_so$wWB",
@@ -34,7 +34,7 @@ export const lamas = [
   {
     id: 5,
     name: "H.H. JONANG GYALTSAB RINPOCHE",
-    tibetan_name: "ཇོ་ནང་རྒྱལ་ཚབ་རིན་པོ་ཆེ།",
+    tibetan_name: "ཇོ་ནང་རྒྱལ་ཚབ་མཁན་སྤྲུལ་ཆོས་ཀྱི་སྣང་བ་མཆོག།",
     image: "/assets/lamas/5.png",
     description: "Lama 1 description",
     blurhash: "LEIOOx-:0[IV?^RkD$t601Rj8wt6",
@@ -42,7 +42,7 @@ export const lamas = [
   {
     id: 6,
     name: "H.H. SHECHEN RABJAM RINPOCHE",
-    tibetan_name: "ཞི་ཆེན་རབ་འབྱམས་རིན་པོ་ཆེ།",
+    tibetan_name: "སྐྱབས་རྗེ་ཞེ་ཆེན་རབ་འབྱམས་རིན་པོ་ཆེ།",
     image: "/assets/lamas/6.jpg",
     description: "Lama 1 description",
     blurhash: "LTOnwWm7*0KPLLwHRjWUMcyXn3oM",
@@ -50,7 +50,7 @@ export const lamas = [
   {
     id: 7,
     name: "H.H. CHAMGON KENTING TAI SITU RINPOCHE",
-    tibetan_name: "བྱམས་མགོན་བཀྭན་ཏིང་ཏཱའི་སི་ཏུ་རིན་པོ་ཆེ།",
+    tibetan_name: "སྐྱབས་རྗེ་བྱམས་མགོན་ཀྭན་ཏིང་ཏཱའི་སི་ཏུ་རིན་པོ་ཆེ།",
     image: "/assets/lamas/7.jpg",
     description: "Lama 1 description",
     blurhash: "LQGb9n_NcZ%2?]kDIpRiE1M_VrWA",
@@ -58,7 +58,7 @@ export const lamas = [
   {
     id: 8,
     name: "H.H. DZONGSAR JAMYANG KHYENTSE RINPOCHE",
-    tibetan_name: "རྫོང་སར་འཇམ་དབྱངས་མཁྱེན་བརྩེ་རིན་པོ་ཆེ།",
+    tibetan_name: "སྐྱབས་རྗེ་རྫོང་སར་འཇམ་དབྱངས་མཁྱེན་བརྩེ་རིན་པོ་ཆེ།",
     image: "/assets/lamas/8.png",
     description: "Lama 1 description",
     blurhash: "L5CO:v.l0MrG3;My8{?Z0LMy=_o|",
@@ -66,7 +66,7 @@ export const lamas = [
   {
     id: 9,
     name: "H.H. YONGZIN LING CHOGTRUL RINPOCHE",
-    tibetan_name: "ཡོངས་འཛིན་གླིང་མཆོག་སྤྲུལ་རིན་པོ་ཆེ།",
+    tibetan_name: "སྐྱབས་རྗེ་ཡོངས་འཛིན་གླིང་མཆོག་སྤྲུལ་རིན་པོ་ཆེ།",
     image: "/assets/lamas/9.jpg",
     description: "Lama 1 description",
     blurhash: "L7GZy%0q9W0Qpt0$rX^k0i}qxJ9u",
@@ -74,7 +74,7 @@ export const lamas = [
   {
     id: 10,
     name: "H.H. PROF SAMDHONG RINPOCHE",
-    tibetan_name: "སློབ་དཔོན་ཟམ་གདོང་རིན་པོ་ཆེ།",
+    tibetan_name: "སྐྱབས་རྗེ་སློབ་དཔོན་ཟམ་གདོང་རིན་པོ་ཆེ།",
     image: "/assets/lamas/10.png",
     description: "Lama 1 description",
     blurhash: "LBEeS%57Ef00^iEhIUM{00~Cn4-:",
@@ -82,7 +82,7 @@ export const lamas = [
   {
     id: 11,
     name: "H.H. KIRTI RINPOCHE",
-    tibetan_name: "སྐྱབས་རྗེ་ཀིརྟི་རིན་པོ་ཆེ།",
+    tibetan_name: "སྐྱབས་མགོན་ཀིརྟི་རིན་པོ་ཆེ།",
     image: "/assets/lamas/11.png",
     description: "Lama 1 description",
     blurhash: "LHHxZ|:N%n0Z02?^00ogE159%L^e",
@@ -90,7 +90,7 @@ export const lamas = [
   {
     id: 12,
     name: "H.H. CHOGTRUL MUGSANG KUCHEN RINPOCHE",
-    tibetan_name: "མཆོག་སྤྲུལ་རྨུགས་སངས་སྐུ་ཆེན་རིན་པོ་ཆེ།",
+    tibetan_name: "སྐྱབས་རྗེ་རྨུགས་སངས་སྐུ་ཆེན་རིན་པོ་ཆེ།",
     image: "/assets/lamas/12.png",
     description: "Lama 1 description",
     blurhash: "LJFr9ax[a0E100ofW=%2*0rXSd-U",
@@ -98,7 +98,7 @@ export const lamas = [
   {
     id: 13,
     name: "H.H. TARTHANG RINPOCHE",
-    tibetan_name: "དར་ཐང་རིན་པོ་ཆེ།",
+    tibetan_name: "སྐྱབས་རྗེ་དར་ཐང་རིན་པོ་ཆེ།",
     image: "/assets/lamas/13.png",
     description: "Lama 1 description",
     blurhash: "LTLC;YD%UHR*cFEL=_wIn3rrE2NH",
