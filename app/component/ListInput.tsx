@@ -63,7 +63,7 @@ export default function ListInput({
           </span>
         </div>,
         {
-          position: toast.POSITION.TOP_RIGHT,
+          position: toast.POSITION.BOTTOM_CENTER,
           pauseOnHover: true,
           closeOnClick: false,
         }
@@ -114,9 +114,9 @@ let theme = {
   tablist: {
     base: "flex text-center",
     styles: {
-      default: "flex-wrap border-b border-gray-200 dark:border-secondary-600",
+      default: "flex-wrap border-b border-gray-200 dark:border-gray-700",
       underline:
-        "-mb-px flex-wrap border-b border-gray-200 dark:border-secondary-600",
+        "-mb-px flex-wrap border-b border-gray-200 dark:border-gray-700",
     },
     tabitem: {
       base: "flex items-center justify-center rounded-t-lg p-4 text-sm font-medium disabled:cursor-not-allowed disabled:text-gray-400 disabled:dark:text-gray-500",

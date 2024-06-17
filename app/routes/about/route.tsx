@@ -2,7 +2,6 @@ import { type LoaderFunction } from "@remix-run/node";
 import Instructor from "~/routes/about/components/Instructors";
 import Lamas from "~/routes/about/components/Lama";
 import Sponsors from "~/routes/about/components/Sponsors";
-import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import { getUserDetail } from "~/services/session.server";
 import { Intro } from "./components/Intro";
 import ToolWraper from "~/component/ToolWraper";
