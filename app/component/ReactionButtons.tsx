@@ -93,13 +93,14 @@ export function ReactionButton({
       color="white"
       onClick={onClick}
       className={
-        "focus:outline-none cursor-pointer text-gray-500 dark:text-dark_text-secondary disabled:opacity-20 " +
+        "focus:outline-none cursor-pointer text-gray-500  disabled:opacity-20 " +
         className
       }
       disabled={disabled}
     >
       {React.cloneElement(icon, {
         size: "16px",
+        className: "dark:fill-primary-500",
       })}
     </button>
   );

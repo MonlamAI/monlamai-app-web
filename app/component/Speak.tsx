@@ -1,11 +1,8 @@
 import { useFetcher } from "@remix-run/react";
-import { Button } from "flowbite-react";
 import React, { useEffect, useMemo, useState, useRef } from "react";
-import { BiPause } from "react-icons/bi";
 import { FaPause } from "react-icons/fa6";
-import { RxSpeakerLoud } from "react-icons/rx";
 import { ICON_SIZE } from "~/helper/const";
-
+import { HiMiniSpeakerWave } from "react-icons/hi2";
 function useAudioPlayer(audioRef, fetcherData) {
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -56,19 +53,21 @@ function Speak({
     <>
       {isPlaying ? (
         <div onClick={pauseAudio} className="flex items-center ">
-          <FaPause size={ICON_SIZE} />
+          <FaPause size={ICON_SIZE} className="dark:fill-primary-500" />
         </div>
       ) : (
         <div
-          color="white"
           onClick={handlePlayClick}
-          className={`flex items-center cursor-pointer ${
+          className={`flex items-center cursor-pointer  ${
             fetcher.state !== "idle" ? "animate-pulse" : ""
           }`}
         >
-          <RxSpeakerLoud size={ICON_SIZE} />
+          <HiMiniSpeakerWave
+            size={ICON_SIZE}
+            className="dark:fill-primary-500"
+          />
           {fetcher.state !== "idle" && (
-            <div className="speaker_loading ml-2"></div>
+            <div className="speaker_loading  ml-2"></div>
           )}
         </div>
       )}

@@ -72,8 +72,8 @@ function ShareLink({ inferenceId }) {
         placement="bottom"
         dismissOnClick={true}
         renderTrigger={() => (
-          <span className="focus:outline-none cursor-pointer text-gray-500 dark:text-dark_text-secondary disabled:opacity-20 ">
-            <FaShareAlt size={ICON_SIZE} />
+          <span className="focus:outline-none cursor-pointer  text-gray-500 dark:text-dark_text-secondary disabled:opacity-20 ">
+            <FaShareAlt size={ICON_SIZE} className="dark:fill-primary-500" />
           </span>
         )}
         size="md"

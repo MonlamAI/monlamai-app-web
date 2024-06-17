@@ -167,7 +167,7 @@ export function EditActionButtons({
       <div
         className={`${
           isEnglish ? "font-poppins" : "font-monlam"
-        } flex justify-between p-2 text-sm border-t-2 border-t-dark_text-secondary dark:border-t-light_text-secondary`}
+        } flex justify-between p-2 text-sm border-t border-t-dark_text-secondary dark:border-t-[--card-border]`}
       >
         <Button color="gray" size="xs" onClick={handleCancelEdit}>
           x
