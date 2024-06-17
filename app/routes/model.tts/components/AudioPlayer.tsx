@@ -92,7 +92,7 @@ const AudioPlayer = ({ audioURL }) => {
       <div className="flex items-center justify-between">
         <div className="flex items-center">
           <svg
-            className="w-6 h-6 text-light_text-default dark:text-dark_text-secondary"
+            className="w-6 h-6 text-light_text-default dark:text-primary-500"
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -114,10 +114,10 @@ const AudioPlayer = ({ audioURL }) => {
             step={0.1}
             value={volume}
             onChange={handleVolumeChange}
-            className="h-0.5 appearance-none bg-black dark:bg-secondary-50"
+            className="h-0.5 appearance-none bg-black dark:bg-primary-500 slider"
           />
           <svg
-            className="w-6 h-6 text-light_text-default dark:text-dark_text-secondary"
+            className="w-6 h-6 text-light_text-default dark:text-primary-500"
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -139,7 +139,7 @@ const AudioPlayer = ({ audioURL }) => {
           </svg>
         </div>
         <button
-          className="flex item-center text-lg p-2 font-semibold text-light_text-default dark:text-dark_text-secondary hover:bg-neutral-300 dark:hover:bg-primary-700 rounded-md"
+          className="flex item-center text-lg p-2 font-semibold text-light_text-default dark:text-primary-500 rounded-md"
           onClick={changePlaybackRate}
         >
           <span>{playbackRate} X</span>
@@ -154,7 +154,7 @@ const AudioPlayer = ({ audioURL }) => {
             onClick={() => {
               waveSurferRef.current.playPause();
             }}
-            className=" text-dark_text-default dark:text-light_text-default rounded-full bg-secondary-700 dark:bg-dark_text-default"
+            className="text-dark_text-default dark:text-light_text-default rounded-full bg-secondary-700 dark:bg-primary-500"
           >
             {isPlaying ? <MdPause size={36} /> : <MdPlayArrow size={36} />}
           </button>
@@ -172,7 +172,7 @@ const AudioPlayer = ({ audioURL }) => {
                 waveSurferRef.current.seekTo(newTime / duration);
                 setCurrentTime(newTime);
               }}
-              className="mx-2 h-1 w-full appearance-none bg-gray-300 rounded-full"
+              className="mx-2 h-1 w-full appearance-none bg-gray-300 dark:bg-primary-500 rounded-full"
             />
             <div className="text-sm">{formatTime(duration)}</div>
           </div>
