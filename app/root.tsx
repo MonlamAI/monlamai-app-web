@@ -73,8 +73,8 @@ export const links: LinksFunction = () => [
     type: "image/x-icon",
     href: "/favicon.ico",
   },
+  { rel: "manifest", href: "manifest.webmanifest" },
 ];
-
 export const meta: MetaFunction = () => {
   return [
     { title: "སྨོན་ལམ་རིག་ནུས། | Monlam AI | Tibetan Language AI Development" },

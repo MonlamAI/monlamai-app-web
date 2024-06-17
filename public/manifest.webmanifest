@@ -1,0 +1,21 @@
+{
+  "name": "Monlam Artificial intelligence",
+  "short_name": "Monalm AI",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#0757b5",
+  "description": "Monlam AI is your best friend.",
+  "icons": [
+    {
+      "src": "manifest/logo512web.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "manifest/logo192web.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+
+}
