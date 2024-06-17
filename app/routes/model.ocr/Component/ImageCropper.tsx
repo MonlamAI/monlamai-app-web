@@ -134,7 +134,7 @@ export const ImageCropper = ({ uploadFile, handleReset, uploadProgress }) => {
               <Label
                 htmlFor="file"
                 value={translation.uploadImage}
-                className="text-lg text-slate-700"
+                className="text-lg text-slate-700 dark:text-neutral-300 "
               />
               <FileInput
                 ref={fileInputRef}
