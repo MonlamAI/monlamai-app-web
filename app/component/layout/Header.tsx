@@ -149,7 +149,7 @@ function Menu() {
         className="bg-white hidden md:block"
         renderTrigger={() => (
           <img
-            className="h-8 w-8 rounded-full hidden md:block  cursor-pointer"
+            className="h-6 w-6 rounded-full hidden md:block  cursor-pointer"
             src={user.picture}
             title={user.email}
             alt={user.email}

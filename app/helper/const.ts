@@ -32,4 +32,4 @@ export const tib_languageOptions = [
   { value: "ཧིན་དྷི།", code: "hi" },
 ];
 
-export const ICON_SIZE = 16;
+export const ICON_SIZE = 20;

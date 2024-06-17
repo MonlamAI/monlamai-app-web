@@ -4,7 +4,7 @@ import useLocalStorage from "./hooks/useLocaleStorage";
 import { MdOutlineLightMode, MdDarkMode } from "react-icons/md";
 function DarkModeSwitcher() {
   let [isDarkMode, setIsDarkMode] = useLocalStorage("Darktheme", false);
-  const { translation } = uselitteraTranlation();
+  const { translation, isTibetan } = uselitteraTranlation();
 
   function handleClick() {
     if (
@@ -26,12 +26,16 @@ function DarkModeSwitcher() {
       {isDarkMode ? (
         <>
           <MdOutlineLightMode size={ICON_SIZE} />
-          {translation.lightmode}
+          <span style={{ position: "relative", top: isTibetan ? "-3px" : "0" }}>
+            {translation.lightmode}
+          </span>
         </>
       ) : (
         <>
           <MdDarkMode size={ICON_SIZE} />
-          {translation.darkmode}
+          <span style={{ position: "relative", top: isTibetan ? "-3px" : "0" }}>
+            {translation.darkmode}
+          </span>
         </>
       )}
     </div>

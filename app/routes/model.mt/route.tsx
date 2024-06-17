@@ -380,8 +380,10 @@ export default function Index() {
 
       {selectedTool === "image" && <ImageTranslateComponent />}
 
-      <div className="mt-3 mb-20 w-full text-center text-[0.7rem] text-xs text-slate-400 md:float-right md:w-fit">
-        Monlam-MITRA ཡིག་སྒྱུར་རིག་ནུས་དཔེ་གཞི་ཐོན་རིམ་ <small>v</small>10-16
+      <div className="font-poppins mt-3 mb-20 w-full text-center text-[0.7rem] text-xs text-slate-400 md:float-right md:w-fit">
+        Monlam-MITRA{" "}
+        <span className="font-monlam">ཡིག་སྒྱུར་རིག་ནུས་དཔེ་གཞི་ཐོན་རིམ་</span>{" "}
+        <small>v</small>10-16
       </div>
     </ToolWraper>
   );
