@@ -176,7 +176,7 @@ function LanguageInput({
       });
     }
   };
-  let optionClass = "bg-white dark:bg-secondary-700 text-black dark:text-white";
+  let optionClass = "bg-white dark:bg-[--card-bg] text-black dark:text-white";
   let beta = [
     "French",
     "Chinese",
