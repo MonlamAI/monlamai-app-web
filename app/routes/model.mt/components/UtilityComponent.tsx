@@ -160,7 +160,7 @@ export function EditActionButtons({
           isEnglish ? "font-poppins" : "font-monlam"
         }  h-fit inline-flex m-2 text-xs`}
       >
-        <div className="h-6 flex-1 px-2 py-1 bg-primary-200 dark:bg-primary-500 text-black rounded-lg justify-start items-center gap-2.5 flex">
+        <div className="h-6 flex-1 px-2  bg-primary-200 dark:bg-[#454544] dark:text-[#afaeae] pt-[8px] pb-[6px] rounded-lg justify-start items-center gap-2.5 flex">
           {translation.contribution_message}
         </div>
       </div>
