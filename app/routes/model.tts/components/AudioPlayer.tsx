@@ -59,7 +59,7 @@ const AudioPlayer = ({ audioURL }) => {
 
   useEffect(() => {
     if (waveSurferRef.current) {
-      waveSurferRef.current.setPlaybackRate(playbackRate);
+      waveSurferRef.current?.setPlaybackRate(playbackRate);
     }
   }, [playbackRate]);
 
@@ -70,7 +70,7 @@ const AudioPlayer = ({ audioURL }) => {
 
   useEffect(() => {
     if (waveSurferRef.current && !setting.current && audioURL) {
-      const media = waveSurferRef.current.getMediaElement();
+      const media = waveSurferRef.current?.getMediaElement();
       setting.current = amplifyMedia(media, volume);
     }
   }, [audioURL, waveSurferRef.current, setting.current]);
@@ -147,12 +147,12 @@ const AudioPlayer = ({ audioURL }) => {
       </div>
       <div className="flex flex-1 flex-col justify-between gap-2">
         {/* Placeholder for the waveform */}
-        {/* <div className="my-auto" ref={containerRef} /> */}
+        <div className="my-auto" ref={containerRef} />
 
         <div className="flex items-center justify-between gap-5">
           <button
             onClick={() => {
-              waveSurferRef.current.playPause();
+              waveSurferRef.current?.playPause();
             }}
             className="text-dark_text-default dark:text-light_text-default rounded-full bg-secondary-700 dark:bg-primary-500"
           >
@@ -169,7 +169,7 @@ const AudioPlayer = ({ audioURL }) => {
               onChange={(e) => {
                 // update the current time of the audio per second and seek to the new time
                 const newTime = parseFloat(e.target.value);
-                waveSurferRef.current.seekTo(newTime / duration);
+                waveSurferRef.current?.seekTo(newTime / duration);
                 setCurrentTime(newTime);
               }}
               className="mx-2 h-1 w-full appearance-none bg-gray-300 dark:bg-primary-500 rounded-full"

@@ -2,7 +2,6 @@ import { LoaderFunction } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import { Button, Card } from "flowbite-react";
 import { FaArrowRightArrowLeft, FaUniregistry } from "react-icons/fa6";
-import Waveform from "~/component/AudioPlayerWithWave";
 import { auth } from "~/services/auth.server";
 import { db } from "~/services/db.server";
 import CardComponent from "~/component/Card";
