@@ -46,6 +46,7 @@ import { getUserSession } from "~/services/session.server";
 import ImageTranslateComponent from "./components/ImageTranslateComponent";
 import { InferenceList } from "~/component/InferenceList";
 import Devider from "~/component/Devider";
+import { Spinner } from "flowbite-react";
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
   parentMeta.shift(1);
@@ -250,7 +251,7 @@ export default function Index() {
         reset={handleReset}
       />
       {error && <ErrorMessage message={error} handleClose={handleErrorClose} />}
-      <div className=" rounded-[10px] overflow-hidden border dark:border-[--card-border] border-dark_text-secondary">
+      <div className="rounded-[10px] overflow-hidden border dark:border-[--card-border] border-dark_text-secondary">
         <LanguageInput
           setSourceText={setSourceText}
           data={data}
@@ -260,7 +261,7 @@ export default function Index() {
         />
 
         {(selectedTool === "text" || selectedTool === "document") && (
-          <div className="flex flex-col  lg:flex-row ">
+          <div className="flex flex-col lg:flex-row ">
             <CardComponent focussed={true}>
               {limitMessage ? (
                 <div className="text-gray-500">
@@ -268,7 +269,7 @@ export default function Index() {
                 </div>
               ) : (
                 <>
-                  <div className="flex relative h-auto md:min-h-[25vh] lg:min-h-[40vh] w-full flex-1 flex-col justify-center">
+                  <div className="flex relative h-auto min-h-[100px] lg:min-h-[40vh] w-full flex-1 flex-col justify-center">
                     <TextOrDocumentComponent
                       selectedTool={selectedTool}
                       sourceText={sourceText}
@@ -309,7 +310,7 @@ export default function Index() {
             </CardComponent>
             <Devider />
             <CardComponent>
-              <div className="flex min-h-[5vh] md:min-h-[15vh] lg:min-h-[30vh] h-auto w-full flex-1 flex-col gap-2 ">
+              <div className="flex flex-1 min-h-[150px] md:min-h-[15vh] lg:min-h-[30vh] h-auto w-full flex-col gap-2 ">
                 <div
                   ref={targetRef}
                   className={`h-full text-lg ${
@@ -341,15 +342,18 @@ export default function Index() {
                     />
                   )}
                   {selectedTool === "document" && <InferenceList />}
-                  {isLoading && (
-                    <div className="w-full flex justify-center pt-3">
-                      <div className=" loader_animation "></div>
-                    </div>
-                  )}
                   {selectedTool === "document" && sourceText !== "" && (
                     <DownloadDocument source={sourceText} lang={source_lang} />
                   )}
                 </div>
+                {isLoading && (
+                  <div className="flex flex-1 justify-center items-center">
+                    <Spinner
+                      size="xl"
+                      className={"fill-secondary-500 dark:fill-primary-500"}
+                    />
+                  </div>
+                )}
               </div>
               {edit && (
                 <EditActionButtons
