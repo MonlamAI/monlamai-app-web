@@ -101,14 +101,14 @@ export const ImageCropper = ({ uploadFile, handleReset, uploadProgress }) => {
       </CancelButton>
       {shouldCrop ? (
         <div className="flex-1 flex flex-col">
-          <div className="relative w-full max-h-[40vh] flex-1 ">
+          <div className="relative w-full flex flex-1 justify-center items-center">
             <Cropper
               ref={cropperRef}
               backgroundClassName="bg-neutral dark:bg-secondary-700"
               src={imageSrc}
             />
           </div>
-          <div className="flex gap-2 w-full justify-between px-2 py-1">
+          <div className="flex gap-2 w-full justify-between p-2 border-t border-t-dark_text-secondary dark:border-t-[--card-border]">
             <Button onClick={cancelCrop} title="reset" color="neutral">
               <RxCross2 />
             </Button>

@@ -109,9 +109,9 @@ function SingleInptSection({ fetcher }: any) {
       <CardComponent
         className={`${isTibetan ? "font-monlam" : "font-poppins"}`}
       >
-        <div className="w-full relative h-full  min-h-[30vh] md:min-h-[45vh] flex flex-col items-center  justify-center  gap-5">
+        <div className="w-full relative h-full min-h-[30vh] md:min-h-[45vh] flex flex-col items-center justify-center  gap-5">
           {/* <TooltipComponent /> */}
-          <div className="w-full h-full flex flex-col">
+          <div className="w-full h-full flex flex-col flex-1">
             {ImageUrl && (
               <img src={ImageUrl} onLoad={handleSubmit} className="hidden" />
             )}
@@ -125,7 +125,11 @@ function SingleInptSection({ fetcher }: any) {
       </CardComponent>
       <Devider />
       <CardComponent>
-        <div className="w-full  flex flex-1  p-3 text-black bg-neutral dark:bg-[--card-bg] dark:text-neutral  overflow-auto">
+        <div
+          className={`w-full flex flex-1 min-h-[150px] md:min-h-[15vh] lg:min-h-[30vh] p-3 text-black bg-neutral dark:bg-[--card-bg] dark:text-neutral  overflow-auto ${
+            ImageUrl ? "block" : "hidden"
+          }`}
+        >
           {isActionSubmission ? (
             <div className="w-full flex justify-center items-center">
               <Spinner
