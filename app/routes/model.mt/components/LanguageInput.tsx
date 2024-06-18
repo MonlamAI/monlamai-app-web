@@ -1,10 +1,12 @@
 import { useFetcher, useSearchParams } from "@remix-run/react";
-import { Select } from "flowbite-react";
+import { Select, Tooltip } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { FaArrowRightArrowLeft } from "react-icons/fa6";
 import { resetFetcher } from "~/component/utils/resetFetcher";
 import LanguageDetect from "languagedetect";
-import { languagesOptions } from "~/helper/const";
+import { eng_languagesOptions, tib_languageOptions } from "~/helper/const";
+import { GoArrowSwitch } from "react-icons/go";
+import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 
 const lngDetector = new LanguageDetect();
 
@@ -44,7 +46,8 @@ function LanguageInput({
   const targetLang = params.get("target") || "bo";
   const [isRotated, setIsRotated] = useState(false);
   const { submit, data: fetcherData } = useFetcher();
-
+  const { isTibetan: isTib, translation } = uselitteraTranlation();
+  const languagesOptions = isTib ? tib_languageOptions : eng_languagesOptions;
   function setTarget(lang: string) {
     setParams((prevParams) => {
       prevParams.set("target", lang);
@@ -173,33 +176,70 @@ function LanguageInput({
       });
     }
   };
-
-  let beta = ["French", "Chinese", "Hindi"];
+  let optionClass = "bg-white dark:bg-[--card-bg] text-black dark:text-white";
+  let beta = [
+    "French",
+    "Chinese",
+    "Hindi",
+    "ཕ་རཱན་སིའི་",
+    "རྒྱ་ཡིག",
+    "ཧིན་དི།",
+  ];
   return (
-    <div className="flex items-center justify-center md:flex-row gap-3 mt-2 font-poppins">
-      <Select onChange={(e) => handleChange(e, "source")} value={sourceLang}>
-        <option value="detect language">Detect</option>
-        {languagesOptions.map((lang) => (
-          <option key={lang.code} value={lang.code}>
-            {lang.value} {beta.includes(lang.value) ? "(BETA)" : ""}
+    <div
+      className={`${
+        isTib ? "font-monlam text-base" : "font-poppins"
+      } bg-white border-b py-1 px-2 font-normal  dark:border-[--card-border] border-dark_text-secondary  dark:bg-[--card-bg] flex  items-center  md:flex-row gap-3  `}
+    >
+      <div className="flex-1 ">
+        <Select
+          onChange={(e) => handleChange(e, "source")}
+          value={sourceLang}
+          className="selectHeader w-fit "
+        >
+          <option
+            value="detect language"
+            className={optionClass + "font-poppins"}
+          >
+            Detect
           </option>
-        ))}
-      </Select>
-
-      <button
-        onClick={toggleDirection}
-        className="group flex items-center py-1 justify-center text-center font-medium relative focus:z-10 focus:outline-none text-[#838585] border border-transparent enabled:hover:bg-primary-hover  dark:enabled:hover:bg-primary-hover  rounded-full  px-2"
+          {languagesOptions.map((lang) => (
+            <option key={lang.code} value={lang.code} className={optionClass}>
+              {lang.value}{" "}
+              {beta.includes(lang.value) ? `(${translation?.beta})` : ""}
+            </option>
+          ))}
+        </Select>
+      </div>
+      <Tooltip
+        content="Swap source with target language"
+        placement="top"
+        style="light"
+        animation="duration-500"
       >
-        <FaArrowRightArrowLeft size="20px" />
-      </button>
-
-      <Select onChange={(e) => handleChange(e, "target")} value={targetLang}>
-        {languagesOptions.map((lang) => (
-          <option key={lang.code} value={lang.code}>
-            {lang.value} {beta.includes(lang.value) ? "(BETA)" : ""}
-          </option>
-        ))}
-      </Select>
+        <button
+          onClick={toggleDirection}
+          className="group p-1 flex focus:bg-neutral-100 items-center hover:text-neutral-800   justify-center text-center font-medium relative focus:z-10 focus:outline-none text-[#838585] border border-transparent enabled:hover:bg-primary-hover  dark:enabled:hover:bg-primary-hover rounded-md  "
+        >
+          <div className=" text-neutral-500">
+            <GoArrowSwitch size={20} />
+          </div>
+        </button>
+      </Tooltip>
+      <div className="flex-1">
+        <Select
+          onChange={(e) => handleChange(e, "target")}
+          value={targetLang}
+          className="selectHeader w-fit "
+        >
+          {languagesOptions.map((lang) => (
+            <option key={lang.code} value={lang.code} className={optionClass}>
+              {lang.value}{" "}
+              {beta.includes(lang.value) ? `(${translation?.beta})` : ""}
+            </option>
+          ))}
+        </Select>
+      </div>
     </div>
   );
 }

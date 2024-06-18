@@ -9,12 +9,15 @@ import CardComponent from "~/component/Card";
 import { NonEditButtons } from "~/component/ActionButtons";
 import TooltipComponent from "./Tooltip";
 import { ImageCropper } from "~/routes/model.ocr/Component/ImageCropper";
+import Devider from "~/component/Devider";
+import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 
 function SingleInptSection({ fetcher }: any) {
   const [ImageUrl, setImageUrl] = useState<string | null>(null);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [edit, setEdit] = useState(false);
   const [editText, setEditText] = useState("");
+  const { isTibetan } = uselitteraTranlation();
 
   const likeFetcher = useFetcher();
   const editfetcher = useFetcher();
@@ -59,8 +62,9 @@ function SingleInptSection({ fetcher }: any) {
         },
         onUploadProgress: (progressEvent) => {
           const percentCompleted = Math.round(
-            (progressEvent.loaded * 100) / progressEvent.total
+            (progressEvent.loaded * 100) / progressEvent?.total
           );
+          console.log(percentCompleted);
           setUploadProgress(percentCompleted);
         },
       });
@@ -101,30 +105,33 @@ function SingleInptSection({ fetcher }: any) {
   }
 
   return (
-    <div className="flex flex-col lg:flex-row overflow-hidden max-w-[100vw] gap-3">
-      <CardComponent>
-        <div className="w-full relative min-h-[30vh] md:min-h-[45vh] flex flex-col items-center justify-center md:justify-center py-3 gap-5">
-          <TooltipComponent />
-          <div className="mb-5 block w-full">
+    <div className="flex flex-col lg:flex-row overflow-hidden max-w-[100vw] ">
+      <CardComponent
+        className={`${isTibetan ? "font-monlam" : "font-poppins"}`}
+      >
+        <div className="w-full relative h-full  min-h-[30vh] md:min-h-[45vh] flex flex-col items-center  justify-center  gap-5">
+          {/* <TooltipComponent /> */}
+          <div className="w-full h-full flex flex-col">
             {ImageUrl && (
               <img src={ImageUrl} onLoad={handleSubmit} className="hidden" />
             )}
             <ImageCropper
               uploadFile={uploadFile}
               handleReset={handleFormClear}
+              uploadProgress={uploadProgress}
             />
           </div>
-
-          {uploadProgress > 0 && uploadProgress < 100 && (
-            <div>progress:{uploadProgress}</div>
-          )}
         </div>
       </CardComponent>
+      <Devider />
       <CardComponent>
-        <div className="w-full flex flex-1 max-h-[45vh] p-3 text-black bg-slate-50 rounded-lg overflow-auto">
+        <div className="w-full  flex flex-1  p-3 text-black bg-neutral dark:bg-[--card-bg] dark:text-neutral  overflow-auto">
           {isActionSubmission ? (
             <div className="w-full flex justify-center items-center">
-              <Spinner size="lg" />
+              <Spinner
+                size="lg"
+                className={"fill-secondary-300 dark:fill-primary-500"}
+              />
             </div>
           ) : (
             <>
@@ -140,7 +147,7 @@ function SingleInptSection({ fetcher }: any) {
                 )}
                 {!edit && text && !editData && (
                   <div
-                    className="text-xl font-monlam leading-[normal]"
+                    className="text-xl font-monlam leading-[normal] max-h-[50vh]"
                     dangerouslySetInnerHTML={{
                       __html: text?.replaceAll("\n", "<br>"),
                     }}
@@ -154,7 +161,11 @@ function SingleInptSection({ fetcher }: any) {
                 )}
               </div>
               {edit && (
-                <EditDisplay editText={editText} setEditText={setEditText} />
+                <EditDisplay
+                  targetLang="bo"
+                  editText={editText}
+                  setEditText={setEditText}
+                />
               )}
               {!edit && editData && (
                 <p className="text-xl font-monlam">{editData}</p>

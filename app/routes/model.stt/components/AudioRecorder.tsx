@@ -1,23 +1,32 @@
 import axios from "axios";
-import { Button } from "flowbite-react";
+import { Button, Progress } from "flowbite-react";
 import React, { useRef, useState } from "react";
 import { LiveAudioVisualizer } from "react-audio-visualize";
 import { BsFillMicFill, BsFillStopFill } from "react-icons/bs";
+import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import { getBrowser } from "~/component/utils/getBrowserDetail";
+import AudioPlayer from "~/routes/model.tts/components/AudioPlayer";
 
 let stopRecordingTimeout: any;
 
 type AudioRecordProps = {
   audioURL: string | null;
   uploadAudio: (file: File) => void;
+  uploadProgress: number;
+  isLoading: boolean;
 };
 
-function AudioRecorder({ audioURL, uploadAudio }: AudioRecordProps) {
+function AudioRecorder({
+  audioURL,
+  uploadAudio,
+  uploadProgress,
+  isLoading,
+}: AudioRecordProps) {
   let mediaRecorder: any = useRef();
-
+  const [tempAudioURL, setTempAudioURL] = useState<string | null>(null);
   const [recording, setRecording] = useState(false);
   const [audioChunks, setAudioChunks] = useState([]);
-
+  const { isTibetan, translation } = uselitteraTranlation();
   const toggleRecording = () => {
     if (!recording) {
       startRecording();
@@ -87,6 +96,7 @@ function AudioRecorder({ audioURL, uploadAudio }: AudioRecordProps) {
       //creates a blob file from the audiochunks data
       const audioBlob = new Blob(audioChunks);
       uploadAudio(audioBlob);
+      setTempAudioURL(URL.createObjectURL(audioBlob));
       setAudioChunks([]);
 
       const reader = new FileReader();
@@ -100,9 +110,10 @@ function AudioRecorder({ audioURL, uploadAudio }: AudioRecordProps) {
       reader.readAsDataURL(audioBlob);
     };
   };
+  let isUploading = uploadProgress > 0 && uploadProgress < 100;
 
   return (
-    <div className="flex flex-col items-center gap-5 flex-1 justify-center md:min-h-[30vh]">
+    <div className="flex flex-col items-center gap-5 flex-1 justify-center">
       {recording && mediaRecorder.current && getBrowser() !== "Safari" && (
         <LiveAudioVisualizer
           mediaRecorder={mediaRecorder.current}
@@ -110,21 +121,36 @@ function AudioRecorder({ audioURL, uploadAudio }: AudioRecordProps) {
           height={75}
         />
       )}
-      {!audioURL && (
-        <Button size="lg" color="gray" onClick={toggleRecording}>
+      {!audioURL && !isUploading && !isLoading && (
+        <Button
+          size="lg"
+          color="gray"
+          onClick={toggleRecording}
+          className="border-secondary-500 dark:border-primary-500 text-secondary-500 dark:text-primary-500 enabled:hover:bg-neutral dark:enabled:hover:bg-[--card-bg] enabled:hover:text-secondary-600  dark:enabled:hover:text-primary-600"
+        >
           {recording ? (
-            <BsFillStopFill className="w-[25px] h-[25px] md:w-[50px] md:h-[50px]" />
+            <BsFillStopFill className="w-[32px] h-[34px] md:w-[50px] md:h-[50px]" />
           ) : (
-            <BsFillMicFill className="w-[25px] h-[25px] md:w-[50px] md:h-[50px]" />
+            <BsFillMicFill className="w-[32px] h-[34px] md:w-[50px] md:h-[50px]" />
           )}
         </Button>
       )}
-
-      {audioURL && (
-        <audio controls className="mt-4 md:mt-0">
-          <source src={audioURL} type="audio/mpeg"></source>
-          <source src={audioURL} type="audio/ogg"></source>
-        </audio>
+      {audioURL && !isUploading && (
+        <div className="pt-8 w-full h-full">
+          <AudioPlayer audioURL={tempAudioURL} />
+        </div>
+      )}
+      {isUploading && (
+        <Progress
+          progress={uploadProgress}
+          progressLabelPosition="inside"
+          className={isTibetan ? "font-monlam" : "font-poppins"}
+          textLabel={translation?.uploading_audio_message}
+          textLabelPosition="outside"
+          size="lg"
+          labelProgress
+          labelText
+        />
       )}
     </div>
   );

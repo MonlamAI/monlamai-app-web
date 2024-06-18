@@ -108,7 +108,10 @@ const InferenceList = () => {
       </div>
       {isLoading && (
         <div>
-          <Spinner />
+          <Spinner
+            size="lg"
+            className={"fill-secondary-300 dark:fill-primary-500"}
+          />
         </div>
       )}
 

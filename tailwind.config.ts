@@ -65,7 +65,7 @@ export default {
           950: "#4C1010",
         },
         neutral: {
-          DEFAULT: "#D32F2F",
+          DEFAULT: "#FFFFFF",
           50: "#F2F2F2",
           100: "#EDEDED",
           200: "#E0E0E0",
@@ -95,7 +95,7 @@ export default {
       },
     },
     fontFamily: {
-      poppins: ["Poppins", "sans-serif"],
+      poppins: ["Inter", "Poppins", "sans-serif"],
       monlam: ["Monlam", "sans-serif"],
       notosans: ["Noto Sans", "sans-serif"],
     },

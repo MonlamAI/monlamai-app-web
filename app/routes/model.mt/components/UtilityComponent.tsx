@@ -2,14 +2,9 @@ import { Button, Textarea } from "flowbite-react";
 import TextComponent from "../../../component/TextComponent";
 import { motion } from "framer-motion";
 import FileUpload from "~/component/FileUpload";
-import { useEffect, useMemo, useState } from "react";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
-import { useFetcher, useLoaderData, useRevalidator } from "@remix-run/react";
-import { MdDeleteForever } from "react-icons/md";
-import { FaDownload } from "react-icons/fa";
-import timeSince from "~/component/utils/timeSince";
-import { IoSend } from "react-icons/io5";
-import useSocket from "~/component/hooks/useSocket";
+import { BsArrowRight } from "react-icons/bs";
+import { FiFile } from "react-icons/fi";
 
 type TextOrDocumentComponentProps = {
   selectedTool: string;
@@ -82,7 +77,7 @@ export function CharacterOrFileSizeComponent({
     <div className="text-gray-400 text-xs p-2">
       {(selectedTool === "recording" || selectedTool === "file") &&
         "Duration : " + charCount}
-      {selectedTool === "text" && (
+      {selectedTool === "text" && typeof charCount === "number" && (
         <>
           <span style={{ color: charCount > CHAR_LIMIT! ? "red" : "inherit" }}>
             {charCount}
@@ -112,16 +107,35 @@ export function LoadingAnimation() {
   );
 }
 
-export function OutputDisplay({ edit, editData, output, animate, targetLang }) {
+export function OutputDisplay({
+  edit,
+  editData,
+  output,
+  animate,
+  targetLang,
+}: {
+  edit: boolean;
+  editData: string;
+  output: string;
+  animate: boolean;
+  targetLang: string;
+}) {
   if (edit) return null;
-  let isNotEng = targetLang !== "en";
-  let isNotTib = targetLang !== "bo";
+  let isEng = targetLang == "en";
+  let isTib = targetLang == "bo";
+  let fontSize =
+    output?.length < 600
+      ? "text-lg"
+      : output?.length < 1000
+      ? "text-base"
+      : "text-sm";
   return (
     <div
-      className={`p-2 text-[1.2rem] leading-[1.8] max-h-[40vh] overflow-y-auto first-letter 
-      ${!isNotEng && "font-poppins text-xl"} ${
-        !isNotTib && "text-lg leading-loose font-monlam"
-      } ${isNotEng && isNotTib && "font-notosans"}`}
+      className={`p-2 first-letter 
+      ${fontSize}
+      ${isEng && "font-poppins "} ${isTib && "leading-loose font-monlam"} ${
+        !isEng && !isTib && "font-notosans"
+      }`}
     >
       <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
         {editData ? editData : output}
@@ -137,22 +151,40 @@ export function EditActionButtons({
   editText,
   outputText,
 }: EditActionButtonsProps) {
+  const { translation, locale, isEnglish } = uselitteraTranlation();
+
   return (
     <>
-      <p className="px-2 py-1 bg-[#F5F6B0] dark:bg-yellow-500 rounded-md text-sm my-2 text-black dark:text-white">
-        Your contribution will be used to improve translation quality.
-      </p>
-      <div className="flex justify-between">
-        <Button color="gray" onClick={handleCancelEdit}>
-          cancel
+      <div
+        className={`${
+          isEnglish ? "font-poppins" : "font-monlam"
+        }  h-fit inline-flex m-2 text-xs`}
+      >
+        <div className="h-6 flex-1 px-2  bg-primary-200 dark:bg-[#454544] dark:text-[#afaeae] pt-[8px] pb-[6px] rounded-lg justify-start items-center gap-2.5 flex">
+          {translation.contribution_message}
+        </div>
+      </div>
+      <div
+        className={`${
+          isEnglish ? "font-poppins" : "font-monlam"
+        } flex justify-between p-2 text-sm border-t border-t-dark_text-secondary dark:border-t-[--card-border]`}
+      >
+        <Button color="gray" size="xs" onClick={handleCancelEdit}>
+          x
         </Button>
         <Button
+          size="xs"
           color="blue"
           onClick={handleEditSubmit}
           isProcessing={editfetcher.state !== "idle"}
           disabled={editText === outputText}
+          className={`p-0  bg-secondary-500 dark:bg-primary-500 hover:bg-secondary-400 dark:hover:bg-primary-400 
+          enabled:hover:bg-secondary-400 enabled:dark:hover:bg-primary-400
+             text-white dark:text-black 
+         `}
         >
-          submit
+          <FiFile size={18} />{" "}
+          <span className="pl-2 text-[12px]">{translation.save}</span>
         </Button>
       </div>
     </>
@@ -167,7 +199,7 @@ export function SubmitButton({
   CHAR_LIMIT,
   disabled,
 }: any) {
-  const { locale } = uselitteraTranlation();
+  const { translation, locale } = uselitteraTranlation();
   const isFile = selectedTool === "document";
   const exceedsLimit = charCount > CHAR_LIMIT;
   const empty_error = charCount === 0;
@@ -177,9 +209,13 @@ export function SubmitButton({
       size="xs"
       title={exceedsLimit ? "Character limit exceeded" : ""}
       onClick={isFile ? submitFile : trigger}
-      className={` ${locale !== "bo_TI" ? "font-poppins" : "font-monlam"}`}
+      className={` bg-secondary-500 dark:bg-primary-500 hover:bg-secondary-400 dark:hover:bg-primary-400 
+      enabled:hover:bg-secondary-400 enabled:dark:hover:bg-primary-400
+         text-white dark:text-black 
+      ${locale !== "bo_TI" ? "font-poppins" : "font-monlam"}`}
     >
-      <IoSend size={18} />
+      <span className="pr-2">{translation["translate"]}</span>
+      <BsArrowRight size={18} />
     </Button>
   );
 }

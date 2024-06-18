@@ -10,7 +10,6 @@ import {
   useLoaderData,
   useNavigate,
   useRouteError,
-  useRouteLoaderData,
   useSearchParams,
 } from "@remix-run/react";
 import { useState, useRef, useEffect } from "react";
@@ -37,7 +36,6 @@ import {
 import { NonEditButtons, NonEditModeActions } from "~/component/ActionButtons";
 import EditDisplay from "~/component/EditDisplay";
 import CardComponent from "~/component/Card";
-import LanguageSwitcher from "./components/LanguageSwitcher";
 import { getUser } from "~/modal/user.server";
 import { resetFetcher } from "~/component/utils/resetFetcher";
 import LanguageInput from "./components/LanguageInput";
@@ -47,6 +45,7 @@ import useTranslate from "./lib/useTranslate";
 import { getUserSession } from "~/services/session.server";
 import ImageTranslateComponent from "./components/ImageTranslateComponent";
 import { InferenceList } from "~/component/InferenceList";
+import Devider from "~/component/Devider";
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
   parentMeta.shift(1);
@@ -79,8 +78,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
   return {
     user: userdata,
     limitMessage: checkLimit ? limitMessage : null,
-    url: process.env?.MT_API_URL,
-    token: process.env?.MODEL_API_AUTH_TOKEN,
     fileUploadUrl: process.env?.FILE_SUBMIT_URL,
     inferences,
     CHAR_LIMIT,
@@ -134,6 +131,7 @@ export const clientLoader = async ({
 
 export default function Index() {
   const [params, setParams] = useSearchParams();
+
   const target_lang = params.get("target") || "bo";
   const source_lang = params.get("source") || "en";
   const [sourceText, setSourceText] = useState("");
@@ -193,9 +191,9 @@ export default function Index() {
   }
   const [data, setData] = useState("");
 
-  let { isLoading, error, done, trigger } = useTranslate({
+  let { isLoading, error, done, trigger, responseTime } = useTranslate({
     target: target_lang,
-    text: debounceSourceText,
+    text: sourceText,
     data,
     setData,
   });
@@ -203,9 +201,9 @@ export default function Index() {
     if (done === true && data) {
       savefetcher.submit(
         {
-          source: debounceSourceText,
+          source: sourceText,
           translation: data,
-          responseTime: 5,
+          responseTime: responseTime,
           inputLang: source_lang,
           targetLang: target_lang,
         },
@@ -223,6 +221,7 @@ export default function Index() {
     setSourceText("");
     resetFetcher(translationFetcher);
     resetFetcher(editfetcher);
+    setEdit(false);
   };
 
   const handleFileSubmit = () => {
@@ -237,34 +236,39 @@ export default function Index() {
     });
   };
 
+  function handleErrorClose() {
+    resetFetcher(translationFetcher);
+    resetFetcher(editfetcher);
+  }
+
   return (
     <ToolWraper title="MT">
       <ListInput
         options={["text", "document"]}
         selectedTool={selectedTool}
         setSelectedTool={setSelectedTool}
+        reset={handleReset}
       />
-      {error && <ErrorMessage error={error} />}
+      {error && <ErrorMessage message={error} handleClose={handleErrorClose} />}
+      <div className=" rounded-[10px] overflow-hidden border dark:border-[--card-border] border-dark_text-secondary">
+        <LanguageInput
+          setSourceText={setSourceText}
+          data={data}
+          setTranslated={setData}
+          likefetcher={likefetcher}
+          sourceText={debounceSourceText}
+        />
 
-      <LanguageInput
-        setSourceText={setSourceText}
-        data={data}
-        setTranslated={setData}
-        likefetcher={likefetcher}
-        sourceText={debounceSourceText}
-      />
-
-      {(selectedTool === "text" || selectedTool === "document") && (
-        <div className="mt-3 flex flex-col gap-5 lg:flex-row">
-          <>
-            <CardComponent>
+        {(selectedTool === "text" || selectedTool === "document") && (
+          <div className="flex flex-col  lg:flex-row ">
+            <CardComponent focussed={true}>
               {limitMessage ? (
                 <div className="text-gray-500">
                   {limitMessage} <br /> thank you for using MonlamAI
                 </div>
               ) : (
                 <>
-                  <div className="flex relative h-auto md:min-h-[25vh] lg:min-h-[40vh] w-full flex-1 flex-col justify-center gap-2">
+                  <div className="flex relative h-auto md:min-h-[25vh] lg:min-h-[40vh] w-full flex-1 flex-col justify-center">
                     <TextOrDocumentComponent
                       selectedTool={selectedTool}
                       sourceText={sourceText}
@@ -278,29 +282,32 @@ export default function Index() {
                         onClick={handleReset}
                         hidden={!sourceText || sourceText === ""}
                       >
-                        <RxCross2 size={20} />
+                        <RxCross2 size={16} />
                       </CancelButton>
                     )}
                   </div>
-                  <div className="flex justify-between">
-                    <CharacterOrFileSizeComponent
-                      selectedTool={selectedTool}
-                      charCount={charCount}
-                      CHAR_LIMIT={CHAR_LIMIT}
-                      MAX_SIZE_SUPPORT={MAX_SIZE_SUPPORT_DOC}
-                    />
-                    <SubmitButton
-                      charCount={charCount}
-                      CHAR_LIMIT={CHAR_LIMIT}
-                      trigger={trigger}
-                      selectedTool={selectedTool}
-                      submitFile={handleFileSubmit}
-                      disabled={!file || file.length === 0}
-                    />
-                  </div>
+                  {charCount > 0 && !edit && (
+                    <div className="flex justify-between py-1.5 px-1 border-t border-t-dark_text-secondary dark:border-t-[--card-border]">
+                      <CharacterOrFileSizeComponent
+                        selectedTool={selectedTool}
+                        charCount={charCount}
+                        CHAR_LIMIT={CHAR_LIMIT}
+                        MAX_SIZE_SUPPORT={MAX_SIZE_SUPPORT_DOC}
+                      />
+                      <SubmitButton
+                        charCount={charCount}
+                        CHAR_LIMIT={CHAR_LIMIT}
+                        trigger={trigger}
+                        selectedTool={selectedTool}
+                        submitFile={handleFileSubmit}
+                        disabled={!file || file.length === 0}
+                      />
+                    </div>
+                  )}
                 </>
               )}
             </CardComponent>
+            <Devider />
             <CardComponent>
               <div className="flex min-h-[5vh] md:min-h-[15vh] lg:min-h-[30vh] h-auto w-full flex-1 flex-col gap-2 ">
                 <div
@@ -321,6 +328,7 @@ export default function Index() {
                     <EditDisplay
                       editText={editText}
                       setEditText={setEditText}
+                      targetLang={target_lang}
                     />
                   )}
                   {TextSelected && sourceText !== "" && (
@@ -334,8 +342,8 @@ export default function Index() {
                   )}
                   {selectedTool === "document" && <InferenceList />}
                   {isLoading && (
-                    <div className="w-full flex justify-center">
-                      <div className=" loader_animation"></div>
+                    <div className="w-full flex justify-center pt-3">
+                      <div className=" loader_animation "></div>
                     </div>
                   )}
                   {selectedTool === "document" && sourceText !== "" && (
@@ -366,13 +374,16 @@ export default function Index() {
                 />
               )}
             </CardComponent>
-          </>
-        </div>
-      )}
+          </div>
+        )}
+      </div>
+
       {selectedTool === "image" && <ImageTranslateComponent />}
 
-      <div className="mt-3 w-full text-center text-[0.7rem] text-xs text-slate-400 md:float-right md:w-fit">
-        Monlam-MITRA ཡིག་སྒྱུར་རིག་ནུས་དཔེ་གཞི་ཐོན་རིམ་ <small>v</small>10-16
+      <div className="font-poppins mt-3 mb-20 w-full text-center text-[0.7rem] text-xs text-slate-400 md:float-right md:w-fit">
+        Monlam-MITRA{" "}
+        <span className="font-monlam">ཡིག་སྒྱུར་རིག་ནུས་དཔེ་གཞི་ཐོན་རིམ་</span>{" "}
+        <small>v</small>10-16
       </div>
     </ToolWraper>
   );

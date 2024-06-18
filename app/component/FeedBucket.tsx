@@ -41,15 +41,15 @@ function FeedBucket() {
     return (
       <div
         className={`fixed right-2 ${
-          !show ? "bottom-1 md:top-[50%]" : " bottom-1  md:top-[65%]"
+          !show ? "bottom-1 md:bottom-[10%]" : " bottom-1  md:top-[65%]"
         } `}
       >
         {!show ? (
           <button
             onClick={feedFunction}
-            className="shadow-md bg-white rounded-full p-2"
+            className="shadow-md bg-white rounded-full p-2 text-neutral-600"
           >
-            <MdFeedback size={24} color={"#d73449"} />
+            <MdFeedback size={24} />
           </button>
         ) : (
           <button

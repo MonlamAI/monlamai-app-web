@@ -5,18 +5,22 @@ import SingleInputSection from "./SingleInputSection";
 import PDFInputSection from "./PDFInputSection";
 import ZipInputSection from "./ZipInputSection";
 import { resetFetcher } from "~/component/utils/resetFetcher";
+import HeaderComponent from "~/component/HeaderComponent";
 
 function OCR() {
   const [params, setParams] = useSearchParams();
   const selectedTool = params.get("tool") || "image";
   const SingleFilefetcher = useFetcher();
-  const pdfFetcher = useFetcher();
-  const zipFetcher = useFetcher();
+  const fileFetcher = useFetcher();
+
+  const reset = () => {
+    resetFetcher(SingleFilefetcher);
+    resetFetcher(fileFetcher);
+  };
+
   useEffect(() => {
     if (selectedTool !== "image") {
-      resetFetcher(pdfFetcher);
-      resetFetcher(zipFetcher);
-      resetFetcher(SingleFilefetcher);
+      reset();
     }
   }, [selectedTool]);
   const setSelectedTool = (tool: string) => {
@@ -26,17 +30,20 @@ function OCR() {
     });
   };
   return (
-    <div className="flex flex-col gap-2 w-full">
+    <div className="flex flex-col w-full mb-20">
       <ListInput
-        options={["image", "zip", "PDF"]}
+        reset={reset}
+        options={["image", "file"]}
         selectedTool={selectedTool}
         setSelectedTool={setSelectedTool}
       />
-      {selectedTool === "image" && (
-        <SingleInputSection fetcher={SingleFilefetcher} />
-      )}
-      {selectedTool === "zip" && <ZipInputSection fetcher={zipFetcher} />}
-      {selectedTool === "PDF" && <PDFInputSection fetcher={pdfFetcher} />}
+      <div className="rounded-lg overflow-hidden">
+        <HeaderComponent model="OCR" selectedTool={selectedTool} />
+        {selectedTool === "image" && (
+          <SingleInputSection fetcher={SingleFilefetcher} />
+        )}
+        {selectedTool === "file" && <PDFInputSection fetcher={fileFetcher} />}
+      </div>
     </div>
   );
 }

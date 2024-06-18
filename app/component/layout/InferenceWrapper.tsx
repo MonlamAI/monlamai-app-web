@@ -6,19 +6,21 @@ function InferenceWrapper({
   selectedTool,
   setSelectedTool,
   options,
+  reset,
 }) {
   return (
-    <main className="mx-auto w-11/12 ">
+    <main>
       {selectedTool && (
-        <div className="flex justify-between mb-3">
+        <div className="flex justify-between">
           <ListInput
             selectedTool={selectedTool}
             setSelectedTool={setSelectedTool}
             options={options}
+            reset={reset}
           />
         </div>
       )}
-      <div className="flex flex-col  lg:flex-row gap-5">{children}</div>
+      <div className="flex flex-col">{children}</div>
     </main>
   );
 }

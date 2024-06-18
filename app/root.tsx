@@ -38,11 +38,14 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   const isJobEnabled = unleash.isEnabled("isJobEnabled");
   const enable_replacement_mt = unleash.isEnabled("enable_replacement_mt");
+  const show_about_lama = unleash.isEnabled("show_about_lama");
+
   return json(
     {
       user: userdata ? await getUser(userdata?._json?.email) : null,
       isJobEnabled: isJobEnabled ?? false,
       enable_replacement_mt: enable_replacement_mt ?? false,
+      show_about_lama: show_about_lama ?? false,
       feedBucketAccess,
       feedbucketToken,
     },
@@ -70,8 +73,8 @@ export const links: LinksFunction = () => [
     type: "image/x-icon",
     href: "/favicon.ico",
   },
+  { rel: "manifest", href: "/manifest.webmanifest" },
 ];
-
 export const meta: MetaFunction = () => {
   return [
     { title: "སྨོན་ལམ་རིག་ནུས། | Monlam AI | Tibetan Language AI Development" },
@@ -97,7 +100,7 @@ function Document({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body className="flex h-[100dvh] max-w-[1280px] mx-auto inset-0 overflow-y-auto overflow-x-hidden dark:bg-slate-700 dark:text-gray-200">
+      <body className="flex h-[100dvh]  mx-auto inset-0 overflow-y-auto overflow-x-hidden dark:bg-slate-700 dark:text-gray-200">
         {children}
         <FeedBucket />
         <Scripts />
@@ -111,8 +114,6 @@ function Document({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   let { user } = useLoaderData();
-  let location = useLocation();
-  let isSteps = location.pathname.includes("steps");
   let [isDarkMode, setIsDarkMode] = useLocalStorage("Darktheme", false);
   useEffect(() => {
     if (isDarkMode) {
@@ -121,17 +122,18 @@ export default function App() {
       document.documentElement.classList.remove("dark");
     }
   }, []);
-  let showHeader = !location.pathname.includes("/login");
   return (
     <Document>
       <LitteraProvider locales={["en_US", "bo_TI"]}>
         <div className="flex flex-col flex-1">
-          {showHeader && <Header />}
+          <Header />
           {user && <LocationComponent />}
-          <div className="flex-1">
-            <Outlet />
+          <div className="flex-1 flex justify-center pt-4  bg-neutral-50 dark:bg-[--main-bg] ">
+            <div className="flex-1 max-w-[1280px] px-2 ">
+              <Outlet />
+            </div>
           </div>
-          {!isSteps && showHeader && <Footer />}
+          <Footer />
         </div>
       </LitteraProvider>
       <ToastContainer />

@@ -31,6 +31,9 @@ import AudioRecorder from "./components/AudioRecorder";
 import axios from "axios";
 import { getUser } from "~/modal/user.server";
 import { InferenceList } from "~/component/InferenceList";
+import HeaderComponent from "~/component/HeaderComponent";
+import { Spinner } from "flowbite-react";
+import Devider from "~/component/Devider";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -160,7 +163,9 @@ export default function Index() {
   const uploadFile = async (file: File) => {
     try {
       let formData = new FormData();
-      let uniqueFilename = Date.now() + "-" + file?.name;
+      let filename = !file?.name ? file?.name : "recording";
+
+      let uniqueFilename = Date.now() + "-" + filename;
       formData.append("filename", uniqueFilename);
       formData.append("filetype", file.type);
       formData.append("bucket", "/STT/input");
@@ -191,85 +196,118 @@ export default function Index() {
       console.error(`Error uploading file ${file.name}:`, error);
     }
   };
+  let isUploading = uploadProgress > 0 && uploadProgress < 100;
+  const handleClose = () => {
+    resetFetcher(fetcher);
+    resetFetcher(editfetcher);
+  };
   return (
     <ToolWraper title="STT">
       <InferenceWrapper
         selectedTool={selectedTool}
         setSelectedTool={setSelectedTool}
         options={["recording", "file"]}
+        reset={handleReset}
       >
-        {actionError && <ErrorMessage error={actionError} />}
+        {actionError && (
+          <ErrorMessage message={actionError} handleClose={handleClose} />
+        )}
 
-        <CardComponent>
-          <div className="flex flex-col relative gap-2 flex-1 min-h-[30vh]">
-            {RecordingSelected && (
-              <AudioRecorder audioURL={audioURL} uploadAudio={uploadFile} />
-            )}
-            {fileSelected && (
-              <HandleAudioFile
-                handleFileChange={handleFileChange}
-                reset={handleReset}
-              />
-            )}
-            {uploadProgress > 0 && uploadProgress < 100 && (
-              <div>progress:{uploadProgress}</div>
-            )}
-            {RecordingSelected && (
-              <CancelButton onClick={handleReset} hidden={!audioURL}>
-                <RxCross2 size={20} />
-              </CancelButton>
-            )}
+        <div className=" rounded-[10px]  overflow-hidden border dark:border-[--card-border] border-dark_text-secondary">
+          <HeaderComponent model="STT" selectedTool={selectedTool} />
+          <div className="flex flex-col  lg:flex-row">
+            <CardComponent
+              focussed={true}
+              className="flex-1  border-b lg:border-b-0 dark:border-[--card-border] border-dark_text-secondary"
+            >
+              <div className="flex w-full flex-1 flex-col justify-center relative min-h-[150px] lg:min-h-[45vh]">
+                {RecordingSelected && (
+                  <AudioRecorder
+                    audioURL={audioURL}
+                    uploadAudio={uploadFile}
+                    uploadProgress={uploadProgress}
+                    isLoading={isLoading}
+                  />
+                )}
 
-            <div className="flex justify-between">
-              <CharacterOrFileSizeComponent
-                selectedTool={selectedTool}
-                charCount={"2 min "}
-                CHAR_LIMIT={undefined}
-                MAX_SIZE_SUPPORT={MAX_SIZE_SUPPORT_AUDIO}
-              />
-            </div>
+                {fileSelected && (
+                  <HandleAudioFile
+                    handleFileChange={handleFileChange}
+                    reset={handleReset}
+                  />
+                )}
+
+                {RecordingSelected && (
+                  <CancelButton onClick={handleReset} hidden={!audioURL}>
+                    <RxCross2 size={20} />
+                  </CancelButton>
+                )}
+                {!isUploading && (
+                  <div className="flex justify-between">
+                    <CharacterOrFileSizeComponent
+                      selectedTool={selectedTool}
+                      charCount={"2 min "}
+                      CHAR_LIMIT={undefined}
+                      MAX_SIZE_SUPPORT={MAX_SIZE_SUPPORT_AUDIO}
+                    />
+                  </div>
+                )}
+              </div>
+            </CardComponent>
+            <Devider />
+            <CardComponent>
+              <div className="w-full flex flex-1 min-h-[150px] lg:min-h-[30vh] text-black dark:text-gray-200 rounded-lg overflow-auto">
+                {RecordingSelected && isLoading && (
+                  <div className="flex flex-1 justify-center items-center">
+                    <Spinner
+                      size="xl"
+                      className={"fill-secondary-500 dark:fill-primary-500"}
+                    />
+                  </div>
+                )}
+                {edit && (
+                  <EditDisplay
+                    editText={editText}
+                    setEditText={setEditText}
+                    targetLang="bo"
+                  />
+                )}
+                {RecordingSelected && !isLoading && (
+                  <OutputDisplay
+                    edit={edit}
+                    editData={editData}
+                    output={text}
+                    animate={false}
+                    targetLang="bo"
+                  />
+                )}
+                {fileSelected && <InferenceList />}
+              </div>
+              {edit && (
+                <EditActionButtons
+                  handleCancelEdit={handleCancelEdit}
+                  handleEditSubmit={handleEditSubmit}
+                  editfetcher={editfetcher}
+                  editText={editText}
+                  outputText={text}
+                />
+              )}
+              {!edit && inferenceId && audioURL && (
+                <NonEditButtons
+                  selectedTool={selectedTool}
+                  likefetcher={likefetcher}
+                  sourceText={audioURL}
+                  inferenceId={inferenceId}
+                  setEdit={setEdit}
+                  text={newText ?? text}
+                  handleCopy={handleCopy}
+                  setEditText={setEditText}
+                  sourceLang="bo"
+                />
+              )}
+            </CardComponent>
           </div>
-        </CardComponent>
-        <CardComponent>
-          <div className="w-full flex-1 min-h-[30vh] lp-3 text-black  dark:text-gray-200 dark:bg-slate-700 rounded-lg overflow-auto">
-            {RecordingSelected && isLoading && <LoadingAnimation />}
-            {edit && (
-              <EditDisplay editText={editText} setEditText={setEditText} />
-            )}
-            {selectedTool !== "file" && !isLoading && (
-              <OutputDisplay
-                edit={edit}
-                editData={editData}
-                output={text}
-                animate={false}
-                targetLang="bo"
-              />
-            )}
-            {selectedTool === "file" && <InferenceList />}
-          </div>
-          {edit && (
-            <EditActionButtons
-              handleCancelEdit={handleCancelEdit}
-              handleEditSubmit={handleEditSubmit}
-              editfetcher={editfetcher}
-              editText={editText}
-              outputText={text}
-            />
-          )}
-          {!edit && inferenceId && audioURL && (
-            <NonEditButtons
-              selectedTool={selectedTool}
-              likefetcher={likefetcher}
-              sourceText={audioURL}
-              inferenceId={inferenceId}
-              setEdit={setEdit}
-              text={newText ?? text}
-              handleCopy={handleCopy}
-              setEditText={setEditText}
-              sourceLang="bo"
-            />
-          )}
-        </CardComponent>
+        </div>
       </InferenceWrapper>
     </ToolWraper>
   );
