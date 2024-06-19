@@ -156,7 +156,6 @@ export default function Index() {
   const translationFetcher = useFetcher();
 
   const savefetcher = useFetcher();
-  const targetRef = useRef<HTMLDivElement>(null);
   const editData = editfetcher.data?.edited;
 
   let charCount = sourceText?.length;
@@ -310,49 +309,47 @@ export default function Index() {
             </CardComponent>
             <Devider />
             <CardComponent>
-              <div className="flex flex-1 min-h-[150px] md:min-h-[15vh] lg:min-h-[30vh] h-auto w-full flex-col gap-2 ">
-                <div
-                  ref={targetRef}
-                  className={`h-full text-lg ${
-                    target_lang === "bo"
-                      ? "leading-loose tracking-wide"
-                      : "font-poppins"
-                  }`}
-                >
-                  {translationFetcher?.data?.error && (
-                    <ErrorMessage
-                      message={translationFetcher?.data?.error}
-                      handleClose={handleReset}
-                    />
-                  )}
-                  {TextSelected && edit && (
-                    <EditDisplay
-                      editText={editText}
-                      setEditText={setEditText}
-                      targetLang={target_lang}
-                    />
-                  )}
-                  {TextSelected && sourceText !== "" && (
-                    <OutputDisplay
-                      edit={edit}
-                      editData={editData}
-                      output={data}
-                      animate={true}
-                      targetLang={target_lang}
-                    />
-                  )}
-                  {selectedTool === "document" && <InferenceList />}
-                  {selectedTool === "document" && sourceText !== "" && (
-                    <DownloadDocument source={sourceText} lang={source_lang} />
-                  )}
-                </div>
+              <div
+                className={`flex flex-1 min-h-[150px] md:min-h-[15vh] lg:min-h-[30vh] h-auto w-full flex-col gap-2
+              ${
+                target_lang === "bo"
+                  ? "leading-loose tracking-wide"
+                  : "font-poppins"
+              } text-lg`}
+              >
+                {translationFetcher?.data?.error && (
+                  <ErrorMessage
+                    message={translationFetcher?.data?.error}
+                    handleClose={handleReset}
+                  />
+                )}
+                {TextSelected && edit && (
+                  <EditDisplay
+                    editText={editText}
+                    setEditText={setEditText}
+                    targetLang={target_lang}
+                  />
+                )}
+                {TextSelected && sourceText !== "" && (
+                  <OutputDisplay
+                    edit={edit}
+                    editData={editData}
+                    output={data}
+                    animate={true}
+                    targetLang={target_lang}
+                  />
+                )}
                 {isLoading && (
-                  <div className="flex flex-1 justify-center items-center">
+                  <div className="flex flex-1 items-center justify-center">
                     <Spinner
                       size="xl"
                       className={"fill-secondary-500 dark:fill-primary-500"}
                     />
                   </div>
+                )}
+                {selectedTool === "document" && <InferenceList />}
+                {selectedTool === "document" && sourceText !== "" && (
+                  <DownloadDocument source={sourceText} lang={source_lang} />
                 )}
               </div>
               {edit && (
