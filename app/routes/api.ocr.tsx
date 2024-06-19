@@ -24,6 +24,9 @@ export const action: ActionFunction = async ({ request }) => {
       let res = await fetch(URL_File + "/ocr/upload", {
         method: "POST",
         body: formData,
+        headers: {
+          "x-api-key": process.env?.API_ACCESS_KEY!,
+        },
       });
 
       data = await res.json();

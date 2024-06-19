@@ -30,6 +30,9 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     let res = await fetch(url + `/mt/translate`, {
       method: "POST",
       body: formdata,
+      headers: {
+        "x-api-key": process.env?.API_ACCESS_KEY!, // Replace with your actual access key
+      },
     });
     return await res.json();
   } catch (e) {

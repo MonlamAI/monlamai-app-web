@@ -48,6 +48,7 @@ export const loader: LoaderFunction = async ({ request }) => {
       show_about_lama: show_about_lama ?? false,
       feedBucketAccess,
       feedbucketToken,
+      AccessKey: process.env?.API_ACCESS_KEY,
     },
     { status: 200, headers: { "cache-control": "no-cache" } }
   );
