@@ -83,7 +83,7 @@ export function HandleAudioFile({ handleFileChange, reset }) {
           <div className="flex flex-1 flex-col justify-center items-center gap-2 hover:border-dotted hover:border-2 hover:border-gray-300">
             <img
               className="h-32 "
-              src="//ssl.gstatic.com/translate/drag_and_drop.png"
+              src="/img/drag_and_drop.svg"
               alt="drag and drop"
             />
             <p className="rounded text-slate-300 p-3">

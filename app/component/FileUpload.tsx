@@ -135,10 +135,7 @@ function FileUpload({ setFile, setInputUrl, supported, model }) {
         }}
         className="flex-1 flex flex-col justify-center items-center rounded text-neutral-300 p-3"
       >
-        <img
-          className="w-[30%] "
-          src="//ssl.gstatic.com/translate/drag_and_drop.png"
-        />
+        <img className="w-[30%] " src="/img/drag_and_drop.svg" />
         <p className="dark:text-neutral mt-2">
           Drag and drop your file here, Supported {supported_list}
         </p>
