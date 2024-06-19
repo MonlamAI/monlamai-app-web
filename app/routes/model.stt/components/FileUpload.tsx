@@ -86,7 +86,7 @@ export function HandleAudioFile({ handleFileChange, reset }) {
               src="/img/drag_and_drop.svg"
               alt="drag and drop"
             />
-            <p className="rounded text-slate-300 p-3">
+            <p className="rounded text-slate-400 p-3">
               click to select .mp3 or .wav files
             </p>
           </div>
