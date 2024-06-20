@@ -52,7 +52,7 @@ function InputCard({ content, className, model }) {
   return (
     <CardComponent>
       <div className="h-full p-3">
-        <div className={`md:w-[600px] ${className} `}>{content}</div>
+        <div className={`${className} `}>{content}</div>
       </div>
     </CardComponent>
   );
@@ -73,7 +73,7 @@ function OutputCard({ content, className, model }) {
   return (
     <CardComponent>
       <div className="h-full p-3">
-        <div className={`md:w-[600px] ${className} `}>{text}</div>
+        <div className={`${className} `}>{text}</div>
       </div>
     </CardComponent>
   );
@@ -96,15 +96,16 @@ function TranslationRoute() {
   }
   const sourceLang = langDir === "en2bo" ? "en" : "bo";
   const targetLang = langDir === "en2bo" ? "bo" : "en";
+  const modelString = model.toUpperCase();
   return (
-    <div className="w-full flex flex-col z-20 mt-20 ">
-      <div className="w-full rounded-sm overflow-hidden flex flex-col  md:mx-auto  md:min-h-[516px]  ">
+    <div className="w-full flex flex-col z-20 mt-20">
+      <div className="flex flex-col rounded-lg overflow-hidden md:min-h-[516px] border dark:border-[--card-border] border-dark_text-secondary">
         {model === "mt" ? (
           <MTHeader sourceLang={sourceLang} targetLang={targetLang} />
         ) : (
-          <HeaderComponent model="STT" selectedTool="" />
+          <HeaderComponent model={modelString} selectedTool="" />
         )}
-        <div className="flex flex-1 rounded-sm overflow-hidden flex-col md:flex-row h-auto ">
+        <div className="flex flex-1 rounded-sm overflow-hidden flex-col md:flex-row h-auto">
           <InputCard
             content={data.input}
             className="font-poppins"
@@ -117,14 +118,14 @@ function TranslationRoute() {
             model={model}
           />
         </div>
-        <div className="self-end mt-4">
-          <Link to="/">
-            <Button color="blue" type="button">
-              <FaUniregistry className="mr-2" />
-              Try it yourself
-            </Button>
-          </Link>
-        </div>
+      </div>
+      <div className="self-end mt-4">
+        <Link to="/">
+          <Button color="blue" type="button">
+            <FaUniregistry className="mr-2" />
+            Try it yourself
+          </Button>
+        </Link>
       </div>
     </div>
   );
@@ -137,7 +138,7 @@ function MTHeader({ sourceLang, targetLang }) {
     <div
       className={`${
         isTib ? "font-monlam text-base" : "font-poppins"
-      } bg-white border-b py-2 px-2 font-normal  dark:border-light_text-secondary border-dark_text-secondary  dark:bg-secondary-700 flex  items-center  md:flex-row gap-3  `}
+      } bg-white border-b py-2.5 px-5 font-normal  dark:border-[--card-border] border-dark_text-secondary  dark:bg-[--card-bg] flex  items-center  md:flex-row gap-3`}
     >
       <div className={`flex-1 ${sourceLang === "bo" && " font-monlam"}`}>
         {langLabels[sourceLang]}
