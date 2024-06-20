@@ -25,8 +25,13 @@ function SingleInptSection({ fetcher }: any) {
   const editData = editfetcher.data?.edited;
   const data = fetcher?.data;
   // Replace non-Tibetan characters with an empty string
-  const nonTibetanRegex = /[^\u0F00-\u0FFF\s]/g;
-  const text = data?.text?.replace(nonTibetanRegex, "");
+  const tibetanRegex = /[\u0F00-\u0FFF]/;
+  let text = data?.text;
+
+  if (!tibetanRegex.test(data?.text)) {
+    text = "";
+  }
+
   const inferenceId = fetcher.data?.inferenceId;
   const isActionSubmission = fetcher.state !== "idle";
   const errorMessage = data?.error_message;

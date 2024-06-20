@@ -84,7 +84,6 @@ export const action: ActionFunction = async ({ request }) => {
   }
   if (PDFurls) {
     let job;
-    console.log("filename", filename);
 
     let inferenceData = await saveInference({
       userId: user?.id,
