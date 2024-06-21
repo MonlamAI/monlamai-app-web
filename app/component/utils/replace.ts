@@ -44,9 +44,9 @@ export function en_bo_english_replaces(text: string) {
   result = result.replaceAll(/\bCE\b/g, "Common Era");
   result = result.replaceAll(/\bBCE\b/g, "Before Common Era");
   result = result.replaceAll(/\bETA\b/g, "Estimated time of arrival");
-  result = result.replaceAll(/\bh\b/g, "Hour");
+  result = result.replaceAll(/\bHour\b/g, "Hour");
   result = result.replaceAll(/\bmin\b/g, "Minute");
-  result = result.replaceAll(/\bs\b/g, "Seconds");
+  result = result.replaceAll(/\bsec\b/g, "Seconds");
   result = result.replaceAll(/\bN\b/g, "North");
   result = result.replaceAll(/\bS\b/g, "South");
   result = result.replaceAll(/\bE\b/g, "East");
@@ -1299,7 +1299,6 @@ export function bo_en_english_replaces(text: string) {
   result = result.replaceAll("རྫོད་པ", "སྐྱོན་གཏོང་བ");
   result = result.replaceAll("བརྫད་པ", "སྐྱོན་བཏང་བ");
   result = result.replaceAll("སྡིངས་ཆ", "གར་སྟེགས");
-  
 
   //སྡིངས་ཆ་རྫོད་པ་
 

@@ -188,9 +188,7 @@ export default function Index() {
       if (uploadStatus.status === 200) {
         const uploadedFilePath = uploadStatus.request.responseURL;
         const baseUrl = uploadedFilePath?.split("?")[0]!;
-        console.log(baseUrl);
         setAudioURL(baseUrl!);
-        console.log(`File ${file.name} uploaded successfully.`, uploadStatus);
       }
     } catch (error) {
       console.error(`Error uploading file ${file.name}:`, error);

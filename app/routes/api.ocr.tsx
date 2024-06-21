@@ -24,6 +24,9 @@ export const action: ActionFunction = async ({ request }) => {
       let res = await fetch(URL_File + "/ocr/upload", {
         method: "POST",
         body: formData,
+        headers: {
+          "x-api-key": process.env?.API_ACCESS_KEY!,
+        },
       });
 
       data = await res.json();
@@ -81,7 +84,6 @@ export const action: ActionFunction = async ({ request }) => {
   }
   if (PDFurls) {
     let job;
-    console.log("filename", filename);
 
     let inferenceData = await saveInference({
       userId: user?.id,

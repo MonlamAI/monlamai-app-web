@@ -25,6 +25,9 @@ export const action: ActionFunction = async ({ request }) => {
       let response = await fetch(API_URL + "/stt/playground", {
         method: "POST",
         body: formData,
+        headers: {
+          "x-api-key": process.env?.API_ACCESS_KEY!,
+        },
       });
       data = await response.json();
     } catch (e) {

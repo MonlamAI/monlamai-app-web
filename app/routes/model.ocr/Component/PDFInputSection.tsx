@@ -98,9 +98,8 @@ export default function PDFInputSection({ fetcher }: props) {
         )}
       </CardComponent>
       <Devider />
-
       <CardComponent>
-        <div className="w-full flex flex-1 max-h-[45vh] p-3 text-black bg-neutral dark:bg-secondary-700 dark:text-neutral  overflow-auto">
+        <div className="w-full flex flex-1 max-h-[45vh] p-3 text-black bg-neutral dark:bg-[--card-bg] dark:text-neutral overflow-auto">
           {fetcher.data?.error && (
             <ErrorMessage
               message={fetcher.data?.error}

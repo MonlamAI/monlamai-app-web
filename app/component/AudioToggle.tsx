@@ -23,7 +23,7 @@ function AudioToggle({ output }: { output: string | null | "" }) {
       <button
         disabled={disabled}
         onClick={togglePlay}
-        className="mr-3 hover:text-blue-700 transition duration-150 ease-in-out disabled:text-gray-400"
+        className="mr-3 hover:text-secondary-700 dark:text-primary-700 dark:hover:text-primary-700 transition duration-150 ease-in-out disabled:text-gray-400"
       >
         {isPlaying ? <FaPause /> : <FaPlay />}
       </button>

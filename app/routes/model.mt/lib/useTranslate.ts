@@ -13,7 +13,7 @@ type useTranslateType = {
 };
 
 const useTranslate = ({ target, text, data, setData }: useTranslateType) => {
-  const { enable_replacement_mt } = useRouteLoaderData("root");
+  const { enable_replacement_mt, AccessKey } = useRouteLoaderData("root");
   const [responseTime, setResponseTime] = useState(0);
   const [done, setDone] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -46,6 +46,9 @@ const useTranslate = ({ target, text, data, setData }: useTranslateType) => {
         const response = await fetch(url, {
           method: "POST",
           body: formData,
+          headers: {
+            "x-api-key": AccessKey, // Replace with your actual access key
+          },
           signal: controller.signal,
         });
         if (!response.ok) {
@@ -58,7 +61,6 @@ const useTranslate = ({ target, text, data, setData }: useTranslateType) => {
         setResponseTime(duration);
         await handleResponse(response);
       } catch (error) {
-        console.log(error);
         setError(error.message);
       } finally {
         setIsLoading(false);

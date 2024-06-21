@@ -160,7 +160,7 @@ export function EditActionButtons({
           isEnglish ? "font-poppins" : "font-monlam"
         }  h-fit inline-flex m-2 text-xs`}
       >
-        <div className="h-6 flex-1 px-2  bg-primary-200 dark:bg-[#454544] dark:text-[#afaeae] pt-[8px] pb-[6px] rounded-lg justify-start items-center gap-2.5 flex">
+        <div className="flex-1 px-2 bg-primary-200 dark:bg-[#454544] dark:text-[#afaeae] pt-[8px] pb-[6px] rounded-lg justify-start items-center gap-2.5 flex">
           {translation.contribution_message}
         </div>
       </div>
@@ -169,7 +169,12 @@ export function EditActionButtons({
           isEnglish ? "font-poppins" : "font-monlam"
         } flex justify-between p-2 text-sm border-t border-t-dark_text-secondary dark:border-t-[--card-border]`}
       >
-        <Button color="gray" size="xs" onClick={handleCancelEdit}>
+        <Button
+          color="gray"
+          size="sm"
+          onClick={handleCancelEdit}
+          className="px-1 py-0.5"
+        >
           x
         </Button>
         <Button
