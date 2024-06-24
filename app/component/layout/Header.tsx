@@ -57,11 +57,11 @@ function Header() {
         </div>
         {/* mobile view */}
         <div
-          className="hidden absolute bg-neutral-100 top-0 left-0 right-0 w-full h-full  dark:bg-secondary-900 shadow-lg z-40"
+          className="hidden absolute bg-neutral-100 top-0 left-0 right-0 w-full h-full  dark:bg-[--card-bg] shadow-lg z-40"
           style={{ display: showMenu ? "block" : "" }}
         >
           <NavLink
-            className="flex bg-neutral-100 border-b border-b-neutral-200 dark:bg-secondary-900 items-center gap-2 min-h-[84px] p-4"
+            className="flex bg-neutral-100 border-b border-b-neutral-200 dark:bg-[--card-bg] items-center gap-2 min-h-[84px] p-4"
             prefetch="intent"
             unstable_viewTransition
             to="/"
@@ -109,7 +109,7 @@ export default Header;
 
 function Devider() {
   return (
-    <div className="Separator self-stretch h-px bg-stone-300 dark:bg-secondary-700" />
+    <div className="Separator self-stretch h-px bg-stone-300 dark:bg-[--card-border]" />
   );
 }
 

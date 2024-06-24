@@ -95,6 +95,7 @@ export default function ListInput({
         let isActive = selectedTool === option;
         return (
           <Tabs.Item
+            id="hello"
             key={option + index}
             title={innerText + isBeta}
             icon={icon}

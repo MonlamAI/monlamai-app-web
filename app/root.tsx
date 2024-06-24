@@ -75,6 +75,7 @@ export const links: LinksFunction = () => [
     href: "/favicon.ico",
   },
   { rel: "manifest", href: "/manifest.webmanifest" },
+  { rel: "apple-touch-icon", href: "/favicon-32x32.png" },
 ];
 export const meta: MetaFunction = () => {
   return [
@@ -88,6 +89,10 @@ export const meta: MetaFunction = () => {
       name: "keywords",
       content:
         "Monlam, AI , tibetan , dictionary ,translation ,orc , tts, stt ,login,སྨོན་ལམ་, རིག་ནུས།",
+    },
+    {
+      name: "apple-mobile-web-app-status-bar",
+      content: "#0757b5",
     },
   ];
 };
@@ -105,9 +110,10 @@ function Document({ children }: { children: React.ReactNode }) {
         {children}
         <FeedBucket />
         <Scripts />
+        <script src="/app.js" />
         {process.env.NODE_ENV === "development" && <LiveReload />}
         <ScrollRestoration />
-        {/* {show_feed_bucket && show && <script dangerouslySetInnerHTML={{ __html: feedbucketScript }}></script>} */}
+        {/* {show_feed_bucket && show && <script dangerouslySetInnerHTML={{ __html: feedbucketScript }}></scrip>} */}
       </body>
     </html>
   );
