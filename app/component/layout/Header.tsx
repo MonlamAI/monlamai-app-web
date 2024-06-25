@@ -84,10 +84,7 @@ function Header() {
             <div onClick={() => setShowMenu((p) => !p)} className="px-3 ">
               {data?.isJobEnabled && <JobLink />}
             </div>
-            {/* <div className="Separator self-stretch h-px bg-stone-300" />
-            <div onClick={() => setShowMenu((p) => !p)} className="px-3">
-              <TeamLink />
-            </div> */}
+
             <Devider />
             <div onClick={() => setShowMenu((p) => !p)} className="px-3">
               <DarkModeSwitcher />
