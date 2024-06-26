@@ -63,7 +63,7 @@ function admin() {
 
       <SelectionList handleSelect={onChange} currentState={check} />
       <div>
-        {/* {check === "user" && <UserCount />} */}
+        {check === "user" && <UserCount />}
         {check === "inferenceCount" && <InferenceCount />}
         {check === "inferenceList" && <InferenceList />}
       </div>
