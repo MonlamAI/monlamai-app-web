@@ -403,10 +403,12 @@ export function ErrorBoundary() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    toast.warn(API_ERROR_MESSAGE, {
-      position: toast.POSITION.BOTTOM_RIGHT,
-    });
-    navigate(".", { replace: true });
+    if (isRouteError) {
+      toast.warn(API_ERROR_MESSAGE, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+      navigate(".", { replace: true });
+    }
   }, []);
 
   return <>{/* <ErrorMessage error={"error"} /> */}</>;
