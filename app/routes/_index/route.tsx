@@ -17,7 +17,11 @@ export default function Index() {
 export function ErrorBoundary({ error }) {
   return (
     <>
-      <ErrorMessage error={error} />
+      <ErrorMessage
+        message={error?.message}
+        type="warning"
+        handleClose={() => {}}
+      />
     </>
   );
 }

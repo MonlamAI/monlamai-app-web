@@ -208,7 +208,11 @@ export default function Index() {
         reset={handleReset}
       >
         {actionError && (
-          <ErrorMessage message={actionError} handleClose={handleClose} />
+          <ErrorMessage
+            message={actionError}
+            handleClose={handleClose}
+            type="warning"
+          />
         )}
 
         <div className=" rounded-[10px]  overflow-hidden border dark:border-[--card-border] border-dark_text-secondary">

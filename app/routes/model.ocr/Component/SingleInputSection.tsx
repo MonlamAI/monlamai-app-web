@@ -11,6 +11,7 @@ import TooltipComponent from "./Tooltip";
 import { ImageCropper } from "~/routes/model.ocr/Component/ImageCropper";
 import Devider from "~/component/Devider";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
+import ErrorMessage from "~/component/ErrorMessage";
 
 function SingleInptSection({ fetcher }: any) {
   const [ImageUrl, setImageUrl] = useState<string | null>(null);
@@ -145,7 +146,7 @@ function SingleInptSection({ fetcher }: any) {
           ) : (
             <>
               <div className="text-lg tracking-wide leading-loose">
-                {errorMessage && (
+                {/* {errorMessage && (
                   <div
                     className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
                     role="alert"
@@ -153,6 +154,13 @@ function SingleInptSection({ fetcher }: any) {
                     <strong className="font-bold">Error: </strong>
                     <span className="block sm:inline">{errorMessage}</span>
                   </div>
+                )} */}
+                {errorMessage && (
+                  <ErrorMessage
+                    message="It's currently under maintenance and will resume shortly."
+                    handleClose={handleFormClear}
+                    type="info"
+                  />
                 )}
                 {!edit && text && !editData && (
                   <div
@@ -162,10 +170,9 @@ function SingleInptSection({ fetcher }: any) {
                     }}
                   />
                 )}
-                {text === "" && (
+                {!errorMessage && !text && (
                   <div className="text-red-500">
-                    {" "}
-                    provide image with tibetan text
+                    Provide image with tibetan text
                   </div>
                 )}
               </div>
