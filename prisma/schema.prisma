@@ -20,6 +20,18 @@ model User {
   Inference Inference[] @relation("inference")
   country   String?
   city      String?
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @default(now()) @updatedAt
+  UserLog   UserLog[]
+}
+
+model UserLog {
+  id        String   @id @default(uuid())
+  ip        String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  User      User     @relation(fields: [userId], references: [id])
+  userId    Int
 }
 
 model AboutUser {
@@ -74,4 +86,5 @@ model Inference {
   updatedAt    DateTime @updatedAt
   type         String?
   jobId        String?
+  ip           String?
 }

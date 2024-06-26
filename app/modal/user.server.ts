@@ -64,6 +64,11 @@ export async function update_location(
 }
 export async function getUsersCount() {
   //get total user count
-  let count = await db.user.count();
-  return count;
+  const userCounts = await db.user.groupBy({
+    by: ["country"],
+    _count: {
+      _all: true,
+    },
+  });
+  return userCounts;
 }

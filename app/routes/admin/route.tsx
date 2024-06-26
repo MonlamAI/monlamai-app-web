@@ -10,10 +10,14 @@ import { getUsersCount } from "~/modal/user.server";
 import UserCount from "./component/UserCount";
 import InferenceCount from "./component/InferenceCount";
 import { SelectionList } from "./component/SelectionList";
+import { ClientOnly } from "remix-utils/client-only";
+import Map from "./component/Map.client";
+import LeafLetStyle from "leaflet/dist/leaflet.css";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: DateStyle },
   { rel: "stylesheet", href: DateStyleDefault },
+  { rel: "stylesheet", href: LeafLetStyle },
 ];
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -53,9 +57,13 @@ function admin() {
   }
   return (
     <>
+      <div className="h-[30vh] md:h-[50vh] w-full">
+        <ClientOnly fallback={<div>loading</div>}>{() => <Map />}</ClientOnly>
+      </div>
+
       <SelectionList handleSelect={onChange} currentState={check} />
       <div>
-        {check === "user" && <UserCount />}
+        {/* {check === "user" && <UserCount />} */}
         {check === "inferenceCount" && <InferenceCount />}
         {check === "inferenceList" && <InferenceList />}
       </div>
