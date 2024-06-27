@@ -47,6 +47,8 @@ import ImageTranslateComponent from "./components/ImageTranslateComponent";
 import { InferenceList } from "~/component/InferenceList";
 import Devider from "~/component/Devider";
 import { Spinner } from "flowbite-react";
+import getIpAddressByRequest from "~/component/utils/getIpAddress";
+
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
   parentMeta.shift(1);
@@ -89,8 +91,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export const action: ActionFunction = async ({ request }) => {
   let formdata = await request.formData();
   let userdata = await getUserSession(request);
+  let ip = getIpAddressByRequest(request);
   let user = await getUser(userdata?._json?.email);
-
   let method = request.method;
   if (method === "PATCH") {
     let edited = formdata.get("edited") as string;
@@ -112,6 +114,7 @@ export const action: ActionFunction = async ({ request }) => {
       responseTime: parseInt(responseTime),
       inputLang: inputLang,
       outputLang: outputLang,
+      ip,
     });
     return { id: inferenceData?.id };
   }

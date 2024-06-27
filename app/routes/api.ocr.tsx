@@ -2,11 +2,12 @@ import { ActionFunction } from "@remix-run/node";
 import { saveInference } from "~/modal/inference.server";
 import applyReplacements from "./model.ocr/utils/replacements";
 import { getUserDetail } from "~/services/session.server";
-
+import getIpAddressByRequest from "~/component/utils/getIpAddress";
 export let FILE_SERVER_ISSUE_MESSAGE =
   "File upload is not working temporarily!";
 
 export const action: ActionFunction = async ({ request }) => {
+  let ip = getIpAddressByRequest(request);
   let formdata = await request.formData();
   let user = await getUserDetail(request);
   let URL_File = process.env.FILE_SUBMIT_URL;
@@ -48,6 +49,7 @@ export const action: ActionFunction = async ({ request }) => {
       type: "file",
       output: data.content,
       jobId: null,
+      ip,
     });
     let with_replacement = applyReplacements(inferenceData.output);
 
@@ -66,6 +68,7 @@ export const action: ActionFunction = async ({ request }) => {
       type: "file",
       output: "",
       jobId: null,
+      ip,
     });
     try {
       formData.append("zip_input_url", zip_input_url);
@@ -92,6 +95,7 @@ export const action: ActionFunction = async ({ request }) => {
       type: "file",
       output: "",
       jobId: null,
+      ip,
     });
     try {
       let formData = new FormData();

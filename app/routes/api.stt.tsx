@@ -3,8 +3,10 @@ import { verifyDomain } from "~/component/utils/verifyDomain";
 import { API_ERROR_MESSAGE } from "~/helper/const";
 import { saveInference } from "~/modal/inference.server";
 import { getUserDetail } from "~/services/session.server";
+import getIpAddressByRequest from "~/component/utils/getIpAddress";
 
 export const action: ActionFunction = async ({ request }) => {
+  let ip = getIpAddressByRequest(request);
   const startTime = Date.now();
   const isDomainAllowed = verifyDomain(request);
   if (!isDomainAllowed) {
@@ -50,6 +52,7 @@ export const action: ActionFunction = async ({ request }) => {
         output: text,
         responseTime: responseTime,
         jobId: data?.id,
+        ip,
       });
 
       return json({ text, inferenceId: inferenceData?.id });
@@ -69,6 +72,7 @@ export const action: ActionFunction = async ({ request }) => {
       output: "",
       responseTime: responseTime,
       jobId: null,
+      ip,
     });
     try {
       let formData = new FormData();
