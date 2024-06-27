@@ -243,6 +243,7 @@ export default function Index() {
     resetFetcher(translationFetcher);
     resetFetcher(editfetcher);
   }
+  let outputRef = useRef();
 
   return (
     <ToolWraper title="MT">
@@ -306,7 +307,13 @@ export default function Index() {
                       <SubmitButton
                         charCount={charCount}
                         CHAR_LIMIT={CHAR_LIMIT}
-                        trigger={trigger}
+                        trigger={() => {
+                          trigger();
+                          outputRef.current?.scrollIntoView({
+                            behavior: "smooth",
+                            block: "start",
+                          });
+                        }}
                         selectedTool={selectedTool}
                         submitFile={handleFileSubmit}
                         disabled={!file || file.length === 0}
@@ -319,6 +326,7 @@ export default function Index() {
             <Devider />
             <CardComponent>
               <div
+                ref={outputRef}
                 className={`flex flex-1 min-h-[150px] md:min-h-[15vh] lg:min-h-[30vh] h-auto w-full flex-col gap-2
               ${
                 target_lang === "bo"
