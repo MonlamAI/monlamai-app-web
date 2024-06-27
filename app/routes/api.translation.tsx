@@ -75,6 +75,7 @@ export async function translate(
 export const action = async ({ request }: ActionFunctionArgs) => {
   let userdata = await getUserDetail(request);
   const isDomainAllowed = verifyDomain(request);
+
   if (!isDomainAllowed) {
     // If the referer is not from the expected domain, return a forbidden response
     return json({ message: "Access forbidden" }, { status: 403 });
@@ -109,6 +110,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
     // if (result.translation) console.log(result.translation);
     // save the data to the database
+
     const inferenceData = await saveInference({
       userId: user?.id,
       model: "mt",

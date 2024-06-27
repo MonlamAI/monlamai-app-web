@@ -46,6 +46,10 @@ function Map() {
     };
     fetchData();
   }, []);
+  useEffect(() => {
+    let d = document.querySelectorAll(".leaflet-bottom");
+    d.forEach((p) => p.classList.add("hidden"));
+  }, []);
   return (
     <MapContainer
       center={[51.505, -0.09]}

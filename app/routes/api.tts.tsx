@@ -9,6 +9,15 @@ import { v4 as uuidv4 } from "uuid";
 import { getUserDetail } from "~/services/session.server";
 
 export const action: ActionFunction = async ({ request }) => {
+  const forwarded = request.headers.get("x-forwarded-for");
+  const ip =
+    forwarded ||
+    request.headers.get("x-real-ip") ||
+    request.socket?.remoteAddress ||
+    "IP not available";
+
+  console.log("IP Address:", ip);
+
   const isDomainAllowed = verifyDomain(request);
   if (!isDomainAllowed) {
     // If the referer is not from the expected domain, return a forbidden response

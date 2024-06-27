@@ -14,6 +14,7 @@ export async function saveInference(inference: any) {
       outputLang: inference.outputLang,
       type: inference?.type,
       jobId: inference?.jobId,
+      ip: inference?.ip,
     },
   });
 }
