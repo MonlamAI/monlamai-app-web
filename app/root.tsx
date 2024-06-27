@@ -1,3 +1,4 @@
+import { isRouteErrorResponse, useRouteError } from "@remix-run/react";
 import type {
   LinksFunction,
   LoaderFunction,
@@ -33,6 +34,7 @@ import LocationComponent from "./component/LocationDetect";
 import unleash from "./services/features.server";
 import { saveIpAddress } from "~/modal/log.server";
 import getIpAddressByRequest from "~/component/utils/getIpAddress";
+import { RootErrorPage } from "./component/ErrorPages";
 
 export const loader: LoaderFunction = async ({ request }) => {
   let userdata = await getUserSession(request);
@@ -115,10 +117,6 @@ function Document({ children }: { children: React.ReactNode }) {
       </head>
       <body className="flex h-[100dvh]  mx-auto inset-0 overflow-y-auto overflow-x-hidden dark:bg-slate-700 dark:text-gray-200">
         {children}
-        <FeedBucket />
-        <Scripts />
-        <script src="/app.js" />
-        {process.env.NODE_ENV === "development" && <LiveReload />}
         <ScrollRestoration />
         {/* {show_feed_bucket && show && <script dangerouslySetInnerHTML={{ __html: feedbucketScript }}></scrip>} */}
       </body>
@@ -145,12 +143,34 @@ export default function App() {
           <div className="flex-1 flex justify-center pt-4  bg-neutral-50 dark:bg-[--main-bg] ">
             <div className="flex-1 max-w-[1280px] px-2 ">
               <Outlet />
+              <FeedBucket />
+              <Scripts />
+              <script src="/app.js" />
+              {process.env.NODE_ENV === "development" && <LiveReload />}
             </div>
           </div>
           <Footer />
         </div>
       </LitteraProvider>
       <ToastContainer />
+    </Document>
+  );
+}
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+  // catch boundary errors
+  if (isRouteErrorResponse(error)) {
+    return (
+      <Document>
+        <RootErrorPage statusCode={error.status} />
+      </Document>
+    );
+  }
+  // if thrown errors
+  return (
+    <Document>
+      <RootErrorPage statusCode={0} />
     </Document>
   );
 }
