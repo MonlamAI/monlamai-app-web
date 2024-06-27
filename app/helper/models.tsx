@@ -1,7 +1,3 @@
-// import { BsGlobe2, BsFillVolumeUpFill } from "react-icons/bs";
-// import { FaAssistiveListeningSystems } from "react-icons/fa";
-// import { AiFillFileText } from "react-icons/ai";
-
 import MTIcon from "~/styles/modelIcons/MT";
 import TTSIcon from "~/styles/modelIcons/TTS";
 import STTIcon from "~/styles/modelIcons/STT";

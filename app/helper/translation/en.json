@@ -24,7 +24,7 @@
   "STT": "Speech to Text",
   "TTS": "Text to Speech",
   "OCR": "OCR",
-  "MT_description": "English to Tibetan and vice versa",
+  "MT_description": "English to Tibetan & vice versa",
   "STT_description": "Convert Tibetan speech to text",
   "TTS_description": "Have our AI speak Tibetan text",
   "OCR_description": "Convert an image into text with AI",
