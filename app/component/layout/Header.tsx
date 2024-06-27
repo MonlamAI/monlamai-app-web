@@ -38,7 +38,7 @@ function Header() {
           <span className="text-xl md:text-2xl ">{translation.monlamAI}</span>
         </NavLink>
         <button
-          className="block lg:hidden z-50 pr-2"
+          className="block lg:hidden fixed right-2 z-50 pr-2"
           onClick={() => setShowMenu((p) => !p)}
         >
           {showMenu ? <RxCross1 /> : <GiHamburgerMenu />}
@@ -57,11 +57,11 @@ function Header() {
         </div>
         {/* mobile view */}
         <div
-          className="hidden absolute bg-neutral-100 top-0 left-0 right-0 w-full h-full  dark:bg-[--card-bg] shadow-lg z-40"
+          className="hidden h-full fixed bg-neutral-100 top-0 left-0 right-0  w-full   dark:bg-[--card-bg] shadow-lg z-40"
           style={{ display: showMenu ? "block" : "" }}
         >
           <NavLink
-            className="flex bg-neutral-100 border-b border-b-neutral-200 dark:bg-[--card-bg] items-center gap-2 min-h-[84px] p-4"
+            className="flex items-center gap-2 p-4"
             prefetch="intent"
             unstable_viewTransition
             to="/"
@@ -72,9 +72,7 @@ function Header() {
               alt="Monalm AI"
               className="relative -top-1"
             />
-            <span className="text-xl font-semibold">
-              {translation.monlamAI}
-            </span>
+            <span className="text-xl md:text-2xl ">{translation.monlamAI}</span>
           </NavLink>
           <div className="flex flex-col gap-4 text-light_text-secondary dark:text-dark_text-secondary">
             <div onClick={() => setShowMenu((p) => !p)} className="px-3 pt-3 ">
