@@ -115,23 +115,16 @@ function Menu() {
   const { translation, locale } = uselitteraTranlation();
   let isEnglish = locale === "en_US";
   const isTibetan = locale === "bo_TI";
-  const customTheme: CustomFlowbiteTheme["button"] = {
-    color: {
-      primary: "bg-primary-500 hover:bg-primary-600",
-      secondary: "bg-secondary-500 hover:bg-secondary-600 text-white",
-    },
-  };
+
   if (!user)
     return (
       <Form method="post" action="/auth0">
         <Button
           type="submit"
-          className={`w-full p-1 pb-[1px] ${
+          className={`dark:bg-primary-500 dark:enabled:hover:bg-primary-600 bg-secondary-500 hover:enabled:bg-secondary-600 text-white dark:text-[--card-border] w-full p-1 pb-[1px] ${
             isEnglish ? "font-poppins " : "font-monlam"
           }`}
-          color="secondary"
           pill
-          theme={customTheme}
           size={"xs"}
         >
           {translation.login}
@@ -143,7 +136,7 @@ function Menu() {
       <Dropdown
         label={user.email}
         dismissOnClick={false}
-        className="bg-white hidden md:block"
+        className="bg-white dark:bg-[--card-bg] hidden md:block shadow-lg"
         renderTrigger={() => (
           <img
             className="h-6 w-6 rounded-full hidden md:block  cursor-pointer"
@@ -159,7 +152,6 @@ function Menu() {
             {user.email}
           </span>
         </Dropdown.Header>
-        <hr />
         <Dropdown.Item icon={HiLogout} className="mt-2">
           <Form method="post" action="/logout">
             <button className={isEnglish ? "font-poppins" : "font-monlam"}>

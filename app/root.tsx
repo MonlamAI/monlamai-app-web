@@ -14,6 +14,7 @@ import {
   ScrollRestoration,
   useLoaderData,
   useLocation,
+  useFetcher,
 } from "@remix-run/react";
 import Footer from "./component/layout/Footer";
 import Header from "./component/layout/Header";
@@ -30,6 +31,7 @@ import useLocalStorage from "./component/hooks/useLocaleStorage";
 import FeedBucket from "./component/FeedBucket";
 import LocationComponent from "./component/LocationDetect";
 import unleash from "./services/features.server";
+import { saveIpAddress } from "~/modal/log.server";
 
 export const loader: LoaderFunction = async ({ request }) => {
   let userdata = await getUserSession(request);
@@ -53,6 +55,16 @@ export const loader: LoaderFunction = async ({ request }) => {
     { status: 200, headers: { "cache-control": "no-cache" } }
   );
 };
+
+export const action: ActionFunction = async ({ request }) => {
+  let formdata = await request.formData();
+  let userId = formdata.get("userId");
+  let ipAddress = formdata.get("userIp");
+  let data = await saveIpAddress({ userId, ipAddress });
+
+  return { data };
+};
+
 export const headers = ({ loaderHeaders, parentHeaders }: HeadersArgs) => {
   return { "cache-control": loaderHeaders.get("cache-control") };
 };
@@ -121,6 +133,7 @@ function Document({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   let { user } = useLoaderData();
+  let user_ip_saver = useFetcher();
   let [isDarkMode, setIsDarkMode] = useLocalStorage("Darktheme", false);
   useEffect(() => {
     if (isDarkMode) {
@@ -128,6 +141,29 @@ export default function App() {
     } else {
       document.documentElement.classList.remove("dark");
     }
+  }, []);
+  useEffect(() => {
+    const fetchIpAndSubmit = async () => {
+      try {
+        const response = await fetch("https://api.ipify.org?format=json");
+        const data = await response.json();
+        const userIp = data.ip;
+
+        if (user) {
+          user_ip_saver.submit(
+            {
+              userId: user.id,
+              userIp: userIp,
+            },
+            { method: "post" }
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching IP address:", error);
+      }
+    };
+
+    fetchIpAndSubmit();
   }, []);
   return (
     <Document>

@@ -7,7 +7,6 @@
     "jsx": "react-jsx",
     "moduleResolution": "Bundler",
     "resolveJsonModule": true,
-    "target": "ES2022",
     "strict": true,
     "allowJs": true,
     "forceConsistentCasingInFileNames": true,
@@ -15,7 +14,8 @@
     "paths": {
       "~/*": ["./app/*"]
     },
-
+    "module": "CommonJS",
+    "sourceMap": true,
     // Remix takes care of building everything in `remix build`.
     "noEmit": true
   }

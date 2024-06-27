@@ -17,7 +17,7 @@ function TextComponent({ sourceText, setSourceText, sourceLang }) {
         this.style.minHeight = "auto"; // Reset minHeight
         this.style.minHeight = this.scrollHeight + "px"; // Set minHeight to scrollHeight
       }
-      window?.scrollTo(0, document.body.scrollHeight);
+      // window?.scrollTo(0, document.body.scrollHeight);
     }
 
     textRf?.addEventListener("input", autoResize, false);
