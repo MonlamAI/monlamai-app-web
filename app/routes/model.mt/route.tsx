@@ -243,7 +243,7 @@ export default function Index() {
     resetFetcher(translationFetcher);
     resetFetcher(editfetcher);
   }
-  let outputRef = useRef();
+  let outputRef = useRef<HTMLDivElement>();
 
   return (
     <ToolWraper title="MT">

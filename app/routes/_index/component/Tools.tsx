@@ -11,7 +11,7 @@ type EachProps = {
 
 function Tools() {
   return (
-    <main className="flex lg:h-[80vh] justify-center md:pt-[100px]">
+    <main className="flex lg:h-[80vh] justify-center mb-[80px] pt-[30px] md:mb-[0] md:pt-[100px]">
       <div className="text-center w-full lg:max-w-7xl mx-auto p-2 md:p-0">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 ">
           {models.map((model, index) => (
