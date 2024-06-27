@@ -1,6 +1,7 @@
 import { db } from "~/services/db.server";
 import { subMinutes, isBefore } from "date-fns";
 export async function saveIpAddress({ userId, ipAddress }) {
+  if (!userId) return null;
   try {
     // Fetch the most recent log entry for the user
     const lastLog = await db.userLog.findFirst({
@@ -28,6 +29,6 @@ export async function saveIpAddress({ userId, ipAddress }) {
     return userLog;
   } catch (error) {
     console.error("Error saving IP address:", error);
-    throw error;
+    return error;
   }
 }
