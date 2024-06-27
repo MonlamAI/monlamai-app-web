@@ -64,5 +64,6 @@
   "or": "OR",
   "take-photo": "Take photo",
   "choose-file": "Choose file",
-  "no-file-chosen": "No file chosen"
+  "no-file-chosen": "No file chosen",
+  "detect": "detect"
 }

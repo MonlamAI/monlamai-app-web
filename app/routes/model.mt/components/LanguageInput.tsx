@@ -176,15 +176,8 @@ function LanguageInput({
       });
     }
   };
-  let optionClass = "bg-white dark:bg-[--card-bg] text-black dark:text-white";
-  let beta = [
-    "French",
-    "Chinese",
-    "Hindi",
-    "ཕ་རཱན་སིའི་",
-    "རྒྱ་ཡིག",
-    "ཧིན་དི།",
-  ];
+  let optionClass = "bg-white dark:bg-[--card-bg] text-black dark:text-white ";
+  let beta = ["French", "Chinese", "Hindi", "ཧྥ་རན་སི།", "རྒྱ་ཡིག", "ཧིན་དྷི།"];
   return (
     <div
       className={`${
@@ -197,11 +190,8 @@ function LanguageInput({
           value={sourceLang}
           className="selectHeader w-fit "
         >
-          <option
-            value="detect language"
-            className={optionClass + "font-poppins"}
-          >
-            Detect
+          <option value="detect language" className={optionClass}>
+            {translation?.detect}
           </option>
           {languagesOptions.map((lang) => (
             <option key={lang.code} value={lang.code} className={optionClass}>
