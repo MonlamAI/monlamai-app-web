@@ -102,9 +102,9 @@ export default function Index() {
   };
 
   function submitHandler(e) {
-    if (!sourceText || sourceText === "") {
-      toast.info("Text is required for TTS", {
-        position: toast.POSITION.BOTTOM_RIGHT,
+    if (!sourceText || !sourceText.trim()) {
+      toast.info("Text input is required for text-to-speech.", {
+        position: toast.POSITION.BOTTOM_CENTER,
       });
     } else {
       fetcher.submit(
@@ -188,6 +188,7 @@ export default function Index() {
                   <ErrorMessage
                     message={actionError}
                     handleClose={() => resetFetcher(fetcher)}
+                    type="warning"
                   />
                 )}
                 {isLoading && (

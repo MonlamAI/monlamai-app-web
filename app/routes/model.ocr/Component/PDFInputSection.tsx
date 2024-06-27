@@ -104,6 +104,7 @@ export default function PDFInputSection({ fetcher }: props) {
             <ErrorMessage
               message={fetcher.data?.error}
               handleClose={handleClear}
+              type="warning"
             />
           )}
           <InferenceList />

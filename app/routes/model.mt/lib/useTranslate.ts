@@ -22,10 +22,10 @@ const useTranslate = ({ target, text, data, setData }: useTranslateType) => {
   const controller = new AbortController();
   async function trigger() {
     setResponseTime(0);
-    if (!text) {
+    if (!text || !text.trim()) {
       // Avoid fetching if text is empty or not provided
       setData("");
-      setError("Text is required for translation.");
+      setError("Please enter some text for translation.");
       return;
     }
 

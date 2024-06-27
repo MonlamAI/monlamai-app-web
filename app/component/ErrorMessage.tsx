@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
 import { toast } from "react-toastify";
 
-function ErrorMessage({ message, handleClose }) {
+function ErrorMessage({ message, handleClose, type }) {
   useEffect(() => {
-    toast.warn(message, {
+    toast(message, {
+      type,
       position: toast.POSITION.BOTTOM_CENTER,
       closeOnClick: true,
     });

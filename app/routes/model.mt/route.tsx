@@ -249,7 +249,13 @@ export default function Index() {
         setSelectedTool={setSelectedTool}
         reset={handleReset}
       />
-      {error && <ErrorMessage message={error} handleClose={handleErrorClose} />}
+      {error && (
+        <ErrorMessage
+          message={error}
+          handleClose={handleErrorClose}
+          type="info"
+        />
+      )}
       <div className="rounded-[10px] overflow-hidden border dark:border-[--card-border] border-dark_text-secondary">
         <LanguageInput
           setSourceText={setSourceText}
@@ -321,6 +327,7 @@ export default function Index() {
                   <ErrorMessage
                     message={translationFetcher?.data?.error}
                     handleClose={handleReset}
+                    type="warning"
                   />
                 )}
                 {TextSelected && edit && (
