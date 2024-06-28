@@ -26,6 +26,7 @@ function TextComponent({ sourceText, setSourceText, sourceLang }) {
   useEffect(() => {
     if (offset !== undefined) {
       const newRange = document.createRange();
+      if (textRef.current.childNodes[0] === undefined) return;
       newRange?.setStart(textRef.current.childNodes[0], offset);
       const selection = document.getSelection();
       selection?.removeAllRanges();
@@ -49,7 +50,7 @@ function TextComponent({ sourceText, setSourceText, sourceLang }) {
 
     const range = document.getSelection().getRangeAt(0);
     setOffset(range.startOffset);
-
+    console.log("range", range, range?.startOffset);
     setSourceText(html);
   }, []);
 
