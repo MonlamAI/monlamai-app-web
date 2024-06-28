@@ -160,7 +160,11 @@ const InferenceList = () => {
             <p>Version: {inference.modelVersion}</p>
             <div className="flex">
               Input:{" "}
-              <CheckInput data={inference.input} model={inference.model} />
+              <CheckInput
+                data={inference.input}
+                model={inference.model}
+                inferenceType={inference.type}
+              />
             </div>
             <div className="flex">
               Output:{" "}
@@ -203,10 +207,11 @@ const Modal = ({ isOpen, onClose, children }) => {
   );
 };
 
-const CheckInput = ({ data, model }: any) => {
+const CheckInput = ({ data, model, inferenceType }: any) => {
   const isAudioUrl = model === "stt";
   const isOcr = model === "ocr";
-  if (isOcr) {
+  const isImage = inferenceType === "image";
+  if (isOcr && isImage) {
     return <img src={data} alt="ocr" />;
   }
   if (isAudioUrl) {

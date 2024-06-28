@@ -46,7 +46,7 @@ export const action: ActionFunction = async ({ request }) => {
       userId: user?.id,
       model: "ocr",
       input: imageUrl,
-      type: "file",
+      type: "image",
       output: data.content,
       jobId: null,
       ip,
@@ -65,7 +65,7 @@ export const action: ActionFunction = async ({ request }) => {
       userId: user?.id,
       model: "ocr",
       input: zip_input_url,
-      type: "file",
+      type: "zip",
       output: "",
       jobId: null,
       ip,
@@ -87,12 +87,11 @@ export const action: ActionFunction = async ({ request }) => {
   }
   if (PDFurls) {
     let job;
-
     let inferenceData = await saveInference({
       userId: user?.id,
       model: "ocr",
       input: PDFurls,
-      type: "file",
+      type: "pdf",
       output: "",
       jobId: null,
       ip,
