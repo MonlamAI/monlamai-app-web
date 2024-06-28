@@ -1,7 +1,8 @@
+import { useNavigate } from "@remix-run/react";
 import React, { useEffect } from "react";
 import { toast } from "react-toastify";
 
-function ErrorMessage({ message, handleClose, type }) {
+export function ErrorMessage({ message, handleClose, type }) {
   useEffect(() => {
     toast(message, {
       type,
@@ -17,4 +18,25 @@ function ErrorMessage({ message, handleClose, type }) {
   return <div />;
 }
 
-export default ErrorMessage;
+export function ModalErrorMessage({ message, type }) {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    toast(message, {
+      type,
+      position: toast.POSITION.BOTTOM_CENTER,
+      autoClose: 2000, // Toast message duration in milliseconds
+      closeOnClick: true,
+    });
+
+    // Navigate back to the previous page after 1 second
+    const timer = setTimeout(() => {
+      navigate("/", { replace: true });
+    }, 2000);
+
+    // Cleanup the timer on component unmount
+    return () => clearTimeout(timer);
+  }, [message, type, navigate]);
+
+  return <div></div>;
+}

@@ -2,16 +2,16 @@ import { Button } from "flowbite-react";
 import { useState } from "react";
 import { resetFetcher } from "~/component/utils/resetFetcher";
 import TooltipComponent from "./Tooltip";
-import { useLoaderData } from "@remix-run/react";
 import CardComponent from "~/component/Card";
 import { CancelButton } from "~/component/Buttons";
 import { RxCross2 } from "react-icons/rx";
 import { IoSend } from "react-icons/io5";
 import FileUpload from "./FileUpload";
-import ErrorMessage from "../../../component/ErrorMessage";
+import { ErrorMessage } from "../../../component/ErrorMessage";
 import { InferenceList } from "~/component/InferenceList";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import Devider from "~/component/Devider";
+import { ErrorBoundary } from "~/component/ErrorPages";
 
 type props = {
   fetcher: any;
@@ -113,3 +113,5 @@ export default function PDFInputSection({ fetcher }: props) {
     </div>
   );
 }
+
+export { ErrorBoundary };

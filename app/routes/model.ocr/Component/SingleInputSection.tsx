@@ -11,7 +11,8 @@ import TooltipComponent from "./Tooltip";
 import { ImageCropper } from "~/routes/model.ocr/Component/ImageCropper";
 import Devider from "~/component/Devider";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
-import ErrorMessage from "~/component/ErrorMessage";
+import { ErrorMessage } from "~/component/ErrorMessage";
+import { ErrorBoundary } from "~/component/ErrorPages";
 
 function SingleInptSection({ fetcher }: any) {
   const [ImageUrl, setImageUrl] = useState<string | null>(null);
@@ -217,3 +218,5 @@ function SingleInptSection({ fetcher }: any) {
 }
 
 export default SingleInptSection;
+
+export { ErrorBoundary };

@@ -5,19 +5,15 @@ import type {
 } from "@remix-run/node";
 import {
   ClientLoaderFunctionArgs,
-  isRouteErrorResponse,
   useFetcher,
   useLoaderData,
-  useNavigate,
-  useRouteError,
   useSearchParams,
 } from "@remix-run/react";
 import { useState, useRef, useEffect } from "react";
 import useDebounce from "~/component/hooks/useDebounceState";
-import ErrorMessage from "~/component/ErrorMessage";
+import { ErrorMessage } from "~/component/ErrorMessage";
 import ToolWraper from "~/component/ToolWraper";
 import DownloadDocument from "~/routes/model.mt/components/DownloadDocument";
-import { toast } from "react-toastify";
 import {
   getTodayInferenceByUserIdCountModel,
   getUserFileInferences,
@@ -25,7 +21,7 @@ import {
   updateEdit,
 } from "~/modal/inference.server";
 import ListInput from "~/component/ListInput";
-import { API_ERROR_MESSAGE, MAX_SIZE_SUPPORT_DOC } from "~/helper/const";
+import { MAX_SIZE_SUPPORT_DOC } from "~/helper/const";
 import {
   CharacterOrFileSizeComponent,
   EditActionButtons,
@@ -48,6 +44,7 @@ import { InferenceList } from "~/component/InferenceList";
 import Devider from "~/component/Devider";
 import { Spinner } from "flowbite-react";
 import getIpAddressByRequest from "~/component/utils/getIpAddress";
+import { ErrorBoundary } from "~/component/ErrorPages";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -408,17 +405,4 @@ export default function Index() {
   );
 }
 
-export function ErrorBoundary() {
-  const error = useRouteError();
-  let isRouteError = isRouteErrorResponse(error);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    toast.warn(API_ERROR_MESSAGE, {
-      position: toast.POSITION.BOTTOM_RIGHT,
-    });
-    navigate(".", { replace: true });
-  }, []);
-
-  return <>{/* <ErrorMessage error={"error"} /> */}</>;
-}
+export { ErrorBoundary };

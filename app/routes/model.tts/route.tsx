@@ -8,7 +8,6 @@ import {
 import { useEffect, useRef, useState } from "react";
 import ReactionButtons from "~/component/ReactionButtons";
 import ToolWraper from "~/component/ToolWraper";
-import { ErrorBoundary } from "../model.mt/route";
 import InferenceWrapper from "~/component/layout/InferenceWrapper";
 import { MAX_SIZE_SUPPORT_DOC } from "~/helper/const";
 import ShareLink from "~/component/ShareLink";
@@ -18,7 +17,7 @@ import { CancelButton } from "~/component/Buttons";
 import FileUpload from "~/component/FileUpload";
 import TextComponent from "~/component/TextComponent";
 import { CharacterOrFileSizeComponent } from "../model.mt/components/UtilityComponent";
-import ErrorMessage from "~/component/ErrorMessage";
+import { ErrorMessage } from "~/component/ErrorMessage";
 import CardComponent from "~/component/Card";
 import { getUser } from "~/modal/user.server";
 import { getUserFileInferences } from "~/modal/inference.server";
@@ -30,6 +29,7 @@ import { InferenceList } from "~/component/InferenceList";
 import HeaderComponent from "../../component/HeaderComponent";
 import Devider from "~/component/Devider";
 import AudioPlayer from "./components/AudioPlayer";
+import { ErrorBoundary } from "~/component/ErrorPages";
 
 export const meta: MetaFunction = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);

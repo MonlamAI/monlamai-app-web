@@ -6,7 +6,7 @@ import {
   useLoaderData,
   useSearchParams,
 } from "@remix-run/react";
-import ErrorMessage from "~/component/ErrorMessage";
+import { ErrorMessage } from "~/component/ErrorMessage";
 import ToolWraper from "~/component/ToolWraper";
 import CardComponent from "~/component/Card";
 import InferenceWrapper from "~/component/layout/InferenceWrapper";
@@ -16,7 +16,6 @@ import {
   LoadingAnimation,
   OutputDisplay,
 } from "../model.mt/components/UtilityComponent";
-import { ErrorBoundary } from "../model.mt/route";
 import { NonEditButtons, NonEditModeActions } from "~/component/ActionButtons";
 import { getUserFileInferences, updateEdit } from "~/modal/inference.server";
 import EditDisplay from "~/component/EditDisplay";
@@ -34,6 +33,7 @@ import { InferenceList } from "~/component/InferenceList";
 import HeaderComponent from "~/component/HeaderComponent";
 import { Spinner } from "flowbite-react";
 import Devider from "~/component/Devider";
+import { ErrorBoundary } from "~/component/ErrorPages";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);

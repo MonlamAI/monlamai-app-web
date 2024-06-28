@@ -1,4 +1,8 @@
-import React from "react";
+import { isRouteErrorResponse, useRouteError } from "@remix-run/react";
+import React, { useEffect } from "react";
+import { toast } from "react-toastify";
+import { API_ERROR_MESSAGE } from "~/helper/const";
+import { ModalErrorMessage } from "./ErrorMessage";
 
 type RootErrorPageProps = {
   statusCode: number;
@@ -34,4 +38,20 @@ export function RootErrorPage({ statusCode }: RootErrorPageProps) {
       </div>
     </div>
   );
+}
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+
+  useEffect(() => {
+    if (isRouteErrorResponse(error)) {
+      toast.warn(API_ERROR_MESSAGE, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        closeOnClick: true,
+      });
+    }
+  }, []);
+
+  if (isRouteErrorResponse(error)) return <div />;
+  return <ModalErrorMessage message={error?.message} type="error" />;
 }
