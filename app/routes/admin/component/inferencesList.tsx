@@ -89,15 +89,50 @@ const InferenceList = () => {
         </Modal>
 
         <select
-          className="border p-2"
+          className="border p-2 dark:bg-transparent dark:text-white "
           value={filterModel}
           onChange={(e) => setFilterModel(e.target.value)}
         >
-          <option value="">All Models</option>
-          <option value="mt">MT</option>
-          <option value="stt">STT</option>
-          <option value="tts">TTS</option>
-          <option value="ocr">OCR</option>
+          <option
+            value=""
+            style={{
+              color: "gray",
+            }}
+          >
+            All Models
+          </option>
+          <option
+            value="mt"
+            style={{
+              color: "gray",
+            }}
+          >
+            MT
+          </option>
+          <option
+            value="stt"
+            style={{
+              color: "gray",
+            }}
+          >
+            STT
+          </option>
+          <option
+            value="tts"
+            style={{
+              color: "gray",
+            }}
+          >
+            TTS
+          </option>
+          <option
+            value="ocr"
+            style={{
+              color: "gray",
+            }}
+          >
+            OCR
+          </option>
         </select>
         <button
           onClick={downloadCSV}
@@ -125,10 +160,11 @@ const InferenceList = () => {
             <p>Version: {inference.modelVersion}</p>
             <div className="flex">
               Input:
-              <CheckOutput data={inference.input} />
+              <CheckInput data={inference.input} model={inference.model} />
             </div>
             <div className="flex">
-              Output: <CheckOutput data={inference.output} />
+              Output:{" "}
+              <CheckOutput data={inference.output} model={inference.model} />
             </div>
             {inference?.inputLang && (
               <div>
@@ -167,11 +203,25 @@ const Modal = ({ isOpen, onClose, children }) => {
   );
 };
 
-const CheckOutput = ({ data }: any) => {
-  const isAudioUrl = (url: string) => {
-    return /(http[s]?:\/\/.*\.(?:mp3|wav|ogg|m4a))$/i.test(url);
-  };
-  if (!isAudioUrl(data)) {
+const CheckInput = ({ data, model }: any) => {
+  const isAudioUrl = model === "stt";
+  if (!isAudioUrl) {
+    return <span>{data}</span>;
+  }
+  const isOcr = model === "ocr";
+  if (isOcr) {
+    return <img src={data} alt="ocr" />;
+  }
+  return (
+    <audio controls src={data}>
+      Your browser does not support the audio element.
+    </audio>
+  );
+};
+
+const CheckOutput = ({ data, model }: any) => {
+  const isAudioUrl = model === "tts";
+  if (!isAudioUrl) {
     return <span>{data}</span>;
   }
   return (

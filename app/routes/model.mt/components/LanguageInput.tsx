@@ -176,22 +176,27 @@ function LanguageInput({
       });
     }
   };
-  let optionClass = "bg-white dark:bg-[--card-bg] text-black dark:text-white ";
+  let optionClass =
+    "language-options bg-white dark:bg-[--card-bg] text-black dark:text-white  ";
   let beta = ["French", "Chinese", "Hindi", "ཧྥ་རན་སི།", "རྒྱ་ཡིག", "ཧིན་དྷི།"];
   return (
     <div
       className={`${
         isTib ? "font-monlam text-base" : "font-poppins"
-      } bg-white border-b py-2 px-3 font-normal  dark:border-[--card-border] border-dark_text-secondary  dark:bg-[--card-bg] flex  items-center  md:flex-row gap-3  `}
+      } bg-white border-b py-2 px-3 font-normal  dark:border-[--card-border]  border-dark_text-secondary  dark:bg-[--card-bg] flex  items-center  md:flex-row gap-3  `}
     >
       <div className="flex-1 ">
         <Select
           onChange={(e) => handleChange(e, "source")}
           value={sourceLang}
           className="selectHeader w-fit "
+          style={{ cursor: "pointer" }}
         >
           <option value="detect language" className={optionClass}>
             {translation?.detect}
+          </option>
+          <option value="detect language" className={optionClass + "hidden"}>
+            Detect Language f all
           </option>
           {languagesOptions.map((lang) => (
             <option key={lang.code} value={lang.code} className={optionClass}>
@@ -220,7 +225,8 @@ function LanguageInput({
         <Select
           onChange={(e) => handleChange(e, "target")}
           value={targetLang}
-          className="selectHeader w-fit "
+          className="selectHeader w-fit"
+          style={{ cursor: "pointer" }}
         >
           {languagesOptions.map((lang) => (
             <option key={lang.code} value={lang.code} className={optionClass}>

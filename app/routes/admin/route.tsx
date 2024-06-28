@@ -1,4 +1,4 @@
-import { LinksFunction, LoaderFunction } from "@remix-run/node";
+import { LinksFunction, LoaderFunction, redirect } from "@remix-run/node";
 import { useLoaderData, useSearchParams } from "@remix-run/react";
 import React from "react";
 import { getInferences, getInferencesCount } from "~/modal/inference.server";
@@ -10,9 +10,8 @@ import { getUsersCount } from "~/modal/user.server";
 import UserCount from "./component/UserCount";
 import InferenceCount from "./component/InferenceCount";
 import { SelectionList } from "./component/SelectionList";
-import { ClientOnly } from "remix-utils/client-only";
-import Map from "./component/Map.client";
 import LeafLetStyle from "leaflet/dist/leaflet.css";
+import { getUserSession } from "~/services/session.server";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: DateStyle },
@@ -21,6 +20,8 @@ export const links: LinksFunction = () => [
 ];
 
 export const loader: LoaderFunction = async ({ request }) => {
+  let userdata = await getUserSession(request);
+  if (!userdata) return redirect("/");
   const url = new URL(request.url);
   const check = url.searchParams.get("check");
 
@@ -57,10 +58,6 @@ function admin() {
   }
   return (
     <>
-      <div className="h-[30vh] md:h-[50vh] w-full">
-        <ClientOnly fallback={<div>loading</div>}>{() => <Map />}</ClientOnly>
-      </div>
-
       <SelectionList handleSelect={onChange} currentState={check} />
       <div>
         {check === "user" && <UserCount />}

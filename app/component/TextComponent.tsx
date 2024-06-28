@@ -11,7 +11,7 @@ import sanitizeHtml from "sanitize-html";
 function TextComponent({ sourceText, setSourceText, sourceLang }) {
   let { translation, isEnglish } = uselitteraTranlation();
   const [offset, setOffset] = useState();
-  const textRef = useRef();
+  const textRef = useRef(null);
   let isEng = sourceLang === "en";
   let isTib = sourceLang === "bo";
 
@@ -23,7 +23,7 @@ function TextComponent({ sourceText, setSourceText, sourceLang }) {
     });
   }, []);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (offset !== undefined) {
       const newRange = document.createRange();
       newRange?.setStart(textRef.current.childNodes[0], offset);
@@ -67,7 +67,6 @@ function TextComponent({ sourceText, setSourceText, sourceLang }) {
       contentEditable
       required
       onInput={onContentBlur}
-      onBlur={onContentBlur}
       autoFocus
       ref={textRef}
       suppressContentEditableWarning

@@ -163,7 +163,7 @@ export default function Index() {
   const uploadFile = async (file: File) => {
     try {
       let formData = new FormData();
-      let filename = !file?.name ? file?.name : "recording";
+      let filename = file?.name ? file?.name : "recording";
 
       let uniqueFilename = Date.now() + "-" + filename;
       formData.append("filename", uniqueFilename);
