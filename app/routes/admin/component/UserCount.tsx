@@ -15,8 +15,13 @@ import Map from "../component/Map.client";
 
 function UserCount() {
   let { usercount } = useLoaderData();
+  const filteredUserCount = usercount?.filter((item) => item.country);
 
-  let totalUsers = usercount.reduce((acc, curr) => acc + curr._count._all, 0);
+  let totalUsers = filteredUserCount?.reduce(
+    (acc, curr) => acc + curr._count._all,
+    0
+  );
+
   const data = usercount.map((item) => ({
     country: item.country,
     count: item._count._all,
