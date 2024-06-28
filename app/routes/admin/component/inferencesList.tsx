@@ -159,7 +159,7 @@ const InferenceList = () => {
             <p>Model: {inference.model}</p>
             <p>Version: {inference.modelVersion}</p>
             <div className="flex">
-              Input:
+              Input:{" "}
               <CheckInput data={inference.input} model={inference.model} />
             </div>
             <div className="flex">
@@ -205,30 +205,30 @@ const Modal = ({ isOpen, onClose, children }) => {
 
 const CheckInput = ({ data, model }: any) => {
   const isAudioUrl = model === "stt";
-  if (!isAudioUrl) {
-    return <span>{data}</span>;
-  }
   const isOcr = model === "ocr";
   if (isOcr) {
     return <img src={data} alt="ocr" />;
   }
-  return (
-    <audio controls src={data}>
-      Your browser does not support the audio element.
-    </audio>
-  );
+  if (isAudioUrl) {
+    return (
+      <audio controls src={data}>
+        Your browser does not support the audio element.
+      </audio>
+    );
+  }
+  return <span>{data}</span>;
 };
 
 const CheckOutput = ({ data, model }: any) => {
   const isAudioUrl = model === "tts";
-  if (!isAudioUrl) {
-    return <span>{data}</span>;
+  if (isAudioUrl) {
+    return (
+      <audio controls src={data}>
+        Your browser does not support the audio element.
+      </audio>
+    );
   }
-  return (
-    <audio controls src={data}>
-      Your browser does not support the audio element.
-    </audio>
-  );
+  return <span>{data}</span>;
 };
 
 const getValidDate = (dateString, defaultDate) => {
