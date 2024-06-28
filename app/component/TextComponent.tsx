@@ -1,20 +1,37 @@
-import { useEffect, useRef, useCallback } from "react";
+import {
+  useEffect,
+  useRef,
+  useCallback,
+  useState,
+  useLayoutEffect,
+} from "react";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import sanitizeHtml from "sanitize-html";
 
 function TextComponent({ sourceText, setSourceText, sourceLang }) {
   let { translation, isEnglish } = uselitteraTranlation();
-  let textAreaRef = useRef(null);
+  const [offset, setOffset] = useState();
+  const textRef = useRef();
   let isEng = sourceLang === "en";
   let isTib = sourceLang === "bo";
 
   useEffect(() => {
-    textAreaRef.current?.addEventListener("paste", function (e) {
+    textRef.current?.addEventListener("paste", function (e) {
       e.preventDefault();
       var text = e.clipboardData.getData("text/plain");
       document.execCommand("insertText", false, text);
     });
   }, []);
+
+  useLayoutEffect(() => {
+    if (offset !== undefined) {
+      const newRange = document.createRange();
+      newRange?.setStart(textRef.current.childNodes[0], offset);
+      const selection = document.getSelection();
+      selection?.removeAllRanges();
+      selection?.addRange(newRange);
+    }
+  }, [offset]);
 
   let fontSize =
     sourceText.length < 600
@@ -29,6 +46,10 @@ function TextComponent({ sourceText, setSourceText, sourceLang }) {
       allowedAttributes: { a: ["href"] },
     };
     let html = sanitizeHtml(evt.target.innerText, sanitizeConf);
+
+    const range = document.getSelection().getRangeAt(0);
+    setOffset(range.startOffset);
+
     setSourceText(html);
   }, []);
 
@@ -36,7 +57,7 @@ function TextComponent({ sourceText, setSourceText, sourceLang }) {
     <div
       id="textAreaInput"
       name="sourceText"
-      className={`p-2 ${
+      className={`p-2 pr-6 ${
         isEnglish ? "placeholder:font-poppins" : "placeholder:font-monlam"
       } w-full rounded-none resize-none flex-1 bg-transparent border-0 dark:border:0 focus:outline-none dark:focus:outline-none focus:ring-transparent dark:focus:ring-transparent caret-slate-500 placeholder:text-slate-300 placeholder:font-monlam placeholder:text-lg
        ${fontSize} ${isEng && "font-poppins  "} ${
@@ -48,7 +69,9 @@ function TextComponent({ sourceText, setSourceText, sourceLang }) {
       onInput={onContentBlur}
       onBlur={onContentBlur}
       autoFocus
-      ref={textAreaRef}
+      ref={textRef}
+      suppressContentEditableWarning
+      dangerouslySetInnerHTML={{ __html: sourceText }}
     />
   );
 }
