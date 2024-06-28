@@ -27,7 +27,7 @@ function findFirstCommonElement(array1, array2) {
 }
 
 function getLanguageFromOption(text, array2) {
-  let language = text.includes("zh") ? "zh" : text;
+  let language = text?.includes("zh") ? "zh" : text;
   if (array2.includes(language)) {
     return language;
   }
