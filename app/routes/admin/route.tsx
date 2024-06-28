@@ -19,9 +19,17 @@ export const links: LinksFunction = () => [
   { rel: "stylesheet", href: LeafLetStyle },
 ];
 
+function isAdmin(user) {
+  const adminDomains = process.env?.ADMIN_USERS_LIST?.split(",");
+  const userEmail = user._json.email;
+
+  return adminDomains.some((domain) => userEmail.includes(domain));
+}
+
 export const loader: LoaderFunction = async ({ request }) => {
   let userdata = await getUserSession(request);
-  if (!userdata) return redirect("/");
+
+  if (!isAdmin(userdata)) return redirect("/");
   const url = new URL(request.url);
   const check = url.searchParams.get("check");
 
