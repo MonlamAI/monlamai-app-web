@@ -45,6 +45,7 @@ export const loader: LoaderFunction = async ({ request }) => {
       enable_replacement_mt: enable_replacement_mt ?? false,
       feedBucketAccess,
       feedbucketToken,
+      AccessKey: process.env?.API_ACCESS_KEY,
     },
     { status: 200, headers: { "cache-control": "no-cache" } }
   );
