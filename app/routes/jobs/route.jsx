@@ -45,7 +45,7 @@ function Jobs() {
                   opacity: selectedJob === index + 1 ? 1 : 0.5,
                 }}
               >
-                <span className="flex justify-center items-center bg-primary p-2 h-5 text-white w-5 rounded-full text-sm">
+                <span className="flex justify-center items-center bg-secondary-500 dark:bg-primary-500  p-2 h-5 text-white w-5 rounded-full text-sm">
                   {index + 1}
                 </span>{" "}
                 {job.title}
@@ -56,7 +56,7 @@ function Jobs() {
                     {job.description}
                   </h5>
                   <a href={jobList[selectedJob - 1].link}>
-                    <Button className="bg-primary hover:bg-blue-500 mt-4">
+                    <Button className="bg-primary hover:bg-secondary-500 dark:hover:bg-primary-500 mt-4">
                       Apply
                     </Button>
                   </a>
@@ -76,7 +76,7 @@ function Jobs() {
           </h5>
           <p className="mt-5">Skills : {jobList[selectedJob - 1].skill}</p>
           <a href={jobList[selectedJob - 1].link}>
-            <SubmitButton size="md" className=" mt-10 w-full">
+            <SubmitButton size="md" className="bg-primary hover:bg-secondary-500 dark:hover:bg-primary-500  mt-10 w-full dark:text-black" >
               Apply
             </SubmitButton>
           </a>

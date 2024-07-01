@@ -30,6 +30,7 @@ import useLocalStorage from "./component/hooks/useLocaleStorage";
 import FeedBucket from "./component/FeedBucket";
 import LocationComponent from "./component/LocationDetect";
 import unleash from "./services/features.server";
+import ReleaseAnnouncement from "./component/Countdown";
 
 export const loader: LoaderFunction = async ({ request }) => {
   let userdata = await getUserSession(request);
@@ -127,6 +128,7 @@ export default function App() {
     <Document>
       <LitteraProvider locales={["en_US", "bo_TI"]}>
         <div className="flex flex-col flex-1">
+          <ReleaseAnnouncement />
           {showHeader && <Header />}
           {user && <LocationComponent />}
           <div className="flex-1">
