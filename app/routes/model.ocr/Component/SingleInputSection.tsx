@@ -1,4 +1,11 @@
-import { Button, Card, FileInput, Label, Spinner } from "flowbite-react";
+import {
+  Button,
+  Card,
+  FileInput,
+  Label,
+  Spinner,
+  ToggleSwitch,
+} from "flowbite-react";
 import React, { useEffect, useState } from "react";
 import { resetFetcher } from "~/component/utils/resetFetcher";
 import { useFetcher, useLoaderData } from "@remix-run/react";
@@ -13,12 +20,14 @@ import Devider from "~/component/Devider";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import { ErrorMessage } from "~/component/ErrorMessage";
 import { ErrorBoundary } from "~/component/ErrorPages";
+import applyReplacements from "../utils/replacements";
 
 function SingleInptSection({ fetcher }: any) {
   const [ImageUrl, setImageUrl] = useState<string | null>(null);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [edit, setEdit] = useState(false);
   const [editText, setEditText] = useState("");
+  const [isOrginalText, setOrginalText] = useState(false);
   const { isTibetan } = uselitteraTranlation();
 
   const likeFetcher = useFetcher();
@@ -111,8 +120,12 @@ function SingleInptSection({ fetcher }: any) {
     navigator.clipboard.writeText(textToCopy);
   }
 
+  const changeOrginalText = () => {
+    setOrginalText(!isOrginalText);
+  };
+
   return (
-    <div className="flex flex-col lg:flex-row overflow-hidden max-w-[100vw] ">
+    <div className="flex flex-col lg:flex-row overflow-hidden max-w-[100vw]">
       <CardComponent
         className={`${isTibetan ? "font-monlam" : "font-poppins"}`}
       >
@@ -133,12 +146,12 @@ function SingleInptSection({ fetcher }: any) {
       <Devider />
       <CardComponent>
         <div
-          className={`w-full flex flex-1 min-h-[150px] md:min-h-[15vh] lg:min-h-[30vh] p-3 text-black bg-neutral dark:bg-[--card-bg] dark:text-neutral  overflow-auto ${
+          className={`w-full flex flex-1 flex-col gap-1 min-h-[150px] md:min-h-[15vh] lg:max-h-full p-3 text-black bg-neutral dark:bg-[--card-bg] dark:text-neutral overflow-auto ${
             ImageUrl ? "block" : "hidden"
           }`}
         >
           {isActionSubmission ? (
-            <div className="w-full flex justify-center items-center">
+            <div className="w-full flex flex-1 justify-center items-center">
               <Spinner
                 size="lg"
                 className={"fill-secondary-300 dark:fill-primary-500"}
@@ -146,6 +159,11 @@ function SingleInptSection({ fetcher }: any) {
             </div>
           ) : (
             <>
+              <ToggleSwitch
+                checked={isOrginalText}
+                label="Orginal lines"
+                onChange={changeOrginalText}
+              />
               <div className="text-lg tracking-wide leading-loose">
                 {/* {errorMessage && (
                   <div
@@ -158,7 +176,7 @@ function SingleInptSection({ fetcher }: any) {
                 )} */}
                 {errorMessage && (
                   <ErrorMessage
-                    message="It's currently under maintenance and will resume shortly."
+                    message={errorMessage}
                     handleClose={handleFormClear}
                     type="info"
                   />
@@ -167,7 +185,11 @@ function SingleInptSection({ fetcher }: any) {
                   <div
                     className="text-xl font-monlam leading-[normal] max-h-[50vh]"
                     dangerouslySetInnerHTML={{
-                      __html: text?.replaceAll("\n", "<br>"),
+                      __html:
+                        // text?.replaceAll("\n", "<br>"),
+                        isOrginalText
+                          ? text.replaceAll("\n", "<br>")
+                          : applyReplacements(text).replaceAll("\n", "<br>"),
                     }}
                   />
                 )}

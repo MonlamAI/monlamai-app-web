@@ -4,7 +4,7 @@ import applyReplacements from "./model.ocr/utils/replacements";
 import { getUserDetail } from "~/services/session.server";
 import getIpAddressByRequest from "~/component/utils/getIpAddress";
 export let FILE_SERVER_ISSUE_MESSAGE =
-  "File upload is not working temporarily!";
+  "File upload is not working temporarily! Please try again later.";
 
 export const action: ActionFunction = async ({ request }) => {
   let ip = getIpAddressByRequest(request);
@@ -38,7 +38,7 @@ export const action: ActionFunction = async ({ request }) => {
       }
     } catch (e) {
       return {
-        error_message: "API not working.",
+        error_message: "API server is not working! Please try again later.",
       };
     }
 
@@ -51,10 +51,10 @@ export const action: ActionFunction = async ({ request }) => {
       jobId: null,
       ip,
     });
-    let with_replacement = applyReplacements(inferenceData.output);
+    // let with_replacement = applyReplacements(inferenceData.output);
 
     return {
-      text: with_replacement,
+      text: inferenceData.output,
       coordinate: show_coordinate ? data?.coordinates : null,
       inferenceId: inferenceData?.id,
     };

@@ -10,7 +10,8 @@ export const CHAR_LIMIT_TTS = 5000;
 
 //error messages
 
-export const API_ERROR_MESSAGE = "API ERROR";
+export const API_ERROR_MESSAGE =
+  "We're having trouble reaching the server. Please try again later.";
 
 //mt api hit delay
 
