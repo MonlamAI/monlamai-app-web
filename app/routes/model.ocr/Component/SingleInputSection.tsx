@@ -171,7 +171,7 @@ function SingleInptSection({ fetcher }: any) {
                     }}
                   />
                 )}
-                {!errorMessage && !text && (
+                {!errorMessage && !text && inferenceId && (
                   <div className="text-red-500">
                     Provide image with tibetan text
                   </div>

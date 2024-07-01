@@ -7,6 +7,7 @@ export async function saveInference(inference: any) {
     data: {
       userId: inference.userId,
       model: inference.model,
+      modelVersion: inference?.modelVersion,
       input: inference.input,
       output: inference.output,
       responseTime: inference.responseTime,
