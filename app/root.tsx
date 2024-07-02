@@ -34,8 +34,16 @@ import LocationComponent from "./component/LocationDetect";
 import unleash from "./services/features.server";
 import { saveIpAddress } from "~/modal/log.server";
 import getIpAddressByRequest from "~/component/utils/getIpAddress";
-import { RootErrorPage } from "./component/ErrorPages";
-
+import { ErrorPage } from "./component/ErrorPages";
+import { sessionStorage } from "~/services/session.server";
+function generateCsrfToken() {
+  return require("crypto").randomBytes(32).toString("hex");
+}
+function generateCsrfTokenExpiry() {
+  const now = new Date();
+  now.setMinutes(now.getMinutes() + 30); // Token expires in 30 minutes
+  return now.toISOString();
+}
 export const loader: LoaderFunction = async ({ request }) => {
   let userdata = await getUserSession(request);
   const feedBucketAccess = process.env.FEEDBUCKET_ACCESS;
@@ -45,9 +53,15 @@ export const loader: LoaderFunction = async ({ request }) => {
   const isJobEnabled = unleash.isEnabled("isJobEnabled");
   const enable_replacement_mt = unleash.isEnabled("enable_replacement_mt");
   const show_about_lama = unleash.isEnabled("show_about_lama");
-
+  const session = await sessionStorage.getSession(
+    request.headers.get("Cookie")
+  );
+  const csrfToken = session.get("csrfToken") || generateCsrfToken();
+  const csrfTokenExpiry =
+    session.get("csrfTokenExpiry") || generateCsrfTokenExpiry();
+  session.set("csrfTokenExpiry", csrfTokenExpiry);
+  session.set("csrfToken", csrfToken);
   let data = await saveIpAddress({ userId: user?.id, ipAddress: ip });
-
   return json(
     {
       user,
@@ -57,8 +71,14 @@ export const loader: LoaderFunction = async ({ request }) => {
       feedBucketAccess,
       feedbucketToken,
       AccessKey: process.env?.API_ACCESS_KEY,
+      csrfToken,
     },
-    { status: 200, headers: { "cache-control": "no-cache" } }
+    {
+      status: 200,
+      headers: {
+        "Set-Cookie": await sessionStorage.commitSession(session),
+      },
+    }
   );
 };
 
@@ -163,14 +183,14 @@ export function ErrorBoundary() {
   if (isRouteErrorResponse(error)) {
     return (
       <Document>
-        <RootErrorPage statusCode={error.status} />
+        <ErrorPage error={error} />
       </Document>
     );
   }
   // if thrown errors
   return (
     <Document>
-      <RootErrorPage statusCode={0} />
+      <ErrorPage error={error} />
     </Document>
   );
 }

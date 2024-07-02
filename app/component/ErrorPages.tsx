@@ -5,10 +5,11 @@ import { API_ERROR_MESSAGE } from "~/helper/const";
 import { ModalErrorMessage } from "./ErrorMessage";
 
 type RootErrorPageProps = {
-  statusCode: number;
+  error: Error;
 };
-export function RootErrorPage({ statusCode }: RootErrorPageProps) {
+export function ErrorPage({ error }: RootErrorPageProps) {
   const getMessage = () => {
+    let statusCode = (error as any)?.status;
     switch (statusCode) {
       case 404:
         return "Oops! The page you're looking for doesn't exist. It might have been moved or deleted.";
@@ -34,6 +35,9 @@ export function RootErrorPage({ statusCode }: RootErrorPageProps) {
           <h1 className="text-4xl font-bold text-red-500">Oops!</h1>
           <p className="mt-4 text-lg text-gray-700">Something went wrong.</p>
           <p className="mt-2 text-gray-500">{getMessage()}</p>
+          <p className="mt-2 text-gray-700 shadow-md bg-red-300 rounded-lg">
+            {error?.message}
+          </p>
         </div>
       </div>
     </div>

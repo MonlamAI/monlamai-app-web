@@ -8,6 +8,7 @@ import {
   useFetcher,
   useLoaderData,
   useSearchParams,
+  useRouteLoaderData,
 } from "@remix-run/react";
 import { useState, useRef, useEffect } from "react";
 import useDebounce from "~/component/hooks/useDebounceState";
@@ -146,6 +147,8 @@ export default function Index() {
 
   const [file, setFile] = useState<File | null>(null);
   const { limitMessage, CHAR_LIMIT, user } = useLoaderData();
+  const { csrfToken } = useRouteLoaderData("root");
+
   const [edit, setEdit] = useState(false);
   const [editText, setEditText] = useState("");
   const [inputUrl, setInputUrl] = useState("");
@@ -196,6 +199,7 @@ export default function Index() {
     text: sourceText,
     data,
     setData,
+    csrfToken,
   });
   useEffect(() => {
     if (done === true && data) {
