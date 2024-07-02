@@ -15,7 +15,13 @@ export async function loader({ request }: LoaderFunctionArgs) {
   if (csrfToken !== storedCsrfToken) {
     return new Response("Invalid token", { status: 403 });
   }
+  const storedCsrfTokenExpiry = session.get("csrfTokenExpiry");
+  const now = new Date();
+  const tokenExpiry = new Date(storedCsrfTokenExpiry);
 
+  if (now > tokenExpiry) {
+    return new Response("token expired", { status: 403 });
+  }
   const controller = new AbortController();
   const formData = new FormData();
   const fileUploadUrl = process.env?.FILE_SUBMIT_URL;
