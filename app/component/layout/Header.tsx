@@ -38,7 +38,9 @@ function Header() {
           <span className="text-xl md:text-2xl ">{translation.monlamAI}</span>
         </NavLink>
         <button
-          className="block lg:hidden fixed right-2 z-50 pr-2"
+          className={`block lg:hidden right-2 z-50 pr-2 ${
+            showMenu ? "fixed" : ""
+          } `}
           onClick={() => setShowMenu((p) => !p)}
         >
           {showMenu ? <RxCross1 /> : <GiHamburgerMenu />}
@@ -57,7 +59,7 @@ function Header() {
         </div>
         {/* mobile view */}
         <div
-          className="hidden h-full fixed bg-neutral-100 top-0 left-0 right-0  w-full   dark:bg-[--card-bg] shadow-lg z-40"
+          className="hidden h-full fixed bg-neutral-100 top-0 left-0 right-0 w-full dark:bg-[--card-bg] shadow-lg z-40"
           style={{ display: showMenu ? "block" : "" }}
         >
           <NavLink
@@ -74,6 +76,7 @@ function Header() {
             />
             <span className="text-xl md:text-2xl ">{translation.monlamAI}</span>
           </NavLink>
+          <Devider />
           <div className="flex flex-col gap-4 text-light_text-secondary dark:text-dark_text-secondary">
             <div onClick={() => setShowMenu((p) => !p)} className="px-3 pt-3 ">
               <AboutLink />

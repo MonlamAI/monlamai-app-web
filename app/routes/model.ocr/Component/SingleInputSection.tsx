@@ -49,6 +49,7 @@ function SingleInptSection({ fetcher }: any) {
 
   const handleFormClear = () => {
     setImageUrl(null);
+    handleCancelEdit();
     resetFetcher(fetcher);
     resetFetcher(editfetcher);
   };
@@ -124,6 +125,13 @@ function SingleInptSection({ fetcher }: any) {
     setOrginalText(!isOrginalText);
   };
 
+  const formatText = (text) => {
+    // Replace multiple consecutive new lines with a single <br> tag
+    // and replace single new lines with <br> tags
+    text = text.replace(/\n+/g, "<br>");
+    return text;
+  };
+
   return (
     <div className="flex flex-col lg:flex-row overflow-hidden max-w-[100vw]">
       <CardComponent
@@ -159,11 +167,13 @@ function SingleInptSection({ fetcher }: any) {
             </div>
           ) : (
             <>
-              <ToggleSwitch
-                checked={isOrginalText}
-                label="Orginal lines"
-                onChange={changeOrginalText}
-              />
+              {!edit && text && (
+                <ToggleSwitch
+                  checked={isOrginalText}
+                  label="Orginal lines"
+                  onChange={changeOrginalText}
+                />
+              )}
               <div className="text-lg tracking-wide leading-loose">
                 {/* {errorMessage && (
                   <div
@@ -188,8 +198,8 @@ function SingleInptSection({ fetcher }: any) {
                       __html:
                         // text?.replaceAll("\n", "<br>"),
                         isOrginalText
-                          ? text.replaceAll("\n", "<br>")
-                          : applyReplacements(text).replaceAll("\n", "<br>"),
+                          ? formatText(text)
+                          : formatText(applyReplacements(text)),
                     }}
                   />
                 )}
