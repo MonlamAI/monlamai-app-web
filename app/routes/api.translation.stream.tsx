@@ -11,15 +11,13 @@ export async function loader({ request }: LoaderFunctionArgs) {
     request.headers.get("Cookie")
   );
   const storedCsrfToken = session.get("csrfToken");
-
   if (csrfToken !== storedCsrfToken) {
     return new Response("Invalid token", { status: 403 });
   }
   const storedCsrfTokenExpiry = session.get("csrfTokenExpiry");
   const now = new Date();
   const tokenExpiry = new Date(storedCsrfTokenExpiry);
-
-  if (now > tokenExpiry) {
+  if (now < tokenExpiry) {
     return new Response("token expired", { status: 403 });
   }
   const controller = new AbortController();
@@ -33,7 +31,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     method: "POST",
     body: formData,
     headers: {
-      "x-api-key": AccessKey, // Replace with your actual access key
+      "x-api-key": AccessKey!, // Replace with your actual access key
     },
     signal: controller.signal,
   });

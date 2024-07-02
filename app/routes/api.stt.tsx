@@ -7,7 +7,6 @@ import getIpAddressByRequest from "~/component/utils/getIpAddress";
 
 export const action: ActionFunction = async ({ request }) => {
   let ip = getIpAddressByRequest(request);
-  const startTime = Date.now();
   const isDomainAllowed = verifyDomain(request);
   if (!isDomainAllowed) {
     // If the referer is not from the expected domain, return a forbidden response
@@ -37,9 +36,7 @@ export const action: ActionFunction = async ({ request }) => {
         error: API_ERROR_MESSAGE,
       };
     }
-    const { output } = data;
-    const endTime = Date.now();
-    const responseTime = endTime - startTime;
+    const { output, responseTime } = data;
 
     if (output) {
       const { text } = output;
@@ -50,7 +47,7 @@ export const action: ActionFunction = async ({ request }) => {
         modelVersion: "wav2vec2_run10",
         input: audioURL,
         output: text,
-        responseTime: responseTime,
+        responseTime,
         jobId: data?.id,
         ip,
       });
@@ -61,8 +58,6 @@ export const action: ActionFunction = async ({ request }) => {
     }
   }
   if (selectedTool === "file") {
-    const endTime = Date.now();
-    const responseTime = endTime - startTime;
     const inferenceData = await saveInference({
       userId: user?.id,
       model: "stt",
@@ -70,7 +65,7 @@ export const action: ActionFunction = async ({ request }) => {
       type: "file",
       input: audioURL,
       output: "",
-      responseTime: responseTime,
+      responseTime: null,
       jobId: null,
       ip,
     });

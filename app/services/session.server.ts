@@ -37,4 +37,33 @@ export async function getUserDetail(request: Request) {
   return user;
 }
 
+export async function generateCSRFToken(request: Request) {
+  const session = await getSession(request.headers.get("Cookie"));
+  let csrfToken = session.get("csrfToken");
+  let storedCsrfTokenExpiry = session.get("csrfTokenExpiry");
+  if (!csrfToken || !storedCsrfTokenExpiry) {
+    csrfToken = generateCsrfToken();
+    storedCsrfTokenExpiry = generateCsrfTokenExpiry();
+    return { csrfToken, storedCsrfTokenExpiry };
+  }
+  const now = new Date();
+  const tokenExpiry = new Date(storedCsrfTokenExpiry);
+  if (now < tokenExpiry) {
+    csrfToken = generateCsrfToken();
+    storedCsrfTokenExpiry = generateCsrfTokenExpiry();
+    return { csrfToken, storedCsrfTokenExpiry };
+  }
+
+  return { csrfToken, storedCsrfTokenExpiry };
+}
+
+function generateCsrfToken() {
+  return require("crypto").randomBytes(32).toString("hex");
+}
+function generateCsrfTokenExpiry() {
+  const now = new Date();
+  now.setMinutes(now.getMinutes() + 30); // Token expires in 30 minutes
+  return now.toISOString();
+}
+
 export let { getSession, commitSession, destroySession } = sessionStorage;

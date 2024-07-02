@@ -10,6 +10,7 @@ type useTranslateType = {
   text: string;
   data: string;
   setData: (data: string) => void;
+  csrfToken: string;
 };
 
 function handleEventStream(
@@ -18,39 +19,42 @@ function handleEventStream(
   onData: (data: string) => void,
   enable_replacement_mt: boolean,
   csrfToken: string
-) {
-  const eventSource = new EventSource(
-    `/api/translation/stream?text=${encodeURIComponent(
-      text
-    )}&target=${encodeURIComponent(direction)}&token=${csrfToken}`
-  );
+): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const eventSource = new EventSource(
+      `/api/translation/stream?text=${encodeURIComponent(
+        text
+      )}&target=${encodeURIComponent(direction)}&token=${csrfToken}`
+    );
 
-  eventSource.onmessage = (event) => {
-    let data = JSON.parse(event.data);
+    eventSource.onmessage = (event) => {
+      let data = JSON.parse(event.data);
 
-    if (data?.generated_text) {
-      let text = data.generated_text;
-      onData(text);
-      eventSource.close();
-    } else {
-      // TODO: Parse event.data
-      let content = data?.token?.text;
-      if (content) {
-        onData((p) => {
-          let newChunk = p + content.replace("</s>", "");
-          return enable_replacement_mt
-            ? en_bo_tibetan_replaces(newChunk)
-            : newChunk;
-        });
-        // Invoke the callback with the new text
+      if (data?.generated_text) {
+        let text = data.generated_text;
+        onData(text);
+        eventSource.close();
+        resolve(); // Resolve the promise when data is received
+      } else {
+        let content = data?.token?.text;
+        if (content) {
+          onData((p) => {
+            let newChunk = p + content.replace("</s>", "");
+            return enable_replacement_mt
+              ? en_bo_tibetan_replaces(newChunk)
+              : newChunk;
+          });
+        }
       }
-    }
-  };
+    };
 
-  eventSource.onerror = (event) => {
-    eventSource.close();
-  };
+    eventSource.onerror = (event) => {
+      eventSource.close();
+      reject(new Error("EventSource error")); // Reject the promise on error
+    };
+  });
 }
+
 const useTranslate = ({
   target,
   text,
@@ -58,12 +62,13 @@ const useTranslate = ({
   setData,
   csrfToken,
 }: useTranslateType) => {
-  const { enable_replacement_mt, AccessKey } = useRouteLoaderData("root");
+  const { enable_replacement_mt } = useRouteLoaderData("root");
   const [responseTime, setResponseTime] = useState(0);
   const [done, setDone] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
-  async function trigger() {
+  const [error, setError] = useState("");
+
+  const trigger = async () => {
     setResponseTime(0);
     if (!text || !text.trim()) {
       // Avoid fetching if text is empty or not provided
@@ -77,33 +82,30 @@ const useTranslate = ({
       setDone(false);
       setError(null);
       setData("");
-      const startTime = performance.now();
-
       let replaced = en_bo_english_replaces(text);
-      let formData = new FormData();
       let input = enable_replacement_mt ? replaced : text;
+
+      const startTime = performance.now(); // Record start time
       try {
-        handleEventStream(
+        await handleEventStream(
           input,
           target,
           setData,
           enable_replacement_mt,
           csrfToken
         );
-        const endTime = performance.now();
-        const duration = endTime - startTime;
-        setResponseTime(duration);
       } catch (error) {
         setError(error.message);
       } finally {
+        const endTime = performance.now(); // Record end time
+        setResponseTime(endTime - startTime); // Calculate response time
         setIsLoading(false);
         setDone(true);
       }
     };
 
     await fetchData();
-    // Effect dependencies
-  }
+  };
 
   return { data, isLoading, error, done, trigger, responseTime };
 };

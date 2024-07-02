@@ -18,7 +18,6 @@ export const action: ActionFunction = async ({ request }) => {
   let user = await getUserDetail(request);
 
   const formdata = await request.formData();
-  const startTime = Date.now();
   // const voiceType = formdata.get("voice") as string;
   const userInput = formdata.get("sourceText") as string;
   const API_URL = process.env.FILE_SUBMIT_URL as string;
@@ -40,9 +39,8 @@ export const action: ActionFunction = async ({ request }) => {
       error: API_ERROR_MESSAGE,
     };
   }
-  const { output } = data;
+  const { output, responseTime } = data;
 
-  const responseTime = Date.now() - startTime; // Calculate response time
   const checkifModelExist = await checkIfInferenceExist(
     userInput,
     "tts",
@@ -56,7 +54,7 @@ export const action: ActionFunction = async ({ request }) => {
       modelVersion: "v1",
       input: userInput,
       output,
-      responseTime: responseTime,
+      responseTime,
       ip,
     });
     return { data: output, inferenceData };

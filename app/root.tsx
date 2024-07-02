@@ -22,7 +22,7 @@ import Header from "./component/layout/Header";
 import globalStyle from "./styles/global.css";
 import tailwindStyle from "./styles/tailwind.css";
 import { LitteraProvider } from "@assembless/react-littera";
-import { getUserSession } from "~/services/session.server";
+import { generateCSRFToken, getUserSession } from "~/services/session.server";
 import { getUser } from "./modal/user.server";
 import toastStyle from "react-toastify/dist/ReactToastify.css";
 import feedBucketStyle from "~/styles/feedbucket.css";
@@ -36,14 +36,7 @@ import { saveIpAddress } from "~/modal/log.server";
 import getIpAddressByRequest from "~/component/utils/getIpAddress";
 import { ErrorPage } from "./component/ErrorPages";
 import { sessionStorage } from "~/services/session.server";
-function generateCsrfToken() {
-  return require("crypto").randomBytes(32).toString("hex");
-}
-function generateCsrfTokenExpiry() {
-  const now = new Date();
-  now.setMinutes(now.getMinutes() + 30); // Token expires in 30 minutes
-  return now.toISOString();
-}
+
 export const loader: LoaderFunction = async ({ request }) => {
   let userdata = await getUserSession(request);
   const feedBucketAccess = process.env.FEEDBUCKET_ACCESS;
@@ -56,10 +49,8 @@ export const loader: LoaderFunction = async ({ request }) => {
   const session = await sessionStorage.getSession(
     request.headers.get("Cookie")
   );
-  const csrfToken = session.get("csrfToken") || generateCsrfToken();
-  const csrfTokenExpiry =
-    session.get("csrfTokenExpiry") || generateCsrfTokenExpiry();
-  session.set("csrfTokenExpiry", csrfTokenExpiry);
+  const { csrfToken, storedCsrfTokenExpiry } = await generateCSRFToken(request);
+  session.set("csrfTokenExpiry", storedCsrfTokenExpiry);
   session.set("csrfToken", csrfToken);
   let data = await saveIpAddress({ userId: user?.id, ipAddress: ip });
   return json(

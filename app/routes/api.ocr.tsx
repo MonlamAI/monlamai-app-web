@@ -50,6 +50,7 @@ export const action: ActionFunction = async ({ request }) => {
       output: data.content,
       jobId: null,
       ip,
+      responseTime: data.responseTime,
     });
     // let with_replacement = applyReplacements(inferenceData.output);
 
@@ -93,7 +94,6 @@ export const action: ActionFunction = async ({ request }) => {
       input: PDFurls,
       type: "pdf",
       output: "",
-      jobId: null,
       ip,
     });
     try {
