@@ -36,6 +36,8 @@ import { saveIpAddress } from "~/modal/log.server";
 import getIpAddressByRequest from "~/component/utils/getIpAddress";
 import { ErrorPage } from "./component/ErrorPages";
 import { sessionStorage } from "~/services/session.server";
+import { AppInstaller } from "~/component/AppInstaller.client";
+import { ClientOnly } from "remix-utils/client-only";
 
 export const loader: LoaderFunction = async ({ request }) => {
   let userdata = await getUserSession(request);
@@ -150,18 +152,21 @@ export default function App() {
       <LitteraProvider locales={["en_US", "bo_TI"]}>
         <div className="flex flex-col flex-1">
           <Header />
+          <ClientOnly fallback={<div>loading</div>}>
+            {() => <AppInstaller />}
+          </ClientOnly>
           {user && <LocationComponent />}
           <div className="flex-1 flex justify-center pt-4  bg-neutral-50 dark:bg-[--main-bg] ">
             <div className="flex-1 max-w-[1280px] px-2 ">
               <Outlet />
               <FeedBucket />
-              <Scripts />
-              <script src="/app.js" />
               {process.env.NODE_ENV === "development" && <LiveReload />}
             </div>
           </div>
+
           <Footer />
         </div>
+        <Scripts />
       </LitteraProvider>
       <ToastContainer />
     </Document>
