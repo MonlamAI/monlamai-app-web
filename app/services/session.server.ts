@@ -48,7 +48,7 @@ export async function generateCSRFToken(request: Request) {
   }
   const now = new Date();
   const tokenExpiry = new Date(storedCsrfTokenExpiry);
-  if (now < tokenExpiry) {
+  if (now > tokenExpiry) {
     csrfToken = generateCsrfToken();
     storedCsrfTokenExpiry = generateCsrfTokenExpiry();
     return { csrfToken, storedCsrfTokenExpiry };

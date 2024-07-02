@@ -50,7 +50,6 @@ function TextComponent({ sourceText, setSourceText, sourceLang }) {
 
     const range = document.getSelection().getRangeAt(0);
     setOffset(range.startOffset);
-    console.log("range", range, range?.startOffset);
     setSourceText(html);
   }, []);
 
