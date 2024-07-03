@@ -73,10 +73,15 @@ export function CharacterOrFileSizeComponent({
   CHAR_LIMIT,
   MAX_SIZE_SUPPORT,
 }: CharacterOrFileSizeComponentProps) {
+  const { translation, isTibetan } = uselitteraTranlation();
   return (
-    <div className="text-gray-400 text-xs p-2">
+    <div
+      className={`text-gray-400 text-xs p-2 ${
+        isTibetan ? "font-monlam" : "font-poppins"
+      }`}
+    >
       {(selectedTool === "recording" || selectedTool === "file") &&
-        "Duration : " + charCount}
+        `${translation.duration} : ` + charCount}
       {selectedTool === "text" && typeof charCount === "number" && (
         <>
           <span style={{ color: charCount > CHAR_LIMIT! ? "red" : "inherit" }}>

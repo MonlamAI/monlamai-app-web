@@ -45,8 +45,10 @@ function Footer() {
     >
       <div className="mx-auto flex max-w-[1280px] flex-row items-center justify-between">
         <div className="text-sm   sm:text-center">
-          {/* <span className="block md:hidden">© Monlam AI</span> */}
-          <div className="hover:underline text-[1rem] cursor-default leading-relaxed text-center">
+          <span className="flex md:hidden">
+            <img src="/assets/logo.png" width="40px" alt="Monalm AI" />
+          </span>
+          <div className="hidden md:block hover:underline text-[1rem] cursor-default leading-relaxed text-center">
             {isEnglish ? "© Monlam AI 2024" : "© སྨོན་ལམ་རིག་ནུས། ༢༠༢༤"}
           </div>
         </div>

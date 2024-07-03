@@ -32,7 +32,7 @@ const AudioPlayer = ({ audioURL }) => {
       waveSurferRef.current = waveSurfer;
       setDuration(waveSurfer.getDuration());
       waveSurfer.setPlaybackRate(playbackRate);
-      waveSurfer.setVolume(volume);
+      // waveSurfer.setVolume(volume); // Set initial volume
     });
 
     // Listen to "play" and "pause" events to accurately set isPlaying state
@@ -47,7 +47,7 @@ const AudioPlayer = ({ audioURL }) => {
     return () => {
       waveSurfer.destroy();
     };
-  }, [audioURL]);
+  }, []);
 
   const changePlaybackRate = () => {
     const rates = [1, 1.25, 1.5, 2, 0.5];
@@ -59,13 +59,16 @@ const AudioPlayer = ({ audioURL }) => {
 
   useEffect(() => {
     if (waveSurferRef.current) {
-      waveSurferRef.current?.setPlaybackRate(playbackRate);
+      waveSurferRef.current.setPlaybackRate(playbackRate);
     }
   }, [playbackRate]);
 
   const handleVolumeChange = (e) => {
-    setVolume(e.target.value);
-    amplify(e.target.value);
+    const newVolume = parseFloat(e.target.value);
+    setVolume(newVolume);
+    if (waveSurferRef.current) {
+      waveSurferRef.current.setVolume(newVolume);
+    }
   };
 
   useEffect(() => {
@@ -73,13 +76,7 @@ const AudioPlayer = ({ audioURL }) => {
       const media = waveSurferRef.current?.getMediaElement();
       setting.current = amplifyMedia(media, volume);
     }
-  }, [audioURL, waveSurferRef.current, setting.current]);
-
-  function amplify(number) {
-    if (setting.current) {
-      setting.current?.amplify(number);
-    }
-  }
+  }, []);
 
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
@@ -109,8 +106,8 @@ const AudioPlayer = ({ audioURL }) => {
           </svg>
           <input
             type="range"
-            min={1}
-            max={20}
+            min={0}
+            max={1}
             step={0.1}
             value={volume}
             onChange={handleVolumeChange}
