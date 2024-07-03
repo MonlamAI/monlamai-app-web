@@ -218,7 +218,7 @@ export default function Index() {
                       output={data ? `data:audio/wav;base64,${data}` : null}
                       sourceText={sourceText}
                       inferenceId={inferenceId}
-                      clickEdit={() => {}}
+                      clickEdit={undefined}
                     />
 
                     {inferenceId && <ShareLink inferenceId={inferenceId} />}
