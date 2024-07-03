@@ -10,7 +10,7 @@ import DarkModeSwitcher from "../DarkModeSwitcher";
 import { FaQuoteRight } from "react-icons/fa";
 import { ICON_SIZE } from "~/helper/const";
 import { FaArrowRightFromBracket } from "react-icons/fa6";
-
+import { TbApi } from "react-icons/tb";
 function Header() {
   const [showMenu, setShowMenu] = useState(false);
   const { isEnglish, translation } = uselitteraTranlation();
@@ -160,6 +160,14 @@ function Menu() {
             </button>
           </Form>
         </Dropdown.Item>
+        <Dropdown.Item icon={TbApi} className="mt-2">
+          <a
+            href="https://status.monlam.ai/status/api-check"
+            className={isEnglish ? "font-poppins" : "font-monlam"}
+          >
+            {translation.status}
+          </a>
+        </Dropdown.Item>
       </Dropdown>
       <Form method="post" action="/logout" className="md:hidden">
         <button
@@ -202,7 +210,6 @@ function AboutLink() {
     </NavLink>
   );
 }
-
 function TeamLink() {
   const { translation, locale } = uselitteraTranlation();
   return (

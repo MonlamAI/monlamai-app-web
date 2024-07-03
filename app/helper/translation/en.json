@@ -66,5 +66,6 @@
   "choose-file": "Choose file",
   "no-file-chosen": "No file chosen",
   "detect": "Detect Language",
-  "duration": "Duration"
+  "duration": "Duration",
+  "status": "Status"
 }
