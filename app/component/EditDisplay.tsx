@@ -19,6 +19,7 @@ function EditDisplay({ editText, setEditText, targetLang }: EditDisplayProps) {
       : "text-sm";
   return (
     <Textarea
+      id="editOutputText"
       value={editText}
       rows={5}
       onChange={(e) => {

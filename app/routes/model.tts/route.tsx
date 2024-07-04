@@ -183,7 +183,7 @@ export default function Index() {
             </CardComponent>
             <Devider />
             <CardComponent>
-              <div className="flex min-h-[156px] lg:min-h-[30vh] h-full w-full flex-1 flex-col gap-2">
+              <div id="tts-output-container" className="flex min-h-[156px] lg:min-h-[30vh] h-full w-full flex-1 flex-col gap-2">
                 {actionError && (
                   <ErrorMessage
                     message={actionError}

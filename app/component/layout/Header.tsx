@@ -128,6 +128,7 @@ function Menu() {
     return (
       <Form method="post" action="/auth0">
         <Button
+          id="loginbtn"
           type="submit"
           className={`w-full p-1 pb-[1px] ${
             isEnglish ? "font-poppins " : "font-monlam"
@@ -149,6 +150,7 @@ function Menu() {
         className="bg-white hidden md:block"
         renderTrigger={() => (
           <img
+            id="profilePic"
             className="h-6 w-6 rounded-full hidden md:block  cursor-pointer"
             src={user.picture}
             title={user.email}
@@ -165,7 +167,7 @@ function Menu() {
         <hr />
         <Dropdown.Item icon={HiLogout} className="mt-2">
           <Form method="post" action="/logout">
-            <button className={isEnglish ? "font-poppins" : "font-monlam"}>
+            <button id="logoutbtn"className={isEnglish ? "font-poppins" : "font-monlam"}>
               {translation.logout}
             </button>
           </Form>
@@ -173,6 +175,7 @@ function Menu() {
       </Dropdown>
       <Form method="post" action="/logout" className="md:hidden">
         <button
+          id="logoutbtn"
           className={`flex gap-2 items-center px-3 text-secondary-500 dark:text-primary-500 ${
             isEnglish ? "font-poppins" : "font-monlam"
           }`}
@@ -202,6 +205,7 @@ function AboutLink() {
   const { translation, locale } = uselitteraTranlation();
   return (
     <NavLink
+      id="about"
       to="/about"
       className="text-base flex gap-2 items-center"
       prefetch="intent"
@@ -217,6 +221,7 @@ function TeamLink() {
   const { translation, locale } = uselitteraTranlation();
   return (
     <NavLink
+      id="teams"
       to="#"
       className="text-base capitalize text-gray-300 cursor-default"
       prefetch="intent"

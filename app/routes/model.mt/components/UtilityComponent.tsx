@@ -131,6 +131,7 @@ export function OutputDisplay({
       : "text-sm";
   return (
     <div
+      id="translatedText"
       className={`p-2 first-letter 
       ${fontSize}
       ${isEng && "font-poppins "} ${isTib && "leading-loose font-monlam"} ${
@@ -170,6 +171,7 @@ export function EditActionButtons({
         } flex justify-between p-2 text-sm border-t border-t-dark_text-secondary dark:border-t-[--card-border]`}
       >
         <Button
+          id="cancelEdit"
           color="gray"
           size="sm"
           onClick={handleCancelEdit}
@@ -178,6 +180,7 @@ export function EditActionButtons({
           x
         </Button>
         <Button
+          id="saveEdit"
           size="xs"
           color="blue"
           onClick={handleEditSubmit}
@@ -210,6 +213,7 @@ export function SubmitButton({
   const empty_error = charCount === 0;
   return (
     <Button
+      id="translateBtn"
       disabled={!isFile ? exceedsLimit || empty_error : disabled}
       size="xs"
       title={exceedsLimit ? "Character limit exceeded" : ""}

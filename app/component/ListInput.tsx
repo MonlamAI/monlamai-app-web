@@ -81,7 +81,7 @@ export default function ListInput({
       aria-label="Tabs with underline"
       style="underline"
       onActiveTabChange={handleSelection}
-      className={` w-fit ${isTibetan ? "font-monlam " : "font-poppins"}`}
+      className={` w-fit ${isTibetan ? "font-monlam " : "font-poppins"} tab`}
     >
       {options.map((option, index) => {
         let icon = icons[option] ?? null;

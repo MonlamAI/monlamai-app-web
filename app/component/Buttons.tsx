@@ -31,6 +31,7 @@ export function CancelButton(props: any) {
       className="absolute z-20 top-1 right-2 text-light_text-secondary hover:text-neutral-800 hover:bg-neutral-100 transition-colors duration-200 rounded-md p-1 cursor-pointer"
       {...props}
       title="reset"
+      id="clearInputBtn"
     >
       {props.children}
     </div>

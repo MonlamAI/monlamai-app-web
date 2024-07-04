@@ -43,13 +43,15 @@ const CopyToClipboard = ({ textToCopy, onClick }: CopyToClipboardProps) => {
           disabled={false}
           icon={<LuCopy size={ICON_SIZE} />}
           onClick={handleCopy}
+          id="copyBtn"
         />
       ) : (
         <ReactionButton
           enabled={true}
           disabled={false}
           icon={<LuCopyCheck color="green" size={ICON_SIZE} />}
-          onClick={handleCopy}
+            onClick={handleCopy}
+            id="copiedIcon"
         />
       )}
     </>

@@ -54,6 +54,7 @@ function ReactionButtons({
           icon={<FaPencil size={ICON_SIZE} />}
           onClick={clickEdit}
           className=""
+          id="editBtn"
         />
       )}
       <ReactionButton
@@ -62,12 +63,14 @@ function ReactionButtons({
         icon={<FaRegThumbsUp size={ICON_SIZE} />}
         onClick={() => handleReaction("liked")}
         className={`hover:text-green-400 ${liked && "text-green-400"}`}
+        id="likeBtn"
       />
       <ReactionButton
         enabled={!!output}
         disabled={liked}
         icon={<FaRegThumbsDown size={ICON_SIZE} />}
         className={`hover:text-red-400 ${disliked && "text-red-400"}`}
+        id="dislikeBtn"
         onClick={() => handleReaction("disliked")}
       />
     </>
@@ -80,6 +83,7 @@ type ReactionButtonProps = {
   icon: React.ReactElement;
   onClick: () => void;
   className?: string;
+  id: string;
 };
 
 export function ReactionButton({
@@ -87,9 +91,11 @@ export function ReactionButton({
   icon,
   onClick,
   className,
+  id,
 }: ReactionButtonProps) {
   return (
     <button
+      id={id}
       color="white"
       onClick={onClick}
       className={

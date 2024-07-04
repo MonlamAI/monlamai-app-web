@@ -72,7 +72,7 @@ function ShareLink({ inferenceId }) {
         placement="bottom"
         dismissOnClick={true}
         renderTrigger={() => (
-          <span className="focus:outline-none cursor-pointer  text-gray-500 dark:text-dark_text-secondary disabled:opacity-20 ">
+          <span className="focus:outline-none cursor-pointer  text-gray-500 dark:text-dark_text-secondary disabled:opacity-20 " id="shareBtn">
             <FaShareAlt size={ICON_SIZE} className="dark:fill-primary-500" />
           </span>
         )}
@@ -81,8 +81,8 @@ function ShareLink({ inferenceId }) {
         <Dropdown.Header>Share</Dropdown.Header>
         <div className="">
           <div className="flex gap-2 justify-center items-center mb-2 p-2 ">
-            <TextInput type="text" value={link} readOnly />
-            <CopyToClipboard textToCopy={link} />
+            <TextInput type="text" value={link} readOnly id="shareLink"/>
+            <CopyToClipboard textToCopy={link}/>
           </div>
           <div className="flex justify-around mb-2">
             <SocialShareButton

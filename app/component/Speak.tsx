@@ -52,11 +52,12 @@ function Speak({
   return (
     <>
       {isPlaying ? (
-        <div onClick={pauseAudio} className="flex items-center ">
+        <div id="pauseOuputAudio" onClick={pauseAudio} className="flex items-center ">
           <FaPause size={ICON_SIZE} className="dark:fill-primary-500" />
         </div>
       ) : (
-        <div
+          <div
+            id="playOutputAudio"
           onClick={handlePlayClick}
           className={`flex items-center cursor-pointer  ${
             fetcher.state !== "idle" ? "animate-pulse" : ""
@@ -73,6 +74,7 @@ function Speak({
       )}
       {fetcher.data && (
         <audio
+          id="outputAudio"
           src={audioSourceUrl}
           ref={audioRef}
           onEnded={() => pauseAudio()}

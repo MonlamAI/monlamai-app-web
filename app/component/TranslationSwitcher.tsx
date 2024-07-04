@@ -17,6 +17,7 @@ function TranslationSwitcher() {
 
   return (
     <div
+      id="switchLanguage"
       onClick={SwitchLanguage}
       className="cursor-pointer text-[14px] mr-2 text-light_text-secondary dark:text-dark_text-secondary"
     >

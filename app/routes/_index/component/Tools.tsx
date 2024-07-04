@@ -29,6 +29,7 @@ function EachModel({ model }: EachProps) {
   const isEnglish = locale === "en_US";
   return (
     <NavLink
+      id={`model-${link}`}
       prefetch="intent"
       to={"/model/" + link}
       className="w-full"

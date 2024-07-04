@@ -17,6 +17,7 @@ export function TtsSubmitButton({
 
   return (
     <Button
+      id="synthesisBtn"
       disabled={!isFile ? exceedsLimit : disabled}
       size="xs"
       title={exceedsLimit ? "Character limit exceeded" : ""}
