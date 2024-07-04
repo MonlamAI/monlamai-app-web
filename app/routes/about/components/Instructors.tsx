@@ -1,5 +1,5 @@
 import { instructors } from "~/routes/about/data/instructors";
-import uselitteraTranlation from "../../../component/hooks/useLitteraTranslation";
+import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 
 function Instructor() {
   let { translation, isTibetan } = uselitteraTranlation();
@@ -22,8 +22,10 @@ function Instructor() {
                 className="rounded-full h-24 w-24 object-cover shadow-md p-1 "
               />
               <p
-                className={`text-center text-[14px] pt-2 font-bold ${
-                  isTibetan ? "font-monlam leading-loose" : "font-poppins"
+                className={`text-center text-[14px] pt-2  ${
+                  isTibetan
+                    ? "font-monlam leading-loose"
+                    : "font-poppins font-semibold"
                 }`}
               >
                 {!isTibetan ? instructor.name : instructor.tibetan_name}
