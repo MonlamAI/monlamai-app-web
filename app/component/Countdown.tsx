@@ -3,7 +3,7 @@ import Countdown from "react-countdown";
 
 const ReleaseAnnouncement = () => {
   const [show, setShow] = useState(true);
-  const releaseDate = new Date("2024-07-06T00:00:00");
+  const releaseDate = new Date("2024-07-06T04:00:00Z");
 
   const renderer = ({ days, hours, minutes, seconds }) => {
     return (
