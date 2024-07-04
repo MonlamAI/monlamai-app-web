@@ -5,19 +5,16 @@ import type {
 } from "@remix-run/node";
 import {
   ClientLoaderFunctionArgs,
-  isRouteErrorResponse,
   useFetcher,
   useLoaderData,
-  useNavigate,
-  useRouteError,
   useSearchParams,
+  useRouteLoaderData,
 } from "@remix-run/react";
 import { useState, useRef, useEffect } from "react";
 import useDebounce from "~/component/hooks/useDebounceState";
-import ErrorMessage from "~/component/ErrorMessage";
+import { ErrorMessage } from "~/component/ErrorMessage";
 import ToolWraper from "~/component/ToolWraper";
 import DownloadDocument from "~/routes/model.mt/components/DownloadDocument";
-import { toast } from "react-toastify";
 import {
   getTodayInferenceByUserIdCountModel,
   getUserFileInferences,
@@ -25,7 +22,7 @@ import {
   updateEdit,
 } from "~/modal/inference.server";
 import ListInput from "~/component/ListInput";
-import { API_ERROR_MESSAGE, MAX_SIZE_SUPPORT_DOC } from "~/helper/const";
+import { MAX_SIZE_SUPPORT_DOC } from "~/helper/const";
 import {
   CharacterOrFileSizeComponent,
   EditActionButtons,
@@ -47,6 +44,9 @@ import ImageTranslateComponent from "./components/ImageTranslateComponent";
 import { InferenceList } from "~/component/InferenceList";
 import Devider from "~/component/Devider";
 import { Spinner } from "flowbite-react";
+import getIpAddressByRequest from "~/component/utils/getIpAddress";
+import { ErrorBoundary } from "~/component/ErrorPages";
+
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
   parentMeta.shift(1);
@@ -89,8 +89,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export const action: ActionFunction = async ({ request }) => {
   let formdata = await request.formData();
   let userdata = await getUserSession(request);
+  let ip = getIpAddressByRequest(request);
   let user = await getUser(userdata?._json?.email);
-
   let method = request.method;
   if (method === "PATCH") {
     let edited = formdata.get("edited") as string;
@@ -112,6 +112,7 @@ export const action: ActionFunction = async ({ request }) => {
       responseTime: parseInt(responseTime),
       inputLang: inputLang,
       outputLang: outputLang,
+      ip,
     });
     return { id: inferenceData?.id };
   }
@@ -146,6 +147,8 @@ export default function Index() {
 
   const [file, setFile] = useState<File | null>(null);
   const { limitMessage, CHAR_LIMIT, user } = useLoaderData();
+  const { csrfToken } = useRouteLoaderData("root");
+
   const [edit, setEdit] = useState(false);
   const [editText, setEditText] = useState("");
   const [inputUrl, setInputUrl] = useState("");
@@ -196,6 +199,7 @@ export default function Index() {
     text: sourceText,
     data,
     setData,
+    csrfToken,
   });
   useEffect(() => {
     if (done === true && data) {
@@ -240,6 +244,7 @@ export default function Index() {
     resetFetcher(translationFetcher);
     resetFetcher(editfetcher);
   }
+  let outputRef = useRef<HTMLDivElement>();
 
   return (
     <ToolWraper title="MT">
@@ -249,7 +254,13 @@ export default function Index() {
         setSelectedTool={setSelectedTool}
         reset={handleReset}
       />
-      {error && <ErrorMessage message={error} handleClose={handleErrorClose} />}
+      {error && (
+        <ErrorMessage
+          message={error}
+          handleClose={handleErrorClose}
+          type="info"
+        />
+      )}
       <div className="rounded-[10px] overflow-hidden border dark:border-[--card-border] border-dark_text-secondary">
         <LanguageInput
           setSourceText={setSourceText}
@@ -297,7 +308,13 @@ export default function Index() {
                       <SubmitButton
                         charCount={charCount}
                         CHAR_LIMIT={CHAR_LIMIT}
-                        trigger={trigger}
+                        trigger={() => {
+                          trigger();
+                          outputRef.current?.scrollIntoView({
+                            behavior: "smooth",
+                            block: "start",
+                          });
+                        }}
                         selectedTool={selectedTool}
                         submitFile={handleFileSubmit}
                         disabled={!file || file.length === 0}
@@ -310,6 +327,7 @@ export default function Index() {
             <Devider />
             <CardComponent>
               <div
+                ref={outputRef}
                 className={`flex flex-1 min-h-[150px] md:min-h-[15vh] lg:min-h-[30vh] h-auto w-full flex-col gap-2
               ${
                 target_lang === "bo"
@@ -321,6 +339,7 @@ export default function Index() {
                   <ErrorMessage
                     message={translationFetcher?.data?.error}
                     handleClose={handleReset}
+                    type="warning"
                   />
                 )}
                 {TextSelected && edit && (
@@ -390,17 +409,4 @@ export default function Index() {
   );
 }
 
-export function ErrorBoundary() {
-  const error = useRouteError();
-  let isRouteError = isRouteErrorResponse(error);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    toast.warn(API_ERROR_MESSAGE, {
-      position: toast.POSITION.BOTTOM_RIGHT,
-    });
-    navigate(".", { replace: true });
-  }, []);
-
-  return <>{/* <ErrorMessage error={"error"} /> */}</>;
-}
+export { ErrorBoundary };

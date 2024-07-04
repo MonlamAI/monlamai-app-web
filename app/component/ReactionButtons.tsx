@@ -9,7 +9,7 @@ interface ReactionButtonsProps {
   output: string | null;
   sourceText: string | null;
   inferenceId: string;
-  clickEdit: () => void;
+  clickEdit: () => void | undefined;
 }
 
 const API_ENDPOINT = "/api/feedback";

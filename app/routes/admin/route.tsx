@@ -1,4 +1,4 @@
-import { LinksFunction, LoaderFunction } from "@remix-run/node";
+import { LinksFunction, LoaderFunction, redirect } from "@remix-run/node";
 import { useLoaderData, useSearchParams } from "@remix-run/react";
 import React from "react";
 import { getInferences, getInferencesCount } from "~/modal/inference.server";
@@ -10,13 +10,26 @@ import { getUsersCount } from "~/modal/user.server";
 import UserCount from "./component/UserCount";
 import InferenceCount from "./component/InferenceCount";
 import { SelectionList } from "./component/SelectionList";
+import LeafLetStyle from "leaflet/dist/leaflet.css";
+import { getUserSession } from "~/services/session.server";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: DateStyle },
   { rel: "stylesheet", href: DateStyleDefault },
+  { rel: "stylesheet", href: LeafLetStyle },
 ];
 
+function isAdmin(user) {
+  const adminDomains = process.env?.ADMIN_USERS_LIST?.split(",");
+  const userEmail = user._json.email;
+
+  return adminDomains.some((domain) => userEmail.includes(domain));
+}
+
 export const loader: LoaderFunction = async ({ request }) => {
+  let userdata = await getUserSession(request);
+
+  if (!isAdmin(userdata)) return redirect("/");
   const url = new URL(request.url);
   const check = url.searchParams.get("check");
 

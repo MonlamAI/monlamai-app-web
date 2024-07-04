@@ -4,6 +4,7 @@ module.exports = {
   serverModuleFormat: "cjs",
   ignoredRouteFiles: ["**/.*"],
   serverDependenciesToBundle: [
+    /^remix-utils.*/,
     "react-typing-effect",
     "react-audio-visualize",
     "react-icons",
@@ -11,6 +12,8 @@ module.exports = {
     "docx",
     "file-saver",
     "franc-min",
+    "react-leaflet",
+    "leaflet",
   ],
   tailwind: true,
   browserNodeBuiltinsPolyfill: {

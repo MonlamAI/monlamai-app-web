@@ -6,7 +6,7 @@ import {
   useLoaderData,
   useSearchParams,
 } from "@remix-run/react";
-import ErrorMessage from "~/component/ErrorMessage";
+import { ErrorMessage } from "~/component/ErrorMessage";
 import ToolWraper from "~/component/ToolWraper";
 import CardComponent from "~/component/Card";
 import InferenceWrapper from "~/component/layout/InferenceWrapper";
@@ -16,7 +16,6 @@ import {
   LoadingAnimation,
   OutputDisplay,
 } from "../model.mt/components/UtilityComponent";
-import { ErrorBoundary } from "../model.mt/route";
 import { NonEditButtons, NonEditModeActions } from "~/component/ActionButtons";
 import { getUserFileInferences, updateEdit } from "~/modal/inference.server";
 import EditDisplay from "~/component/EditDisplay";
@@ -34,6 +33,7 @@ import { InferenceList } from "~/component/InferenceList";
 import HeaderComponent from "~/component/HeaderComponent";
 import { Spinner } from "flowbite-react";
 import Devider from "~/component/Devider";
+import { ErrorBoundary } from "~/component/ErrorPages";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -163,7 +163,7 @@ export default function Index() {
   const uploadFile = async (file: File) => {
     try {
       let formData = new FormData();
-      let filename = !file?.name ? file?.name : "recording";
+      let filename = file?.name ? file?.name : "recording";
 
       let uniqueFilename = Date.now() + "-" + filename;
       formData.append("filename", uniqueFilename);
@@ -208,7 +208,11 @@ export default function Index() {
         reset={handleReset}
       >
         {actionError && (
-          <ErrorMessage message={actionError} handleClose={handleClose} />
+          <ErrorMessage
+            message={actionError}
+            handleClose={handleClose}
+            type="warning"
+          />
         )}
 
         <div className=" rounded-[10px]  overflow-hidden border dark:border-[--card-border] border-dark_text-secondary">

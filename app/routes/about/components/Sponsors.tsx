@@ -3,7 +3,7 @@ import uselitteraTranlation from "../../../component/hooks/useLitteraTranslation
 function Sponsors() {
   let { translation } = uselitteraTranlation();
   return (
-    <div className="relative top-10 ">
+    <div className=" mb-[30px] ">
       <h2 className="lg:text-3xl text-xl font-bold  mt-10 md:my-10 flex justify-center">
         {translation.partners}
       </h2>

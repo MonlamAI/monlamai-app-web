@@ -1,4 +1,11 @@
-import { Button, Card, FileInput, Label, Spinner } from "flowbite-react";
+import {
+  Button,
+  Card,
+  FileInput,
+  Label,
+  Spinner,
+  ToggleSwitch,
+} from "flowbite-react";
 import React, { useEffect, useState } from "react";
 import { resetFetcher } from "~/component/utils/resetFetcher";
 import { useFetcher, useLoaderData } from "@remix-run/react";
@@ -11,12 +18,16 @@ import TooltipComponent from "./Tooltip";
 import { ImageCropper } from "~/routes/model.ocr/Component/ImageCropper";
 import Devider from "~/component/Devider";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
+import { ErrorMessage } from "~/component/ErrorMessage";
+import { ErrorBoundary } from "~/component/ErrorPages";
+import applyReplacements from "../utils/replacements";
 
 function SingleInptSection({ fetcher }: any) {
   const [ImageUrl, setImageUrl] = useState<string | null>(null);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [edit, setEdit] = useState(false);
   const [editText, setEditText] = useState("");
+  const [isOrginalText, setOrginalText] = useState(false);
   const { isTibetan } = uselitteraTranlation();
 
   const likeFetcher = useFetcher();
@@ -38,6 +49,7 @@ function SingleInptSection({ fetcher }: any) {
 
   const handleFormClear = () => {
     setImageUrl(null);
+    handleCancelEdit();
     resetFetcher(fetcher);
     resetFetcher(editfetcher);
   };
@@ -109,8 +121,19 @@ function SingleInptSection({ fetcher }: any) {
     navigator.clipboard.writeText(textToCopy);
   }
 
+  const changeOrginalText = () => {
+    setOrginalText(!isOrginalText);
+  };
+
+  const formatText = (text) => {
+    // Replace multiple consecutive new lines with a single <br> tag
+    // and replace single new lines with <br> tags
+    text = text.replace(/\n+/g, "<br>");
+    return text;
+  };
+
   return (
-    <div className="flex flex-col lg:flex-row overflow-hidden max-w-[100vw] ">
+    <div className="flex flex-col lg:flex-row overflow-hidden max-w-[100vw]">
       <CardComponent
         className={`${isTibetan ? "font-monlam" : "font-poppins"}`}
       >
@@ -131,12 +154,12 @@ function SingleInptSection({ fetcher }: any) {
       <Devider />
       <CardComponent>
         <div
-          className={`w-full flex flex-1 min-h-[150px] md:min-h-[15vh] lg:min-h-[30vh] p-3 text-black bg-neutral dark:bg-[--card-bg] dark:text-neutral  overflow-auto ${
+          className={`w-full flex flex-1 flex-col gap-1 min-h-[150px] md:min-h-[15vh] lg:max-h-full p-3 text-black bg-neutral dark:bg-[--card-bg] dark:text-neutral overflow-auto ${
             ImageUrl ? "block" : "hidden"
           }`}
         >
           {isActionSubmission ? (
-            <div className="w-full flex justify-center items-center">
+            <div className="w-full flex flex-1 justify-center items-center">
               <Spinner
                 size="lg"
                 className={"fill-secondary-300 dark:fill-primary-500"}
@@ -144,8 +167,15 @@ function SingleInptSection({ fetcher }: any) {
             </div>
           ) : (
             <>
+              {!edit && text && (
+                <ToggleSwitch
+                  checked={isOrginalText}
+                  label="Orginal lines"
+                  onChange={changeOrginalText}
+                />
+              )}
               <div className="text-lg tracking-wide leading-loose">
-                {errorMessage && (
+                {/* {errorMessage && (
                   <div
                     className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
                     role="alert"
@@ -153,19 +183,29 @@ function SingleInptSection({ fetcher }: any) {
                     <strong className="font-bold">Error: </strong>
                     <span className="block sm:inline">{errorMessage}</span>
                   </div>
+                )} */}
+                {errorMessage && (
+                  <ErrorMessage
+                    message={errorMessage}
+                    handleClose={handleFormClear}
+                    type="info"
+                  />
                 )}
                 {!edit && text && !editData && (
                   <div
                     className="text-xl font-monlam leading-[normal] max-h-[50vh]"
                     dangerouslySetInnerHTML={{
-                      __html: text?.replaceAll("\n", "<br>"),
+                      __html:
+                        // text?.replaceAll("\n", "<br>"),
+                        isOrginalText
+                          ? formatText(text)
+                          : formatText(applyReplacements(text)),
                     }}
                   />
                 )}
-                {text === "" && (
+                {!errorMessage && !text && inferenceId && (
                   <div className="text-red-500">
-                    {" "}
-                    provide image with tibetan text
+                    Provide image with tibetan text
                   </div>
                 )}
               </div>
@@ -210,3 +250,5 @@ function SingleInptSection({ fetcher }: any) {
 }
 
 export default SingleInptSection;
+
+export { ErrorBoundary };

@@ -9,6 +9,7 @@ import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import AudioPlayer from "~/routes/model.tts/components/AudioPlayer";
 import HeaderComponent from "~/component/HeaderComponent";
 import Devider from "~/component/Devider";
+import { ClientOnly } from "remix-utils/client-only";
 
 const langLabels = {
   bo: "བོད་སྐད།",
@@ -66,7 +67,7 @@ function OutputCard({ content, className, model }) {
   if (model === "tts") {
     return (
       <CardComponent>
-        {content && <AudioPlayer audioURL={content} />}
+        <ClientOnly>{() => <AudioPlayer audioURL={content} />}</ClientOnly>
       </CardComponent>
     );
   }
@@ -99,7 +100,7 @@ function TranslationRoute() {
   const modelString = model.toUpperCase();
   return (
     <div className="w-full flex flex-col z-20 mt-20">
-      <div className="flex flex-col rounded-lg overflow-hidden md:min-h-[516px] border dark:border-[--card-border] border-dark_text-secondary">
+      <div className="flex flex-col rounded-lg overflow-hidden  border dark:border-[--card-border] border-dark_text-secondary">
         {model === "mt" ? (
           <MTHeader sourceLang={sourceLang} targetLang={targetLang} />
         ) : (
