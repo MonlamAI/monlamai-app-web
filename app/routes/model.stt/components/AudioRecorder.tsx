@@ -6,7 +6,7 @@ import { BsFillMicFill, BsFillStopFill } from "react-icons/bs";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import { getBrowser } from "~/component/utils/getBrowserDetail";
 import AudioPlayer from "~/routes/model.tts/components/AudioPlayer";
-
+import RecordingAnimation from "./RecordingAnimation";
 let stopRecordingTimeout: any;
 
 type AudioRecordProps = {
@@ -120,6 +120,9 @@ function AudioRecorder({
           width={200}
           height={75}
         />
+      )}
+      {recording && mediaRecorder.current && getBrowser() === "Safari" && (
+        <RecordingAnimation />
       )}
       {!audioURL && !isUploading && !isLoading && (
         <Button
