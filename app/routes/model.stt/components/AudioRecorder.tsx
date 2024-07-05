@@ -32,7 +32,7 @@ function AudioRecorder({
     }
   };
   const getMicrophonePermission = async () => {
-    let permissionStatus = await navigator.permissions.query({
+    let permissionStatus = await navigator?.permissions.query({
       name: "microphone",
     });
     if (permissionStatus.state === "prompt") {
@@ -50,7 +50,7 @@ function AudioRecorder({
       alert("Please enable microphone permissions in your browser settings.");
     } else if (permissionStatus.state === "granted") {
       // Permission was already granted
-      return await navigator.mediaDevices.getUserMedia({ audio: true });
+      return await navigator?.mediaDevices.getUserMedia({ audio: true });
     }
   };
   const startRecording = async () => {
