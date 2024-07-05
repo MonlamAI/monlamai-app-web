@@ -86,7 +86,6 @@ function TextComponent({ sourceText, setSourceText, sourceLang }) {
     <>
       <div
         id="textAreaInput"
-        name="sourceText"
         className={`p-2 pr-6 w-full rounded-none resize-none flex-1 bg-transparent border-0 dark:border:0 focus:outline-none dark:focus:outline-none focus:ring-transparent dark:focus:ring-transparent caret-slate-500 placeholder:text-slate-300 placeholder:font-monlam placeholder:text-lg
        ${fontSize} ${isEng && "font-poppins  "} ${
           isTib && "leading-loose font-monlam "
