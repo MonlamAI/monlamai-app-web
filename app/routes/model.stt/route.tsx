@@ -243,7 +243,6 @@ export default function Index() {
                   <AudioRecorder
                     audioURL={audioURL}
                     uploadAudio={uploadFile}
-                    uploadProgress={uploadProgress}
                     isLoading={isLoading}
                   />
                 )}

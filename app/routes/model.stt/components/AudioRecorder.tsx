@@ -10,16 +10,10 @@ let stopRecordingTimeout: any;
 type AudioRecordProps = {
   audioURL: string | null;
   uploadAudio: (file: File) => void;
-  uploadProgress: number;
   isLoading: boolean;
 };
 
-function AudioRecorder({
-  audioURL,
-  uploadAudio,
-  uploadProgress,
-  isLoading,
-}: AudioRecordProps) {
+function AudioRecorder({ audioURL, uploadAudio, isLoading }: AudioRecordProps) {
   let mediaRecorder: any = useRef();
   const [tempAudioURL, setTempAudioURL] = useState<string | null>(null);
   const [recording, setRecording] = useState(false);
@@ -107,7 +101,6 @@ function AudioRecorder({
       reader.readAsDataURL(audioBlob);
     };
   };
-  let isUploading = uploadProgress > 0 && uploadProgress < 100;
 
   return (
     <div className="flex flex-col items-center gap-5 flex-1 justify-center">
