@@ -48,6 +48,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   const isJobEnabled = unleash.isEnabled("isJobEnabled");
   const enable_replacement_mt = unleash.isEnabled("enable_replacement_mt");
   const show_about_lama = unleash.isEnabled("show_about_lama");
+  const file_upload_enable = unleash.isEnabled("file_upload_enable");
   const session = await sessionStorage.getSession(
     request.headers.get("Cookie")
   );
@@ -61,6 +62,7 @@ export const loader: LoaderFunction = async ({ request }) => {
       isJobEnabled: isJobEnabled ?? false,
       enable_replacement_mt: enable_replacement_mt ?? false,
       show_about_lama: show_about_lama ?? false,
+      file_upload_enable: file_upload_enable ?? false,
       feedBucketAccess,
       feedbucketToken,
       AccessKey: process.env?.API_ACCESS_KEY,
