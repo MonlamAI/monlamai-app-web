@@ -11,9 +11,15 @@ type AudioRecordProps = {
   audioURL: string | null;
   uploadAudio: (file: File) => void;
   isLoading: boolean;
+  isUploading: boolean;
 };
 
-function AudioRecorder({ audioURL, uploadAudio, isLoading }: AudioRecordProps) {
+function AudioRecorder({
+  audioURL,
+  uploadAudio,
+  isLoading,
+  isUploading,
+}: AudioRecordProps) {
   let mediaRecorder: any = useRef();
   const [tempAudioURL, setTempAudioURL] = useState<string | null>(null);
   const [recording, setRecording] = useState(false);
@@ -128,12 +134,8 @@ function AudioRecorder({ audioURL, uploadAudio, isLoading }: AudioRecordProps) {
           )}
         </Button>
       )}
-      {getBrowser() !== "Safari" && tempAudioURL && !isUploading && (
-        <div className="pt-8 w-full h-full">
-          <AudioPlayer audioURL={tempAudioURL} />
-        </div>
-      )}
-      {getBrowser() === "Safari" && audioURL && !isUploading && (
+
+      {audioURL && !isUploading && (
         <div className="pt-8 w-full h-full">
           <AudioPlayer audioURL={audioURL} />
         </div>

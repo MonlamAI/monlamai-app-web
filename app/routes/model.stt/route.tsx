@@ -244,6 +244,7 @@ export default function Index() {
                     audioURL={audioURL}
                     uploadAudio={uploadFile}
                     isLoading={isLoading}
+                    isUploading={isUploading}
                   />
                 )}
 
