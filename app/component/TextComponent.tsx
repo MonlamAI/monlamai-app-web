@@ -12,8 +12,41 @@ function TextComponent({ sourceText, setSourceText, sourceLang }) {
   let { translation, isEnglish } = uselitteraTranlation();
   const [offset, setOffset] = useState();
   const textRef = useRef(null);
+  const caretPos = useRef(0);
   let isEng = sourceLang === "en";
   let isTib = sourceLang === "bo";
+  function getCaret(el) {
+    let caretAt = 0;
+    const sel = window.getSelection();
+
+    if (sel.rangeCount === 0) {
+      return caretAt;
+    }
+
+    const range = sel.getRangeAt(0);
+    const preRange = range.cloneRange();
+    preRange.selectNodeContents(el);
+    preRange.setEnd(range.endContainer, range.endOffset);
+    caretAt = preRange.toString().length;
+
+    return caretAt;
+  }
+
+  function setCaret(el, offset) {
+    const sel = window.getSelection();
+    const range = document.createRange();
+
+    range.setStart(el?.childNodes[0], offset);
+    range.collapse(true);
+    sel.removeAllRanges();
+    sel.addRange(range);
+  }
+  useEffect(() => {
+    if (sourceText && textRef.current && caretPos.current !== 0) {
+      setCaret(textRef.current, caretPos.current);
+      textRef.current.focus();
+    }
+  }, [sourceText]);
 
   useEffect(() => {
     textRef.current?.addEventListener("paste", function (e) {
@@ -23,17 +56,6 @@ function TextComponent({ sourceText, setSourceText, sourceLang }) {
     });
   }, []);
 
-  useEffect(() => {
-    if (offset !== undefined) {
-      const newRange = document.createRange();
-      if (textRef.current.childNodes[0] === undefined) return;
-      newRange?.setStart(textRef.current.childNodes[0], offset);
-      const selection = document.getSelection();
-      selection?.removeAllRanges();
-      selection?.addRange(newRange);
-    }
-  }, [offset]);
-
   let fontSize =
     sourceText.length < 600
       ? "text-lg"
@@ -41,19 +63,18 @@ function TextComponent({ sourceText, setSourceText, sourceLang }) {
       ? "text-base"
       : "text-sm";
 
-  const onInput = useCallback((evt) => {
-    const selection = window.getSelection();
-    const sanitizeConf = {
-      allowedTags: ["b", "i", "a", "p"],
-      allowedAttributes: { a: ["href"] },
-    };
-    const html = sanitizeHtml(evt.target.innerHTML, sanitizeConf);
-    if (selection.rangeCount > 0) {
-      const range = selection.getRangeAt(0);
-      setOffset(range.startOffset);
+  const onInput = useCallback(
+    (evt) => {
+      caretPos.current = getCaret(textRef.current);
+      const sanitizeConf = {
+        allowedTags: ["b", "i", "a", "p"],
+        allowedAttributes: { a: ["href"] },
+      };
+      const html = sanitizeHtml(evt.target.innerHTML, sanitizeConf);
       setSourceText(html);
-    }
-  }, []);
+    },
+    [setSourceText]
+  );
   return (
     <>
       <div
