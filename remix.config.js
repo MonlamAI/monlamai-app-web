@@ -14,6 +14,7 @@ module.exports = {
     "franc-min",
     "react-leaflet",
     "leaflet",
+    "@wavesurfer/react",
   ],
   tailwind: true,
   browserNodeBuiltinsPolyfill: {

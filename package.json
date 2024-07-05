@@ -20,6 +20,7 @@
     "@remix-run/react": "^2.9.2",
     "@remix-run/serve": "^2.9.2",
     "@remix-run/v1-route-convention": "^0.1.4",
+    "@wavesurfer/react": "^1.0.7",
     "auth0-js": "^9.23.0",
     "aws-sdk": "^2.1577.0",
     "axios": "^1.6.8",

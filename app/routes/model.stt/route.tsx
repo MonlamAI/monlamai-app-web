@@ -165,7 +165,7 @@ export default function Index() {
       let formData = new FormData();
       let filename = file?.name ? file?.name : "recording";
 
-      let uniqueFilename = Date.now() + "-" + filename;
+      let uniqueFilename = Date.now() + "-" + filename + ".mp3";
       formData.append("filename", uniqueFilename);
       formData.append("filetype", file.type);
       formData.append("bucket", "/STT/input");

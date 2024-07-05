@@ -1,53 +1,27 @@
 // components/AudioPlayer.jsx
 import React, { useEffect, useRef, useState } from "react";
 import { MdPlayArrow, MdPause } from "react-icons/md";
-import WaveSurfer from "wavesurfer.js";
 import useLocalStorage from "~/component/hooks/useLocaleStorage";
 import { amplifyMedia } from "~/component/utils/audioGain";
+import { useWavesurfer } from "@wavesurfer/react";
 
 const AudioPlayer = ({ audioURL }) => {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
   const [playbackRate, setPlaybackRate] = useState(1); // 1, 1.25, 1.5, 2, 0.5 (default 1)
   const [volume, setVolume] = useLocalStorage("volume", 1);
 
-  const containerRef = useRef();
-  const waveSurferRef = useRef(null);
+  const containerRef = useRef(null);
   let setting = useRef();
 
-  useEffect(() => {
-    const waveSurfer = WaveSurfer.create({
-      container: containerRef?.current,
-      responsive: true,
-      barHeight: 12,
-      cursorWidth: 0,
-      waveColor: "#5290F4",
-      progressColor: "#1E3A8A",
-      barGap: 4,
-      barWidth: 4,
-    });
-    waveSurfer.load(audioURL);
-    waveSurfer.on("ready", () => {
-      waveSurferRef.current = waveSurfer;
-      setDuration(waveSurfer.getDuration());
-      waveSurfer.setPlaybackRate(playbackRate);
-      // waveSurfer.setVolume(volume); // Set initial volume
-    });
-
-    // Listen to "play" and "pause" events to accurately set isPlaying state
-    waveSurfer.on("play", () => setIsPlaying(true));
-    waveSurfer.on("pause", () => setIsPlaying(false));
-
-    // Update currentTime on audioprocess
-    waveSurfer.on("audioprocess", () => {
-      setCurrentTime(waveSurfer.getCurrentTime());
-    });
-
-    return () => {
-      waveSurfer.destroy();
-    };
-  }, []);
+  const { wavesurfer, isPlaying, currentTime } = useWavesurfer({
+    container: containerRef,
+    url: audioURL,
+    barHeight: 12,
+    cursorWidth: 0,
+    waveColor: "#5290F4",
+    progressColor: "#1E3A8A",
+    barGap: 4,
+    barWidth: 4,
+  });
 
   const changePlaybackRate = () => {
     const rates = [1, 1.25, 1.5, 2, 0.5];
@@ -58,22 +32,22 @@ const AudioPlayer = ({ audioURL }) => {
   };
 
   useEffect(() => {
-    if (waveSurferRef.current) {
-      waveSurferRef.current.setPlaybackRate(playbackRate);
+    if (wavesurfer) {
+      wavesurfer.setPlaybackRate(playbackRate);
     }
   }, [playbackRate]);
 
   const handleVolumeChange = (e) => {
     const newVolume = parseFloat(e.target.value);
     setVolume(newVolume);
-    if (waveSurferRef.current) {
-      waveSurferRef.current.setVolume(newVolume);
+    if (wavesurfer) {
+      wavesurfer.setVolume(newVolume);
     }
   };
 
   useEffect(() => {
-    if (waveSurferRef.current && !setting.current && audioURL) {
-      const media = waveSurferRef.current?.getMediaElement();
+    if (wavesurfer && !setting.current && audioURL) {
+      const media = wavesurfer?.getMediaElement();
       setting.current = amplifyMedia(media, volume);
     }
   }, []);
@@ -149,7 +123,7 @@ const AudioPlayer = ({ audioURL }) => {
         <div className="flex items-center justify-between gap-5">
           <button
             onClick={() => {
-              waveSurferRef.current?.playPause();
+              wavesurfer?.playPause();
             }}
             className="text-dark_text-default dark:text-light_text-default rounded-full bg-secondary-700 dark:bg-primary-500"
           >
@@ -160,18 +134,19 @@ const AudioPlayer = ({ audioURL }) => {
             <input
               type="range"
               min="0"
-              max={duration}
+              max={wavesurfer?.getDuration() || 0}
               step="0.1"
               value={currentTime}
               onChange={(e) => {
                 // update the current time of the audio per second and seek to the new time
                 const newTime = parseFloat(e.target.value);
-                waveSurferRef.current?.seekTo(newTime / duration);
-                setCurrentTime(newTime);
+                wavesurfer?.seekTo(newTime / wavesurfer?.getDuration());
               }}
               className="mx-2 h-1 w-full appearance-none bg-gray-300 dark:bg-primary-500 rounded-full"
             />
-            <div className="text-sm">{formatTime(duration)}</div>
+            <div className="text-sm">
+              {formatTime(wavesurfer?.getDuration())}
+            </div>
           </div>
         </div>
       </div>

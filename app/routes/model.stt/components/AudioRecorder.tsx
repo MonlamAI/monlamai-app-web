@@ -138,9 +138,14 @@ function AudioRecorder({
           )}
         </Button>
       )}
-      {audioURL && !isUploading && (
+      {getBrowser() !== "Safari" && tempAudioURL && !isUploading && (
         <div className="pt-8 w-full h-full">
           <AudioPlayer audioURL={tempAudioURL} />
+        </div>
+      )}
+      {getBrowser() === "Safari" && audioURL && !isUploading && (
+        <div className="pt-8 w-full h-full">
+          <AudioPlayer audioURL={audioURL} />
         </div>
       )}
       {isUploading && (
