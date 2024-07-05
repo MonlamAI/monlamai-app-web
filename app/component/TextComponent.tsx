@@ -63,7 +63,6 @@ function TextComponent({ sourceText, setSourceText, sourceLang }) {
   return (
     <div
       id="textAreaInput"
-      name="sourceText"
       className={`p-2 pr-6 ${
         isEnglish ? "placeholder:font-poppins" : "placeholder:font-monlam"
       } w-full rounded-none resize-none flex-1 bg-transparent border-0 dark:border:0 focus:outline-none dark:focus:outline-none focus:ring-transparent dark:focus:ring-transparent caret-slate-500 placeholder:text-slate-300 placeholder:font-monlam placeholder:text-lg
