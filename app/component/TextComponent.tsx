@@ -10,11 +10,11 @@ import sanitizeHtml from "sanitize-html";
 
 function TextComponent({ sourceText, setSourceText, sourceLang }) {
   let { translation, isEnglish } = uselitteraTranlation();
-  const [offset, setOffset] = useState();
   const textRef = useRef(null);
   const caretPos = useRef(0);
   let isEng = sourceLang === "en";
   let isTib = sourceLang === "bo";
+
   function getCaret(el) {
     let caretAt = 0;
     const sel = window.getSelection();
@@ -41,6 +41,7 @@ function TextComponent({ sourceText, setSourceText, sourceLang }) {
     sel.removeAllRanges();
     sel.addRange(range);
   }
+
   useEffect(() => {
     if (sourceText && textRef.current && caretPos.current !== 0) {
       setCaret(textRef.current, caretPos.current);
@@ -72,6 +73,12 @@ function TextComponent({ sourceText, setSourceText, sourceLang }) {
       };
       const html = sanitizeHtml(evt.target.innerHTML, sanitizeConf);
       setSourceText(html);
+
+      // After setting the source text, ensure the cursor is at the correct position
+      const newCaretPos = getCaret(textRef.current);
+      if (caretPos.current !== newCaretPos) {
+        setCaret(textRef.current, caretPos.current);
+      }
     },
     [setSourceText]
   );
@@ -90,10 +97,6 @@ function TextComponent({ sourceText, setSourceText, sourceLang }) {
         autoFocus
         ref={textRef}
         suppressContentEditableWarning
-        suggest="off"
-        autocorrect="off"
-        spellcheck="false"
-        autocomplete="off"
         dangerouslySetInnerHTML={{ __html: sourceText }}
       />
       {sourceText.length === 0 && (
