@@ -26,8 +26,15 @@ function TextComponent({ sourceText, setSourceText, sourceLang }) {
   useEffect(() => {
     if (offset !== undefined) {
       const newRange = document.createRange();
-      if (textRef.current.childNodes[0] === undefined) return;
-      newRange?.setStart(textRef.current.childNodes[0], offset);
+      let text = textRef.current?.childNodes[0];
+      if (
+        textRef.current.childNodes[0] === undefined ||
+        textRef.current.childNodes[0] === null
+      ) {
+        text = document.createTextNode(""); // Create an empty text node
+        textRef.current.appendChild(text);
+      }
+      newRange?.setStart(text, offset);
       const selection = document.getSelection();
       selection?.removeAllRanges();
       selection?.addRange(newRange);
