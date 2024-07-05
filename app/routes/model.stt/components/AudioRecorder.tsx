@@ -1,9 +1,7 @@
-import axios from "axios";
-import { Button, Progress } from "flowbite-react";
-import React, { useRef, useState } from "react";
+import { Button } from "flowbite-react";
+import { useRef, useState } from "react";
 import { LiveAudioVisualizer } from "react-audio-visualize";
 import { BsFillMicFill, BsFillStopFill } from "react-icons/bs";
-import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import { getBrowser } from "~/component/utils/getBrowserDetail";
 import AudioPlayer from "~/routes/model.tts/components/AudioPlayer";
 import RecordingAnimation from "./RecordingAnimation";
@@ -26,7 +24,6 @@ function AudioRecorder({
   const [tempAudioURL, setTempAudioURL] = useState<string | null>(null);
   const [recording, setRecording] = useState(false);
   const [audioChunks, setAudioChunks] = useState([]);
-  const { isTibetan, translation } = uselitteraTranlation();
   const toggleRecording = () => {
     if (!recording) {
       startRecording();
@@ -147,18 +144,6 @@ function AudioRecorder({
         <div className="pt-8 w-full h-full">
           <AudioPlayer audioURL={audioURL} />
         </div>
-      )}
-      {isUploading && (
-        <Progress
-          progress={uploadProgress}
-          progressLabelPosition="inside"
-          className={isTibetan ? "font-monlam" : "font-poppins"}
-          textLabel={translation?.uploading_audio_message}
-          textLabelPosition="outside"
-          size="lg"
-          labelProgress
-          labelText
-        />
       )}
     </div>
   );

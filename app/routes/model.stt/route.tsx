@@ -31,9 +31,10 @@ import axios from "axios";
 import { getUser } from "~/modal/user.server";
 import { InferenceList } from "~/component/InferenceList";
 import HeaderComponent from "~/component/HeaderComponent";
-import { Spinner } from "flowbite-react";
+import { Spinner, Progress } from "flowbite-react";
 import Devider from "~/component/Devider";
 import { ErrorBoundary } from "~/component/ErrorPages";
+import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -81,6 +82,7 @@ export default function Index() {
   const [audioURL, setAudioURL] = useState<string | null>(null);
   const [edit, setEdit] = useState(false);
   const [editText, setEditText] = useState("");
+  const { isTibetan, translation } = uselitteraTranlation();
 
   let likefetcher = useFetcher();
   const editfetcher = useFetcher();
@@ -194,7 +196,7 @@ export default function Index() {
       console.error(`Error uploading file ${file.name}:`, error);
     }
   };
-  let isUploading = uploadProgress > 0 && uploadProgress < 100;
+  let isUploading = uploadProgress > 0 && uploadProgress < 99;
   const handleClose = () => {
     resetFetcher(fetcher);
     resetFetcher(editfetcher);
@@ -223,6 +225,20 @@ export default function Index() {
               className="flex-1  border-b lg:border-b-0 dark:border-[--card-border] border-dark_text-secondary"
             >
               <div className="flex w-full flex-1 flex-col justify-center relative min-h-[150px] lg:min-h-[45vh]">
+                {isUploading && (
+                  <div className="px-3">
+                    <Progress
+                      progress={uploadProgress}
+                      progressLabelPosition="inside"
+                      className={isTibetan ? "font-monlam" : "font-poppins"}
+                      textLabel={translation?.uploading_audio_message}
+                      textLabelPosition="outside"
+                      size="lg"
+                      labelProgress
+                      labelText
+                    />
+                  </div>
+                )}
                 {RecordingSelected && (
                   <AudioRecorder
                     audioURL={audioURL}
