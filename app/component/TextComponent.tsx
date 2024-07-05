@@ -43,7 +43,6 @@ function TextComponent({ sourceText, setSourceText, sourceLang }) {
 
   const onInput = useCallback((evt) => {
     const selection = window.getSelection();
-    console.log("selection", evt.target.innerHTML);
     const sanitizeConf = {
       allowedTags: ["b", "i", "a", "p"],
       allowedAttributes: { a: ["href"] },
@@ -70,6 +69,10 @@ function TextComponent({ sourceText, setSourceText, sourceLang }) {
         autoFocus
         ref={textRef}
         suppressContentEditableWarning
+        suggest="off"
+        autocorrect="off"
+        spellcheck="false"
+        autocomplete="off"
         dangerouslySetInnerHTML={{ __html: sourceText }}
       />
       {sourceText.length === 0 && (
