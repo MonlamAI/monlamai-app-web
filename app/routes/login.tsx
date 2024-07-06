@@ -1,7 +1,6 @@
 import type { LoaderFunction } from "@remix-run/node";
 import { Form, Link, redirect } from "@remix-run/react";
 import { Button } from "flowbite-react";
-import { TypeAnimation } from "react-type-animation";
 import { motion } from "framer-motion";
 import TranslationSwitcher from "~/component/TranslationSwitcher";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
@@ -52,13 +51,6 @@ function login() {
           <h1 className="text-center text-[40px] max-w-[1000px] mb-3 ">
             {translation.monlamAI}
           </h1>
-          <TypeAnimation
-            className="text-2xl md:text-3xl inline-block "
-            sequence={sequence}
-            wrapper="span"
-            speed={50}
-            repeat={Infinity}
-          />
         </div>
       </div>
       <div className="flex grow flex-col gap-10 justify-center items-center rounded-t-[30px] md:rounded-none text-black p-6">

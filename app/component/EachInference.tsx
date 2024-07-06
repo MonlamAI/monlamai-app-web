@@ -33,13 +33,11 @@ export function EachInference({
     );
   }
   return (
-    <div className="bg-white rounded-lg  flex  justify-between items-center">
+    <div className="text-black dark:text-white border-b border-b-neutral-200 py-1 px-2  flex  justify-between items-center">
       <div className="flex gap-2">
         {model === "tts" && <AudioToggle output={outputURL} />}
         <div>
-          <span className="text-gray-800 truncate">
-            {decodeURIComponent(filename)}
-          </span>
+          <span className="truncate">{decodeURIComponent(filename)}</span>
           <span className="text-gray-500 text-xs block">
             {updatedAt ? timeSince(updatedAt) : ""}
           </span>
@@ -51,7 +49,7 @@ export function EachInference({
         ) : isComplete ? (
           <a
             href={outputURL}
-            className="text-blue-500 hover:text-blue-700 transition duration-150 ease-in-out"
+            className="text-secondary-500  hover:text-secondary-700 dark:text-primary-500  dark:hover:text-primary-700 transition duration-150 ease-in-out"
           >
             <FaDownload />
           </a>

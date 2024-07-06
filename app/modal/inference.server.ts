@@ -7,6 +7,7 @@ export async function saveInference(inference: any) {
     data: {
       userId: inference.userId,
       model: inference.model,
+      modelVersion: inference?.modelVersion,
       input: inference.input,
       output: inference.output,
       responseTime: inference.responseTime,
@@ -14,6 +15,7 @@ export async function saveInference(inference: any) {
       outputLang: inference.outputLang,
       type: inference?.type,
       jobId: inference?.jobId,
+      ip: inference?.ip,
     },
   });
 }
@@ -132,7 +134,6 @@ export async function getInferences({
         gte: new Date(startDate), // gte means "greater than or equal to"
         lte: new Date(endDate), // lte means "less than or equal to"
       },
-      model: { not: "ocr" },
     },
   });
 }

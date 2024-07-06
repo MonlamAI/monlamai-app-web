@@ -3,9 +3,10 @@ import { verifyDomain } from "~/component/utils/verifyDomain";
 import { API_ERROR_MESSAGE } from "~/helper/const";
 import { saveInference } from "~/modal/inference.server";
 import { getUserDetail } from "~/services/session.server";
+import getIpAddressByRequest from "~/component/utils/getIpAddress";
 
 export const action: ActionFunction = async ({ request }) => {
-  const startTime = Date.now();
+  let ip = getIpAddressByRequest(request);
   const isDomainAllowed = verifyDomain(request);
   if (!isDomainAllowed) {
     // If the referer is not from the expected domain, return a forbidden response
@@ -25,6 +26,9 @@ export const action: ActionFunction = async ({ request }) => {
       let response = await fetch(API_URL + "/stt/playground", {
         method: "POST",
         body: formData,
+        headers: {
+          "x-api-key": process.env?.API_ACCESS_KEY!,
+        },
       });
       data = await response.json();
     } catch (e) {
@@ -32,9 +36,7 @@ export const action: ActionFunction = async ({ request }) => {
         error: API_ERROR_MESSAGE,
       };
     }
-    const { output } = data;
-    const endTime = Date.now();
-    const responseTime = endTime - startTime;
+    const { output, responseTime } = data;
 
     if (output) {
       const { text } = output;
@@ -45,8 +47,9 @@ export const action: ActionFunction = async ({ request }) => {
         modelVersion: "wav2vec2_run10",
         input: audioURL,
         output: text,
-        responseTime: responseTime,
+        responseTime,
         jobId: data?.id,
+        ip,
       });
 
       return json({ text, inferenceId: inferenceData?.id });
@@ -55,8 +58,6 @@ export const action: ActionFunction = async ({ request }) => {
     }
   }
   if (selectedTool === "file") {
-    const endTime = Date.now();
-    const responseTime = endTime - startTime;
     const inferenceData = await saveInference({
       userId: user?.id,
       model: "stt",
@@ -64,8 +65,9 @@ export const action: ActionFunction = async ({ request }) => {
       type: "file",
       input: audioURL,
       output: "",
-      responseTime: responseTime,
+      responseTime: null,
       jobId: null,
+      ip,
     });
     try {
       let formData = new FormData();

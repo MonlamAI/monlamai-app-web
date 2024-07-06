@@ -28,7 +28,7 @@ const WebcamCapture = ({ setImageUrl }) => {
           facingMode: facingMode,
         }}
       />
-      <div className="flex gap-4 absolute bottom-2">
+      <div className="w-full flex justify-center absolute bottom-2">
         <Button onClick={capture} color="dark" className="rounded-full">
           <TbCapture />
         </Button>

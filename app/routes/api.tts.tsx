@@ -4,11 +4,11 @@ import inputReplace from "~/component/utils/ttsReplace.server";
 import { verifyDomain } from "~/component/utils/verifyDomain";
 import { API_ERROR_MESSAGE } from "~/helper/const";
 import { checkIfInferenceExist, saveInference } from "~/modal/inference.server";
-import { uploadToS3 } from "~/services/uploadToS3.server";
-import { v4 as uuidv4 } from "uuid";
 import { getUserDetail } from "~/services/session.server";
+import getIpAddressByRequest from "~/component/utils/getIpAddress";
 
 export const action: ActionFunction = async ({ request }) => {
+  let ip = getIpAddressByRequest(request);
   const isDomainAllowed = verifyDomain(request);
   if (!isDomainAllowed) {
     // If the referer is not from the expected domain, return a forbidden response
@@ -18,7 +18,6 @@ export const action: ActionFunction = async ({ request }) => {
   let user = await getUserDetail(request);
 
   const formdata = await request.formData();
-  const startTime = Date.now();
   // const voiceType = formdata.get("voice") as string;
   const userInput = formdata.get("sourceText") as string;
   const API_URL = process.env.FILE_SUBMIT_URL as string;
@@ -30,6 +29,9 @@ export const action: ActionFunction = async ({ request }) => {
     let response = await fetch(API_URL + "/tts/playground", {
       method: "POST",
       body: formData,
+      headers: {
+        "x-api-key": process.env?.API_ACCESS_KEY!,
+      },
     });
     data = await response.json();
   } catch (e) {
@@ -37,9 +39,8 @@ export const action: ActionFunction = async ({ request }) => {
       error: API_ERROR_MESSAGE,
     };
   }
-  const { output } = data;
+  const { output, responseTime } = data;
 
-  const responseTime = Date.now() - startTime; // Calculate response time
   const checkifModelExist = await checkIfInferenceExist(
     userInput,
     "tts",
@@ -53,7 +54,8 @@ export const action: ActionFunction = async ({ request }) => {
       modelVersion: "v1",
       input: userInput,
       output,
-      responseTime: responseTime,
+      responseTime,
+      ip,
     });
     return { data: output, inferenceData };
   } else {

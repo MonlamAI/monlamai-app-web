@@ -1,10 +1,16 @@
 import { Button, Dropdown, Tooltip } from "flowbite-react";
-import { FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa";
+import {
+  FaPenAlt,
+  FaPencilAlt,
+  FaRegThumbsDown,
+  FaRegThumbsUp,
+} from "react-icons/fa";
 import { GoPencil } from "react-icons/go";
 import CopyToClipboard from "~/component/CopyToClipboard";
 import ReactionButtons from "~/component/ReactionButtons";
 import ShareLink from "~/component/ShareLink";
 import Speak from "~/component/Speak";
+import { ICON_SIZE } from "~/helper/const";
 import LikeDislike from "~/styles/LikeDislike";
 
 type NonEditModeActionsProps = {
@@ -126,32 +132,25 @@ export function NonEditButtons({
   let isOutputNull = !text || text === "";
   if (isOutputNull || !isSelected) return null;
   const { liked, disliked } = likefetcher.data?.vote || {};
-
+  const ClickEdit = () => {
+    setEditText(text);
+    setEdit(true);
+  };
   return (
     <div
-      className={`flex ${
+      className={`flex  ${
         sourceLang == "en" ? "justify-between" : "justify-end"
-      } p-2`}
+      } py-[8px] px-5 border-t dark:border-t-[--card-border] border-t-dark_text-secondary`}
     >
       {selectedTool !== "File" && sourceLang == "en" && <Speak text={text} />}
-      <div className="flex gap-3 justify-end items-center">
-        <button
-          onClick={() => {
-            setEditText(text);
-            setEdit(true);
-          }}
-          className="flex justify-center items-center"
-        >
-          <GoPencil size={20} />
-        </button>
-        <div className="flex justify-center py-2 gap-3">
-          <ReactionButtons
-            fetcher={likefetcher}
-            output={text}
-            sourceText={sourceText}
-            inferenceId={inferenceId}
-          />
-        </div>
+      <div className="flex gap-3 justify-end items-center p-[4px]">
+        <ReactionButtons
+          fetcher={likefetcher}
+          output={text}
+          sourceText={sourceText}
+          inferenceId={inferenceId}
+          clickEdit={ClickEdit}
+        />
         <CopyToClipboard textToCopy={text} onClick={handleCopy} />
         <ShareLink inferenceId={inferenceId} />
       </div>

@@ -17,6 +17,8 @@ import { getUser } from "~/modal/user.server";
 import { auth } from "~/services/auth.server";
 import { fetchGPTData } from "~/services/fetchGPTData.server";
 import { getUserDetail } from "~/services/session.server";
+import getIpAddressByRequest from "~/component/utils/getIpAddress";
+
 type Lang = "bo" | "en";
 
 export async function translate(
@@ -75,6 +77,7 @@ export async function translate(
 export const action = async ({ request }: ActionFunctionArgs) => {
   let userdata = await getUserDetail(request);
   const isDomainAllowed = verifyDomain(request);
+  let ip = getIpAddressByRequest(request);
   if (!isDomainAllowed) {
     // If the referer is not from the expected domain, return a forbidden response
     return json({ message: "Access forbidden" }, { status: 403 });
@@ -109,6 +112,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
     // if (result.translation) console.log(result.translation);
     // save the data to the database
+
     const inferenceData = await saveInference({
       userId: user?.id,
       model: "mt",
@@ -117,6 +121,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       responseTime: responseTime,
       inputLang: sourceLang,
       outputLang: targetLang,
+      ip,
     });
     return json({
       translation: result,

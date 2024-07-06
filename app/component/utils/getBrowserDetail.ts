@@ -1,5 +1,5 @@
 export function getBrowser() {
-  let userAgent = navigator.userAgent;
+  let userAgent = navigator?.userAgent;
   let browser = "Unknown";
 
   // Detect Chrome

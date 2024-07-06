@@ -2,11 +2,12 @@ import { ActionFunction } from "@remix-run/node";
 import { saveInference } from "~/modal/inference.server";
 import applyReplacements from "./model.ocr/utils/replacements";
 import { getUserDetail } from "~/services/session.server";
-
+import getIpAddressByRequest from "~/component/utils/getIpAddress";
 export let FILE_SERVER_ISSUE_MESSAGE =
-  "File upload is not working temporarily!";
+  "File upload is not working temporarily! Please try again later.";
 
 export const action: ActionFunction = async ({ request }) => {
+  let ip = getIpAddressByRequest(request);
   let formdata = await request.formData();
   let user = await getUserDetail(request);
   let URL_File = process.env.FILE_SUBMIT_URL;
@@ -24,6 +25,9 @@ export const action: ActionFunction = async ({ request }) => {
       let res = await fetch(URL_File + "/ocr/upload", {
         method: "POST",
         body: formData,
+        headers: {
+          "x-api-key": process.env?.API_ACCESS_KEY!,
+        },
       });
 
       data = await res.json();
@@ -34,7 +38,7 @@ export const action: ActionFunction = async ({ request }) => {
       }
     } catch (e) {
       return {
-        error_message: "API not working.",
+        error_message: "API server is not working! Please try again later.",
       };
     }
 
@@ -42,14 +46,16 @@ export const action: ActionFunction = async ({ request }) => {
       userId: user?.id,
       model: "ocr",
       input: imageUrl,
-      type: "file",
+      type: "image",
       output: data.content,
       jobId: null,
+      ip,
+      responseTime: data.responseTime,
     });
-    let with_replacement = applyReplacements(inferenceData.output);
+    // let with_replacement = applyReplacements(inferenceData.output);
 
     return {
-      text: with_replacement,
+      text: inferenceData.output,
       coordinate: show_coordinate ? data?.coordinates : null,
       inferenceId: inferenceData?.id,
     };
@@ -60,9 +66,10 @@ export const action: ActionFunction = async ({ request }) => {
       userId: user?.id,
       model: "ocr",
       input: zip_input_url,
-      type: "file",
+      type: "zip",
       output: "",
       jobId: null,
+      ip,
     });
     try {
       formData.append("zip_input_url", zip_input_url);
@@ -81,15 +88,13 @@ export const action: ActionFunction = async ({ request }) => {
   }
   if (PDFurls) {
     let job;
-    console.log("filename", filename);
-
     let inferenceData = await saveInference({
       userId: user?.id,
       model: "ocr",
       input: PDFurls,
-      type: "file",
+      type: "pdf",
       output: "",
-      jobId: null,
+      ip,
     });
     try {
       let formData = new FormData();

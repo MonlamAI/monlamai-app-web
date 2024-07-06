@@ -2,6 +2,8 @@ import { Button } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { LuCopyCheck } from "react-icons/lu";
 import { LuCopy } from "react-icons/lu";
+import { ICON_SIZE } from "~/helper/const";
+import { ReactionButton } from "./ReactionButtons";
 
 let timer: any;
 
@@ -34,21 +36,23 @@ const CopyToClipboard = ({ textToCopy, onClick }: CopyToClipboardProps) => {
   };
 
   return (
-    <div
-      id="copyBtn"
-      onClick={handleCopy}
-      hidden={textToCopy === ""}
-      title="copy"
-      className="cursor-pointer"
-    >
+    <>
       {!isCopied ? (
-        <div className="text-black dark:text-white">
-          <LuCopy size="20px" />
-        </div>
+        <ReactionButton
+          enabled={true}
+          disabled={false}
+          icon={<LuCopy size={ICON_SIZE} />}
+          onClick={handleCopy}
+        />
       ) : (
-        <LuCopyCheck color="green" size="20px" />
+        <ReactionButton
+          enabled={true}
+          disabled={false}
+          icon={<LuCopyCheck color="green" size={ICON_SIZE} />}
+          onClick={handleCopy}
+        />
       )}
-    </div>
+    </>
   );
 };
 

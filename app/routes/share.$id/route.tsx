@@ -2,14 +2,21 @@ import { LoaderFunction } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import { Button, Card } from "flowbite-react";
 import { FaArrowRightArrowLeft, FaUniregistry } from "react-icons/fa6";
-import Waveform from "~/component/AudioPlayerWithWave";
-import { ShareToolWraper } from "~/component/ToolWraper";
 import { auth } from "~/services/auth.server";
 import { db } from "~/services/db.server";
+import CardComponent from "~/component/Card";
+import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
+import AudioPlayer from "~/routes/model.tts/components/AudioPlayer";
+import HeaderComponent from "~/component/HeaderComponent";
+import Devider from "~/component/Devider";
+import { ClientOnly } from "remix-utils/client-only";
 
 const langLabels = {
   bo: "བོད་སྐད།",
   en: "English",
+  hi: "Hindi",
+  zh: "Chinese",
+  fr: "French",
 };
 
 export const loader: LoaderFunction = async ({ request, params }) => {
@@ -30,37 +37,25 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 function InputCard({ content, className, model }) {
   if (model === "ocr") {
     return (
-      <Card>
-        <div className="w-full">
-          <div className={`md:w-[600px] ${className} mt-4`}>
-            <img
-              src={content}
-              alt="input"
-              className="object-contain h-[35vh]"
-            />
-          </div>
-        </div>
-      </Card>
+      <CardComponent>
+        <img src={content} alt="input" className="object-contain p-3" />
+      </CardComponent>
     );
   }
   if (model === "stt") {
     let audioURL = content;
     return (
-      <Card>
-        <div className="h-full">
-          <div className={`md:w-[600px] ${className} mt-4`}>
-            <Waveform audio={audioURL} />
-          </div>
-        </div>
-      </Card>
+      <CardComponent>
+        <AudioPlayer audioURL={audioURL} />
+      </CardComponent>
     );
   }
   return (
-    <Card>
-      <div className="h-full">
-        <div className={`md:w-[600px] ${className} mt-4`}>{content}</div>
+    <CardComponent>
+      <div className="h-full p-3">
+        <div className={`${className} `}>{content}</div>
       </div>
-    </Card>
+    </CardComponent>
   );
 }
 function OutputCard({ content, className, model }) {
@@ -71,24 +66,17 @@ function OutputCard({ content, className, model }) {
   }
   if (model === "tts") {
     return (
-      <Card>
-        <div className="h-full">
-          <div className={`md:w-[600px] ${className} mt-4`}>
-            <audio controls>
-              <source src={content} type="audio/wav" />
-              Your browser does not support the audio element.
-            </audio>
-          </div>
-        </div>
-      </Card>
+      <CardComponent>
+        <ClientOnly>{() => <AudioPlayer audioURL={content} />}</ClientOnly>
+      </CardComponent>
     );
   }
   return (
-    <Card>
-      <div className="h-full">
-        <div className={`md:w-[600px] ${className} mt-4`}>{text}</div>
+    <CardComponent>
+      <div className="h-full p-3">
+        <div className={`${className} `}>{text}</div>
       </div>
-    </Card>
+    </CardComponent>
   );
 }
 function TranslationRoute() {
@@ -109,67 +97,55 @@ function TranslationRoute() {
   }
   const sourceLang = langDir === "en2bo" ? "en" : "bo";
   const targetLang = langDir === "en2bo" ? "bo" : "en";
+  const modelString = model.toUpperCase();
   return (
-    <div className="flex flex-col z-20">
-      <div className="flex flex-col  md:mx-auto gap-3 justify-between mt-20">
-        <ShareToolWraper title={model?.toUpperCase()}>
-          {model === "mt" && (
-            <LanguageSwitcher sourceLang={sourceLang} targetLang={targetLang} />
-          )}
-          <div className="flex flex-col md:flex-row h-[40vh] gap-3">
-            <InputCard
-              content={data.input}
-              className="font-poppins"
-              model={model}
-            />
-            <OutputCard
-              content={data.output}
-              className="font-monlam"
-              model={model}
-            />
-          </div>
-          <div className="self-end mt-4">
-            <Link to="/">
-              <Button color="blue" type="button">
-                <FaUniregistry className="mr-2" />
-                Try it yourself
-              </Button>
-            </Link>
-          </div>
-        </ShareToolWraper>
+    <div className="w-full flex flex-col z-20 mt-20">
+      <div className="flex flex-col rounded-lg overflow-hidden  border dark:border-[--card-border] border-dark_text-secondary">
+        {model === "mt" ? (
+          <MTHeader sourceLang={sourceLang} targetLang={targetLang} />
+        ) : (
+          <HeaderComponent model={modelString} selectedTool="" />
+        )}
+        <div className="flex flex-1 rounded-sm overflow-hidden flex-col md:flex-row h-auto">
+          <InputCard
+            content={data.input}
+            className="font-poppins"
+            model={model}
+          />
+          <Devider />
+          <OutputCard
+            content={data.output}
+            className="font-monlam"
+            model={model}
+          />
+        </div>
+      </div>
+      <div className="self-end mt-4">
+        <Link to="/">
+          <Button color="blue" type="button">
+            <FaUniregistry className="mr-2" />
+            Try it yourself
+          </Button>
+        </Link>
       </div>
     </div>
   );
 }
 
-function LanguageSwitcher({ sourceLang, targetLang }) {
+function MTHeader({ sourceLang, targetLang }) {
+  const { isTibetan: isTib } = uselitteraTranlation();
+
   return (
-    <div className="w-full text-center">
-      <div className="flex justify-center items-center gap-2">
-        <div
-          className={`inline-block text-lg text-gray-500 dark:text-gray-300 ${
-            sourceLang === "en"
-              ? "font-poppins text-xl"
-              : "text-lg leading-loose font-monlam"
-          }`}
-        >
-          {langLabels[sourceLang]}
-        </div>
-        <button
-          disabled
-          className="group flex items-center justify-center text-center font-medium relative focus:z-10 focus:outline-none text-white bg-primary border border-transparent enabled:hover:bg-primary-hover focus:ring-primary dark:bg-primary dark:enabled:hover:bg-primary-hover dark:focus:ring-primary rounded-full focus:ring-2 px-2"
-        >
-          <FaArrowRightArrowLeft size="20px" />
-        </button>
-        <div
-          className={`inline-block text-lg text-right text-gray-500 dark:text-gray-300 ${
-            sourceLang !== "en"
-              ? "font-poppins text-xl"
-              : "text-lg leading-loose font-monlam"
-          }`}
-        >
-          {langLabels[targetLang]}
-        </div>
+    <div
+      className={`${
+        isTib ? "font-monlam text-base" : "font-poppins"
+      } bg-white border-b py-2.5 px-5 font-normal  dark:border-[--card-border] border-dark_text-secondary  dark:bg-[--card-bg] flex  items-center  md:flex-row gap-3`}
+    >
+      <div className={`flex-1 ${sourceLang === "bo" && " font-monlam"}`}>
+        {langLabels[sourceLang]}
+      </div>
+      <div className={`md:flex-1 " ${targetLang === "bo" && " font-monlam"}`}>
+        {langLabels[targetLang]}
       </div>
     </div>
   );

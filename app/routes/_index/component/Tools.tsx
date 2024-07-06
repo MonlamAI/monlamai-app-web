@@ -1,4 +1,4 @@
-import { Link, NavLink } from "@remix-run/react";
+import { NavLink } from "@remix-run/react";
 import { Card } from "flowbite-react";
 
 import { motion } from "framer-motion";
@@ -11,9 +11,9 @@ type EachProps = {
 
 function Tools() {
   return (
-    <main className="flex h-[80vh] justify-center items-center">
-      <div className="text-center max-w-7xl mx-auto ">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 m-10">
+    <main className="flex lg:h-[80vh] justify-center mb-[80px] pt-[30px] md:mb-[0] md:pt-[100px]">
+      <div className="text-center w-full lg:max-w-7xl mx-auto p-2 md:p-0">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 ">
           {models.map((model, index) => (
             <EachModel key={model.name} model={model} />
           ))}
@@ -28,14 +28,27 @@ function EachModel({ model }: EachProps) {
   const { translation, locale } = uselitteraTranlation();
   const isEnglish = locale === "en_US";
   return (
-    <NavLink prefetch="intent" to={"/model/" + link} unstable_viewTransition>
+    <NavLink
+      prefetch="intent"
+      to={"/model/" + link}
+      className="w-full"
+      unstable_viewTransition
+    >
       {({ isTransitioning }) => (
-        <motion.div whileHover={{ scale: 0.95 }} className="h-full">
+        <motion.div whileHover={{ scale: 0.98 }}>
           <Card
-            className="h-full flex flex-row md:flex-col md:py-3"
+            theme={{
+              root: {
+                base: "flex rounded-lg border border-neutral-200 bg-shadow-md dark:border-[--card-border] bg-neutral dark:bg-[--card-bg]",
+                children: `flex flex-col justify-start items-start gap-2 md:gap-3 ${
+                  isEnglish ? "font-poppins" : "font-monlam"
+                }`,
+              },
+            }}
+            className="h-full w-full  flex flex-col p-6"
             renderImage={() => (
               <div
-                className="flex  justify-center items-center ml-2 md:ml-0 md:py-3  dark:mix-blend-exclusion dark:rounded-lg "
+                className="flex justify-start mb-2 md:mb-3 text-neutral-950 dark:text-primary-500"
                 style={
                   isTransitioning
                     ? {
@@ -48,25 +61,22 @@ function EachModel({ model }: EachProps) {
               </div>
             )}
           >
-            <div
-              className={`flex flex-col justify-around flex-1 md:gap-5 text-[1.25rem] md:text-[2.2rem] 
-        ${isEnglish ? "font-poppins" : "font-monlam"}`}
+            <h2
+              className={`text-light_text-default dark:text-dark_text-default ${
+                isEnglish
+                  ? "text-xl md:text-3xl font-bold"
+                  : "text-xl md:text-2xl  mt-2 md:mt-3"
+              }`}
             >
-              <h2
-                className={`${
-                  isEnglish ? "text-[1rem]" : "text-[1.2rem]"
-                } md:text-[1.4rem]`}
-              >
-                {translation[name]}
-              </h2>
-              <p
-                className={`text-gray-400 ${
-                  isEnglish ? "text-[0.7rem]" : "text-[0.7rem]"
-                } md:text-[0.7rem] mt-3 lg:mt-0 `}
-              >
-                {translation[desc]}
-              </p>
-            </div>
+              {translation[name]}
+            </h2>
+            <p
+              className={`text-light_text-secondary dark:text-neutral-400 ${
+                isEnglish ? "text-base font-normal" : "text-[0.7rem]"
+              }`}
+            >
+              {translation[desc]}
+            </p>
           </Card>
         </motion.div>
       )}

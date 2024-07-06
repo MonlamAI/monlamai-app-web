@@ -1,25 +1,26 @@
 import { Button, Spinner } from "flowbite-react";
-import { FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa";
-import { modelType } from "~/modal/feedback.server";
+import { FaPencilAlt, FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa";
 import React, { useEffect, useRef } from "react";
 import { toast } from "react-toastify";
+import { ICON_SIZE } from "~/helper/const";
+import { FaPencil } from "react-icons/fa6";
 interface ReactionButtonsProps {
   fetcher: any;
   output: string | null;
   sourceText: string | null;
   inferenceId: string;
+  clickEdit: () => void | undefined;
 }
 
 const API_ENDPOINT = "/api/feedback";
 const IDLE_STATE = "idle";
-
-let showMessage = false;
 
 function ReactionButtons({
   fetcher,
   output,
   sourceText,
   inferenceId,
+  clickEdit,
 }: ReactionButtonsProps) {
   if (!inferenceId) return null;
   const { liked, disliked } = fetcher.data?.vote || {};
@@ -28,41 +29,45 @@ function ReactionButtons({
     fetcher.state !== IDLE_STATE && fetcher.formData?.get("action");
 
   const handleReaction = async (action: "liked" | "disliked") => {
+    if (liked || disliked) return;
     if (!output || !sourceText) return;
-    showMessage = true;
     fetcher.submit(
       { inferenceId, action },
       { method: "POST", action: API_ENDPOINT }
     );
   };
 
-  if (isLoading) return <Spinner />;
-  let data = fetcher.data;
-
-  useEffect(() => {
-    let message = data?.message;
-    if (message && message !== "" && showMessage) {
-      toast.success(message, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-      });
-    }
-    showMessage = false;
-  }, [data]);
+  if (isLoading)
+    return (
+      <Spinner
+        size="lg"
+        className={"fill-secondary-300 dark:fill-primary-500"}
+      />
+    );
 
   return (
     <>
-      <ReactionButton
-        enabled={!!output}
-        disabled={liked}
-        icon={<FaRegThumbsUp />}
-        onClick={() => handleReaction("liked")}
-        className="hover:text-green-400 "
-      />
+      {clickEdit !== undefined && (
+        <ReactionButton
+          disabled={!output}
+          enabled={!!output}
+          icon={<FaPencil size={ICON_SIZE} />}
+          onClick={clickEdit}
+          className=""
+        />
+      )}
       <ReactionButton
         enabled={!!output}
         disabled={disliked}
-        icon={<FaRegThumbsDown />}
-        className="hover:text-red-400 "
+        icon={<FaRegThumbsUp size={ICON_SIZE} />}
+        onClick={() => handleReaction("liked")}
+        className={`hover:text-green-400 ${liked && "text-green-400"}`}
+      />
+      <ReactionButton
+        enabled={!!output}
+        disabled={liked}
+        icon={<FaRegThumbsDown size={ICON_SIZE} />}
+        className={`hover:text-red-400 ${disliked && "text-red-400"}`}
         onClick={() => handleReaction("disliked")}
       />
     </>
@@ -77,7 +82,7 @@ type ReactionButtonProps = {
   className?: string;
 };
 
-function ReactionButton({
+export function ReactionButton({
   disabled,
   icon,
   onClick,
@@ -88,13 +93,14 @@ function ReactionButton({
       color="white"
       onClick={onClick}
       className={
-        "focus:outline-none cursor-pointer text-gray-500 disabled:opacity-20 " +
+        "focus:outline-none cursor-pointer text-gray-500  disabled:opacity-20 " +
         className
       }
       disabled={disabled}
     >
       {React.cloneElement(icon, {
-        size: "20px",
+        size: "16px",
+        className: "dark:fill-primary-500",
       })}
     </button>
   );

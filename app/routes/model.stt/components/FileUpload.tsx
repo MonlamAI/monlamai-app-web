@@ -53,7 +53,6 @@ export function HandleAudioFile({ handleFileChange, reset }) {
       "audio/*": [".mp3", ".wav"],
     },
     multiple: false,
-    noClick: true,
   });
   if (myFiles)
     return (
@@ -81,21 +80,15 @@ export function HandleAudioFile({ handleFileChange, reset }) {
             <p>Drop the files here ...</p>
           </>
         ) : (
-          <div className="flex flex-1 flex-col gap-2 hover:border-dotted hover:border-2 hover:border-gray-300">
-            <p className=" flex flex-col justify-center items-center  rounded text-slate-300 p-3">
-              <img
-                className="h-32 "
-                src="//ssl.gstatic.com/translate/drag_and_drop.png"
-              />
+          <div className="flex flex-1 flex-col justify-center items-center gap-2 hover:border-dotted hover:border-2 hover:border-gray-300">
+            <img
+              className="h-32 "
+              src="/img/drag_and_drop.svg"
+              alt="drag and drop"
+            />
+            <p className="rounded text-slate-400 p-3">
               click to select .mp3 or .wav files
             </p>
-            <Button
-              onClick={open}
-              color="gray"
-              className="block max-w-xs text-center m-auto"
-            >
-              open file browser
-            </Button>
           </div>
         )}
       </form>

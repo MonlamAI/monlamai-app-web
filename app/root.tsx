@@ -1,3 +1,4 @@
+import { isRouteErrorResponse, useRouteError } from "@remix-run/react";
 import type {
   LinksFunction,
   LoaderFunction,
@@ -14,13 +15,14 @@ import {
   ScrollRestoration,
   useLoaderData,
   useLocation,
+  useFetcher,
 } from "@remix-run/react";
 import Footer from "./component/layout/Footer";
 import Header from "./component/layout/Header";
 import globalStyle from "./styles/global.css";
 import tailwindStyle from "./styles/tailwind.css";
 import { LitteraProvider } from "@assembless/react-littera";
-import { getUserSession } from "~/services/session.server";
+import { generateCSRFToken, getUserSession } from "~/services/session.server";
 import { getUser } from "./modal/user.server";
 import toastStyle from "react-toastify/dist/ReactToastify.css";
 import feedBucketStyle from "~/styles/feedbucket.css";
@@ -30,27 +32,53 @@ import useLocalStorage from "./component/hooks/useLocaleStorage";
 import FeedBucket from "./component/FeedBucket";
 import LocationComponent from "./component/LocationDetect";
 import unleash from "./services/features.server";
-import ReleaseAnnouncement from "./component/Countdown";
+
+import { saveIpAddress } from "~/modal/log.server";
+import getIpAddressByRequest from "~/component/utils/getIpAddress";
+import { ErrorPage } from "./component/ErrorPages";
+import { sessionStorage } from "~/services/session.server";
+import { AppInstaller } from "~/component/AppInstaller.client";
+import { ClientOnly } from "remix-utils/client-only";
 
 export const loader: LoaderFunction = async ({ request }) => {
   let userdata = await getUserSession(request);
   const feedBucketAccess = process.env.FEEDBUCKET_ACCESS;
   const feedbucketToken = process.env.FEEDBUCKET_TOKEN;
-
+  let ip = getIpAddressByRequest(request);
+  let user = userdata ? await getUser(userdata?._json?.email) : null;
   const isJobEnabled = unleash.isEnabled("isJobEnabled");
   const enable_replacement_mt = unleash.isEnabled("enable_replacement_mt");
+  const show_about_lama = unleash.isEnabled("show_about_lama");
+  const file_upload_enable = unleash.isEnabled("file_upload_enable");
+  const session = await sessionStorage.getSession(
+    request.headers.get("Cookie")
+  );
+  const { csrfToken, storedCsrfTokenExpiry } = await generateCSRFToken(request);
+  session.set("csrfTokenExpiry", storedCsrfTokenExpiry);
+  session.set("csrfToken", csrfToken);
+  let data = await saveIpAddress({ userId: user?.id, ipAddress: ip });
   return json(
     {
-      user: userdata ? await getUser(userdata?._json?.email) : null,
+      user,
       isJobEnabled: isJobEnabled ?? false,
       enable_replacement_mt: enable_replacement_mt ?? false,
+      show_about_lama: show_about_lama ?? false,
+      file_upload_enable: file_upload_enable ?? false,
       feedBucketAccess,
       feedbucketToken,
       AccessKey: process.env?.API_ACCESS_KEY,
+
+      csrfToken,
     },
-    { status: 200, headers: { "cache-control": "no-cache" } }
+    {
+      status: 200,
+      headers: {
+        "Set-Cookie": await sessionStorage.commitSession(session),
+      },
+    }
   );
 };
+
 export const headers = ({ loaderHeaders, parentHeaders }: HeadersArgs) => {
   return { "cache-control": loaderHeaders.get("cache-control") };
 };
@@ -72,8 +100,9 @@ export const links: LinksFunction = () => [
     type: "image/x-icon",
     href: "/favicon.ico",
   },
+  { rel: "manifest", href: "/manifest.webmanifest" },
+  { rel: "apple-touch-icon", href: "/favicon-32x32.png" },
 ];
-
 export const meta: MetaFunction = () => {
   return [
     { title: "སྨོན་ལམ་རིག་ནུས། | Monlam AI | Tibetan Language AI Development" },
@@ -87,6 +116,10 @@ export const meta: MetaFunction = () => {
       content:
         "Monlam, AI , tibetan , dictionary ,translation ,orc , tts, stt ,login,སྨོན་ལམ་, རིག་ནུས།",
     },
+    {
+      name: "apple-mobile-web-app-status-bar",
+      content: "#0757b5",
+    },
   ];
 };
 
@@ -99,13 +132,10 @@ function Document({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body className="flex h-[100dvh] max-w-[1280px] mx-auto inset-0 overflow-y-auto overflow-x-hidden dark:bg-slate-700 dark:text-gray-200">
+      <body className="flex h-[100dvh]  mx-auto inset-0 overflow-y-auto overflow-x-hidden dark:bg-slate-700 dark:text-gray-200">
         {children}
-        <FeedBucket />
-        <Scripts />
-        {process.env.NODE_ENV === "development" && <LiveReload />}
         <ScrollRestoration />
-        {/* {show_feed_bucket && show && <script dangerouslySetInnerHTML={{ __html: feedbucketScript }}></script>} */}
+        {/* {show_feed_bucket && show && <script dangerouslySetInnerHTML={{ __html: feedbucketScript }}></scrip>} */}
       </body>
     </html>
   );
@@ -113,8 +143,6 @@ function Document({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   let { user } = useLoaderData();
-  let location = useLocation();
-  let isSteps = location.pathname.includes("steps");
   let [isDarkMode, setIsDarkMode] = useLocalStorage("Darktheme", false);
   useEffect(() => {
     if (isDarkMode) {
@@ -123,21 +151,46 @@ export default function App() {
       document.documentElement.classList.remove("dark");
     }
   }, []);
-  let showHeader = !location.pathname.includes("/login");
   return (
     <Document>
       <LitteraProvider locales={["en_US", "bo_TI"]}>
         <div className="flex flex-col flex-1">
-          <ReleaseAnnouncement />
-          {showHeader && <Header />}
+          <Header />
+          <ClientOnly fallback={<div>loading</div>}>
+            {() => <AppInstaller />}
+          </ClientOnly>
           {user && <LocationComponent />}
-          <div className="flex-1">
-            <Outlet />
+          <div className="flex-1 flex justify-center pt-4  bg-neutral-50 dark:bg-[--main-bg] ">
+            <div className="flex-1 max-w-[1280px] px-2 ">
+              <Outlet />
+              <FeedBucket />
+              {process.env.NODE_ENV === "development" && <LiveReload />}
+            </div>
           </div>
-          {!isSteps && showHeader && <Footer />}
+
+          <Footer />
         </div>
+        <Scripts />
       </LitteraProvider>
       <ToastContainer />
+    </Document>
+  );
+}
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+  // catch boundary errors
+  if (isRouteErrorResponse(error)) {
+    return (
+      <Document>
+        <ErrorPage error={error} />
+      </Document>
+    );
+  }
+  // if thrown errors
+  return (
+    <Document>
+      <ErrorPage error={error} />
     </Document>
   );
 }

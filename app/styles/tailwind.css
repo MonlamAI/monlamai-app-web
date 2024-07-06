@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+:root{
+  --main-bg: rgb(24,24,24);
+  --card-bg: rgb(32,32,32);
+  --card-border: rgb(40,40,40);
+}
 /* width */
 ::-webkit-scrollbar {
   width: 10px;
@@ -21,4 +26,25 @@
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
+}
+
+
+/* Tailwind CSS doesn't provide utilities for styling input range elements directly */
+.thin-range-slider {
+  appearance: none;
+  width: 100%;
+  height: 1px;
+  background-color: black;
+  border-radius: 4px;
+  outline: none;
+}
+
+
+.thin-range-slider::-ms-track {
+  width: 100%;
+  height: 1px;
+  cursor: pointer;
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
 }

@@ -89,15 +89,50 @@ const InferenceList = () => {
         </Modal>
 
         <select
-          className="border p-2"
+          className="border p-2 dark:bg-transparent dark:text-white "
           value={filterModel}
           onChange={(e) => setFilterModel(e.target.value)}
         >
-          <option value="">All Models</option>
-          <option value="mt">MT</option>
-          <option value="stt">STT</option>
-          <option value="tts">TTS</option>
-          <option value="ocr">OCR</option>
+          <option
+            value=""
+            style={{
+              color: "gray",
+            }}
+          >
+            All Models
+          </option>
+          <option
+            value="mt"
+            style={{
+              color: "gray",
+            }}
+          >
+            MT
+          </option>
+          <option
+            value="stt"
+            style={{
+              color: "gray",
+            }}
+          >
+            STT
+          </option>
+          <option
+            value="tts"
+            style={{
+              color: "gray",
+            }}
+          >
+            TTS
+          </option>
+          <option
+            value="ocr"
+            style={{
+              color: "gray",
+            }}
+          >
+            OCR
+          </option>
         </select>
         <button
           onClick={downloadCSV}
@@ -108,7 +143,10 @@ const InferenceList = () => {
       </div>
       {isLoading && (
         <div>
-          <Spinner />
+          <Spinner
+            size="lg"
+            className={"fill-secondary-300 dark:fill-primary-500"}
+          />
         </div>
       )}
 
@@ -121,11 +159,16 @@ const InferenceList = () => {
             <p>Model: {inference.model}</p>
             <p>Version: {inference.modelVersion}</p>
             <div className="flex">
-              Input:
-              <CheckOutput data={inference.input} />
+              Input:{" "}
+              <CheckInput
+                data={inference.input}
+                model={inference.model}
+                inferenceType={inference.type}
+              />
             </div>
             <div className="flex">
-              Output: <CheckOutput data={inference.output} />
+              Output:{" "}
+              <CheckOutput data={inference.output} model={inference.model} />
             </div>
             {inference?.inputLang && (
               <div>
@@ -164,18 +207,33 @@ const Modal = ({ isOpen, onClose, children }) => {
   );
 };
 
-const CheckOutput = ({ data }: any) => {
-  const isAudioUrl = (url: string) => {
-    return /(http[s]?:\/\/.*\.(?:mp3|wav|ogg|m4a))$/i.test(url);
-  };
-  if (!isAudioUrl(data)) {
-    return <span>{data}</span>;
+const CheckInput = ({ data, model, inferenceType }: any) => {
+  const isAudioUrl = model === "stt";
+  const isOcr = model === "ocr";
+  const isImage = inferenceType === "image";
+  if (isOcr && isImage) {
+    return <img src={data} alt="ocr" />;
   }
-  return (
-    <audio controls src={data}>
-      Your browser does not support the audio element.
-    </audio>
-  );
+  if (isAudioUrl) {
+    return (
+      <audio controls src={data}>
+        Your browser does not support the audio element.
+      </audio>
+    );
+  }
+  return <span>{data}</span>;
+};
+
+const CheckOutput = ({ data, model }: any) => {
+  const isAudioUrl = model === "tts";
+  if (isAudioUrl) {
+    return (
+      <audio controls src={data}>
+        Your browser does not support the audio element.
+      </audio>
+    );
+  }
+  return <span>{data}</span>;
 };
 
 const getValidDate = (dateString, defaultDate) => {

@@ -45,6 +45,6 @@ const auth0Strategy = new Auth0Strategy(
 
     return profile;
   }
-);
 
+);
 auth.use(auth0Strategy);
