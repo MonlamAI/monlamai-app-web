@@ -128,7 +128,7 @@ function Document({ children }: { children: React.ReactNode }) {
     <html lang="en">
       <head>
         <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />    <link rel="apple-touch-icon" href="img/logo192web.png">
+        <meta name="viewport" content="width=device-width, initial-scale=1" />    <link rel="apple-touch-icon" href="img/logo192web.png"/>
     <link rel="apple-touch-startup-image" href="img/logo1280x720web.png"/>
     <link rel="apple-touch-startup-image" href="img/logo720x1280web.png"/>
     <meta name="apple-mobile-web-app-capable" content="yes"/>
