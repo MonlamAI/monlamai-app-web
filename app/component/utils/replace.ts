@@ -1340,7 +1340,8 @@ export function bo_en_english_replaces(text: string) {
   result = result.replaceAll("སྡིངས་ཆ", "གར་སྟེགས");
   result = result.replaceAll("ཨེམ་ཆི་བློ་བཟང་སངས་རྒྱས", "འབུམ་རམས་པ་བློ་བཟང་སེངྐེ");
   result = result.replaceAll("དྲུང་ཡིག་དབྱངས་ཅན་རིན་པོ་ཆེ", "དྲུང་ཡིག་ཡང་སྟེང་རིན་པོ་ཆེ");
-  //སྡིངས་ཆ་རྫོད་པ་
+  result = result.replaceAll("སི་ཟུར", "སྲིད་ཟུར");
+  //སི་ཟུར་
 
   return result;
 }
