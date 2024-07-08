@@ -157,6 +157,7 @@ export function en_bo_english_replaces(text: string) {
   result = result.replaceAll(
     /\bSCOTUS\b/g,
     "Supreme Court of the United States"
+    
   );
   result = result.replaceAll(/\bLA\b/g, "Los Angeles");
   result = result.replaceAll(/\bNYC\b/g, "New York City");
@@ -1296,7 +1297,8 @@ export function en_bo_tibetan_replaces(text: string) {
   result = result.replaceAll("མི་དམངས་ཏང་གི་", "མི་དམངས་ཚོགས་པའི་");
   result = result.replaceAll("མི་དམངས་ཏང་གིས", "མི་དམངས་ཚོགས་པས་");
   result = result.replaceAll("བོ་སི་ཊོན", "བྷོ་སི་ཊོན");
-  //བོ་སི་ཊོན
+  result = result.replaceAll("མགྲོན་གཉེར་ཆེ་མོ་གཉིས་སུ་", "སྐུ་མགྲོན་གཙོ་བོར་");
+  //མགྲོན་གཉེར་ཆེ་མོ་གཉིས་སུ་
 
   result = result.replaceAll(
     "༸ཏཱ་ལའི་བླ་མའི་དགོངས་པ་རྫོགས་ཚུལ་",
