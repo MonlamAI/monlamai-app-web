@@ -39,6 +39,7 @@ import { ErrorPage } from "./component/ErrorPages";
 import { sessionStorage } from "~/services/session.server";
 import { AppInstaller } from "~/component/AppInstaller.client";
 import { ClientOnly } from "remix-utils/client-only";
+import useDetectPWA from "~/component/hooks/useDetectPWA";
 
 export const loader: LoaderFunction = async ({ request }) => {
   let userdata = await getUserSession(request);
@@ -128,12 +129,19 @@ function Document({ children }: { children: React.ReactNode }) {
     <html lang="en">
       <head>
         <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />    <link rel="apple-touch-icon" href="img/logo192web.png"/>
-    <link rel="apple-touch-startup-image" href="img/logo1280x720web.png"/>
-    <link rel="apple-touch-startup-image" href="img/logo720x1280web.png"/>
-    <meta name="apple-mobile-web-app-capable" content="yes"/>
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
-    <meta name="apple-mobile-web-app-title" content="Monlam Chat"/>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1"
+        />{" "}
+        <link rel="apple-touch-icon" href="img/logo192web.png" />
+        <link rel="apple-touch-startup-image" href="img/logo1280x720web.png" />
+        <link rel="apple-touch-startup-image" href="img/logo720x1280web.png" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta
+          name="apple-mobile-web-app-status-bar-style"
+          content="black-translucent"
+        />
+        <meta name="apple-mobile-web-app-title" content="Monlam Chat" />
         <Meta />
         <Links />
       </head>
@@ -149,6 +157,7 @@ function Document({ children }: { children: React.ReactNode }) {
 export default function App() {
   let { user } = useLoaderData();
   let [isDarkMode, setIsDarkMode] = useLocalStorage("Darktheme", false);
+  const isPWA = useDetectPWA();
   useEffect(() => {
     if (isDarkMode) {
       document.documentElement.classList.add("dark");
@@ -156,6 +165,14 @@ export default function App() {
       document.documentElement.classList.remove("dark");
     }
   }, []);
+
+  // useEffect(() => {
+  //   if (isPWA) {
+  //     console.log(isPWA);
+  //     //set user pwa true in db
+  //   }
+  // }, [isPWA]);
+
   return (
     <Document>
       <LitteraProvider locales={["en_US", "bo_TI"]}>

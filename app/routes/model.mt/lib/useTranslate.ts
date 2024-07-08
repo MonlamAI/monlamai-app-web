@@ -31,8 +31,11 @@ function handleEventStream(
       let data = JSON.parse(event.data);
 
       if (data?.generated_text) {
-        let text = data.generated_text;
-        onData(text);
+        let text = data?.generated_text;
+        let replaced_text = enable_replacement_mt
+          ? en_bo_tibetan_replaces(text)
+          : text;
+        onData(replaced_text);
         eventSource.close();
         resolve(); // Resolve the promise when data is received
       } else {
@@ -40,9 +43,7 @@ function handleEventStream(
         if (content) {
           onData((p) => {
             let newChunk = p + content.replace("</s>", "");
-            return enable_replacement_mt
-              ? en_bo_tibetan_replaces(newChunk)
-              : newChunk;
+            return newChunk;
           });
         }
       }

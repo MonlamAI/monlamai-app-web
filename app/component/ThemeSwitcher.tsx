@@ -2,7 +2,7 @@ import { ICON_SIZE } from "~/helper/const";
 import uselitteraTranlation from "./hooks/useLitteraTranslation";
 import useLocalStorage from "./hooks/useLocaleStorage";
 import { MdOutlineLightMode, MdDarkMode } from "react-icons/md";
-function DarkModeSwitcher() {
+function ThemeSwitcher() {
   let [isDarkMode, setIsDarkMode] = useLocalStorage("Darktheme", false);
   const { translation, isTibetan } = uselitteraTranlation();
 
@@ -42,4 +42,4 @@ function DarkModeSwitcher() {
   );
 }
 
-export default DarkModeSwitcher;
+export default ThemeSwitcher;
