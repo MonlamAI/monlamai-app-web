@@ -1336,8 +1336,9 @@ export function en_bo_tibetan_replaces(text: string) {
   result = result.replaceAll("བཞི་བཅུ་ང་གསུམ", "བཞི་བཅུ་ཞེ་གསུམ");
   result = result.replaceAll("གྷོ་ར་ཛི་ར་ཐི་", "གྷུ་ཇི་ར་ཐི་");
   result = result.replaceAll("སྲིད་བློན་ནེ་རཱལ་གྱིས་", "སྲིད་བློན་ནེ་རེན་དྷར་མོ་དྷིས་ཡིས་");
+  result = result.replaceAll("ཏཱ་ལའི་བླ་མས་", "");
 
-  //ཇོ་བྷེ་ཌེན
+  //ཏཱ་ལའི་བླ་མས་
 
   result = result.replaceAll(/(\d+)([^\d]+)/g, "$1 $2");
   result = result.replaceAll(/([\u0F20-\u0F33]+)([^\u0F20-\u0F33]+)/g, "$1 $2");
