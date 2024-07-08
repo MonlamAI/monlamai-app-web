@@ -157,7 +157,6 @@ export function en_bo_english_replaces(text: string) {
   result = result.replaceAll(
     /\bSCOTUS\b/g,
     "Supreme Court of the United States"
-    
   );
   result = result.replaceAll(/\bLA\b/g, "Los Angeles");
   result = result.replaceAll(/\bNYC\b/g, "New York City");
@@ -351,6 +350,22 @@ export function en_bo_tibetan_replaces(text: string) {
   if (result.endsWith("་")) {
     result = result.slice(0, -1) + "།";
   }
+
+  result = result.replaceAll("སྡིངས་ཆ་རྫོད་པ་", "སྤྱི་ཚོགས་དཀྲུགས་པ་");
+  result = result.replaceAll("རྫོད་པ", "སྐྱོན་གཏོང་བ");
+  result = result.replaceAll("བརྫད་པ", "སྐྱོན་བཏང་བ");
+  result = result.replaceAll("སྡིངས་ཆ", "གར་སྟེགས");
+  result = result.replaceAll(
+    "ཨེམ་ཆི་བློ་བཟང་སངས་རྒྱས",
+    "འབུམ་རམས་པ་བློ་བཟང་སེངྒེ"
+  );
+  result = result.replaceAll(
+    "དྲུང་ཡིག་དབྱངས་ཅན་རིན་པོ་ཆེ",
+    "དྲུང་ཡིག་ཡང་སྟེང་རིན་པོ་ཆེ"
+  );
+  result = result.replaceAll("སི་ཟུར", "སྲིད་ཟུར");
+  //སི་ཟུར་
+
   // Full sentence replacement
   if (result === "ལྟོས།") {
     return "ལྟ་བ།";
@@ -1337,14 +1352,6 @@ export function bo_en_english_replaces(text: string) {
     "Tibet was not pure independence",
     "Tibet was pure independence"
   );
-  result = result.replaceAll("སྡིངས་ཆ་རྫོད་པ་", "སྤྱི་ཚོགས་དཀྲུགས་པ་");
-  result = result.replaceAll("རྫོད་པ", "སྐྱོན་གཏོང་བ");
-  result = result.replaceAll("བརྫད་པ", "སྐྱོན་བཏང་བ");
-  result = result.replaceAll("སྡིངས་ཆ", "གར་སྟེགས");
-  result = result.replaceAll("ཨེམ་ཆི་བློ་བཟང་སངས་རྒྱས", "འབུམ་རམས་པ་བློ་བཟང་སེངྒེ");
-  result = result.replaceAll("དྲུང་ཡིག་དབྱངས་ཅན་རིན་པོ་ཆེ", "དྲུང་ཡིག་ཡང་སྟེང་རིན་པོ་ཆེ");
-  result = result.replaceAll("སི་ཟུར", "སྲིད་ཟུར");
-  //སི་ཟུར་
 
   return result;
 }
