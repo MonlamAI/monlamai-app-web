@@ -39,7 +39,7 @@ export async function getUserDetail(request: Request) {
 
 export async function generateCSRFToken(request: Request) {
   let secretKey = process.env.API_ACCESS_KEY;
-  const token = await jwt.sign({}, secretKey, { expiresIn: "1h" });
+  const token = await jwt.sign({}, secretKey, { expiresIn: "5m" });
   return token;
 }
 
