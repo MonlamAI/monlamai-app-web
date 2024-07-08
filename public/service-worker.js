@@ -6,16 +6,4 @@ self.addEventListener("install", (evt) => {});
 
 self.addEventListener("activate", (evt) => {});
 
-self.addEventListener("fetch", (event) => {
-  event.respondWith(
-    (async function () {
-      const modifiedRequest = new Request(event.request, {
-        headers: new Headers({
-          "X-PWA": "true",
-          ...Object.fromEntries(event.request.headers.entries()),
-        }),
-      });
-      return fetch(modifiedRequest);
-    })()
-  );
-});
+self.addEventListener("fetch", (event) => {});

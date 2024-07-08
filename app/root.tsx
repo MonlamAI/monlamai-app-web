@@ -3,6 +3,7 @@ import type {
   LinksFunction,
   LoaderFunction,
   HeadersArgs,
+  ActionFunction,
 } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import {
@@ -40,6 +41,7 @@ import { sessionStorage } from "~/services/session.server";
 import { AppInstaller } from "~/component/AppInstaller.client";
 import { ClientOnly } from "remix-utils/client-only";
 import useDetectPWA from "~/component/hooks/useDetectPWA";
+import { update_pwa } from "~/modal/user.server";
 
 export const loader: LoaderFunction = async ({ request }) => {
   let userdata = await getUserSession(request);
@@ -78,6 +80,17 @@ export const loader: LoaderFunction = async ({ request }) => {
       },
     }
   );
+};
+
+export const action: ActionFunction = async ({ request }) => {
+  let formdata = await request.formData();
+  let userId = formdata.get("userId") as string;
+  let isPWA = formdata.get("isPWA") as string;
+  if (userId && isPWA) {
+    let data = update_pwa(userId, isPWA);
+    return data;
+  }
+  return null;
 };
 
 export const headers = ({ loaderHeaders, parentHeaders }: HeadersArgs) => {
@@ -158,6 +171,7 @@ export default function App() {
   let { user } = useLoaderData();
   let [isDarkMode, setIsDarkMode] = useLocalStorage("Darktheme", false);
   const isPWA = useDetectPWA();
+  const fetcher = useFetcher();
   useEffect(() => {
     if (isDarkMode) {
       document.documentElement.classList.add("dark");
@@ -166,12 +180,11 @@ export default function App() {
     }
   }, []);
 
-  // useEffect(() => {
-  //   if (isPWA) {
-  //     console.log(isPWA);
-  //     //set user pwa true in db
-  //   }
-  // }, [isPWA]);
+  useEffect(() => {
+    if (isPWA && user) {
+      fetcher.submit({ userId: user?.id, isPWA }, { method: "POST" });
+    }
+  }, [isPWA]);
 
   return (
     <Document>
