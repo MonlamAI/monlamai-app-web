@@ -364,6 +364,7 @@ export function en_bo_tibetan_replaces(text: string) {
     "དྲུང་ཡིག་ཡང་སྟེང་རིན་པོ་ཆེ"
   );
   result = result.replaceAll("སི་ཟུར", "སྲིད་ཟུར");
+  result = result.replaceAll("མགྲོན་གཉེར་ཆེ་མོ", "མགྲོན་གཉེར་ཆེན་མོ");
   //སི་ཟུར་
 
   // Full sentence replacement
