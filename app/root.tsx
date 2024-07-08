@@ -42,7 +42,6 @@ import { AppInstaller } from "~/component/AppInstaller.client";
 import { ClientOnly } from "remix-utils/client-only";
 import useDetectPWA from "~/component/hooks/useDetectPWA";
 import { update_pwa } from "~/modal/user.server";
-
 export const loader: LoaderFunction = async ({ request }) => {
   let userdata = await getUserSession(request);
   const feedBucketAccess = process.env.FEEDBUCKET_ACCESS;
@@ -53,12 +52,8 @@ export const loader: LoaderFunction = async ({ request }) => {
   const enable_replacement_mt = unleash.isEnabled("enable_replacement_mt");
   const show_about_lama = unleash.isEnabled("show_about_lama");
   const file_upload_enable = unleash.isEnabled("file_upload_enable");
-  const session = await sessionStorage.getSession(
-    request.headers.get("Cookie")
-  );
-  const { csrfToken, storedCsrfTokenExpiry } = await generateCSRFToken(request);
-  session.set("csrfTokenExpiry", storedCsrfTokenExpiry);
-  session.set("csrfToken", csrfToken);
+
+  const csrfToken = await generateCSRFToken(request);
   let data = await saveIpAddress({ userId: user?.id, ipAddress: ip });
   return json(
     {
@@ -70,14 +65,10 @@ export const loader: LoaderFunction = async ({ request }) => {
       feedBucketAccess,
       feedbucketToken,
       AccessKey: process.env?.API_ACCESS_KEY,
-
       csrfToken,
     },
     {
       status: 200,
-      headers: {
-        "Set-Cookie": await sessionStorage.commitSession(session),
-      },
     }
   );
 };

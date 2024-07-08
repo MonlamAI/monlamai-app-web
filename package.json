@@ -38,6 +38,7 @@
     "franc-min": "^6.2.0",
     "get-orientation": "^1.1.2",
     "isbot": "^3.6.8",
+    "jsonwebtoken": "^9.0.2",
     "konva": "^9.3.6",
     "languagedetect": "^2.0.0",
     "leaflet": "^1.9.4",
