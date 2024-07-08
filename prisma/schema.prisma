@@ -23,6 +23,7 @@ model User {
   createdAt DateTime    @default(now())
   updatedAt DateTime    @default(now()) @updatedAt
   UserLog   UserLog[]
+  PWA_user  Boolean     @default(false)
 }
 
 model UserLog {
