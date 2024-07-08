@@ -418,7 +418,6 @@ export function en_bo_tibetan_replaces(text: string) {
   result = result.replaceAll("ལ་ངེས་ཚིག་མི་སྟེར་བ", "");
   result = result.replaceAll("<unk>", "");
   result = result.replaceAll("[DONE]", "");
-  result = result.replaceAll("༸ཏཱ་ལའི་བླ་མས་", "ཁོང་གིས");
   result = result.replaceAll("སྐེ་རགས་དང་རྒྱ་ལམ", "རྒྱུད་གཅིག་ལམ་གཅིག");
   result = result.replaceAll("སྐེ་རགས་དང་རྒྱ་ལམ་གྱི", "རྒྱུད་གཅིག་ལམ་གཅིག་གི");
   result = result.replaceAll("Beltདང་ལམ་གྱི", "རྒྱུད་གཅིག་ལམ་གཅིག་གི");
@@ -1168,7 +1167,6 @@ export function en_bo_tibetan_replaces(text: string) {
   result = result.replaceAll("ལུང་དུ་མ་བསྟན་པ་", "ལུང་དུ་མ་བསྟན་པ་");
   //
   result = result.replaceAll("ཅིག་གྱི", "ཅིག་གི");
-  result = result.replaceAll("ཏཱ་ལའི་བླ་མ་མཆོག་གིས", "ཁོང་གིས");
   result = result.replaceAll("བོད་དབུས་ཤར་ཁུལ", "དབུས་ཤར་ཁུལ");
   result = result.replaceAll("ཨིན་ཇིའི་རྒྱལ་ཁབ་མང་པོ", "རྒྱལ་ཁབ་མང་པོ");
   result = result.replaceAll("ཨིན་ཅི་གྲོས་ཚོགས", "གྲོས་ཚོགས");
@@ -1187,7 +1185,6 @@ export function en_bo_tibetan_replaces(text: string) {
   result = result.replaceAll("ཕྱི་ལོ་ ༢༠༠༨ ལོར", "");
   result = result.replaceAll("ཕྱི་ལོ་ ༢༠༠༨ ལོའི་", "");
   result = result.replaceAll("ཕྱི་ལོ་༢༠༠༨ ལོའི་", "");
-  result = result.replaceAll("༸ཏཱ་ལའི་བླ་མ།", "");
   result = result.replaceAll("ངོས་ཀྱིས་", "ངས་");
   result = result.replaceAll("ངོས་ཀྱི་", "ང་རང་གི་");
   result = result.replaceAll("ལམ་སྲང་དང་སྐ་རགས", "རྒྱུད་གཅིག་ལམ་གཅིག");
@@ -1195,7 +1192,6 @@ export function en_bo_tibetan_replaces(text: string) {
   result = result.replaceAll("ཨིན་ཅི་", "");
   result = result.replaceAll("གུ་གལ་", "གྷུས་གྷལ");
   result = result.replaceAll("མེད་མིན་གྱི་", "ཡོད་མེད་ཀྱི་");
-  result = result.replaceAll("ཏཱ་ལའི་བླ་མ་མཆོག་གིས", "ཁོང་གིས");
   result = result.replaceAll("བོད་དབུས་ཤར་ཁུལ", "དབུས་ཤར་ཁུལ");
   result = result.replaceAll("ཨིན་ཇིའི་རྒྱལ་ཁབ་མང་པོ", "རྒྱལ་ཁབ་མང་པོ");
   result = result.replaceAll("ཨིན་ཅི་གྲོས་ཚོགས", "གྲོས་ཚོགས");
@@ -1206,7 +1202,6 @@ export function en_bo_tibetan_replaces(text: string) {
   result = result.replaceAll("ཕྱི་ལོ་ ༢༠༠༨ ལོའི་", "");
   result = result.replaceAll("ཕྱི་ལོ་༢༠༠༨ ལོའི་", "");
   result = result.replaceAll("ཕྱི་ལོ་༡༩༥༩ ལོའི་", "");
-  result = result.replaceAll("༸ཏཱ་ལའི་བླ་མ།", "");
   result = result.replaceAll("ངོས་ཀྱིས་", "ངས་");
   result = result.replaceAll("ངོས་ཀྱི་", "ང་རང་གི་");
   result = result.replaceAll("ལམ་སྲང་དང་སྐ་རགས", "རྒྱུད་གཅིག་ལམ་གཅིག");
@@ -1236,7 +1231,7 @@ export function en_bo_tibetan_replaces(text: string) {
     "༸ཏཱ་ལའི་བླ་མ་སྐུ་ཕྲེང་བཅུ་བཞི་པ་ཆེན་པོ། ཕྱི་ལོ་༡༩༨༩ ལོའི་ཟླ་༡༠ ཚེས་༡༥ ཉིན།",
     ""
   );
-  //༸ཏཱ་ལའི་བླ་མ་སྐུ་ཕྲེང་བཅུ་བཞི་པ་ཆེན་པོ། ཕྱི་ལོ་༡༩༨༩ ལོའི་ཟླ་༡༠ ཚེས་༡༥ ཉིན།
+
   result = result.replaceAll("་མཉན་དུ་ཡོད་པ་ན་", "་མཉན་ཡོད་དུ་");
   result = result.replaceAll(
     "ཆེན་པོ་མ་ངེས་པ་དང་ཐབས་ཅིག་",
@@ -1253,11 +1248,7 @@ export function en_bo_tibetan_replaces(text: string) {
   result = result.replaceAll("སྒ་ཟ", "སྒ་ཛ");
   result = result.replaceAll("སྒ་ས", "སྒ་ཛ");
   result = result.replaceAll("དགྲང་ངར་ཆེ་བ", "ནར་འགྱངས་ཆེ་བ");
-  result = result.replaceAll(
-    "༸ཏཱ་ལའི་བླ་མ་སྐུ་ཕྲེང་བཅུ་བཞི་པ་ཆེན་པོ། ཕྱི་ལོ་༡༩༨༩ ལོའི་ཟླ་༡༠ ཚེས་༡༥ ཉིན།",
-    ""
-  );
-  //༸ཏཱ་ལའི་བླ་མ་སྐུ་ཕྲེང་བཅུ་བཞི་པ་ཆེན་པོ། ཕྱི་ལོ་༡༩༨༩ ལོའི་ཟླ་༡༠ ཚེས་༡༥ ཉིན།
+
   result = result.replaceAll("་མཉན་དུ་ཡོད་པ་ན་", "་མཉན་ཡོད་དུ་");
   result = result.replaceAll(
     "ཆེན་པོ་མ་ངེས་པ་དང་ཐབས་ཅིག་",
@@ -1335,11 +1326,18 @@ export function en_bo_tibetan_replaces(text: string) {
   result = result.replaceAll("དམར་ཤོག་ཚོགས་པ", "ཚོགས་པ་");
   result = result.replaceAll("དབྱི་ཐ་ལི", "ཨི་ཊ་ལི");
   result = result.replaceAll("་ཏང་", "་ཚོགས་པ་");
+  result = result.replaceAll("བྷེ་ཌེན", "བྷ་ཌེན");
 
-  //རྙིང་ཞེན་ཏང་
+  //ཇོ་བྷེ་ཌེན
 
   result = result.replaceAll(/(\d+)([^\d]+)/g, "$1 $2");
   result = result.replaceAll(/([\u0F20-\u0F33]+)([^\u0F20-\u0F33]+)/g, "$1 $2");
+
+
+
+
+
+  
   return result;
 }
 
