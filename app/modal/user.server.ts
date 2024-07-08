@@ -62,6 +62,19 @@ export async function update_location(
   });
   return user;
 }
+
+export async function update_pwa(userId: string, isPWA: string) {
+  let user = await db.user.update({
+    where: {
+      id: parseInt(userId),
+    },
+    data: {
+      PWA_user: isPWA === "true" ? true : false,
+    },
+  });
+  return user;
+}
+
 export async function getUsersCount() {
   //get total user count
   const userCounts = await db.user.groupBy({
