@@ -80,11 +80,14 @@ function Header() {
             <div onClick={() => setShowMenu((p) => !p)} className="px-3 pt-3 ">
               <AboutLink />
             </div>
-            <Devider />
-            <div onClick={() => setShowMenu((p) => !p)} className="px-3 ">
-              {data?.isJobEnabled && <JobLink />}
-            </div>
-
+            {data?.isJobEnabled && (
+              <>
+                <Devider />
+                <div onClick={() => setShowMenu((p) => !p)} className="px-3 ">
+                  <JobLink />
+                </div>
+              </>
+            )}
             <Devider />
             <div onClick={() => setShowMenu((p) => !p)} className="px-3">
               <ThemeSwitcher />
