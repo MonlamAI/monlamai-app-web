@@ -42,7 +42,6 @@ import { AppInstaller } from "~/component/AppInstaller.client";
 import { ClientOnly } from "remix-utils/client-only";
 import useDetectPWA from "~/component/hooks/useDetectPWA";
 import { update_pwa } from "~/modal/user.server";
-import { update_pwa_log } from "./modal/log.server";
 export const loader: LoaderFunction = async ({ request }) => {
   let userdata = await getUserSession(request);
   const feedBucketAccess = process.env.FEEDBUCKET_ACCESS;
@@ -77,13 +76,14 @@ export const action: ActionFunction = async ({ request }) => {
   let formdata = await request.formData();
   let userId = formdata.get("userId") as string;
   let isPWA = formdata.get("isPWA") as string;
+  let device = formdata.get("device") as string;
+
   let ip = getIpAddressByRequest(request);
-  if (userId && isPWA) {
+  if (!!userId) {
     let data = update_pwa(userId, isPWA);
-    saveIpAddress({ userId, ipAddress: ip, isPWA });
-    return data;
   }
-  return null;
+  saveIpAddress({ userId, ipAddress: ip, isPWA, device });
+  return "data";
 };
 
 export const headers = ({ loaderHeaders, parentHeaders }: HeadersArgs) => {
@@ -160,6 +160,36 @@ function Document({ children }: { children: React.ReactNode }) {
   );
 }
 
+const getDeviceInfo = () => {
+  const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+  const isStandalone =
+    window.matchMedia("(display-mode: standalone)").matches ||
+    window.navigator.standalone;
+  const isPWA = isStandalone ? "PWA" : "Browser";
+
+  const isAndroid = /android/i.test(userAgent) && !/windows/i.test(userAgent);
+  const isIOS = /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
+  const isMac = /Macintosh|MacIntel|MacPPC|Mac68K/.test(userAgent) && !isIOS;
+  const isWindows = /Windows/.test(userAgent);
+
+  let deviceType = "Desktop";
+  if (isAndroid) {
+    deviceType = "Android";
+  } else if (isIOS) {
+    deviceType = "iOS";
+  } else if (isMac) {
+    deviceType = "Mac";
+  } else if (isWindows) {
+    deviceType = "Windows";
+  }
+
+  return {
+    userAgent,
+    isPWA,
+    deviceType,
+  };
+};
+
 export default function App() {
   let { user } = useLoaderData();
   let [isDarkMode, setIsDarkMode] = useLocalStorage("Darktheme", false);
@@ -174,10 +204,9 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    if (isPWA && user) {
-      fetcher.submit({ userId: user?.id, isPWA }, { method: "POST" });
-    }
-  }, [isPWA]);
+    let { deviceType: device } = getDeviceInfo();
+    fetcher.submit({ userId: user?.id, isPWA, device }, { method: "POST" });
+  }, []);
 
   return (
     <Document>

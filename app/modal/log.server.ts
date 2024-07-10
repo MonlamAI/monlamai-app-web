@@ -1,6 +1,6 @@
 import { db } from "~/services/db.server";
 import { subMinutes, isBefore } from "date-fns";
-export async function saveIpAddress({ userId, ipAddress, isPWA }) {
+export async function saveIpAddress({ userId, ipAddress, isPWA, device }) {
   try {
     // Fetch the most recent log entry for the user
     if (userId) {
@@ -24,6 +24,7 @@ export async function saveIpAddress({ userId, ipAddress, isPWA }) {
         userId: parseInt(userId),
         ip: ipAddress,
         PWA_user: isPWA === "true" ? true : false,
+        device,
       },
     });
 
