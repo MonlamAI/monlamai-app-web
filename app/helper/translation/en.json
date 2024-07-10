@@ -68,5 +68,6 @@
   "detect": "Detect Language",
   "duration": "Duration",
   "status": "Status",
-  "Install_message": "Install our app for smooth experience"
+  "install": "Install",
+  "install_message": "Install our app for a smoother experience!"
 }
