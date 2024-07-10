@@ -1,5 +1,12 @@
-export default function timeSince(date) {
-    const seconds = Math.floor((new Date() - new Date(date)) / 1000);
+export default function timeSince(date: string | number | Date): string {
+  // const seconds = Math.floor((new Date() - new Date(date)) / 1000);
+  const dateObj = new Date(date);
+    if (isNaN(dateObj.getTime())) {
+        throw new Error("Invalid date");
+    }
+
+    const seconds = Math.floor((new Date().getTime() - dateObj.getTime()) / 1000);
+
   
     let interval = seconds / 31536000;
   
