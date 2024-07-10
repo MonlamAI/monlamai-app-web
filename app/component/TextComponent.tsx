@@ -28,8 +28,13 @@ function TextComponent({ sourceText, setSourceText, sourceLang }) {
       .replace(/<div>/g, "\n")
       .replace(/<\/div>/g, "");
     setSourceText(cleanText);
-    console.log(cleanText);
   };
+
+  useEffect(() => {
+    if (sourceText === "") {
+      setHTML("");
+    }
+  }, [sourceText]);
   return (
     <>
       <ContentEditable
@@ -42,7 +47,6 @@ function TextComponent({ sourceText, setSourceText, sourceLang }) {
           ${fontSize} ${isEng && "font-poppins  "} ${
           isTib && "leading-loose font-monlam "
         } ${!isEng && !isTib && "font-notosans "}`}
-        autofocus={true}
       />
 
       {sourceText.length === 0 && (
