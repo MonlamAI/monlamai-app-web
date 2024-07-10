@@ -64,6 +64,7 @@ export async function update_location(
 }
 
 export async function update_pwa(userId: string, isPWA: string) {
+  if (userId === "undefined") return null;
   let user = await db.user.update({
     where: {
       id: parseInt(userId),
