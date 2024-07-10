@@ -33,6 +33,7 @@ model UserLog {
   updatedAt DateTime @updatedAt
   User      User?    @relation(fields: [userId], references: [id])
   userId    Int?
+  PWA_user  Boolean  @default(false)
 }
 
 model AboutUser {

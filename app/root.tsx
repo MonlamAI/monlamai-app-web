@@ -42,11 +42,11 @@ import { AppInstaller } from "~/component/AppInstaller.client";
 import { ClientOnly } from "remix-utils/client-only";
 import useDetectPWA from "~/component/hooks/useDetectPWA";
 import { update_pwa } from "~/modal/user.server";
+import { update_pwa_log } from "./modal/log.server";
 export const loader: LoaderFunction = async ({ request }) => {
   let userdata = await getUserSession(request);
   const feedBucketAccess = process.env.FEEDBUCKET_ACCESS;
   const feedbucketToken = process.env.FEEDBUCKET_TOKEN;
-  let ip = getIpAddressByRequest(request);
   let user = userdata ? await getUser(userdata?._json?.email) : null;
   const isJobEnabled = unleash.isEnabled("isJobEnabled");
   const enable_replacement_mt = unleash.isEnabled("enable_replacement_mt");
@@ -54,7 +54,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   const file_upload_enable = unleash.isEnabled("file_upload_enable");
 
   const csrfToken = await generateCSRFToken(request);
-  let data = await saveIpAddress({ userId: user?.id, ipAddress: ip });
+
   return json(
     {
       user,
@@ -77,8 +77,10 @@ export const action: ActionFunction = async ({ request }) => {
   let formdata = await request.formData();
   let userId = formdata.get("userId") as string;
   let isPWA = formdata.get("isPWA") as string;
+  let ip = getIpAddressByRequest(request);
   if (userId && isPWA) {
     let data = update_pwa(userId, isPWA);
+    saveIpAddress({ userId, ipAddress: ip, isPWA });
     return data;
   }
   return null;
