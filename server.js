@@ -9,27 +9,12 @@ const morgan = require("morgan");
 const cors = require("cors");
 const MODE = process.env.NODE_ENV;
 const BUILD_DIR = path.join(process.cwd(), "build");
-const helmet = require("helmet");
 if (!fs.existsSync(BUILD_DIR)) {
   console.warn(
     "Build directory doesn't exist, please run `npm run dev` or `npm run build` before starting the server."
   );
 }
 const app = express();
-const cspDirectives = {
-  directives: {
-    defaultSrc: ["'self'"],
-    scriptSrc: ["'self'", "https://trusted.cdn.com"],
-    styleSrc: ["'self'", "https://trusted.cdn.com"],
-    imgSrc: ["'self'", "data:", "https://trusted.cdn.com"],
-    connectSrc: ["'self'", "https://api.trusted.com"],
-    fontSrc: ["'self'", "https://fonts.gstatic.com"],
-    objectSrc: ["'none'"],
-    upgradeInsecureRequests: [],
-    // Additional CSP directives can be added here
-  },
-};
-app.use(helmet.contentSecurityPolicy(cspDirectives));
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
