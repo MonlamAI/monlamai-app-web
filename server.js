@@ -17,9 +17,6 @@ if (!fs.existsSync(BUILD_DIR)) {
 }
 const app = express();
 
-// Use Helmet to set security headers
-app.use(helmet());
-
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 1000, // Limit each IP to 100 requests per windowMs
