@@ -6,10 +6,8 @@ const { createRequestHandler } = require("@remix-run/express");
 const compression = require("compression");
 const express = require("express");
 const morgan = require("morgan");
-const cors = require("cors");
 const MODE = process.env.NODE_ENV;
 const BUILD_DIR = path.join(process.cwd(), "build");
-const helmet = require("helmet");
 if (!fs.existsSync(BUILD_DIR)) {
   console.warn(
     "Build directory doesn't exist, please run `npm run dev` or `npm run build` before starting the server."
@@ -23,22 +21,6 @@ const limiter = rateLimit({
 });
 
 app.use(limiter);
-
-const allowedOrigins = ["https://monlam.ai", "https://staging.monlam.ai"];
-// Create a new Express app
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      // Allow requests with no origin (like mobile apps or curl requests)
-      if (!origin) return callback(null, true);
-      if (allowedOrigins.indexOf(origin) !== -1) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-  })
-);
 
 // You need to create the HTTP server from the Express app
 const httpServer = createServer(app);
