@@ -23,7 +23,11 @@ const limiter = rateLimit({
 
 app.use(limiter);
 
-const allowedOrigins = ["https://monlam.ai", "https://staging.monlam.ai"];
+const allowedOrigins = [
+  "https://monlam.ai",
+  "https://staging.monlam.ai",
+  "localhost",
+];
 // Create a new Express app
 app.use(
   cors({
