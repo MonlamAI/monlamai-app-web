@@ -19,19 +19,6 @@ const app = express();
 
 // Use Helmet to set security headers
 app.use(helmet());
-const excludedIps = process.env.EXCLUDED_IPS
-  ? process.env.EXCLUDED_IPS.split(",")
-  : [];
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 1000, // Limit each IP to 100 requests per windowMs
-  message: "Too many requests from this IP, please try again later.",
-  skip: (req, res) => {
-    // Skip rate limiting for the excluded IPs
-    console.log(req.ip);
-    return excludedIps.includes(req.ip);
-  },
-});
 
 app.use(limiter);
 
