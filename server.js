@@ -16,6 +16,20 @@ if (!fs.existsSync(BUILD_DIR)) {
   );
 }
 const app = express();
+const cspDirectives = {
+  directives: {
+    defaultSrc: ["'self'"],
+    scriptSrc: ["'self'", "https://trusted.cdn.com"],
+    styleSrc: ["'self'", "https://trusted.cdn.com"],
+    imgSrc: ["'self'", "data:", "https://trusted.cdn.com"],
+    connectSrc: ["'self'", "https://api.trusted.com"],
+    fontSrc: ["'self'", "https://fonts.gstatic.com"],
+    objectSrc: ["'none'"],
+    upgradeInsecureRequests: [],
+    // Additional CSP directives can be added here
+  },
+};
+app.use(helmet.contentSecurityPolicy(cspDirectives));
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes

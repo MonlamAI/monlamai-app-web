@@ -15,6 +15,18 @@
       "src": "img/logo192web.png",
       "sizes": "192x192",
       "type": "image/png"
+    },
+    {
+      "src": "img/icon-circular.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "img/icon-circular.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ],
   "screenshots": [
@@ -29,6 +41,6 @@
       "sizes": "720x1280",
       "type": "image/png",
       "form_factor": "narrow"
-}
-]
+    }
+  ]
 }
