@@ -213,9 +213,7 @@ export default function App() {
       <LitteraProvider locales={["en_US", "bo_TI"]}>
         <div className="flex flex-col flex-1">
           <Header />
-          <ClientOnly fallback={<div>loading</div>}>
-            {() => <AppInstaller />}
-          </ClientOnly>
+          <ClientOnly fallback={<div />}>{() => <AppInstaller />}</ClientOnly>
           {user && <LocationComponent />}
           <div className="flex-1 flex justify-center pt-4  bg-neutral-50 dark:bg-[--main-bg] ">
             <div className="flex-1 max-w-[1280px] px-2 ">
