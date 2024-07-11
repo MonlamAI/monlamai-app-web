@@ -1,10 +1,8 @@
 import { Button } from "flowbite-react";
 import { useEffect, useState } from "react";
-import { LuCopyCheck } from "react-icons/lu";
-import { LuCopy } from "react-icons/lu";
 import { ICON_SIZE } from "~/helper/const";
 import { ReactionButton } from "./ReactionButtons";
-
+import { MdContentCopy } from "react-icons/md";
 let timer: any;
 
 type CopyToClipboardProps = {
@@ -34,22 +32,23 @@ const CopyToClipboard = ({ textToCopy, onClick }: CopyToClipboardProps) => {
       setIsCopied(false);
     }, 2000);
   };
-
+  console.log(isCopied);
   return (
     <>
       {!isCopied ? (
         <ReactionButton
           enabled={true}
           disabled={false}
-          icon={<LuCopy size={ICON_SIZE} />}
+          icon={<MdContentCopy size={ICON_SIZE} />}
           onClick={handleCopy}
         />
       ) : (
         <ReactionButton
           enabled={true}
           disabled={false}
-          icon={<LuCopyCheck color="green" size={ICON_SIZE} />}
+          icon={<MdContentCopy size={ICON_SIZE} />}
           onClick={handleCopy}
+          className="copy-success"
         />
       )}
     </>

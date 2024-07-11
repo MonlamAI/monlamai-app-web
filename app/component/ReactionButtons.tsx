@@ -90,7 +90,6 @@ export function ReactionButton({
 }: ReactionButtonProps) {
   return (
     <button
-      color="white"
       onClick={onClick}
       className={
         "focus:outline-none cursor-pointer text-gray-500  disabled:opacity-20 " +
@@ -100,7 +99,10 @@ export function ReactionButton({
     >
       {React.cloneElement(icon, {
         size: "16px",
-        className: "dark:fill-primary-500",
+        className:
+          className === "copy-success"
+            ? " dark:fill-green-500"
+            : " dark:fill-primary-500",
       })}
     </button>
   );
