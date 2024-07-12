@@ -1,0 +1,380 @@
+<html><head><meta charset="utf-8"/><title>Test Report</title><style type="text/css">html,
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+body {
+  padding: 2rem 1rem;
+  font-size: 0.85rem;
+}
+.jesthtml-content {
+  margin: 0 auto;
+  max-width: 70rem;
+}
+header {
+  display: flex;
+  align-items: center;
+}
+#title {
+  margin: 0;
+  flex-grow: 1;
+}
+#logo {
+  height: 4rem;
+}
+#timestamp {
+  color: #777;
+  margin-top: 0.5rem;
+}
+
+/** SUMMARY */
+#summary {
+  color: #333;
+  margin: 2rem 0;
+  display: flex;
+  font-family: monospace;
+  font-size: 1rem;
+}
+#summary > div {
+  margin-right: 2rem;
+  background: #eee;
+  padding: 1rem;
+  min-width: 15rem;
+}
+#summary > div:last-child {
+  margin-right: 0;
+}
+@media only screen and (max-width: 720px) {
+  #summary {
+    flex-direction: column;
+  }
+  #summary > div {
+    margin-right: 0;
+    margin-top: 2rem;
+  }
+  #summary > div:first-child {
+    margin-top: 0;
+  }
+}
+
+.summary-total {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+.summary-passed {
+  color: #4f8a10;
+  border-left: 0.4rem solid #4f8a10;
+  padding-left: 0.5rem;
+}
+.summary-failed,
+.summary-obsolete-snapshots {
+  color: #d8000c;
+  border-left: 0.4rem solid #d8000c;
+  padding-left: 0.5rem;
+}
+.summary-pending {
+  color: #9f6000;
+  border-left: 0.4rem solid #9f6000;
+  padding-left: 0.5rem;
+}
+.summary-empty {
+  color: #999;
+  border-left: 0.4rem solid #999;
+}
+
+.test-result {
+  padding: 1rem;
+  margin-bottom: 0.25rem;
+}
+.test-result:last-child {
+  border: 0;
+}
+.test-result.passed {
+  background-color: #dff2bf;
+  color: #4f8a10;
+}
+.test-result.failed {
+  background-color: #ffbaba;
+  color: #d8000c;
+}
+.test-result.pending {
+  background-color: #ffdf61;
+  color: #9f6000;
+}
+
+.test-info {
+  display: flex;
+  justify-content: space-between;
+}
+.test-suitename {
+  width: 20%;
+  text-align: left;
+  font-weight: bold;
+  word-break: break-word;
+}
+.test-title {
+  width: 40%;
+  text-align: left;
+  font-style: italic;
+}
+.test-status {
+  width: 20%;
+  text-align: right;
+}
+.test-duration {
+  width: 10%;
+  text-align: right;
+  font-size: 0.75rem;
+}
+
+.failureMessages {
+  padding: 0 1rem;
+  margin-top: 1rem;
+  border-top: 1px dashed #d8000c;
+}
+.failureMessages.suiteFailure {
+  border-top: none;
+}
+.failureMsg {
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
+}
+
+.suite-container {
+  margin-bottom: 2rem;
+}
+.suite-container > input[type="checkbox"] {
+  position: absolute;
+  left: -100vw;
+}
+.suite-container label {
+  display: block;
+}
+.suite-container .suite-tests {
+  overflow-y: hidden;
+  height: 0;
+}
+.suite-container > input[type="checkbox"]:checked ~ .suite-tests {
+  height: auto;
+  overflow: visible;
+}
+.suite-info {
+  padding: 1rem;
+  background-color: #eee;
+  color: #777;
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.25rem;
+}
+.suite-info:hover {
+  background-color: #ddd;
+  cursor: pointer;
+}
+.suite-info .suite-path {
+  word-break: break-all;
+  flex-grow: 1;
+  font-family: monospace;
+  font-size: 1rem;
+}
+.suite-info .suite-time {
+  margin-left: 0.5rem;
+  padding: 0.2rem 0.3rem;
+  font-size: 0.75rem;
+}
+.suite-info .suite-time.warn {
+  background-color: #d8000c;
+  color: #fff;
+}
+.suite-info:before {
+  content: "\2303";
+  display: inline-block;
+  margin-right: 0.5rem;
+  transform: rotate(0deg);
+}
+.suite-container > input[type="checkbox"]:checked ~ label .suite-info:before {
+  transform: rotate(180deg);
+}
+
+/* CONSOLE LOGS */
+.suite-consolelog {
+  margin-bottom: 0.25rem;
+  padding: 1rem;
+  background-color: #efefef;
+}
+.suite-consolelog-header {
+  font-weight: bold;
+}
+.suite-consolelog-item {
+  padding: 0.5rem;
+}
+.suite-consolelog-item pre {
+  margin: 0.5rem 0;
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
+}
+.suite-consolelog-item-origin {
+  color: #777;
+  font-weight: bold;
+}
+.suite-consolelog-item-message {
+  color: #000;
+  font-size: 1rem;
+  padding: 0 0.5rem;
+}
+
+/* OBSOLETE SNAPSHOTS */
+.suite-obsolete-snapshots {
+  margin-bottom: 0.25rem;
+  padding: 1rem;
+  background-color: #ffbaba;
+  color: #d8000c;
+}
+.suite-obsolete-snapshots-header {
+  font-weight: bold;
+}
+.suite-obsolete-snapshots-item {
+  padding: 0.5rem;
+}
+.suite-obsolete-snapshots-item pre {
+  margin: 0.5rem 0;
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
+}
+.suite-obsolete-snapshots-item-message {
+  color: #000;
+  font-size: 1rem;
+  padding: 0 0.5rem;
+}
+</style></head><body><div class="jesthtml-content"><header><h1 id="title">Test Report</h1></header><div id="metadata-container"><div id="timestamp">Started: 2024-07-12 13:18:02</div><div id="summary"><div id="suite-summary"><div class="summary-total">Suites (6)</div><div class="summary-passed ">3 passed</div><div class="summary-failed ">3 failed</div><div class="summary-pending  summary-empty">0 pending</div></div><div id="test-summary"><div class="summary-total">Tests (38)</div><div class="summary-passed ">33 passed</div><div class="summary-failed ">5 failed</div><div class="summary-pending  summary-empty">0 pending</div></div></div></div><div id="suite-1" class="suite-container"><input id="collapsible-0" type="checkbox" class="toggle" checked="checked"/><label for="collapsible-0"><div class="suite-info"><div class="suite-path">C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\app\component\tests\timeSinces.test.js</div><div class="suite-time warn">81.963s</div></div></label><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">timeSince</div><div class="test-title">should return "Just now" for a date just now</div><div class="test-status">passed</div><div class="test-duration">0.181s</div></div></div><div class="test-result failed"><div class="test-info"><div class="test-suitename">timeSince</div><div class="test-title">should return "1 minute ago" for a date one minute ago</div><div class="test-status">failed</div><div class="test-duration">0.028s</div></div><div class="failureMessages"> <pre class="failureMsg">Error: expect(received).toBe(expected) // Object.is equality
+
+Expected: "1 minute ago"
+Received: "Just now"
+    at Object.&lt;anonymous&gt; (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\app\component\tests\timeSinces.test.js:11:41)
+    at Promise.then.completed (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\utils.js:231:10)
+    at _callCircusTest (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at _runTest (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\run.js:252:3)
+    at _runTestsForDescribeBlock (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\run.js:126:9)
+    at _runTestsForDescribeBlock (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\run.js:121:9)
+    at run (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\run.js:71:3)
+    at runAndTransformResultsToJestFormat (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
+    at jestAdapter (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
+    at runTestInternal (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-runner\build\runTest.js:367:16)
+    at runTest (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-runner\build\runTest.js:444:34)
+    at Object.worker (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-runner\build\testWorker.js:106:12)</pre></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">timeSince</div><div class="test-title">should return "2 minutes ago" for a date two minutes ago</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">timeSince</div><div class="test-title">should return "1 hour ago" for a date one hour ago</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">timeSince</div><div class="test-title">should return "2 hours ago" for a date two hours ago</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div><div class="test-result failed"><div class="test-info"><div class="test-suitename">timeSince</div><div class="test-title">should return "1 day ago" for a date one day ago</div><div class="test-status">failed</div><div class="test-duration">0.006s</div></div><div class="failureMessages"> <pre class="failureMsg">Error: expect(received).toBe(expected) // Object.is equality
+
+Expected: "1 day ago"
+Received: "24 hours ago"
+    at Object.&lt;anonymous&gt; (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\app\component\tests\timeSinces.test.js:31:38)
+    at Promise.then.completed (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\utils.js:231:10)
+    at _callCircusTest (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at _runTest (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\run.js:252:3)
+    at _runTestsForDescribeBlock (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\run.js:126:9)
+    at _runTestsForDescribeBlock (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\run.js:121:9)
+    at run (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\run.js:71:3)
+    at runAndTransformResultsToJestFormat (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
+    at jestAdapter (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
+    at runTestInternal (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-runner\build\runTest.js:367:16)
+    at runTest (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-runner\build\runTest.js:444:34)
+    at Object.worker (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-runner\build\testWorker.js:106:12)</pre></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">timeSince</div><div class="test-title">should return "2 days ago" for a date two days ago</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div><div class="test-result failed"><div class="test-info"><div class="test-suitename">timeSince</div><div class="test-title">should return "1 month ago" for a date one month ago</div><div class="test-status">failed</div><div class="test-duration">0.014s</div></div><div class="failureMessages"> <pre class="failureMsg">Error: expect(received).toBe(expected) // Object.is equality
+
+Expected: "1 month ago"
+Received: "30 days ago"
+    at Object.&lt;anonymous&gt; (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\app\component\tests\timeSinces.test.js:43:54)
+    at Promise.then.completed (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\utils.js:231:10)
+    at _callCircusTest (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at _runTest (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\run.js:252:3)
+    at _runTestsForDescribeBlock (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\run.js:126:9)
+    at _runTestsForDescribeBlock (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\run.js:121:9)
+    at run (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\run.js:71:3)
+    at runAndTransformResultsToJestFormat (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
+    at jestAdapter (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
+    at runTestInternal (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-runner\build\runTest.js:367:16)
+    at runTest (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-runner\build\runTest.js:444:34)
+    at Object.worker (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-runner\build\testWorker.js:106:12)</pre></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">timeSince</div><div class="test-title">should return "2 months ago" for a date two months ago</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">timeSince</div><div class="test-title">should return "1 year ago" for a date one year ago</div><div class="test-status">passed</div><div class="test-duration">0.002s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">timeSince</div><div class="test-title">should return "2 years ago" for a date two years ago</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">timeSince</div><div class="test-title">invalid date</div><div class="test-status">passed</div><div class="test-duration">0.083s</div></div></div><div class="test-result failed"><div class="test-info"><div class="test-suitename">timeSince</div><div class="test-title">date as null</div><div class="test-status">failed</div><div class="test-duration">0.008s</div></div><div class="failureMessages"> <pre class="failureMsg">Error: expect(received).toBe(expected) // Object.is equality
+
+Expected: "Invalid Date"
+Received: "54 years ago"
+    at Object.&lt;anonymous&gt; (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\app\component\tests\timeSinces.test.js:70:33)
+    at Promise.then.completed (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\utils.js:231:10)
+    at _callCircusTest (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at _runTest (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\run.js:252:3)
+    at _runTestsForDescribeBlock (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\run.js:126:9)
+    at _runTestsForDescribeBlock (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\run.js:121:9)
+    at run (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\run.js:71:3)
+    at runAndTransformResultsToJestFormat (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
+    at jestAdapter (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
+    at runTestInternal (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-runner\build\runTest.js:367:16)
+    at runTest (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-runner\build\runTest.js:444:34)
+    at Object.worker (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-runner\build\testWorker.js:106:12)</pre></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">timeSince</div><div class="test-title">date as undefined</div><div class="test-status">passed</div><div class="test-duration">0.016s</div></div></div></div><div class="suite-consolelog"><div class="suite-consolelog-header">Console Log</div><div class="suite-consolelog-item"><pre class="suite-consolelog-item-origin">    at timeSince (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\app\component\utils\timeSince.ts:35:13)
+    at Object.&lt;anonymous&gt; (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\app\component\tests\timeSinces.test.js:66:25)
+    at Promise.then.completed (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\utils.js:231:10)
+    at _callCircusTest (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at _runTest (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\run.js:252:3)
+    at _runTestsForDescribeBlock (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\run.js:126:9)
+    at _runTestsForDescribeBlock (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\run.js:121:9)
+    at run (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\run.js:71:3)
+    at runAndTransformResultsToJestFormat (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
+    at jestAdapter (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
+    at runTestInternal (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-runner\build\runTest.js:367:16)
+    at runTest (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-runner\build\runTest.js:444:34)
+    at Object.worker (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-runner\build\testWorker.js:106:12)</pre><pre class="suite-consolelog-item-message">error in timeSince</pre></div><div class="suite-consolelog-item"><pre class="suite-consolelog-item-origin">    at timeSince (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\app\component\utils\timeSince.ts:35:13)
+    at Object.&lt;anonymous&gt; (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\app\component\tests\timeSinces.test.js:74:25)
+    at Promise.then.completed (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\utils.js:231:10)
+    at _callCircusTest (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at _runTest (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\run.js:252:3)
+    at _runTestsForDescribeBlock (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\run.js:126:9)
+    at _runTestsForDescribeBlock (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\run.js:121:9)
+    at run (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\run.js:71:3)
+    at runAndTransformResultsToJestFormat (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
+    at jestAdapter (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
+    at runTestInternal (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-runner\build\runTest.js:367:16)
+    at runTest (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-runner\build\runTest.js:444:34)
+    at Object.worker (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-runner\build\testWorker.js:106:12)</pre><pre class="suite-consolelog-item-message">error in timeSince</pre></div></div></div><div id="suite-2" class="suite-container"><input id="collapsible-1" type="checkbox" class="toggle" checked="checked"/><label for="collapsible-1"><div class="suite-info"><div class="suite-path">C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\app\component\tests\fileSizeFormat.test.js</div><div class="suite-time warn">99.074s</div></div></label><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">formatBytes</div><div class="test-title">should return "0 Bytes" for 0 bytes</div><div class="test-status">passed</div><div class="test-duration">0.154s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">formatBytes</div><div class="test-title">should return "500 Bytes" for 500 bytes</div><div class="test-status">passed</div><div class="test-duration">0.014s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">formatBytes</div><div class="test-title">should return "1 KB" for 1024 bytes</div><div class="test-status">passed</div><div class="test-duration">0.061s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">formatBytes</div><div class="test-title">should return "1 MB" for 1048576 bytes</div><div class="test-status">passed</div><div class="test-duration">0.041s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">formatBytes</div><div class="test-title">should return "1 GB" for 1073741824 bytes</div><div class="test-status">passed</div><div class="test-duration">0.03s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">formatBytes</div><div class="test-title">should return "1 KB" for 1024 bytes with 0 decimal places</div><div class="test-status">passed</div><div class="test-duration">0.02s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">formatBytes</div><div class="test-title">should return "1 KB" for 1024.5 bytes</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">formatBytes</div><div class="test-title">should return "931.323 GB" for 1e12 bytes</div><div class="test-status">passed</div><div class="test-duration">0.006s</div></div></div></div></div><div id="suite-3" class="suite-container"><input id="collapsible-2" type="checkbox" class="toggle" checked="checked"/><label for="collapsible-2"><div class="suite-info"><div class="suite-path">C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\app\component\tests\reader.test.js</div><div class="suite-time warn">100.815s</div></div></label><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">readTextFile</div><div class="test-title">should read file and call setSourceText with content if length is within limit</div><div class="test-status">passed</div><div class="test-duration">0.095s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">readTextFile</div><div class="test-title">should not call setSourceText if content length exceeds limit</div><div class="test-status">passed</div><div class="test-duration">0.006s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">readTextFile</div><div class="test-title">should log error if there is an error reading the file</div><div class="test-status">passed</div><div class="test-duration">0.008s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">readDocxFile</div><div class="test-title">should read docx file and call setSourceText with content if length is within limit</div><div class="test-status">passed</div><div class="test-duration">0.02s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">readDocxFile</div><div class="test-title">should not call setSourceText if content length exceeds limit</div><div class="test-status">passed</div><div class="test-duration">0.039s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">readDocxFile</div><div class="test-title">should log error if there is an error reading the file</div><div class="test-status">passed</div><div class="test-duration">0.002s</div></div></div></div></div><div id="suite-4" class="suite-container"><input id="collapsible-3" type="checkbox" class="toggle" checked="checked"/><label for="collapsible-3"><div class="suite-info"><div class="suite-path">C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\app\component\tests\ttsReplace.test.js</div><div class="suite-time warn">102.706s</div></div></label><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">inputReplace</div><div class="test-title">removes ༸ character from input</div><div class="test-status">passed</div><div class="test-duration">0.17s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">inputReplace</div><div class="test-title">handles input without ༸ character</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">inputReplace</div><div class="test-title">should remove multiple ༸ char</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">inputReplace</div><div class="test-title">handles empty input</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div></div></div><div id="suite-5" class="suite-container"><input id="collapsible-4" type="checkbox" class="toggle" checked="checked"/><label for="collapsible-4"><div class="suite-info"><div class="suite-path">C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\app\component\tests\getBrowserDetail.test.js</div><div class="suite-time warn">103.383s</div></div></label><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">getBrowser</div><div class="test-title">should detect Chrome</div><div class="test-status">passed</div><div class="test-duration">0.157s</div></div></div><div class="test-result failed"><div class="test-info"><div class="test-suitename">getBrowser</div><div class="test-title">should detect Edge</div><div class="test-status">failed</div><div class="test-duration">0.084s</div></div><div class="failureMessages"> <pre class="failureMsg">Error: expect(received).toBe(expected) // Object.is equality
+
+Expected: "Edge"
+Received: "Chrome"
+    at Object.&lt;anonymous&gt; (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\app\component\tests\getBrowserDetail.test.js:35:30)
+    at Promise.then.completed (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\utils.js:231:10)
+    at _callCircusTest (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at _runTest (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\run.js:252:3)
+    at _runTestsForDescribeBlock (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\run.js:126:9)
+    at _runTestsForDescribeBlock (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\run.js:121:9)
+    at run (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\run.js:71:3)
+    at runAndTransformResultsToJestFormat (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
+    at jestAdapter (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
+    at runTestInternal (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-runner\build\runTest.js:367:16)
+    at runTest (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-runner\build\runTest.js:444:34)
+    at Object.worker (C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\node_modules\jest-runner\build\testWorker.js:106:12)</pre></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">getBrowser</div><div class="test-title">should detect Firefox</div><div class="test-status">passed</div><div class="test-duration">0.003s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">getBrowser</div><div class="test-title">should detect Safari</div><div class="test-status">passed</div><div class="test-duration">0.005s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">getBrowser</div><div class="test-title">should detect Explorer</div><div class="test-status">passed</div><div class="test-duration">0.001s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">getBrowser</div><div class="test-title">should return Unknown for unrecognized user agents</div><div class="test-status">passed</div><div class="test-duration">0.005s</div></div></div></div></div><div id="suite-6" class="suite-container"><input id="collapsible-5" type="checkbox" class="toggle" checked="checked"/><label for="collapsible-5"><div class="suite-info"><div class="suite-path">C:\Users\SWIFT\OneDrive\Desktop\monlam\monlam_ai_tools\app\component\tests\getIpAddresss.test.js</div><div class="suite-time">0s</div></div></label><div class="suite-tests"/></div></div></body></html>
