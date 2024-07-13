@@ -1340,11 +1340,12 @@ export function en_bo_tibetan_replaces(text: string) {
   result = result.replaceAll("བཟོས་མིའི་རྣམ་འགྱུར", "བཟོས་མིའི་རིག་ནུས");
   result = result.replaceAll("མིས་བཟོས་ཤེས་རིག", "བཟོས་མིའི་རིག་ནུས");
   result = result.replaceAll("མིས་བཟོས་ཀླད་པའི་", "བཟོས་མིའི་རིག་ནུས་ཀྱི་");
+  result = result.replaceAll("ཤར་ཏུར་ཀི་སི་ཐནཤར་ཏུ་ཀེ་སི་ཐན་", "ཤིན་ཅང་ངམ་ཤར་ཏུར་ཀི་སི་ཐན་");
 
 
  
 
-  //ཏཱ་ལའི་བླ་མས་
+  //ཤར་ཏུར་ཀི་སི་ཐནཤར་ཏུ་ཀེ་སི་ཐན་
 
   result = result.replaceAll(/(\d+)([^\d]+)/g, "$1 $2");
   result = result.replaceAll(/([\u0F20-\u0F33]+)([^\u0F20-\u0F33]+)/g, "$1 $2");
