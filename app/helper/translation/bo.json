@@ -63,10 +63,12 @@
   "beta": "ཚོད་ལྟ།",
   "uploading_audio_message": "སྒྲ་ཡར་འཇུག་བྱེད་བཞིན་པས་ཅུང་ཙམ་སྒུག་རོགས་གནང་།",
   "or": "ཡང་ན།",
-  "take-photo": "དཔར་རྒྱབས།",
-  "choose-file": "Choose file",
-  "no-file-chosen": "No file chosen",
-  "detect": "དཔྱད་འཇལ།",
-  "duration": "དུས་ཡུན།",
-  "status": "Status"
+  "take-photo": "པར་རྒྱོབས།",
+  "choose-file": "ཡིག་ཆ་འདེམས།",
+  "no-file-chosen": "ཡིག་ཆ་བདམས་མེད།",
+  "detect": "རང་འགུལ་ངོས་འཛིན།",
+  "duration": "སྒྲ་ཚད།",
+  "status": "གནས་བབ།",
+  "install": "ནང་འཇུག",
+  "install_message": "བེད་སྤྱོད་སྟབས་བདེ་ཡོང་བར་ང་ཚོའི་མཉེན་ཆས་སྒྲིག་འཇུག་གནང་རོགས།"
 }

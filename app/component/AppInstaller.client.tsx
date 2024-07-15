@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
+import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 
 export function AppInstaller() {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [isInstalled, setIsInstalled] = useState(false);
   const [showPrompt, setShowPrompt] = useState(false);
   const [progress, setProgress] = useState(0);
+  const { translation, isEnglish } = uselitteraTranlation();
 
   useEffect(() => {
     const handleBeforeInstallPrompt = (e) => {
@@ -80,10 +82,14 @@ export function AppInstaller() {
   return (
     <>
       {!isInstalled && (
-        <div>
+        <div
+          className={`${
+            isEnglish ? " font-poppins" : " leading-normal font-monlam "
+          }`}
+        >
           {showPrompt && (
             <div className="flex items-center gap-2 fixed bottom-[60px] right-4 bg-white dark:bg-secondary-800 border border-gray-300 px-4 py-2 shadow-lg rounded-lg z-50">
-              <p>Install our app for a smoother experience!</p>
+              <p>{translation.install_message}</p>
               <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
                 <div
                   className="h-full bg-blue-500"
@@ -94,7 +100,7 @@ export function AppInstaller() {
                 onClick={handleInstallClick}
                 className="px-2 py-1 bg-secondary-500 dark:bg-primary-500  text-neutral-200 dark:text-neutral-900 rounded"
               >
-                Install
+                {translation.install}
               </button>
               <button
                 onClick={() => setShowPrompt(false)}

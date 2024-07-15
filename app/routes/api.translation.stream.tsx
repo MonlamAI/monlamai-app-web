@@ -1,25 +1,16 @@
 import { LoaderFunctionArgs } from "@remix-run/node";
-import { sessionStorage } from "~/services/session.server";
+import { sessionStorage, verify_token } from "~/services/session.server";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   let url = new URL(request.url);
   let text = url.searchParams.get("text") as string;
   let target = url.searchParams.get("target") as string;
   let csrfToken = url.searchParams.get("token") as string;
-
-  const session = await sessionStorage.getSession(
-    request.headers.get("Cookie")
-  );
-  const storedCsrfToken = session.get("csrfToken");
-  if (csrfToken !== storedCsrfToken) {
+  let token_server = await verify_token(csrfToken);
+  if (!token_server) {
     return new Response("Invalid token", { status: 403 });
   }
-  const storedCsrfTokenExpiry = session.get("csrfTokenExpiry");
-  const now = new Date();
-  const tokenExpiry = new Date(storedCsrfTokenExpiry);
-  if (now > tokenExpiry) {
-    return new Response("token expired", { status: 403 });
-  }
+
   const controller = new AbortController();
   const formData = new FormData();
   const fileUploadUrl = process.env?.FILE_SUBMIT_URL;

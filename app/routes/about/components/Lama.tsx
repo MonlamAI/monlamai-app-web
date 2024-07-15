@@ -20,7 +20,7 @@ function Lamas() {
             src="/assets/lamas/dalai_lama.png"
             loading="lazy"
             alt="dalai_lama"
-            className="object-contain h-full w-full hover:scale-110 transition-all duration-700 rounded-lg"
+            className="object-contain flex rounded-lg"
           />
         </div>
         {lamas.map((lama) => (
@@ -45,11 +45,11 @@ function EachLama({ lama }) {
   }, [lama.image]);
 
   return (
-    <div className="flex rounded-lg border border-gray-200 md:h-[25vh] bg-white shadow-md dark:border-gray-700 dark:bg-gray-800 flex-col relative w-full md:max-w-xs  max-h-[250px] p-2">
+    <div className="flex rounded-lg border border-gray-200  bg-white shadow-md dark:border-gray-700 dark:bg-gray-800 flex-col relative w-full md:max-w-xs  max-h-[250px] p-2">
       <div className="flex flex-col justify-start items-center gap-3 ">
         <div
           style={{ display: loaded ? "none" : "" }}
-          className="overflow-hidden rounded-full h-24 w-24 object-cover shadow-md p-1 hover:scale-105 transition-all duration-500"
+          className="overflow-hidden rounded-full h-fit w-24 object-cover shadow-md p-1 hover:scale-105 transition-all duration-500"
         >
           <Blurhash
             hash={lama.blurhash}
@@ -69,8 +69,10 @@ function EachLama({ lama }) {
           className="rounded-full h-24 w-24 object-cover  shadow-md p-1 hover:scale-105 transition-all duration-500"
         />
         <p
-          className={`text-center text-sm py-2 font-semibold ${
-            isTibetan ? "font-monlam leading-loose" : "font-poppins"
+          className={`text-center text-sm py-2 ${
+            isTibetan
+              ? "font-monlam leading-loose"
+              : "font-poppins font-semibold"
           }`}
         >
           {isTibetan ? lama.tibetan_name : lama.name}

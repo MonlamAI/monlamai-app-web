@@ -1,6 +1,6 @@
 import { createCookieSessionStorage } from "@remix-run/node";
 import { getUser } from "~/modal/user.server";
-
+import jwt from "jsonwebtoken";
 // export the whole sessionStorage object
 
 function getDate() {
@@ -38,32 +38,20 @@ export async function getUserDetail(request: Request) {
 }
 
 export async function generateCSRFToken(request: Request) {
-  const session = await getSession(request.headers.get("Cookie"));
-  let csrfToken = session.get("csrfToken");
-  let storedCsrfTokenExpiry = session.get("csrfTokenExpiry");
-  if (!csrfToken || !storedCsrfTokenExpiry) {
-    csrfToken = generateCsrfToken();
-    storedCsrfTokenExpiry = generateCsrfTokenExpiry();
-    return { csrfToken, storedCsrfTokenExpiry };
-  }
-  const now = new Date();
-  const tokenExpiry = new Date(storedCsrfTokenExpiry);
-  if (now > tokenExpiry) {
-    csrfToken = generateCsrfToken();
-    storedCsrfTokenExpiry = generateCsrfTokenExpiry();
-    return { csrfToken, storedCsrfTokenExpiry };
-  }
-
-  return { csrfToken, storedCsrfTokenExpiry };
+  let secretKey = process.env.API_ACCESS_KEY;
+  const token = await jwt.sign({}, secretKey, { expiresIn: "5m" });
+  return token;
 }
 
-function generateCsrfToken() {
-  return require("crypto").randomBytes(32).toString("hex");
-}
-function generateCsrfTokenExpiry() {
-  const now = new Date();
-  now.setMinutes(now.getMinutes() + 30); // Token expires in 30 minutes
-  return now.toISOString();
+export async function verify_token(token: string) {
+  let secretKey = process.env.API_ACCESS_KEY;
+  let result = await jwt.verify(token, secretKey, (err, decoded) => {
+    if (err) {
+      throw new Error("Failed to authenticate token");
+    }
+    // Save decoded information to request object
+  });
+  return true;
 }
 
 export let { getSession, commitSession, destroySession } = sessionStorage;

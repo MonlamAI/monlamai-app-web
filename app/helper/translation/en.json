@@ -67,5 +67,7 @@
   "no-file-chosen": "No file chosen",
   "detect": "Detect Language",
   "duration": "Duration",
-  "status": "Status"
+  "status": "Status",
+  "install": "Install",
+  "install_message": "Install our app for a smoother experience!"
 }

@@ -6,7 +6,7 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { RxCross1 } from "react-icons/rx";
 import uselitteraTranlation from "../hooks/useLitteraTranslation";
 import TranslationSwitcher from "../TranslationSwitcher";
-import DarkModeSwitcher from "../DarkModeSwitcher";
+import ThemeSwitcher from "../ThemeSwitcher";
 import { FaQuoteRight } from "react-icons/fa";
 import { ICON_SIZE } from "~/helper/const";
 import { FaArrowRightFromBracket } from "react-icons/fa6";
@@ -15,7 +15,6 @@ function Header() {
   const [showMenu, setShowMenu] = useState(false);
   const { isEnglish, translation } = uselitteraTranlation();
   const data = useRouteLoaderData("root");
-
   return (
     <nav
       className={`flex p-4 md:p-[24px] border-b border-b-neutral-200 bg-neutral-100 dark:bg-[--card-bg] dark:border-b-[--card-border] justify-center  flex-col lg:flex-row  ${
@@ -52,7 +51,7 @@ function Header() {
             <TeamLink />
           </div>
           <div className="flex items-center gap-4 mr-7">
-            <DarkModeSwitcher />
+            <ThemeSwitcher />
             <TranslationSwitcher />
             <Menu />
           </div>
@@ -81,14 +80,17 @@ function Header() {
             <div onClick={() => setShowMenu((p) => !p)} className="px-3 pt-3 ">
               <AboutLink />
             </div>
-            <Devider />
-            <div onClick={() => setShowMenu((p) => !p)} className="px-3 ">
-              {data?.isJobEnabled && <JobLink />}
-            </div>
-
+            {data?.isJobEnabled && (
+              <>
+                <Devider />
+                <div onClick={() => setShowMenu((p) => !p)} className="px-3 ">
+                  <JobLink />
+                </div>
+              </>
+            )}
             <Devider />
             <div onClick={() => setShowMenu((p) => !p)} className="px-3">
-              <DarkModeSwitcher />
+              <ThemeSwitcher />
             </div>
             <Devider />
             <div className="px-3">

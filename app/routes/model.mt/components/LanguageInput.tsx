@@ -195,7 +195,7 @@ function LanguageInput({
           <option value="detect language" className={optionClass}>
             {translation?.detect}
           </option>
-          <option value="detect language" className={optionClass + "hidden"}>
+          <option value="hiddendetect language" style={{ display: "none" }}>
             Detect Language f all
           </option>
           {languagesOptions.map((lang) => (

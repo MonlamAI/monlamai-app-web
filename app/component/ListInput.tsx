@@ -34,7 +34,7 @@ export default function ListInput({
   reset,
 }: ListInputProps) {
   const tabsRef = useRef<TabsRef>(null);
-  let { user } = useRouteLoaderData("root");
+  let { user, file_upload_enable } = useRouteLoaderData("root");
   const { translation, locale, isTibetan } = uselitteraTranlation();
   const isUserLoggedIn = !!user;
   const ShowList = ["text", "recording", "image"];
@@ -93,6 +93,10 @@ export default function ListInput({
           ? ` ( ${translation?.beta} )`
           : " ";
         let isActive = selectedTool === option;
+        let showBeta = file_upload_enable;
+        if (!showBeta) {
+          return null;
+        }
         return (
           <Tabs.Item
             id="hello"

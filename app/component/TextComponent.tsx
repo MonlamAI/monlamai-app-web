@@ -1,38 +1,14 @@
-import {
-  useEffect,
-  useRef,
-  useCallback,
-  useState,
-  useLayoutEffect,
-} from "react";
+import { useEffect, useRef, useCallback, useState } from "react";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
+import ContentEditable from "react-contenteditable";
 import sanitizeHtml from "sanitize-html";
 
 function TextComponent({ sourceText, setSourceText, sourceLang }) {
   let { translation, isEnglish } = uselitteraTranlation();
-  const [offset, setOffset] = useState();
+  let [html, setHTML] = useState("");
   const textRef = useRef(null);
   let isEng = sourceLang === "en";
   let isTib = sourceLang === "bo";
-
-  useEffect(() => {
-    textRef.current?.addEventListener("paste", function (e) {
-      e.preventDefault();
-      var text = e.clipboardData.getData("text/plain");
-      document.execCommand("insertText", false, text);
-    });
-  }, []);
-
-  useEffect(() => {
-    if (offset !== undefined) {
-      const newRange = document.createRange();
-      if (textRef.current.childNodes[0] === undefined) return;
-      newRange?.setStart(textRef.current.childNodes[0], offset);
-      const selection = document.getSelection();
-      selection?.removeAllRanges();
-      selection?.addRange(newRange);
-    }
-  }, [offset]);
 
   let fontSize =
     sourceText.length < 600
@@ -41,37 +17,48 @@ function TextComponent({ sourceText, setSourceText, sourceLang }) {
       ? "text-base"
       : "text-sm";
 
-  const onContentBlur = useCallback((evt) => {
-    const sanitizeConf = {
-      allowedTags: ["b", "i", "a", "p"],
-      allowedAttributes: { a: ["href"] },
-    };
-    let html = sanitizeHtml(evt.target.innerText, sanitizeConf);
+  const handleChange = (evt) => {
+    let html = evt.target.value;
+    setHTML(html);
+    const sanitizedHtml = sanitizeHtml(html, {
+      allowedTags: ["div"],
+      allowedIframeHostnames: ["www.youtube.com"],
+    });
+    const cleanText = sanitizedHtml
+      .replace(/<div>/g, "\n")
+      .replace(/<\/div>/g, "");
+    setSourceText(cleanText);
+  };
 
-    const range = document.getSelection().getRangeAt(0);
-    setOffset(range.startOffset);
-    setSourceText(html);
-  }, []);
-
+  useEffect(() => {
+    if (sourceText === "") {
+      setHTML("");
+    }
+  }, [sourceText]);
   return (
-    <div
-      id="textAreaInput"
-      name="sourceText"
-      className={`p-2 pr-6 ${
-        isEnglish ? "placeholder:font-poppins" : "placeholder:font-monlam"
-      } w-full rounded-none resize-none flex-1 bg-transparent border-0 dark:border:0 focus:outline-none dark:focus:outline-none focus:ring-transparent dark:focus:ring-transparent caret-slate-500 placeholder:text-slate-300 placeholder:font-monlam placeholder:text-lg
-       ${fontSize} ${isEng && "font-poppins  "} ${
-        isTib && "leading-loose font-monlam "
-      } ${!isEng && !isTib && "font-notosans "}`}
-      placeholder={translation.inputPlaceholder}
-      contentEditable
-      required
-      onInput={onContentBlur}
-      autoFocus
-      ref={textRef}
-      suppressContentEditableWarning
-      dangerouslySetInnerHTML={{ __html: sourceText }}
-    />
+    <>
+      <ContentEditable
+        innerRef={textRef}
+        html={html} // innerHTML of the editable div
+        disabled={false} // use true to disable editing
+        onChange={handleChange} // handle innerHTML change
+        tagName="article" // Use a custom HTML tag (uses a div by default)
+        className={`p-2 pr-6 w-full rounded-none resize-none flex-1 bg-transparent border-0 dark:border:0 focus:outline-none dark:focus:outline-none focus:ring-transparent dark:focus:ring-transparent caret-slate-500 placeholder:text-slate-300 placeholder:font-monlam placeholder:text-lg
+          ${fontSize} ${isEng && "font-poppins  "} ${
+          isTib && "leading-loose font-monlam "
+        } ${!isEng && !isTib && "font-notosans "}`}
+      />
+
+      {sourceText.length === 0 && (
+        <span
+          className={`absolute p-3 inset-0 text-gray-500 pointer-events-none ${
+            isEnglish ? "font-poppins" : "font-monlam"
+          }`}
+        >
+          {translation.inputPlaceholder}
+        </span>
+      )}
+    </>
   );
 }
 

@@ -1,32 +1,29 @@
-import axios from "axios";
-import { Button, Progress } from "flowbite-react";
-import React, { useRef, useState } from "react";
+import { Button } from "flowbite-react";
+import { useRef, useState } from "react";
 import { LiveAudioVisualizer } from "react-audio-visualize";
 import { BsFillMicFill, BsFillStopFill } from "react-icons/bs";
-import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import { getBrowser } from "~/component/utils/getBrowserDetail";
 import AudioPlayer from "~/routes/model.tts/components/AudioPlayer";
-
+import RecordingAnimation from "./RecordingAnimation";
 let stopRecordingTimeout: any;
 
 type AudioRecordProps = {
   audioURL: string | null;
   uploadAudio: (file: File) => void;
-  uploadProgress: number;
   isLoading: boolean;
+  isUploading: boolean;
 };
 
 function AudioRecorder({
   audioURL,
   uploadAudio,
-  uploadProgress,
   isLoading,
+  isUploading,
 }: AudioRecordProps) {
   let mediaRecorder: any = useRef();
   const [tempAudioURL, setTempAudioURL] = useState<string | null>(null);
   const [recording, setRecording] = useState(false);
   const [audioChunks, setAudioChunks] = useState([]);
-  const { isTibetan, translation } = uselitteraTranlation();
   const toggleRecording = () => {
     if (!recording) {
       startRecording();
@@ -35,7 +32,7 @@ function AudioRecorder({
     }
   };
   const getMicrophonePermission = async () => {
-    let permissionStatus = await navigator.permissions.query({
+    let permissionStatus = await navigator?.permissions.query({
       name: "microphone",
     });
     if (permissionStatus.state === "prompt") {
@@ -53,7 +50,7 @@ function AudioRecorder({
       alert("Please enable microphone permissions in your browser settings.");
     } else if (permissionStatus.state === "granted") {
       // Permission was already granted
-      return await navigator.mediaDevices.getUserMedia({ audio: true });
+      return await navigator?.mediaDevices.getUserMedia({ audio: true });
     }
   };
   const startRecording = async () => {
@@ -110,7 +107,6 @@ function AudioRecorder({
       reader.readAsDataURL(audioBlob);
     };
   };
-  let isUploading = uploadProgress > 0 && uploadProgress < 100;
 
   return (
     <div className="flex flex-col items-center gap-5 flex-1 justify-center">
@@ -120,6 +116,9 @@ function AudioRecorder({
           width={200}
           height={75}
         />
+      )}
+      {recording && mediaRecorder.current && getBrowser() === "Safari" && (
+        <RecordingAnimation />
       )}
       {!audioURL && !isUploading && !isLoading && (
         <Button
@@ -135,22 +134,11 @@ function AudioRecorder({
           )}
         </Button>
       )}
+
       {audioURL && !isUploading && (
         <div className="pt-8 w-full h-full">
-          <AudioPlayer audioURL={tempAudioURL} />
+          <AudioPlayer audioURL={audioURL} />
         </div>
-      )}
-      {isUploading && (
-        <Progress
-          progress={uploadProgress}
-          progressLabelPosition="inside"
-          className={isTibetan ? "font-monlam" : "font-poppins"}
-          textLabel={translation?.uploading_audio_message}
-          textLabelPosition="outside"
-          size="lg"
-          labelProgress
-          labelText
-        />
       )}
     </div>
   );
