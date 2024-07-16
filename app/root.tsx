@@ -206,7 +206,7 @@ export default function App() {
   useEffect(() => {
     let { deviceType: device } = getDeviceInfo();
     fetcher.submit({ userId: user?.id, isPWA, device }, { method: "POST" });
-  }, []);
+  }, [isPWA]);
 
   return (
     <Document>
