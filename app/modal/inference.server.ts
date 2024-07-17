@@ -85,32 +85,33 @@ export async function addFileInference({
 }
 
 export async function getUserFileInferences({ userId, model }) {
-  let OR = undefined;
-  if (model === "ocr") {
-    OR = [
-      {
-        input: { endsWith: ".zip" },
-      },
-      {
-        input: { endsWith: ".gz" },
-      },
-      {
-        input: { endsWith: ".pdf" },
-      },
-    ];
-  }
-  let result = await db.inference.findMany({
-    where: {
-      userId: typeof userId === "string" ? parseInt(userId) : userId,
-      model,
-      OR,
-    },
-    orderBy: {
-      updatedAt: "desc",
-    },
-    take: 20,
-  });
-  return result;
+  return [];
+  // let OR = undefined;
+  // if (model === "ocr") {
+  //   OR = [
+  //     {
+  //       input: { endsWith: ".zip" },
+  //     },
+  //     {
+  //       input: { endsWith: ".gz" },
+  //     },
+  //     {
+  //       input: { endsWith: ".pdf" },
+  //     },
+  //   ];
+  // }
+  // let result = await db.inference.findMany({
+  //   where: {
+  //     userId: typeof userId === "string" ? parseInt(userId) : userId,
+  //     model,
+  //     OR,
+  //   },
+  //   orderBy: {
+  //     updatedAt: "desc",
+  //   },
+  //   take: 20,
+  // });
+  // return result;
 }
 
 export async function deleteInference({ id }) {
