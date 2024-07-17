@@ -22,6 +22,8 @@ const AudioPlayer = ({ audioURL }) => {
     barGap: 4,
     barWidth: 4,
   });
+  const maxDuration = wavesurfer?.getDuration();
+  console.log(currentTime, maxDuration);
 
   const changePlaybackRate = () => {
     const rates = [1, 1.25, 1.5, 2, 0.5];
@@ -134,19 +136,17 @@ const AudioPlayer = ({ audioURL }) => {
             <input
               type="range"
               min="0"
-              max={wavesurfer?.getDuration() || 0}
+              max={Math.floor(maxDuration) || 0}
               step="0.1"
               value={currentTime}
               onChange={(e) => {
                 // update the current time of the audio per second and seek to the new time
                 const newTime = parseFloat(e.target.value);
-                wavesurfer?.seekTo(newTime / wavesurfer?.getDuration());
+                wavesurfer?.seekTo(newTime / maxDuration);
               }}
               className="mx-2 h-1 w-full appearance-none bg-gray-300 dark:bg-primary-500 rounded-full"
             />
-            <div className="text-sm">
-              {formatTime(wavesurfer?.getDuration())}
-            </div>
+            <div className="text-sm">{formatTime(maxDuration)}</div>
           </div>
         </div>
       </div>
