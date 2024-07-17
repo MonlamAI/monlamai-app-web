@@ -117,7 +117,10 @@ function LanguageInput({
   }, [fetcherData]);
 
   useEffect(() => {
-    if (sourceLang === "detect language" && sourceText !== "") {
+    if (sourceText?.trim() === "" && sourceLang !== "detect language") {
+      setSource("detect language");
+    }
+    if (sourceLang === "detect language" && sourceText?.trim() !== "") {
       detectLanguage(sourceText);
     }
   }, [sourceText, sourceLang]);
