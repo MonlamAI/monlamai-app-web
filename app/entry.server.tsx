@@ -19,8 +19,7 @@ export default function handleRequest(
   request: Request,
   responseStatusCode: number,
   responseHeaders: Headers,
-  remixContext: EntryContext,
-  loadContext: AppLoadContext
+  remixContext: EntryContext
 ) {
   return isbot(request.headers.get("user-agent"))
     ? handleBotRequest(
@@ -33,8 +32,7 @@ export default function handleRequest(
         request,
         responseStatusCode,
         responseHeaders,
-        remixContext,
-        loadContext
+        remixContext
       );
 }
 
@@ -92,19 +90,16 @@ function handleBrowserRequest(
   request: Request,
   responseStatusCode: number,
   responseHeaders: Headers,
-  remixContext: EntryContext,
-  loadContext: any
+  remixContext: EntryContext
 ) {
   return new Promise((resolve, reject) => {
     let shellRendered = false;
     const { pipe, abort } = renderToPipeableStream(
-      <NonceContext.Provider value={loadContext?.cspNonce}>
-        <RemixServer
-          context={remixContext}
-          url={request.url}
-          abortDelay={ABORT_DELAY}
-        />
-      </NonceContext.Provider>,
+      <RemixServer
+        context={remixContext}
+        url={request.url}
+        abortDelay={ABORT_DELAY}
+      />,
       {
         onShellReady() {
           shellRendered = true;

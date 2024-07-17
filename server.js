@@ -1,5 +1,4 @@
 const fs = require("fs");
-const remix = require("@remix-run/node");
 const { createServer } = require("http");
 const path = require("path");
 const rateLimit = require("express-rate-limit");
@@ -7,10 +6,7 @@ const { createRequestHandler } = require("@remix-run/express");
 const compression = require("compression");
 const express = require("express");
 const morgan = require("morgan");
-const helmet = require("helmet");
 const crypto = require("crypto");
-const chokidar = require("chokidar");
-const watch = chokidar.watch;
 
 const MODE = process.env.NODE_ENV;
 const BUILD_DIR = path.join(process.cwd(), "build");
@@ -20,7 +16,6 @@ if (!fs.existsSync(BUILD_DIR)) {
   );
 }
 const app = express();
-const broadcastDevReady = remix.broadcastDevReady;
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 1000, // Limit each IP to 100 requests per windowMs
@@ -46,17 +41,6 @@ app.use(
 );
 app.use(morgan("tiny"));
 
-app.use((_, res, next) => {
-  res.locals.cspNonce = crypto.randomBytes(32).toString("base64");
-  next();
-});
-
-const getLoadContext = (req, res) => {
-  return {
-    cspNonce: res.locals.cspNonce,
-  };
-};
-
 app.all(
   "*",
   MODE === "production"
@@ -71,7 +55,6 @@ app.all(
 const port = process.env.PORT || 3000;
 
 // instead of running listen on the Express app, do it on the HTTP server
-
 httpServer.listen(port, () => {
   console.log(`✅ app ready: http://localhost:${port}`);
 });

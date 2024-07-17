@@ -42,7 +42,7 @@ import { AppInstaller } from "~/component/AppInstaller.client";
 import { ClientOnly } from "remix-utils/client-only";
 import useDetectPWA from "~/component/hooks/useDetectPWA";
 import { update_pwa } from "~/modal/user.server";
-import { useNonce } from "./services/useNonce";
+
 export const loader: LoaderFunction = async ({ request }) => {
   let userdata = await getUserSession(request);
   const feedBucketAccess = process.env.FEEDBUCKET_ACCESS;
@@ -211,7 +211,6 @@ export default function App() {
   if (typeof document !== "undefined") {
     csrfToken = "";
   }
-  const nonce = useNonce();
 
   return (
     <Document>
@@ -224,16 +223,14 @@ export default function App() {
             <div className="flex-1 max-w-[1280px] px-2 ">
               <Outlet />
               <FeedBucket />
-              {process.env.NODE_ENV === "development" && (
-                <LiveReload nonce={nonce} />
-              )}
+              {process.env.NODE_ENV === "development" && <LiveReload />}
             </div>
           </div>
 
           <Footer />
         </div>
-        <Scripts nonce={nonce} />
-        <ScrollRestoration nonce={nonce} />
+        <Scripts />
+        <ScrollRestoration />
       </LitteraProvider>
       <ToastContainer />
     </Document>
