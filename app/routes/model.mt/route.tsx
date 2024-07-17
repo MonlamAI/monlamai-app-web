@@ -297,7 +297,7 @@ export default function Index() {
                       </CancelButton>
                     )}
                   </div>
-                  {charCount > 0 && !edit && (
+                  {charCount > 0 && sourceText?.trim() !== "" && !edit && (
                     <div className="flex justify-between py-1.5 px-1 border-t border-t-dark_text-secondary dark:border-t-[--card-border]">
                       <CharacterOrFileSizeComponent
                         selectedTool={selectedTool}
@@ -317,7 +317,7 @@ export default function Index() {
                         }}
                         selectedTool={selectedTool}
                         submitFile={handleFileSubmit}
-                        disabled={!file || file.length === 0}
+                        disabled={!file || file?.length === 0}
                       />
                     </div>
                   )}
