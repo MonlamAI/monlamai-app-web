@@ -59,63 +59,33 @@ const getLoadContext = (req, res) => {
 
 app.all(
   "*",
-  process.env.NODE_ENV === "production"
-    ? createRequestHandler({ build: require(BUILD_DIR), getLoadContext })
-    : (...args) => {
-        const requestHandler = createRequestHandler({
-          build: require(BUILD_DIR),
-          getLoadContext,
-          mode: process.env.NODE_ENV,
-        });
-        return requestHandler(...args);
+  MODE === "production"
+    ? createRequestHandler({ build: require("./build") })
+    : (req, res, next) => {
+        purgeRequireCache();
+        const build = require("./build");
+        return createRequestHandler({ build, mode: MODE })(req, res, next);
       }
-);
-
-// Security-related HTTP response headers, such as content-security-policy (CSP) and
-// strict-transport-security.
-app.use(
-  helmet({
-    contentSecurityPolicy: {
-      directives: {
-        "connect-src": [
-          process.env.NODE_ENV === "development" ? "ws:" : null,
-          "'self'",
-        ].filter(Boolean),
-        "script-src": [
-          "'strict-dynamic'",
-          // @ts-expect-error Helmet types don't seem to know about res.locals
-          (_, res) => `'nonce-${res.locals.cspNonce}'`,
-        ],
-      },
-    },
-  })
 );
 
 const port = process.env.PORT || 3000;
 
 // instead of running listen on the Express app, do it on the HTTP server
-httpServer.listen(port, () => {
-  const build = require(BUILD_DIR);
-  console.log(`✅ app ready: http://localhost:${port}`);
-  if (process.env.NODE_ENV === "development") {
-    broadcastDevReady(build);
 
-    // Watch the build directory and reload the server on any changes.
-    watch(BUILD_DIR, { ignoreInitial: true }).on("all", () => {
-      const build = reimportServer();
-      broadcastDevReady(build);
-    });
-  }
-  process.on("SIGINT", () => server.close());
-  process.on("SIGQUIT", () => server.close());
-  process.on("SIGTERM", () => server.close());
+httpServer.listen(port, () => {
+  console.log(`✅ app ready: http://localhost:${port}`);
 });
 
-function reimportServer() {
+////////////////////////////////////////////////////////////////////////////////
+function purgeRequireCache() {
+  // purge require cache on requests for "server side HMR" this won't let
+  // you have in-memory objects between requests in development,
+  // alternatively you can set up nodemon/pm2-dev to restart the server on
+  // file changes, we prefer the DX of this though, so we've included it
+  // for you by default
   for (const key in require.cache) {
     if (key.startsWith(BUILD_DIR)) {
       delete require.cache[key];
     }
   }
-  return require(BUILD_DIR);
 }
