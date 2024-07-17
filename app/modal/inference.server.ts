@@ -98,11 +98,9 @@ export async function getUserFileInferences({ userId, model }) {
       },
     ];
   }
-
-  return await db.inference.findMany({
+  let result = await db.inference.findMany({
     where: {
-      userId,
-      type: "file",
+      userId: typeof userId === "string" ? parseInt(userId) : userId,
       model,
       OR,
     },
@@ -111,6 +109,7 @@ export async function getUserFileInferences({ userId, model }) {
     },
     take: 20,
   });
+  return result;
 }
 
 export async function deleteInference({ id }) {
