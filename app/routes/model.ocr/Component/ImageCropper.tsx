@@ -11,7 +11,12 @@ import WebcamCapture from "./WebcamCapture";
 import { CancelButton } from "~/component/Buttons";
 import { BsCrop } from "react-icons/bs";
 
-export const ImageCropper = ({ uploadFile, handleReset, uploadProgress }) => {
+export const ImageCropper = ({
+  uploadFile,
+  handleReset,
+  uploadProgress,
+  scaning,
+}) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cropperRef = useRef<CropperRef>(null);
   const [cropped, setCropped] = useState(false);
@@ -227,6 +232,9 @@ export const ImageCropper = ({ uploadFile, handleReset, uploadProgress }) => {
             text-white dark:text-black 
             enabled:hover:bg-secondary-400 enabled:dark:hover:bg-primary-400
          ${!isTibetan ? "font-poppins" : "font-monlam"}`}
+            isProcessing={
+              scaning || (uploadProgress > 0 && uploadProgress < 100)
+            }
           >
             <span className={`pr-2`}>{translation?.scan}</span>
             <IoSend size={18} />
