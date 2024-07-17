@@ -130,7 +130,7 @@ export const ImageCropper = ({ uploadFile, handleReset, uploadProgress }) => {
       ) : !imageSrc ? (
         <div className="flex flex-col items-start m-auto w-fit">
           {!isCameraOpen && (
-            <>
+            <div className="w-full mx-auto">
               <Label
                 htmlFor="file"
                 value={translation.uploadImage}
@@ -145,7 +145,7 @@ export const ImageCropper = ({ uploadFile, handleReset, uploadProgress }) => {
                 accept="image/png, image/jpeg, image/jpg"
                 onChange={onLoadImage}
               />
-            </>
+            </div>
           )}
           {!isCameraOpen && (
             <div
