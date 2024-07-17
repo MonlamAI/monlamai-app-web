@@ -24,7 +24,6 @@ function Header() {
       <div className="flex items-center justify-between  max-w-[1280px] w-full">
         <NavLink
           className="flex items-center gap-2"
-          prefetch="intent"
           unstable_viewTransition
           to="/"
         >
@@ -63,7 +62,6 @@ function Header() {
         >
           <NavLink
             className="flex items-center gap-2 p-4"
-            prefetch="intent"
             unstable_viewTransition
             to="/"
           >
@@ -190,7 +188,6 @@ function JobLink() {
     <NavLink
       to="/jobs"
       className="text-base flex items-center gap-2"
-      prefetch="intent"
       unstable_viewTransition
     >
       <HiBriefcase size={ICON_SIZE} className="md:hidden" /> {translation.jobs}
@@ -204,7 +201,6 @@ function AboutLink() {
     <NavLink
       to="/about"
       className="text-base flex gap-2 items-center"
-      prefetch="intent"
       unstable_viewTransition
     >
       <FaQuoteRight size={ICON_SIZE} className="md:hidden" />{" "}
@@ -218,7 +214,6 @@ function TeamLink() {
     <NavLink
       to="#"
       className="text-base capitalize text-gray-300 cursor-default"
-      prefetch="intent"
       unstable_viewTransition
     >
       {/* {translation.team} */}
