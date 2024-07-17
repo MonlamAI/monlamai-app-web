@@ -66,10 +66,12 @@ export async function loader({ request }: LoaderFunctionArgs) {
   let limitMessage =
     "You have reached the daily limit of translation. Please try again tomorrow.";
 
-  let inferences = await getUserFileInferences({
-    userId: user?.id,
-    model: "mt",
-  });
+  let inferences = user
+    ? await getUserFileInferences({
+        userId: user?.id,
+        model: "mt",
+      })
+    : null;
   const userAgent = request.headers.get("User-Agent") || "";
 
   const isMobile =
