@@ -42,6 +42,7 @@ import { AppInstaller } from "~/component/AppInstaller.client";
 import { ClientOnly } from "remix-utils/client-only";
 import useDetectPWA from "~/component/hooks/useDetectPWA";
 import { update_pwa } from "~/modal/user.server";
+import { useNonce } from "./services/useNonce";
 export const loader: LoaderFunction = async ({ request }) => {
   let userdata = await getUserSession(request);
   const feedBucketAccess = process.env.FEEDBUCKET_ACCESS;
@@ -153,7 +154,6 @@ function Document({ children }: { children: React.ReactNode }) {
       </head>
       <body className="flex h-[100dvh]  mx-auto inset-0 overflow-y-auto overflow-x-hidden dark:bg-slate-700 dark:text-gray-200">
         {children}
-        <ScrollRestoration />
         {/* {show_feed_bucket && show && <script dangerouslySetInnerHTML={{ __html: feedbucketScript }}></scrip>} */}
       </body>
     </html>
@@ -191,7 +191,7 @@ const getDeviceInfo = () => {
 };
 
 export default function App() {
-  let { user } = useLoaderData();
+  let { user, csrfToken } = useLoaderData();
   let [isDarkMode, setIsDarkMode] = useLocalStorage("Darktheme", false);
   const isPWA = useDetectPWA();
   const fetcher = useFetcher();
@@ -208,6 +208,11 @@ export default function App() {
     fetcher.submit({ userId: user?.id, isPWA, device }, { method: "POST" });
   }, [isPWA]);
 
+  if (typeof document !== "undefined") {
+    csrfToken = "";
+  }
+  const nonce = useNonce();
+
   return (
     <Document>
       <LitteraProvider locales={["en_US", "bo_TI"]}>
@@ -219,13 +224,16 @@ export default function App() {
             <div className="flex-1 max-w-[1280px] px-2 ">
               <Outlet />
               <FeedBucket />
-              {process.env.NODE_ENV === "development" && <LiveReload />}
+              {process.env.NODE_ENV === "development" && (
+                <LiveReload nonce={nonce} />
+              )}
             </div>
           </div>
 
           <Footer />
         </div>
-        <Scripts />
+        <Scripts nonce={nonce} />
+        <ScrollRestoration nonce={nonce} />
       </LitteraProvider>
       <ToastContainer />
     </Document>
