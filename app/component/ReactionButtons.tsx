@@ -1,7 +1,6 @@
-import { Button, Spinner } from "flowbite-react";
-import { FaPencilAlt, FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa";
-import React, { useEffect, useRef } from "react";
-import { toast } from "react-toastify";
+import { Spinner } from "flowbite-react";
+import { FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa";
+import React from "react";
 import { ICON_SIZE } from "~/helper/const";
 import { FaPencil } from "react-icons/fa6";
 interface ReactionButtonsProps {
@@ -29,7 +28,6 @@ function ReactionButtons({
     fetcher.state !== IDLE_STATE && fetcher.formData?.get("action");
 
   const handleReaction = async (action: "liked" | "disliked") => {
-    if (liked || disliked) return;
     if (!output || !sourceText) return;
     fetcher.submit(
       { inferenceId, action },
@@ -57,33 +55,26 @@ function ReactionButtons({
         />
       )}
       <ReactionButton
-        enabled={!!output}
-        disabled={disliked}
         icon={<FaRegThumbsUp size={ICON_SIZE} />}
         onClick={() => handleReaction("liked")}
         className={`hover:text-green-400 ${liked && "text-green-400"}`}
       />
       <ReactionButton
-        enabled={!!output}
-        disabled={liked}
         icon={<FaRegThumbsDown size={ICON_SIZE} />}
-        className={`hover:text-red-400 ${disliked && "text-red-400"}`}
         onClick={() => handleReaction("disliked")}
+        className={`hover:text-red-400 ${disliked && "text-red-400"}`}
       />
     </>
   );
 }
 
 type ReactionButtonProps = {
-  enabled: boolean;
-  disabled: boolean;
   icon: React.ReactElement;
   onClick: () => void;
   className?: string;
 };
 
 export function ReactionButton({
-  disabled,
   icon,
   onClick,
   className,
@@ -95,14 +86,10 @@ export function ReactionButton({
         "focus:outline-none cursor-pointer text-gray-500  disabled:opacity-20 " +
         className
       }
-      disabled={disabled}
     >
       {React.cloneElement(icon, {
         size: "16px",
-        className:
-          className === "copy-success"
-            ? " dark:fill-green-500"
-            : " dark:fill-primary-500",
+        className: className === "copy-success" ? " dark:fill-green-500" : " ",
       })}
     </button>
   );
