@@ -47,8 +47,6 @@ function ReactionButtons({
     <>
       {clickEdit !== undefined && (
         <ReactionButton
-          disabled={!output}
-          enabled={!!output}
           icon={<FaPencil size={ICON_SIZE} />}
           onClick={clickEdit}
           className=""
