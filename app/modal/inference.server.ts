@@ -3,21 +3,22 @@ import { db } from "~/services/db.server";
 
 // here saved all the inference data like - user(userid), modal, input, output, response time?, edited?,
 export async function saveInference(inference: any) {
-  return await db.inference.create({
-    data: {
-      userId: inference.userId,
-      model: inference.model,
-      modelVersion: inference?.modelVersion,
-      input: inference.input,
-      output: inference.output,
-      responseTime: inference.responseTime,
-      inputLang: inference.inputLang,
-      outputLang: inference.outputLang,
-      type: inference?.type,
-      jobId: inference?.jobId,
-      ip: inference?.ip,
-    },
-  });
+  // return await db.inference.create({
+  //   data: {
+  //     userId: inference.userId,
+  //     model: inference.model,
+  //     modelVersion: inference?.modelVersion,
+  //     input: inference.input,
+  //     output: inference.output,
+  //     responseTime: inference.responseTime,
+  //     inputLang: inference.inputLang,
+  //     outputLang: inference.outputLang,
+  //     type: inference?.type,
+  //     jobId: inference?.jobId,
+  //     ip: inference?.ip,
+  //   },
+  // });
+  return {};
 }
 
 // checkifInferenceExistwithsameInputandModel
@@ -84,32 +85,33 @@ export async function addFileInference({
 }
 
 export async function getUserFileInferences({ userId, model }) {
-  let OR = undefined;
-  if (model === "ocr") {
-    OR = [
-      {
-        input: { endsWith: ".zip" },
-      },
-      {
-        input: { endsWith: ".gz" },
-      },
-      {
-        input: { endsWith: ".pdf" },
-      },
-    ];
-  }
-  let result = await db.inference.findMany({
-    where: {
-      userId: typeof userId === "string" ? parseInt(userId) : userId,
-      model,
-      OR,
-    },
-    orderBy: {
-      updatedAt: "desc",
-    },
-    take: 20,
-  });
-  return result;
+  return [];
+  // let OR = undefined;
+  // if (model === "ocr") {
+  //   OR = [
+  //     {
+  //       input: { endsWith: ".zip" },
+  //     },
+  //     {
+  //       input: { endsWith: ".gz" },
+  //     },
+  //     {
+  //       input: { endsWith: ".pdf" },
+  //     },
+  //   ];
+  // }
+  // let result = await db.inference.findMany({
+  //   where: {
+  //     userId: typeof userId === "string" ? parseInt(userId) : userId,
+  //     model,
+  //     OR,
+  //   },
+  //   orderBy: {
+  //     updatedAt: "desc",
+  //   },
+  //   take: 20,
+  // });
+  // return result;
 }
 
 export async function deleteInference({ id }) {
