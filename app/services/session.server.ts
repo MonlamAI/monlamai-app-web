@@ -11,7 +11,7 @@ function getDate() {
 
 export let sessionStorage = createCookieSessionStorage({
   cookie: {
-    expires: getDate(),
+    maxAge: 604800, // one week (7 days * 24 hours * 60 minutes * 60 seconds)
     name: "_session_monlam", // use any name you want here
     sameSite: "lax", // this helps with CSRF
     path: "/", // remember to add this so the cookie will work in all routes

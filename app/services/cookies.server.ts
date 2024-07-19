@@ -1,7 +1,7 @@
 import { createCookie } from "@remix-run/node";
 
 export const userPrefs = createCookie("user-prefs", {
-  maxAge: 86_400, // one day
+  maxAge: 3600, // one hour
   httpOnly: true,
   sameSite: "strict",
   secure: process.env.NODE_ENV === "production",
