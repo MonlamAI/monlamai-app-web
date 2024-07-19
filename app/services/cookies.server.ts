@@ -5,4 +5,5 @@ export const userPrefs = createCookie("user-prefs", {
   httpOnly: true,
   sameSite: "strict",
   secure: process.env.NODE_ENV === "production",
+  secrets: [process.env?.COOKIE_SECRET!],
 });

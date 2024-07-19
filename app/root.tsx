@@ -56,7 +56,8 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   const cookieHeader = request.headers.get("Cookie");
   const cookie = (await userPrefs.parse(cookieHeader)) || {};
-  cookie.token = await generateCSRFToken(request);
+  cookie.token = await generateCSRFToken(request, user);
+
   return json(
     {
       user,
