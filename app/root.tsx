@@ -42,6 +42,7 @@ import { AppInstaller } from "~/component/AppInstaller.client";
 import { ClientOnly } from "remix-utils/client-only";
 import useDetectPWA from "~/component/hooks/useDetectPWA";
 import { update_pwa } from "~/modal/user.server";
+import { userPrefs } from "~/services/cookies.server";
 
 export const loader: LoaderFunction = async ({ request }) => {
   let userdata = await getUserSession(request);
@@ -53,8 +54,9 @@ export const loader: LoaderFunction = async ({ request }) => {
   const show_about_lama = unleash.isEnabled("show_about_lama");
   const file_upload_enable = unleash.isEnabled("file_upload_enable");
 
-  const csrfToken = await generateCSRFToken(request);
-
+  const cookieHeader = request.headers.get("Cookie");
+  const cookie = (await userPrefs.parse(cookieHeader)) || {};
+  cookie.token = await generateCSRFToken(request);
   return json(
     {
       user,
@@ -65,10 +67,12 @@ export const loader: LoaderFunction = async ({ request }) => {
       feedBucketAccess,
       feedbucketToken,
       AccessKey: process.env?.API_ACCESS_KEY,
-      csrfToken,
     },
     {
       status: 200,
+      headers: {
+        "Set-Cookie": await userPrefs.serialize(cookie),
+      },
     }
   );
 };
@@ -191,7 +195,7 @@ const getDeviceInfo = () => {
 };
 
 export default function App() {
-  let { user, csrfToken } = useLoaderData();
+  let { user } = useLoaderData();
   let [isDarkMode, setIsDarkMode] = useLocalStorage("Darktheme", false);
   const isPWA = useDetectPWA();
   const fetcher = useFetcher();
@@ -207,10 +211,6 @@ export default function App() {
   //   let { deviceType: device } = getDeviceInfo();
   //   fetcher.submit({ userId: user?.id, isPWA, device }, { method: "POST" });
   // }, [isPWA]);
-
-  if (typeof document !== "undefined") {
-    csrfToken = "";
-  }
 
   return (
     <Document>
