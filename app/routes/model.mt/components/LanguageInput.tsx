@@ -117,7 +117,10 @@ function LanguageInput({
   }, [fetcherData]);
 
   useEffect(() => {
-    if (sourceLang === "detect language" && sourceText !== "") {
+    if (sourceText?.trim() === "" && sourceLang !== "detect language") {
+      setSource("detect language");
+    }
+    if (sourceLang === "detect language" && sourceText?.trim() !== "") {
       detectLanguage(sourceText);
     }
   }, [sourceText, sourceLang]);
@@ -183,25 +186,27 @@ function LanguageInput({
     <div
       className={`${
         isTib ? "font-monlam text-base" : "font-poppins"
-      } bg-white border-b py-2 px-3 font-normal  dark:border-[--card-border]  border-dark_text-secondary  dark:bg-[--card-bg] flex  items-center  md:flex-row gap-3  `}
+      } w-full bg-white border-b py-2 px-3 font-normal  dark:border-[--card-border]  border-dark_text-secondary  dark:bg-[--card-bg] flex  items-center  md:flex-row gap-3  `}
     >
-      <Select
-        onChange={(e) => handleChange(e, "source")}
-        value={sourceLang}
-        className="selectHeader w-fit flex-1"
-        style={{ cursor: "pointer" }}
-      >
-        <option value="detect language" className={optionClass}>
-          {translation?.detect}
-        </option>
-
-        {languagesOptions.map((lang) => (
-          <option key={lang.code} value={lang.code} className={optionClass}>
-            {lang.value}{" "}
-            {beta.includes(lang.value) ? `(${translation?.beta})` : ""}
+      <div className="flex-1">
+        <Select
+          onChange={(e) => handleChange(e, "source")}
+          value={sourceLang}
+          className="selectHeader  w-[160px]"
+          style={{ cursor: "pointer" }}
+        >
+          <option value="detect language" className={optionClass}>
+            {translation?.detect}
           </option>
-        ))}
-      </Select>
+
+          {languagesOptions.map((lang) => (
+            <option key={lang.code} value={lang.code} className={optionClass}>
+              {lang.value}{" "}
+              {beta.includes(lang.value) ? `(${translation?.beta})` : ""}
+            </option>
+          ))}
+        </Select>
+      </div>
       <Tooltip
         content="Swap source with target language"
         placement="top"
@@ -217,19 +222,21 @@ function LanguageInput({
           </div>
         </button>
       </Tooltip>
-      <Select
-        onChange={(e) => handleChange(e, "target")}
-        value={targetLang}
-        className="selectHeader w-fit flex-1 "
-        style={{ cursor: "pointer" }}
-      >
-        {languagesOptions.map((lang) => (
-          <option key={lang.code} value={lang.code} className={optionClass}>
-            {lang.value}{" "}
-            {beta.includes(lang.value) ? `(${translation?.beta})` : ""}
-          </option>
-        ))}
-      </Select>
+      <div className="flex-1">
+        <Select
+          onChange={(e) => handleChange(e, "target")}
+          value={targetLang}
+          className="selectHeader w-max "
+          style={{ cursor: "pointer" }}
+        >
+          {languagesOptions.map((lang) => (
+            <option key={lang.code} value={lang.code} className={optionClass}>
+              {lang.value}{" "}
+              {beta.includes(lang.value) ? `(${translation?.beta})` : ""}
+            </option>
+          ))}
+        </Select>
+      </div>
     </div>
   );
 }

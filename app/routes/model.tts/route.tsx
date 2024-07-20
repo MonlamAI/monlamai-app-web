@@ -162,7 +162,7 @@ export default function Index() {
                   </CancelButton>
                 )}
               </div>
-              {charCount > 0 && (
+              {charCount > 0 && sourceText?.trim() !== "" && (
                 <div className="flex justify-between p-2 border-t border-t-dark_text-secondary dark:border-t-[--card-border]">
                   <CharacterOrFileSizeComponent
                     selectedTool={selectedTool}

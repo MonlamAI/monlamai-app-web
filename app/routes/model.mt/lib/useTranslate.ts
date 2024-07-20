@@ -10,21 +10,19 @@ type useTranslateType = {
   text: string;
   data: string;
   setData: (data: string) => void;
-  csrfToken: string;
 };
 
 function handleEventStream(
   text: string,
   direction: string,
   onData: (data: string) => void,
-  enable_replacement_mt: boolean,
-  csrfToken: string
+  enable_replacement_mt: boolean
 ): Promise<void> {
   return new Promise((resolve, reject) => {
     const eventSource = new EventSource(
       `/api/translation/stream?text=${encodeURIComponent(
         text
-      )}&target=${encodeURIComponent(direction)}&token=${csrfToken}`
+      )}&target=${encodeURIComponent(direction)}`
     );
 
     eventSource.onmessage = (event) => {
@@ -56,13 +54,7 @@ function handleEventStream(
   });
 }
 
-const useTranslate = ({
-  target,
-  text,
-  data,
-  setData,
-  csrfToken,
-}: useTranslateType) => {
+const useTranslate = ({ target, text, data, setData }: useTranslateType) => {
   const { enable_replacement_mt } = useRouteLoaderData("root");
   const [responseTime, setResponseTime] = useState(0);
   const [done, setDone] = useState(false);
@@ -88,13 +80,7 @@ const useTranslate = ({
 
       const startTime = performance.now(); // Record start time
       try {
-        await handleEventStream(
-          input,
-          target,
-          setData,
-          enable_replacement_mt,
-          csrfToken
-        );
+        await handleEventStream(input, target, setData, enable_replacement_mt);
       } catch (error) {
         setError(error.message);
       } finally {

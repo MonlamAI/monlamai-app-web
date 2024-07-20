@@ -11,12 +11,12 @@ function getDate() {
 
 export let sessionStorage = createCookieSessionStorage({
   cookie: {
-    expires: getDate(),
+    maxAge: 604800, // one week (7 days * 24 hours * 60 minutes * 60 seconds)
     name: "_session_monlam", // use any name you want here
     sameSite: "lax", // this helps with CSRF
     path: "/", // remember to add this so the cookie will work in all routes
     httpOnly: true, // for security reasons, make this cookie http only
-    secrets: ["seecreet"], // replace this with an actual secret
+    secrets: [process.env.COOKIE_SECRET!], // replace this with an actual secret
     secure: process.env.NODE_ENV === "production", // enable this in prod only
   },
 });
@@ -37,15 +37,16 @@ export async function getUserDetail(request: Request) {
   return user;
 }
 
-export async function generateCSRFToken(request: Request) {
+export async function generateCSRFToken(request: Request, user: any) {
   let secretKey = process.env.API_ACCESS_KEY;
-  const token = await jwt.sign({}, secretKey, { expiresIn: "5m" });
+  let data = !!user ? user : {};
+  const token = await jwt.sign(data, secretKey, { expiresIn: "1d" });
   return token;
 }
 
 export async function verify_token(token: string) {
   let secretKey = process.env.API_ACCESS_KEY;
-  let result = await jwt.verify(token, secretKey, (err, decoded) => {
+  await jwt.verify(token, secretKey, (err, decoded) => {
     if (err) {
       throw new Error("Failed to authenticate token");
     }

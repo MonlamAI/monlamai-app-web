@@ -6,6 +6,8 @@ const { createRequestHandler } = require("@remix-run/express");
 const compression = require("compression");
 const express = require("express");
 const morgan = require("morgan");
+const crypto = require("crypto");
+
 const MODE = process.env.NODE_ENV;
 const BUILD_DIR = path.join(process.cwd(), "build");
 if (!fs.existsSync(BUILD_DIR)) {
@@ -14,7 +16,6 @@ if (!fs.existsSync(BUILD_DIR)) {
   );
 }
 const app = express();
-
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 1000, // Limit each IP to 100 requests per windowMs
@@ -30,10 +31,16 @@ app.use(compression());
 // You may want to be more aggressive with this caching
 app.use(express.static("public", { maxAge: "1h" }));
 
-// Remix fingerprints its assets so we can cache forever
-app.use(express.static("public/build", { immutable: true, maxAge: "1y" }));
+// http://expressjs.com/en/advanced/best-practice-security.html#at-a-minimum-disable-x-powered-by-header
+app.disable("x-powered-by");
 
+// Remix fingerprints its assets so we can cache forever.
+app.use(
+  "/build",
+  express.static("public/build", { immutable: true, maxAge: "1y" })
+);
 app.use(morgan("tiny"));
+
 app.all(
   "*",
   MODE === "production"
@@ -49,7 +56,7 @@ const port = process.env.PORT || 3000;
 
 // instead of running listen on the Express app, do it on the HTTP server
 httpServer.listen(port, () => {
-  console.log(`Express server listening on port ${port}`);
+  console.log(`✅ app ready: http://localhost:${port}`);
 });
 
 ////////////////////////////////////////////////////////////////////////////////

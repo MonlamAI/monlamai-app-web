@@ -1,12 +1,16 @@
 import { LoaderFunctionArgs } from "@remix-run/node";
-import { sessionStorage, verify_token } from "~/services/session.server";
+import { verify_token } from "~/services/session.server";
+import { userPrefs } from "../services/cookies.server";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   let url = new URL(request.url);
   let text = url.searchParams.get("text") as string;
   let target = url.searchParams.get("target") as string;
-  let csrfToken = url.searchParams.get("token") as string;
+  const cookieHeader = request.headers.get("Cookie");
+  const cookie = (await userPrefs.parse(cookieHeader)) || {};
+  let csrfToken = cookie.token;
   let token_server = await verify_token(csrfToken);
+
   if (!token_server) {
     return new Response("Invalid token", { status: 403 });
   }
