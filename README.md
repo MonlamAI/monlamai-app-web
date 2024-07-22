@@ -65,6 +65,15 @@ npm install
 
    COOKIE_SECRET : session and cookie secret (can be anything not exposed)
 
+3. setup database
+
+after setting up DATABASE_URL in .env file
+
+```sh
+npx prisma migrate deploy
+```
+   
+   
 4. run app locally
 
 ```sh
