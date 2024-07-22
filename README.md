@@ -39,7 +39,7 @@ npm install
 
 ### 3. set up Environment variable
 
-```bash
+```plaintext
    DATABASE_URL: set up a postgres database and provide the link here   
    MAX_TEXT_LENGTH_MT : max number text accepted in Machine translation
    MAX_TEXT_LENGTH_TTS: max number of text supported in text to speech
