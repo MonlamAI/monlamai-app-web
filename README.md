@@ -31,13 +31,13 @@ git clone https://github.com/OpenPecha/monlam-ai-tools.git
 cd monlam-ai-tools
 ```
 
-### 2. install the dependencies
+### 2. Install the dependencies
 
 ```sh
 npm install 
 ```
 
-### 3. set up Environment variable
+### 3. Set up Environment variable
 
 ```plaintext
    DATABASE_URL: set up a postgres database and provide the link here   
@@ -63,7 +63,7 @@ npm install
    COOKIE_SECRET : session and cookie secret (can be anything not exposed)
 ```
 
-### 3. setup database
+### 3. Setup database
 
 after setting up DATABASE_URL in .env file
 
@@ -72,7 +72,7 @@ npx prisma migrate deploy
 ```
    
    
-### 4. run app locally
+### 4. Run app locally
 
 ```sh
 npm run dev
