@@ -17,7 +17,7 @@ export const translationCodes = [
 ];
 
 export function translationList() {
-  let translations: translationType = en;
+  let translations = en;
   for (const key in en) {
     translations = {
       ...translations,
