@@ -30,7 +30,42 @@ From your terminal:
 ```sh
 npm install 
 ```
-2. run app locally
+
+2. set up Environment variable
+
+   DATABASE_URL: set up a postgres database and provide the link here
+   
+   MAX_TEXT_LENGTH_MT : max number text accepted in Machine translation
+   MAX_TEXT_LENGTH_TTS: max number of text supported in text to speech
+   
+   AUTH0_CLIENT_ID : client id from auth0
+   AUTH0_CLIENT_SECRET :client secret from auth0
+   AUTH0_DOMAIN : domain name provided by auth0
+   AUTH0_CALLBACK_URL : callback url to where the auth0 should redirect
+
+   OPENAI_KEY : Chatgpt-api key (not required)
+
+   ORIGIN : domain name where the app is hosted
+
+   UNLEASH_FLAG_URL : feature flag url (not required)
+   UNLEASH_FLAG_KEY : feature flag key (not required)
+
+   API_HIT_LIMIT : limit for hitting api per user (not required)
+
+   BUCKET_NAME_PRODUCTION : aws bucket name
+   AWS_ACCESS_KEY_ID_PRODUCTION: aws access key
+   AWS_SECRET_ACCESS_KEY_PRODUCTION :aws secret key
+   AWS_REGION_PRODUCTION: aws region
+
+   FEEDBUCKET_ACCESS : feedbucket access key (not required)
+   FEEDBUCKET_TOKEN :feedbucket token (not required)
+
+   FILE_SUBMIT_URL : domain url for monlam api
+   API_ACCESS_KEY : token used for verification of api user
+
+   COOKIE_SECRET : session and cookie secret (can be anything not exposed)
+
+4. run app locally
 
 ```sh
 npm run dev
