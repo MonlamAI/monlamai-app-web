@@ -237,11 +237,13 @@ export default function Index() {
       );
       resetFetcher(editfetcher);
     }
+  }, [done]);
+  useEffect(() => {
     if (charCount === 0) {
       resetFetcher(editfetcher);
       setData("");
     }
-  }, [done, charCount]);
+  }, [charCount]);
   let inferenceId = savefetcher.data?.id;
 
   const handleReset = () => {
