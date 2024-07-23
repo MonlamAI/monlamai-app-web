@@ -15,6 +15,20 @@ if (!fs.existsSync(BUILD_DIR)) {
     "Build directory doesn't exist, please run `npm run dev` or `npm run build` before starting the server."
   );
 }
+
+const os = require("os");
+const networkInterfaces = os.networkInterfaces();
+const serverIp = [];
+
+Object.keys(networkInterfaces).forEach((interfaceName) => {
+  networkInterfaces[interfaceName].forEach((iface) => {
+    if ("IPv4" !== iface.family || iface.internal !== false) {
+      return;
+    }
+    serverIp.push(iface.address);
+  });
+});
+
 const app = express();
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -44,11 +58,22 @@ app.use(morgan("tiny"));
 app.all(
   "*",
   MODE === "production"
-    ? createRequestHandler({ build: require("./build") })
+    ? createRequestHandler({
+        build: require("./build"),
+        getLoadContext() {
+          return { serverIp }; // Pass server IP to the context
+        },
+      })
     : (req, res, next) => {
         purgeRequireCache();
         const build = require("./build");
-        return createRequestHandler({ build, mode: MODE })(req, res, next);
+        return createRequestHandler({
+          build,
+          mode: MODE,
+          getLoadContext() {
+            return { serverIp }; // Pass server IP to the context
+          },
+        })(req, res, next);
       }
 );
 

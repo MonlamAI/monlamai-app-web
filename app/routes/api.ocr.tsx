@@ -99,6 +99,7 @@ export const action: ActionFunction = async ({ request }) => {
       output: "",
       ip,
     });
+    console.log(inferenceData);
     try {
       let formData = new FormData();
       formData.append("PDFurls", PDFurls);
@@ -112,7 +113,7 @@ export const action: ActionFunction = async ({ request }) => {
         },
       });
       job = await res.json();
-
+      console.log(job);
       return PDFurls;
     } catch (e) {
       return { error: FILE_SERVER_ISSUE_MESSAGE };
