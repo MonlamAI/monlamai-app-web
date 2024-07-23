@@ -28,11 +28,16 @@ import { getUser } from "./modal/user.server";
 import toastStyle from "react-toastify/dist/ReactToastify.css";
 import feedBucketStyle from "~/styles/feedbucket.css";
 import { ToastContainer } from "react-toastify";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useLocalStorage from "./component/hooks/useLocaleStorage";
 import FeedBucket from "./component/FeedBucket";
 import LocationComponent from "./component/LocationDetect";
-import unleash from "./services/features.server";
+import {
+  isJobEnabled,
+  enable_replacement_mt,
+  show_about_lama,
+  file_upload_enable,
+} from "./services/features.server";
 
 import { saveIpAddress } from "~/modal/log.server";
 import getIpAddressByRequest from "~/component/utils/getIpAddress";
@@ -44,16 +49,15 @@ import useDetectPWA from "~/component/hooks/useDetectPWA";
 import { update_pwa } from "~/modal/user.server";
 import { userPrefs } from "~/services/cookies.server";
 
+import io from "socket.io-client";
+
+import { SocketProvider } from "~/SocketContext";
+
 export const loader: LoaderFunction = async ({ request, context }) => {
-  console.log("server", context.serverIp);
   let userdata = await getUserSession(request);
   const feedBucketAccess = process.env.FEEDBUCKET_ACCESS;
   const feedbucketToken = process.env.FEEDBUCKET_TOKEN;
   let user = userdata ? await getUser(userdata?._json?.email) : null;
-  const isJobEnabled = unleash.isEnabled("isJobEnabled");
-  const enable_replacement_mt = unleash.isEnabled("enable_replacement_mt");
-  const show_about_lama = unleash.isEnabled("show_about_lama");
-  const file_upload_enable = unleash.isEnabled("file_upload_enable");
 
   const cookieHeader = request.headers.get("Cookie");
   const cookie = (await userPrefs.parse(cookieHeader)) || {};
@@ -138,6 +142,16 @@ export const meta: MetaFunction = () => {
 };
 
 function Document({ children }: { children: React.ReactNode }) {
+  const [socket, setSocket] = useState<Socket>();
+
+  useEffect(() => {
+    const socket = io();
+    setSocket(socket);
+    return () => {
+      socket.close();
+    };
+  }, []);
+
   return (
     <html lang="en">
       <head>
@@ -158,10 +172,12 @@ function Document({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body className="flex h-[100dvh]  mx-auto inset-0 overflow-y-auto overflow-x-hidden dark:bg-slate-700 dark:text-gray-200">
-        {children}
-        {/* {show_feed_bucket && show && <script dangerouslySetInnerHTML={{ __html: feedbucketScript }}></scrip>} */}
-      </body>
+      <SocketProvider socket={socket}>
+        <body className="flex h-[100dvh]  mx-auto inset-0 overflow-y-auto overflow-x-hidden dark:bg-slate-700 dark:text-gray-200">
+          {children}
+          {/* {show_feed_bucket && show && <script dangerouslySetInnerHTML={{ __html: feedbucketScript }}></scrip>} */}
+        </body>
+      </SocketProvider>
     </html>
   );
 }

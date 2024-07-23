@@ -6,7 +6,7 @@ const { createRequestHandler } = require("@remix-run/express");
 const compression = require("compression");
 const express = require("express");
 const morgan = require("morgan");
-const crypto = require("crypto");
+const { Server } = require("socket.io");
 
 const MODE = process.env.NODE_ENV;
 const BUILD_DIR = path.join(process.cwd(), "build");
@@ -15,19 +15,6 @@ if (!fs.existsSync(BUILD_DIR)) {
     "Build directory doesn't exist, please run `npm run dev` or `npm run build` before starting the server."
   );
 }
-
-const os = require("os");
-const networkInterfaces = os.networkInterfaces();
-const serverIp = [];
-
-Object.keys(networkInterfaces).forEach((interfaceName) => {
-  networkInterfaces[interfaceName].forEach((iface) => {
-    if ("IPv4" !== iface.family || iface.internal !== false) {
-      return;
-    }
-    serverIp.push(iface.address);
-  });
-});
 
 const app = express();
 const limiter = rateLimit({
@@ -39,6 +26,70 @@ app.use(limiter);
 
 // You need to create the HTTP server from the Express app
 const httpServer = createServer(app);
+const io = new Server(httpServer);
+
+io.on("connection", (socket) => {
+  // from this point you are on the WS connection with a specific client
+  console.log(socket.id, "connected");
+
+  socket.emit("confirmation", "connected!");
+
+  socket.on("translate", async (data) => {
+    const controller = new AbortController();
+    const formData = new FormData();
+    const fileUploadUrl = process.env?.FILE_SUBMIT_URL;
+
+    let api_url = fileUploadUrl + "/mt/playground/stream";
+    formData.append("input", data?.input);
+    formData.append("direction", data?.direction);
+    let response = await fetch(api_url, {
+      method: "POST",
+      body: formData,
+      headers: {
+        "x-api-key": process.env?.API_ACCESS_KEY,
+      },
+      signal: controller.signal,
+    });
+    try {
+      // Make a POST request to the API
+
+      // Check the content type of the response
+      const contentType = response.headers.get("Content-Type");
+
+      if (contentType && contentType.includes("application/json")) {
+        // Handle JSON response
+        let data = await response.json();
+        return data[0].generated_text;
+      } else if (contentType && contentType.includes("text")) {
+        // Handle text stream
+        const reader = response.body.getReader();
+        let translation = "";
+
+        // Read the stream
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) {
+            break;
+          }
+          const chunkText = new TextDecoder("utf-8")
+            .decode(value)
+            .replace(/^data:/, "");
+          const chunkData = JSON.parse(chunkText);
+          if (chunkData.generated_text !== null) {
+            translation = chunkData.generated_text;
+          }
+        }
+        socket.emit("translated", translation);
+        return translation;
+      } else {
+        throw new Error("Unsupported content type");
+      }
+    } catch (error) {
+      console.error("Error in postRequestAndHandleResponse:", error);
+      throw error;
+    }
+  });
+});
 
 app.use(compression());
 
@@ -60,9 +111,6 @@ app.all(
   MODE === "production"
     ? createRequestHandler({
         build: require("./build"),
-        getLoadContext() {
-          return { serverIp }; // Pass server IP to the context
-        },
       })
     : (req, res, next) => {
         purgeRequireCache();
@@ -70,9 +118,6 @@ app.all(
         return createRequestHandler({
           build,
           mode: MODE,
-          getLoadContext() {
-            return { serverIp }; // Pass server IP to the context
-          },
         })(req, res, next);
       }
 );
