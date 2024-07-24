@@ -49,7 +49,7 @@ import useDetectPWA from "~/component/hooks/useDetectPWA";
 import { update_pwa } from "~/modal/user.server";
 import { userPrefs } from "~/services/cookies.server";
 
-import io from "socket.io-client";
+import io, { Socket } from "socket.io-client";
 
 import { SocketProvider } from "~/SocketContext";
 

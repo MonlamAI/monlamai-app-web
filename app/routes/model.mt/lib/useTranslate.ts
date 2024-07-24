@@ -56,8 +56,8 @@ const useTranslate = ({ target, text, data, setData }: useTranslateType) => {
       const startTime = performance.now(); // Record start time
       setStartTime(startTime);
       socket?.emit("translate", {
-        input,
-        direction: target,
+        text: input,
+        target,
       });
     };
 

@@ -7,6 +7,7 @@ const compression = require("compression");
 const express = require("express");
 const morgan = require("morgan");
 const { Server } = require("socket.io");
+const axios = require("axios");
 
 const MODE = process.env.NODE_ENV;
 const BUILD_DIR = path.join(process.cwd(), "build");
@@ -40,20 +41,17 @@ io.on("connection", (socket) => {
     const fileUploadUrl = process.env?.FILE_SUBMIT_URL;
 
     let api_url = fileUploadUrl + "/mt/playground/stream";
-    formData.append("input", data?.input);
-    formData.append("direction", data?.direction);
-    let response = await fetch(api_url, {
-      method: "POST",
-      body: formData,
+    formData.append("input", data?.text);
+    formData.append("direction", data?.target);
+
+    const response = await axios.post(api_url, formData, {
       headers: {
         "x-api-key": process.env?.API_ACCESS_KEY,
       },
+      responseType: "stream",
       signal: controller.signal,
     });
     try {
-      // Make a POST request to the API
-
-      // Check the content type of the response
       const contentType = response.headers.get("Content-Type");
 
       if (contentType && contentType.includes("application/json")) {
@@ -61,33 +59,51 @@ io.on("connection", (socket) => {
         let data = await response.json();
         return data[0].generated_text;
       } else if (contentType && contentType.includes("text")) {
-        // Handle text stream
-        const reader = response.body.getReader();
         let translation = "";
+        // Make a POST request to the API
+        response.data.on("data", (chunk) => {
+          const chunkStr = chunk.toString();
+          const lines = chunkStr
+            .split("\n")
+            .filter((line) => line.trim() !== "");
+          lines.forEach((line) => {
+            if (line.startsWith("data:")) {
+              const jsonStr = line.replace("data:", "");
+              try {
+                const parsedData = JSON.parse(jsonStr);
+                if (parsedData.generated_text) {
+                  generatedText = parsedData.generated_text;
+                } else {
+                  // Extract the text from the response and append it to the translation variable
+                  translation += parsedData.token?.text;
 
-        // Read the stream
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) {
-            break;
+                  socket.emit("translated", translation);
+                }
+              } catch (error) {
+                console.error("Error parsing JSON:", error);
+              }
+            }
+          });
+        });
+
+        response.data.on("end", () => {
+          if (generatedText) {
+            translation = generatedText;
+            socket.emit("translated", translation);
           }
-          const chunkText = new TextDecoder("utf-8")
-            .decode(value)
-            .replace(/^data:/, "");
-          const chunkData = JSON.parse(chunkText);
-          if (chunkData.generated_text !== null) {
-            translation = chunkData.generated_text;
-          }
-        }
-        socket.emit("translated", translation);
+          // Handle the end of the stream
+        });
+
+        response.data.on("error", (error) => {
+          console.error("Stream error:", error);
+          // Handle any errors in the stream
+        });
+
         return translation;
       } else {
         throw new Error("Unsupported content type");
       }
-    } catch (error) {
-      console.error("Error in postRequestAndHandleResponse:", error);
-      throw error;
-    }
+    } catch (error) {}
   });
 });
 
