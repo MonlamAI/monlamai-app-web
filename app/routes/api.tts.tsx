@@ -1,7 +1,6 @@
 import { ActionFunction, json } from "@remix-run/node";
 import { base64ToBuffer } from "~/component/utils/base64ToBuffer";
 import inputReplace from "~/component/utils/ttsReplace.server";
-import { verifyDomain } from "~/component/utils/verifyDomain";
 import { API_ERROR_MESSAGE } from "~/helper/const";
 import { checkIfInferenceExist, saveInference } from "~/modal/inference.server";
 import { getUserDetail } from "~/services/session.server";
@@ -9,11 +8,6 @@ import getIpAddressByRequest from "~/component/utils/getIpAddress";
 
 export const action: ActionFunction = async ({ request }) => {
   let ip = getIpAddressByRequest(request);
-  const isDomainAllowed = verifyDomain(request);
-  if (!isDomainAllowed) {
-    // If the referer is not from the expected domain, return a forbidden response
-    return json({ message: "Access forbidden" }, { status: 403 });
-  }
 
   let user = await getUserDetail(request);
 
