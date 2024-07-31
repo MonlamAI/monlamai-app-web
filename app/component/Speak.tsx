@@ -4,29 +4,7 @@ import { FaPause } from "react-icons/fa6";
 import { ICON_SIZE } from "~/helper/const";
 import { HiMiniSpeakerWave } from "react-icons/hi2";
 import { Spinner } from "flowbite-react";
-function useAudioPlayer(audioRef, fetcherData) {
-  const [isPlaying, setIsPlaying] = useState(false);
-
-  useEffect(() => {
-    if (fetcherData) {
-      audioRef.current?.play();
-      setIsPlaying(true);
-    }
-    return () => {
-      if (!audioRef.current?.paused) {
-        audioRef.current?.pause();
-        setIsPlaying(false);
-      }
-    };
-  }, [fetcherData, audioRef]);
-
-  const pauseAudio = () => {
-    audioRef.current?.pause();
-    setIsPlaying(false);
-  };
-
-  return { isPlaying, pauseAudio };
-}
+import useAudioPlayer from "./hooks/useAudioPlayer";
 
 function Speak({
   text,

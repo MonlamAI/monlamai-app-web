@@ -16,7 +16,6 @@ import {
   ScrollRestoration,
   useLoaderData,
   useLocation,
-  useFetcher,
 } from "@remix-run/react";
 import Footer from "./component/layout/Footer";
 import Header from "./component/layout/Header";
@@ -45,7 +44,6 @@ import { ErrorPage } from "./component/ErrorPages";
 import { sessionStorage } from "~/services/session.server";
 import { AppInstaller } from "~/component/AppInstaller.client";
 import { ClientOnly } from "remix-utils/client-only";
-import useDetectPWA from "~/component/hooks/useDetectPWA";
 import { update_pwa } from "~/modal/user.server";
 import { userPrefs } from "~/services/cookies.server";
 
@@ -166,41 +164,10 @@ function Document({ children }: { children: React.ReactNode }) {
   );
 }
 
-const getDeviceInfo = () => {
-  const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-  const isStandalone =
-    window.matchMedia("(display-mode: standalone)").matches ||
-    window.navigator.standalone;
-  const isPWA = isStandalone ? "PWA" : "Browser";
-
-  const isAndroid = /android/i.test(userAgent) && !/windows/i.test(userAgent);
-  const isIOS = /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
-  const isMac = /Macintosh|MacIntel|MacPPC|Mac68K/.test(userAgent) && !isIOS;
-  const isWindows = /Windows/.test(userAgent);
-
-  let deviceType = "Desktop";
-  if (isAndroid) {
-    deviceType = "Android";
-  } else if (isIOS) {
-    deviceType = "iOS";
-  } else if (isMac) {
-    deviceType = "Mac";
-  } else if (isWindows) {
-    deviceType = "Windows";
-  }
-
-  return {
-    userAgent,
-    isPWA,
-    deviceType,
-  };
-};
-
 export default function App() {
   let { user } = useLoaderData();
   let [isDarkMode, setIsDarkMode] = useLocalStorage("Darktheme", false);
-  const isPWA = useDetectPWA();
-  const fetcher = useFetcher();
+
   useEffect(() => {
     if (isDarkMode) {
       document.documentElement.classList.add("dark");
@@ -208,11 +175,6 @@ export default function App() {
       document.documentElement.classList.remove("dark");
     }
   }, []);
-
-  // useEffect(() => {
-  //   let { deviceType: device } = getDeviceInfo();
-  //   fetcher.submit({ userId: user?.id, isPWA, device }, { method: "POST" });
-  // }, [isPWA]);
 
   return (
     <Document>
