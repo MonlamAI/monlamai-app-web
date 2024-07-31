@@ -29,9 +29,9 @@ describe('formatBytes', () => {
     //     expect(formatBytes(1024, 3)).toBe('1.000 KB');
     // });
 
-    // test('should return "0 Bytes" for negative bytes', () => {
-    //     expect(formatBytes(-1024)).toBe('0 Bytes');
-    // });
+    test('should return "0 Bytes" for negative bytes', () => {
+        expect(formatBytes(-1024)).toBe('0 Bytes');
+    });
 
     test('should return "1 KB" for 1024.5 bytes', () => {
         expect(formatBytes(1024.5)).toBe('1 KB');
