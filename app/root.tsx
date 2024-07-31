@@ -42,6 +42,8 @@ import { AppInstaller } from "~/component/AppInstaller.client";
 import { ClientOnly } from "remix-utils/client-only";
 import useDetectPWA from "~/component/hooks/useDetectPWA";
 import { update_pwa } from "~/modal/user.server";
+import { userPrefs } from "~/services/cookies.server";
+
 export const loader: LoaderFunction = async ({ request }) => {
   let userdata = await getUserSession(request);
   const feedBucketAccess = process.env.FEEDBUCKET_ACCESS;
@@ -52,7 +54,9 @@ export const loader: LoaderFunction = async ({ request }) => {
   const show_about_lama = unleash.isEnabled("show_about_lama");
   const file_upload_enable = unleash.isEnabled("file_upload_enable");
 
-  const csrfToken = await generateCSRFToken(request);
+  const cookieHeader = request.headers.get("Cookie");
+  const cookie = (await userPrefs.parse(cookieHeader)) || {};
+  cookie.token = await generateCSRFToken(request, user);
 
   return json(
     {
@@ -64,10 +68,12 @@ export const loader: LoaderFunction = async ({ request }) => {
       feedBucketAccess,
       feedbucketToken,
       AccessKey: process.env?.API_ACCESS_KEY,
-      csrfToken,
     },
     {
       status: 200,
+      headers: {
+        "Set-Cookie": await userPrefs.serialize(cookie),
+      },
     }
   );
 };
@@ -153,7 +159,6 @@ function Document({ children }: { children: React.ReactNode }) {
       </head>
       <body className="flex h-[100dvh]  mx-auto inset-0 overflow-y-auto overflow-x-hidden dark:bg-slate-700 dark:text-gray-200">
         {children}
-        <ScrollRestoration />
         {/* {show_feed_bucket && show && <script dangerouslySetInnerHTML={{ __html: feedbucketScript }}></scrip>} */}
       </body>
     </html>
@@ -203,10 +208,10 @@ export default function App() {
     }
   }, []);
 
-  useEffect(() => {
-    let { deviceType: device } = getDeviceInfo();
-    fetcher.submit({ userId: user?.id, isPWA, device }, { method: "POST" });
-  }, []);
+  // useEffect(() => {
+  //   let { deviceType: device } = getDeviceInfo();
+  //   fetcher.submit({ userId: user?.id, isPWA, device }, { method: "POST" });
+  // }, [isPWA]);
 
   return (
     <Document>
@@ -226,6 +231,7 @@ export default function App() {
           <Footer />
         </div>
         <Scripts />
+        <ScrollRestoration />
       </LitteraProvider>
       <ToastContainer />
     </Document>

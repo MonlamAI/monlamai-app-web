@@ -14,6 +14,7 @@ export function EachInference({
 }) {
   const deleteFetcher = useFetcher();
   let model = inference.model as "mt" | "ocr" | "stt" | "tts";
+
   let filename = inference.input
     ?.split(`/${model.toUpperCase()}/input/`)[1]
     ?.split("-")

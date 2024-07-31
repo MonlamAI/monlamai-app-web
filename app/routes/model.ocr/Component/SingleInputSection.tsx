@@ -147,6 +147,7 @@ function SingleInptSection({ fetcher }: any) {
               uploadFile={uploadFile}
               handleReset={handleFormClear}
               uploadProgress={uploadProgress}
+              scaning={!!ImageUrl && fetcher?.state !== "idle"}
             />
           </div>
         </div>

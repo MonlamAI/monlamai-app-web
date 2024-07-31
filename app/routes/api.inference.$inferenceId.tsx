@@ -10,11 +10,9 @@ export const action: ActionFunction = async ({ request, params }) => {
   }
   const formdata = await request.formData();
   const jobSource = formdata.get("jobSource") as string;
-
   const updatedJob = await db.inference.update({
     where: {
       id: inferenceId,
-      type: "file",
     },
     data: {
       output: jobSource,

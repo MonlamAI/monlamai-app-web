@@ -11,6 +11,7 @@ import { createReadableStreamFromReadable } from "@remix-run/node";
 import { RemixServer } from "@remix-run/react";
 import isbot from "isbot";
 import { renderToPipeableStream } from "react-dom/server";
+import { NonceContext } from "./services/useNonce";
 
 const ABORT_DELAY = 5_000;
 
@@ -18,8 +19,7 @@ export default function handleRequest(
   request: Request,
   responseStatusCode: number,
   responseHeaders: Headers,
-  remixContext: EntryContext,
-  loadContext: AppLoadContext
+  remixContext: EntryContext
 ) {
   return isbot(request.headers.get("user-agent"))
     ? handleBotRequest(
@@ -105,7 +105,6 @@ function handleBrowserRequest(
           shellRendered = true;
           const body = new PassThrough();
           const stream = createReadableStreamFromReadable(body);
-
           responseHeaders.set("Content-Type", "text/html");
 
           resolve(
@@ -122,9 +121,6 @@ function handleBrowserRequest(
         },
         onError(error: unknown) {
           responseStatusCode = 500;
-          // Log streaming rendering errors from inside the shell.  Don't log
-          // errors encountered during initial shell rendering since they'll
-          // reject and get logged in handleDocumentRequest.
           if (shellRendered) {
             console.error(error);
           }

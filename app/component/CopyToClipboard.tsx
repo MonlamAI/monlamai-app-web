@@ -32,20 +32,15 @@ const CopyToClipboard = ({ textToCopy, onClick }: CopyToClipboardProps) => {
       setIsCopied(false);
     }, 2000);
   };
-  console.log(isCopied);
   return (
     <>
       {!isCopied ? (
         <ReactionButton
-          enabled={true}
-          disabled={false}
           icon={<MdContentCopy size={ICON_SIZE} />}
           onClick={handleCopy}
         />
       ) : (
         <ReactionButton
-          enabled={true}
-          disabled={false}
           icon={<MdContentCopy size={ICON_SIZE} />}
           onClick={handleCopy}
           className="copy-success"
