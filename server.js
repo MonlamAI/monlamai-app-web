@@ -6,7 +6,6 @@ const { createRequestHandler } = require("@remix-run/express");
 const compression = require("compression");
 const express = require("express");
 const morgan = require("morgan");
-const { Server } = require("socket.io");
 const axios = require("axios");
 
 const MODE = process.env.NODE_ENV;
@@ -27,85 +26,6 @@ app.use(limiter);
 
 // You need to create the HTTP server from the Express app
 const httpServer = createServer(app);
-const io = new Server(httpServer);
-
-io.on("connection", (socket) => {
-  // from this point you are on the WS connection with a specific client
-  console.log(socket.id, "connected");
-
-  socket.emit("confirmation", "connected!");
-
-  socket.on("translate", async (data) => {
-    const controller = new AbortController();
-    const formData = new FormData();
-    const fileUploadUrl = process.env?.FILE_SUBMIT_URL;
-
-    let api_url = fileUploadUrl + "/mt/playground/stream";
-    formData.append("input", data?.text);
-    formData.append("direction", data?.target);
-
-    const response = await axios.post(api_url, formData, {
-      headers: {
-        "x-api-key": process.env?.API_ACCESS_KEY,
-      },
-      responseType: "stream",
-      signal: controller.signal,
-    });
-    try {
-      const contentType = response.headers.get("Content-Type");
-
-      if (contentType && contentType.includes("application/json")) {
-        // Handle JSON response
-        let data = await response.json();
-        return data[0].generated_text;
-      } else if (contentType && contentType.includes("text")) {
-        let translation = "";
-        // Make a POST request to the API
-        response.data.on("data", (chunk) => {
-          const chunkStr = chunk.toString();
-          const lines = chunkStr
-            .split("\n")
-            .filter((line) => line.trim() !== "");
-          lines.forEach((line) => {
-            if (line.startsWith("data:")) {
-              const jsonStr = line.replace("data:", "");
-              try {
-                const parsedData = JSON.parse(jsonStr);
-                if (parsedData.generated_text) {
-                  generatedText = parsedData.generated_text;
-                } else {
-                  // Extract the text from the response and append it to the translation variable
-                  translation += parsedData.token?.text;
-
-                  socket.emit("translated", translation);
-                }
-              } catch (error) {
-                console.error("Error parsing JSON:", error);
-              }
-            }
-          });
-        });
-
-        response.data.on("end", () => {
-          if (generatedText) {
-            translation = generatedText;
-            socket.emit("translated", translation);
-          }
-          // Handle the end of the stream
-        });
-
-        response.data.on("error", (error) => {
-          console.error("Stream error:", error);
-          // Handle any errors in the stream
-        });
-
-        return translation;
-      } else {
-        throw new Error("Unsupported content type");
-      }
-    } catch (error) {}
-  });
-});
 
 app.use(compression());
 

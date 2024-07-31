@@ -49,10 +49,6 @@ import useDetectPWA from "~/component/hooks/useDetectPWA";
 import { update_pwa } from "~/modal/user.server";
 import { userPrefs } from "~/services/cookies.server";
 
-import io, { Socket } from "socket.io-client";
-
-import { SocketProvider } from "~/SocketContext";
-
 export const loader: LoaderFunction = async ({ request, context }) => {
   let userdata = await getUserSession(request);
   const feedBucketAccess = process.env.FEEDBUCKET_ACCESS;
@@ -142,43 +138,9 @@ export const meta: MetaFunction = () => {
 };
 
 function Document({ children }: { children: React.ReactNode }) {
-  const [socket, setSocket] = useState<Socket>();
-
-  useEffect(() => {
-    const socket = io();
-    setSocket(socket);
-    return () => {
-      socket.close();
-    };
-  }, []);
-
   return (
     <html lang="en">
       <head>
-        <script
-          key="stloader"
-          type="text/javascript"
-          dangerouslySetInnerHTML={{
-            __html: `
-    (function(e,r,n,t,s){var a=[];e[s]=function(){a.push(arguments)};e[s].queue=a;  var o=[];var i=[];var c=true;var p=void 0;if(window.PerformanceObserver&&  window.PerformanceObserver.supportedEntryTypes&&(  PerformanceObserver.supportedEntryTypes.indexOf("longtask")>=0||  PerformanceObserver.supportedEntryTypes.indexOf("element")>=0)){  p=new PerformanceObserver(function(e){e.getEntries().forEach(function(e){  switch(e.entryType){case"element":i.push(e);break;case"longtask":o.push(e);break;  default:break}})});p.observe({entryTypes:["longtask","element"]})}e[s+"lt"]={  longTasks:o,timingElements:i,inPageLoad:c,observer:p};if(t){var u=r.createElement(n);  u.async=1;u.src=t;var f=r.getElementsByTagName(n)[0];f.parentNode.insertBefore(u,f)}})
-    (window,document,"script","//cdn.sematext.com/experience.js","strum");
-  `,
-          }}
-        />
-        <script
-          key="stconfig"
-          type="text/javascript"
-          dangerouslySetInnerHTML={{
-            __html: `
-    strum('config', { token: '316078bd-1b2b-4b65-813c-0bb0abc76488', 'receiverUrl': 'https://rum-receiver.eu.sematext.com' });
-    var oldPushState = history.pushState;
-    history.pushState = function(state, title, url) {
-      window['strum']('routeChange', url);
-      return oldPushState.apply(history, arguments);
-    };
- `,
-          }}
-        />
         <meta charSet="utf-8" />
         <meta
           name="viewport"
@@ -196,12 +158,10 @@ function Document({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <SocketProvider socket={socket}>
-        <body className="flex h-[100dvh]  mx-auto inset-0 overflow-y-auto overflow-x-hidden dark:bg-slate-700 dark:text-gray-200">
-          {children}
-          {/* {show_feed_bucket && show && <script dangerouslySetInnerHTML={{ __html: feedbucketScript }}></scrip>} */}
-        </body>
-      </SocketProvider>
+      <body className="flex h-[100dvh]  mx-auto inset-0 overflow-y-auto overflow-x-hidden dark:bg-slate-700 dark:text-gray-200">
+        {children}
+        {/* {show_feed_bucket && show && <script dangerouslySetInnerHTML={{ __html: feedbucketScript }}></scrip>} */}
+      </body>
     </html>
   );
 }
