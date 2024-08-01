@@ -1,4 +1,4 @@
-import { base64ToBuffer } from '../utils/base64ToBuffer';
+import { base64ToBuffer } from '../base64ToBuffer';
 
 describe('base64ToBuffer', () => {
     test('should convert a Base64-encoded string to a Buffer', () => {

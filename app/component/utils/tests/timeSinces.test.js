@@ -1,4 +1,4 @@
-import timeSince from '../utils/timeSince';
+import timeSince from '../timeSince';
 
 describe('timeSince', () => {
     test('should return "Just now" for a date just now', () => {

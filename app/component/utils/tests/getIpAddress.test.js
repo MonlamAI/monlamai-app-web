@@ -1,4 +1,4 @@
-import getIpAddressByRequest from '../utils/getIpAddress';
+import getIpAddressByRequest from '../getIpAddress';
 
 describe('getIpAddressByRequest', () => {
     test('should extract IP from x-forwarded-for header', () => {

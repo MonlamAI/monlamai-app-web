@@ -1,4 +1,4 @@
-import {formatBytes} from "../utils/fileSizeFormat"
+import { formatBytes } from "../fileSizeFormat"
 
 describe('formatBytes', () => {
     test('should return "0 Bytes" for 0 bytes', () => {

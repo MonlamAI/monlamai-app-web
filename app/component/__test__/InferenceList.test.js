@@ -57,8 +57,16 @@ describe('InferenceList', () => {
         );
 
         // Check if the mocked EachInference component is rendered correctly
-        // expect(screen.getAllByText('Mocked EachInference')).toHaveLength(2);
         expect(screen.getByText("Mocked EachInference Inference 1")).toBeInTheDocument()
         expect(screen.getByText("Mocked EachInference Inference 2")).toBeInTheDocument()
+    });
+
+    it('renders a message when there are no inferences', () => {
+        const mockUseLoaderData = useLoaderData;
+        mockUseLoaderData.mockReturnValue({ inferences: [] });
+
+        render(<InferenceList />);
+        // it can show blank but having a message would be better
+        expect(screen.getByText('No inferences found')).toBeInTheDocument();
     });
 });
