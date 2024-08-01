@@ -1,4 +1,4 @@
-import inputReplace from '../utils/ttsReplace.server';
+import inputReplace from '../ttsReplace.server';
 
 describe('inputReplace', () => {
     test('removes \u0F38 character from input', () => {
@@ -11,7 +11,7 @@ describe('inputReplace', () => {
     test('handles input without \u0F38 character', () => {
         const input = "བཀྲ་ཤིས་བདེ་ལེགས་";
         const result = inputReplace(input);
-        expect(result).toBe(input); 
+        expect(result).toBe(input);
     });
 
     // test('handles null input', () => {
@@ -30,7 +30,7 @@ describe('inputReplace', () => {
     test('handles empty input', () => {
         const input = "";
         const result = inputReplace(input);
-        expect(result).toBe(input); 
+        expect(result).toBe(input);
     });
 
 });

@@ -62,4 +62,34 @@ describe("Progress Component", () => {
         // Check that the state is initially "in-progress"
         expect(screen.getByText("in-progress")).toBeInTheDocument();
     });
+
+    test("should handle null inferenceId", () => {
+        const progress = { 1: "in-progress" };
+        const inferenceId = null;
+
+        const { container } = render(<Progress progress={progress} inferenceId={inferenceId} />);
+
+        // Check that the component is not rendered
+        expect(container.firstChild).toBeNull();
+    });
+
+    test("should handle null progress", () => {
+        const progress = null;
+        const inferenceId = 1;
+
+        const { container } = render(<Progress progress={progress} inferenceId={inferenceId} />);
+
+        // Check that the component is not rendered
+        expect(container.firstChild).toBeNull();
+    });
+
+    test("should handle if inferenceId is not in progress", () => {
+        const progress = { 2: "in-progress" };
+        const inferenceId = 1;
+
+        const { container } = render(<Progress progress={progress} inferenceId={inferenceId} />);
+
+        // Check that the component is not rendered
+        expect(container.firstChild).toBeNull();
+    });
 });

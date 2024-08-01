@@ -1,4 +1,4 @@
-import { getBrowser } from '../utils/getBrowserDetail';
+import { getBrowser } from '../getBrowserDetail';
 
 describe('getBrowser', () => {
     // Define navigator globally
