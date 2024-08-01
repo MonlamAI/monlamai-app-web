@@ -20,7 +20,6 @@ import { CharacterOrFileSizeComponent } from "../model.mt/components/UtilityComp
 import { ErrorMessage } from "~/component/ErrorMessage";
 import CardComponent from "~/component/Card";
 import { getUser } from "~/modal/user.server";
-import { getUserFileInferences } from "~/modal/inference.server";
 import { TtsSubmitButton } from "./components/UtilityComponents";
 import { toast } from "react-toastify";
 import { getUserSession } from "~/services/session.server";
