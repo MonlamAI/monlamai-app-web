@@ -40,14 +40,7 @@ app.use(
   "/build",
   express.static("public/build", { immutable: true, maxAge: "1y" })
 );
-morgan.token("ip", (req) => req.ip);
-app.use(
-  morgan("-:method :ip :url :status :response-time ms", {
-    stream: {
-      write: (message) => console.log(message.trim()),
-    },
-  })
-);
+app.use(morgan("combined"));
 
 app.all(
   "*",
