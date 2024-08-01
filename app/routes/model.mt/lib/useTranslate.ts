@@ -1,10 +1,9 @@
-import { useRouteLoaderData } from "@remix-run/react";
-import { useState, useEffect } from "react";
+import { useLoaderData, useRouteLoaderData } from "@remix-run/react";
+import { useCallback, useState } from "react";
 import {
   en_bo_english_replaces,
   en_bo_tibetan_replaces,
 } from "~/component/utils/replace";
-import { useSocket } from "~/SocketContext";
 
 type useTranslateType = {
   target: string;
@@ -13,29 +12,54 @@ type useTranslateType = {
   setData: (data: string) => void;
 };
 
+function handleEventStream(
+  text: string,
+  direction: string,
+  onData: (data: string) => void,
+  enable_replacement_mt: boolean
+): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const eventSource = new EventSource(
+      `/api/translation/stream?text=${encodeURIComponent(
+        text
+      )}&target=${encodeURIComponent(direction)}`
+    );
+
+    eventSource.onmessage = (event) => {
+      let data = JSON.parse(event.data);
+
+      if (data?.generated_text) {
+        let text = data?.generated_text;
+        let replaced_text = enable_replacement_mt
+          ? en_bo_tibetan_replaces(text)
+          : text;
+        onData(replaced_text);
+        eventSource.close();
+        resolve(); // Resolve the promise when data is received
+      } else {
+        let content = data?.token?.text;
+        if (content) {
+          onData((p) => {
+            let newChunk = p + content.replace("</s>", "");
+            return newChunk;
+          });
+        }
+      }
+    };
+
+    eventSource.onerror = (event) => {
+      eventSource.close();
+      reject(new Error("EventSource error")); // Reject the promise on error
+    };
+  });
+}
+
 const useTranslate = ({ target, text, data, setData }: useTranslateType) => {
   const { enable_replacement_mt } = useRouteLoaderData("root");
   const [responseTime, setResponseTime] = useState(0);
-  const [startTime, setStartTime] = useState(0);
   const [done, setDone] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const socket = useSocket();
-
-  useEffect(() => {
-    if (!socket) return;
-    socket.on("translated", (data) => {
-      let text = data;
-      let replaced_text = enable_replacement_mt
-        ? en_bo_tibetan_replaces(text)
-        : text;
-      setData(replaced_text);
-      setIsLoading(false);
-      setDone(true);
-      const endTime = performance.now();
-      setResponseTime(endTime - startTime);
-    });
-  }, [socket]);
 
   const trigger = async () => {
     setResponseTime(0);
@@ -53,12 +77,18 @@ const useTranslate = ({ target, text, data, setData }: useTranslateType) => {
       setData("");
       let replaced = en_bo_english_replaces(text);
       let input = enable_replacement_mt ? replaced : text;
+
       const startTime = performance.now(); // Record start time
-      setStartTime(startTime);
-      socket?.emit("translate", {
-        text: input,
-        target,
-      });
+      try {
+        await handleEventStream(input, target, setData, enable_replacement_mt);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        const endTime = performance.now(); // Record end time
+        setResponseTime(endTime - startTime); // Calculate response time
+        setIsLoading(false);
+        setDone(true);
+      }
     };
 
     await fetchData();
