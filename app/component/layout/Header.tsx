@@ -162,8 +162,9 @@ function Menu() {
         </Dropdown.Item>
         <Dropdown.Item icon={TbApi} className="mt-2">
           <a
-            href="https://status.monlam.ai/status/api-check"
+            href="https://status.monlam.ai"
             className={isEnglish ? "font-poppins" : "font-monlam"}
+            target="_blank"
           >
             {translation.status}
           </a>
