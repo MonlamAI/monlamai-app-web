@@ -41,6 +41,10 @@ describe("ReactionButtons component", () => {
         expect(screen.getByRole("button", { name: /thumbs up/i })).toBeInTheDocument();
         expect(screen.getByRole("button", { name: /thumbs down/i })).toBeInTheDocument();
     });
+    test("should render null if inferenceId is not provided", () => {
+        const { container } = render(<ReactionButtons {...defaultProps} inferenceId = {null} />); 
+        expect(container.firstChild).toBeNull();    
+    });
 
     test("handles like button click correctly", async () => {
         render(<ReactionButtons {...defaultProps} />);
@@ -63,36 +67,6 @@ describe("ReactionButtons component", () => {
             { method: "POST", action: "/api/feedback" }
         );
     });
-
-    // test("disables the like button when already liked", () => {
-    //     render(
-    //         <ReactionButtons
-    //             {...defaultProps}
-    //             fetcher={{
-    //                 ...mockFetcher,
-    //                 data: { vote: { liked: true, disliked: false } },
-    //             }}
-    //         />
-    //     );
-
-    //     const likeButton = screen.getByRole("button", { name: /thumbs up/i });
-    //     expect(likeButton).toBeDisabled();
-    // });
-
-    // test("disables the dislike button when already disliked", () => {
-    //     render(
-    //         <ReactionButtons
-    //             {...defaultProps}
-    //             fetcher={{
-    //                 ...mockFetcher,
-    //                 data: { vote: { liked: false, disliked: true } },
-    //             }}
-    //         />
-    //     );
-
-    //     const dislikeButton = screen.getByRole("button", { name: /thumbs down/i });
-    //     expect(dislikeButton).toBeDisabled();
-    // });
 
     test("shows the spinner when loading", () => {
         const formData = new FormData();
@@ -118,4 +92,13 @@ describe("ReactionButtons component", () => {
         fireEvent.click(screen.getByRole("button", { name: /pencil/i }));
         expect(mockClickEdit).toHaveBeenCalled();
     });
+
+    test("Should not render pencil icon if clickEdit is not provided", () => {
+        const { container } = render(<ReactionButtons {...defaultProps} clickEdit={null}/>);
+        expect(container.firstChild).not.toContainHTML("pencil");
+    })
+    test("Should not render pencil icon if clickEdit is not provided", () => {
+        const { container } = render(<ReactionButtons {...defaultProps} clickEdit={undefined} />);
+        expect(container.firstChild).not.toContainHTML("pencil");
+    })
 });

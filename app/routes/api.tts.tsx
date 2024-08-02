@@ -8,7 +8,7 @@ import getIpAddressByRequest from "~/component/utils/getIpAddress";
 
 export const action: ActionFunction = async ({ request }) => {
   let ip = getIpAddressByRequest(request);
-
+  let AMPLIFICATION_LEVEL = 5; //1-5 value is safe
   let user = await getUserDetail(request);
 
   const formdata = await request.formData();
@@ -20,6 +20,9 @@ export const action: ActionFunction = async ({ request }) => {
   try {
     let formData = new FormData();
     formData.append("input", inputReplace(userInput));
+
+    formData.append("amplify", AMPLIFICATION_LEVEL.toString());
+
     let response = await fetch(API_URL + "/tts/playground", {
       method: "POST",
       body: formData,

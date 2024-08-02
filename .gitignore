@@ -5,4 +5,4 @@ node_modules
 /public/build
 .env
 monlam.js
-reports/
+reports/test-report.html

@@ -80,4 +80,12 @@ describe('Speak Component', () => {
         fireEvent.click(screen.getByRole('button', { name: /pause/i }));
         expect(audioPauseMock).toHaveBeenCalled();
     });
+    test('getText should call', async () => {
+        // fetcherMock.data = { data: 'audio_url' };
+        mockGetText = jest.fn().mockReturnValue('Text from get text');
+        render(<Speak text="Hello world" getText={mockGetText} />);
+        fireEvent.click(screen.getByRole('button', { name: /play/i }));
+        await waitFor(() => expect(mockGetText).toHaveBeenCalled());
+        expect(fetcherMock.submit).toHaveBeenCalledWith({ sourceText: 'Text from get text' }, { action: '/api/tts', method: 'POST' });
+    });
 });

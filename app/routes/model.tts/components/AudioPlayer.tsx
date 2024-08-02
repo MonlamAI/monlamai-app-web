@@ -40,6 +40,7 @@ const AudioPlayer = ({ audioURL }) => {
   useEffect(() => {
     if (wavesurfer) {
       const media = wavesurfer?.getMediaElement();
+      media.crossOrigin = "anonymous";
       amplifyMedia(media, volume * 20, setting);
     }
   }, [volume, wavesurfer]);
