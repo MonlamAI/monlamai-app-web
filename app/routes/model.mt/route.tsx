@@ -14,7 +14,6 @@ import { useState, useRef, useEffect } from "react";
 import useDebounce from "~/component/hooks/useDebounceState";
 import { ErrorMessage } from "~/component/ErrorMessage";
 import ToolWraper from "~/component/ToolWraper";
-import DownloadDocument from "~/routes/model.mt/components/DownloadDocument";
 import {
   getTodayInferenceByUserIdCountModel,
   getUserFileInferences,
@@ -40,7 +39,6 @@ import { CancelButton } from "~/component/Buttons";
 import { RxCross2 } from "react-icons/rx";
 import useTranslate from "./lib/useTranslate";
 import { getUserSession } from "~/services/session.server";
-import ImageTranslateComponent from "./components/ImageTranslateComponent";
 import { InferenceList } from "~/component/InferenceList";
 import Devider from "~/component/Devider";
 import { Spinner } from "flowbite-react";
@@ -423,8 +421,6 @@ export default function Index() {
           </div>
         )}
       </div>
-
-      {selectedTool === "image" && <ImageTranslateComponent />}
 
       <div className="font-poppins mt-3 mb-20 w-full text-center text-[0.7rem] text-xs text-slate-400 md:float-right md:w-fit">
         Monlam-MITRA{" "}
