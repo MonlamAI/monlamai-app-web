@@ -117,7 +117,7 @@ const useTranslate = ({ target, text, data, setData }: useTranslateType) => {
           body: JSON.stringify(request_data),
         }).then((res) => res.json());
         if (typeof data === "string") {
-          setData(data);
+          setData(en_bo_tibetan_replaces(data));
         } else {
           alert("translation is not supported for this language");
         }
