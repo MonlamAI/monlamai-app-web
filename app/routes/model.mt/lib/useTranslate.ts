@@ -90,8 +90,49 @@ const useTranslate = ({ target, text, data, setData }: useTranslateType) => {
         setDone(true);
       }
     };
+    const dharmaapi = async () => {
+      setIsLoading(true);
+      setDone(false);
+      setError(null);
+      setData("");
+      let replaced = en_bo_english_replaces(text);
+      let input = enable_replacement_mt ? replaced : text;
 
-    await fetchData();
+      const startTime = performance.now(); // Record start time
+      const dharmaurl = "https://dharmamitra.org/api/translation-no-stream/";
+      let target_lang =
+        target === "bo"
+          ? "tibetan"
+          : target === "en"
+          ? "english"
+          : target === "zh"
+          ? "buddhist-chinese"
+          : "tibetan";
+      const request_data = {
+        input_sentence: input,
+        input_encoding: "auto",
+        target_lang,
+      };
+      try {
+        let data = await fetch(dharmaurl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(request_data),
+        }).then((response) => response.json(request_data));
+        setData(data);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        const endTime = performance.now(); // Record end time
+        setResponseTime(endTime - startTime); // Calculate response time
+        setIsLoading(false);
+        setDone(true);
+      }
+    };
+
+    await dharmaapi();
   };
 
   return { data, isLoading, error, done, trigger, responseTime };
