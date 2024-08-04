@@ -19,7 +19,6 @@ function TextComponent({ sourceText, setSourceText, sourceLang }) {
 
   const handleChange = (evt) => {
     let html = evt.target.value;
-    setHTML(html);
     const sanitizedHtml = sanitizeHtml(html, {
       allowedTags: ["div"],
       allowedIframeHostnames: ["www.youtube.com"],
@@ -27,6 +26,7 @@ function TextComponent({ sourceText, setSourceText, sourceLang }) {
     const cleanText = sanitizedHtml
       .replace(/<div>/g, "\n")
       .replace(/<\/div>/g, "");
+    setHTML(cleanText);
     setSourceText(cleanText);
   };
 
@@ -35,6 +35,7 @@ function TextComponent({ sourceText, setSourceText, sourceLang }) {
       setHTML("");
     }
   }, [sourceText]);
+
   return (
     <>
       <ContentEditable
