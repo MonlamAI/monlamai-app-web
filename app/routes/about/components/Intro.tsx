@@ -46,15 +46,6 @@ export function Intro() {
           connected world.
           `}
         </p>
-        <hr />
-        <p className="font-poppins prose mt-2">
-          The machine translation capability provided in{" "}
-          <span className="font-monlam">ཡིག་སྒྱུར་རིག་ནུས།</span> was developed
-          by Sebastian Nehrdich, under the guidance of Prof. Kurt Keutzer, at
-          the Berkeley AI Research Lab (BAIR) at the University of California,
-          Berkeley. As part of the MITRA project, open source Large Language
-          Models were trained on extensive data provided by Monlam.ai.
-        </p>
       </div>
     </div>
   );
