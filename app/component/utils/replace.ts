@@ -924,6 +924,7 @@ export function en_bo_tibetan_replaces(text: string) {
   result = result.replaceAll("་༑", "། ");
   result = result.replaceAll("༑༑", "།། ");
   result = result.replaceAll("་།", "།");
+  result = result.replaceAll("།", "། ");
   result = result.replaceAll("ང།", "ང་།");
 
   result = result.replaceAll("༑", "།");
@@ -1335,12 +1336,11 @@ export function en_bo_tibetan_replaces(text: string) {
   result = result.replaceAll("བཞི་བཅུ་ང་གསུམ", "བཞི་བཅུ་ཞེ་གསུམ");
   result = result.replaceAll("གྷོ་ར་ཛི་ར་ཐི་", "གྷུ་ཇི་ར་ཐི་");
   result = result.replaceAll("སྲིད་བློན་ནེ་རཱལ་གྱིས་", "སྲིད་བློན་ནེ་རེན་དྷར་མོ་དྷིས་ཡིས་");
-  result = result.replaceAll("ཏཱ་ལའི་བླ་མས", "ཁོང་གིས");
-  result = result.replaceAll("ཏཱ་ལའི་བླ་མ་མཆོག་གིས", "ཁོང་གིས");
   result = result.replaceAll("བཟོས་མིའི་རྣམ་འགྱུར", "བཟོས་མིའི་རིག་ནུས");
   result = result.replaceAll("མིས་བཟོས་ཤེས་རིག", "བཟོས་མིའི་རིག་ནུས");
   result = result.replaceAll("མིས་བཟོས་ཀླད་པའི་", "བཟོས་མིའི་རིག་ནུས་ཀྱི་");
   result = result.replaceAll("ཤར་ཏུར་ཀི་སི་ཐནཤར་ཏུ་ཀེ་སི་ཐན་", "ཤིན་ཅང་ངམ་ཤར་ཏུར་ཀི་སི་ཐན་");
+  result = result.replaceAll("།  ", "། ");
 
 
  
