@@ -4,6 +4,7 @@ import {
   en_bo_english_replaces,
   en_bo_tibetan_replaces,
 } from "~/component/utils/replace";
+import { eng_languagesOptions } from "~/helper/const";
 
 type useTranslateType = {
   target: string;
@@ -101,13 +102,7 @@ const useTranslate = ({ target, text, data, setData }: useTranslateType) => {
       const startTime = performance.now(); // Record start time
       const dharmaurl = "https://dharmamitra.org/api/translation-no-stream/";
       let target_lang =
-        target === "bo"
-          ? "tibetan"
-          : target === "en"
-          ? "english"
-          : target === "zh"
-          ? "buddhist-chinese"
-          : "tibetan";
+        eng_languagesOptions.find((l) => l.code === target)?.name ?? "tibetan";
       const request_data = {
         input_sentence: input,
         input_encoding: "auto",
@@ -120,9 +115,14 @@ const useTranslate = ({ target, text, data, setData }: useTranslateType) => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(request_data),
-        }).then((response) => response.json(request_data));
-        setData(data);
+        }).then((res) => res.json());
+        if (typeof data === "string") {
+          setData(data);
+        } else {
+          alert("translation is not supported for this language");
+        }
       } catch (error) {
+        alert("language not supported");
         setError(error.message);
       } finally {
         const endTime = performance.now(); // Record end time
