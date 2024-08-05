@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { ICON_SIZE } from "~/helper/const";
 import { ReactionButton } from "./ReactionButtons";
 import { MdContentCopy } from "react-icons/md";
+import { toast } from "react-toastify";
 let timer: any;
 
 type CopyToClipboardProps = {
@@ -43,7 +44,7 @@ const CopyToClipboard = ({ textToCopy, onClick }: CopyToClipboardProps) => {
         <ReactionButton
           icon={<MdContentCopy size={ICON_SIZE} />}
           onClick={handleCopy}
-          className="copy-success"
+          className="text-green-500"
         />
       )}
     </>
