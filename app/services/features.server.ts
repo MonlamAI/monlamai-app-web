@@ -9,7 +9,7 @@ const unleash = initialize({
 const isJobEnabled = unleash?.isEnabled("isJobEnabled");
 const enable_replacement_mt = unleash?.isEnabled("enable_replacement_mt");
 const show_about_lama = unleash?.isEnabled("show_about_lama");
-const file_upload_enable = unleash?.isEnabled("file_upload_enable");
+const file_upload_enable = process.env.enableFileUpload === "true";
 
 export {
   isJobEnabled,

@@ -73,7 +73,10 @@ export default function ListInput({
     }
     reset();
   }
-
+  let showBeta = file_upload_enable;
+  if (!showBeta) {
+    return null;
+  }
   return (
     <Tabs.Group
       ref={tabsRef}
@@ -93,10 +96,7 @@ export default function ListInput({
           ? ` ( ${translation?.beta} )`
           : " ";
         let isActive = selectedTool === option;
-        let showBeta = file_upload_enable;
-        if (!showBeta) {
-          return null;
-        }
+
         return (
           <Tabs.Item
             id="hello"
