@@ -36,14 +36,13 @@ function handleEventStream(
       //   resolve(); // Resolve the promise when data is received
       // } else {
       let content = cleanData(event?.data);
-
       if (content) {
         onData((p) => {
-          let newChunk = p + content;
+          let newChunk = p + content?.replace("</s>", "");
           let replaced_text = enable_replacement_mt
             ? en_bo_tibetan_replaces(newChunk)
             : newChunk;
-          return replaced_text?.replace("</s>", "");
+          return replaced_text;
         });
       }
       // }
