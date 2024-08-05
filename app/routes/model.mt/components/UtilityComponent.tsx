@@ -134,6 +134,8 @@ export function OutputDisplay({
       : output?.length < 1000
       ? "text-base"
       : "text-sm";
+  let show_text = editData ? editData : output;
+  const textWithBrTags = show_text.replace(/\n/g, "<br />");
   return (
     <div
       className={`p-2 first-letter 
@@ -141,11 +143,8 @@ export function OutputDisplay({
       ${isEng && "font-poppins "} ${isTib && "leading-loose font-monlam"} ${
         !isEng && !isTib && "font-notosans"
       }`}
-    >
-      <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-        {editData ? editData : output}
-      </motion.p>
-    </div>
+      dangerouslySetInnerHTML={{ __html: textWithBrTags }}
+    ></div>
   );
 }
 
