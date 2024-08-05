@@ -40,7 +40,7 @@ app.use(
   "/build",
   express.static("public/build", { immutable: true, maxAge: "1y" })
 );
-app.use(morgan("combined"));
+app.use(morgan("tiny"));
 
 app.all(
   "*",
