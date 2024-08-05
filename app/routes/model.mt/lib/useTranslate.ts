@@ -27,32 +27,60 @@ function handleEventStream(
     );
 
     eventSource.onmessage = (event) => {
-      let data = JSON.parse(event.data);
-
-      if (data?.generated_text) {
-        let text = data?.generated_text;
-        let replaced_text = enable_replacement_mt
-          ? en_bo_tibetan_replaces(text)
-          : text;
-        onData(replaced_text);
-        eventSource.close();
-        resolve(); // Resolve the promise when data is received
-      } else {
-        let content = data?.token?.text;
-        if (content) {
-          onData((p) => {
-            let newChunk = p + content.replace("</s>", "");
-            return newChunk;
-          });
-        }
+      // let data = JSON.parse(event.data);
+      // if (data?.generated_text) {
+      //   let text = data?.generated_text;
+      //   let replaced_text = enable_replacement_mt
+      //     ? en_bo_tibetan_replaces(text)
+      //     : text;
+      //   onData(replaced_text);
+      //   eventSource.close();
+      //   resolve(); // Resolve the promise when data is received
+      // } else {
+      let content = cleanData(event?.data);
+      if (content) {
+        onData((p) => {
+          let newChunk = p + content?.replace("</s>", "");
+          return newChunk;
+        });
       }
+      // }
     };
 
     eventSource.onerror = (event) => {
       eventSource.close();
-      reject(new Error("EventSource error")); // Reject the promise on error
+      resolve("done");
     };
   });
+}
+
+function cleanData(content) {
+  if (!content) return content;
+
+  // Check and remove quotes from the first, second, last, or second-last positions
+  if (
+    (content[0] === '"' || content[0] === "'") &&
+    (content[1] === '"' || content[1] === "'")
+  ) {
+    content = content.slice(2);
+  } else if (content[0] === '"' || content[0] === "'") {
+    content = content.slice(1);
+  }
+
+  if (
+    (content[content.length - 1] === '"' ||
+      content[content.length - 1] === "'") &&
+    (content[content.length - 2] === '"' || content[content.length - 2] === "'")
+  ) {
+    content = content.slice(0, -2);
+  } else if (
+    content[content.length - 1] === '"' ||
+    content[content.length - 1] === "'"
+  ) {
+    content = content.slice(0, -1);
+  }
+
+  return content;
 }
 
 const useTranslate = ({ target, text, data, setData }: useTranslateType) => {
@@ -132,7 +160,7 @@ const useTranslate = ({ target, text, data, setData }: useTranslateType) => {
       }
     };
 
-    await dharmaapi();
+    await fetchData();
   };
 
   return { data, isLoading, error, done, trigger, responseTime };
