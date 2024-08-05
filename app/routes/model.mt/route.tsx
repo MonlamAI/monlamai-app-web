@@ -285,7 +285,7 @@ export default function Index() {
           type="info"
         />
       )}
-      <div className="rounded-[10px] overflow-hidden border dark:border-[--card-border] border-dark_text-secondary">
+      <div className="rounded-[10px] mb-[100px] overflow-hidden border dark:border-[--card-border] border-dark_text-secondary">
         <LanguageInput
           setSourceText={setSourceText}
           data={data}
