@@ -36,13 +36,14 @@ function handleEventStream(
       //   resolve(); // Resolve the promise when data is received
       // } else {
       let content = cleanData(event?.data);
-      let replaced_text = enable_replacement_mt
-        ? en_bo_tibetan_replaces(content)
-        : content;
-      if (replaced_text) {
+
+      if (content) {
         onData((p) => {
-          let newChunk = p + replaced_text?.replace("</s>", "");
-          return newChunk;
+          let newChunk = p + content;
+          let replaced_text = enable_replacement_mt
+            ? en_bo_tibetan_replaces(newChunk)
+            : newChunk;
+          return replaced_text?.replace("</s>", "");
         });
       }
       // }
