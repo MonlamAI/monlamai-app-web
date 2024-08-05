@@ -339,11 +339,11 @@ export function en_bo_english_replaces(text: string) {
 // replaces for the english to tibetan -> output  after getting responce from the api
 export function en_bo_tibetan_replaces(text: string) {
   let result = text;
-  result = result.replaceAll("མཚན་རྟགས།", "ནང་འཛུལ།");
+
   let regex = /([༠-༩]{2})([ཀ-ྼ])/g;
   result = result.replaceAll(regex, "$1 $2");
 
-  result = result.replaceAll("འཚོ་བ།", "ཐད་གཏོང་།");
+  
   result = result.replaceAll("ད་དུང་མང་ཙམ་ཐོས་དགོས།", "ད་དུང་དེ་ལས་མང་བ།");
   result = result.replaceAll("དངོས་སུ་བརྙན་འཕྲིན་ལས།", "བརྙན་འཕྲིན་ཐད་གཏོང་།");
 
@@ -1351,6 +1351,8 @@ export function en_bo_tibetan_replaces(text: string) {
   result = result.replaceAll("མིས་བཟོས་ཀླད་པའི་", "བཟོས་མིའི་རིག་ནུས་ཀྱི་");
   result = result.replaceAll("ཤར་ཏུར་ཀི་སི་ཐནཤར་ཏུ་ཀེ་སི་ཐན་", "ཤིན་ཅང་ངམ་ཤར་ཏུར་ཀི་སི་ཐན་");
   result = result.replaceAll("  ", " ");
+  result = result.replaceAll("པན་བ་བསྟན་འཛིན་ཚེ་རིང་", "སྤེན་པ་ཚེ་རིང་");
+  result = result.replaceAll("པཎ་ཆེན་ཚེ་རིང་", "སྤེན་པ་ཚེ་རིང་");
   
   result = result.replaceAll("🔽🔽", "\n\r");
 
@@ -1360,7 +1362,7 @@ export function en_bo_tibetan_replaces(text: string) {
 
  
 
-  //ཤར་ཏུར་ཀི་སི་ཐནཤར་ཏུ་ཀེ་སི་ཐན་
+  //པཎ་ཆེན་ཚེ་རིང
 
   result = result.replaceAll(/(\d+)([^\d]+)/g, "$1 $2");
   result = result.replaceAll(/([\u0F20-\u0F33]+)([^\u0F20-\u0F33]+)/g, "$1 $2");
