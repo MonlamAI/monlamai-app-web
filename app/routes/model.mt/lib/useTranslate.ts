@@ -39,9 +39,7 @@ function handleEventStream(
       if (content) {
         onData((p) => {
           let newChunk = p + content?.replace("</s>", "");
-          let replaced_text = enable_replacement_mt
-            ? en_bo_tibetan_replaces(newChunk)
-            : newChunk;
+          let replaced_text = en_bo_tibetan_replaces(newChunk);
           return replaced_text;
         });
       }
@@ -105,8 +103,7 @@ const useTranslate = ({ target, text, data, setData }: useTranslateType) => {
       setDone(false);
       setError(null);
       setData("");
-      let replaced = en_bo_english_replaces(text);
-      let input = enable_replacement_mt ? replaced : text;
+      let input = en_bo_english_replaces(text);
 
       const startTime = performance.now(); // Record start time
       try {
