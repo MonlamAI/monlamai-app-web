@@ -2,7 +2,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { MdPlayArrow, MdPause } from "react-icons/md";
 import useLocalStorage from "~/component/hooks/useLocaleStorage";
-import { amplifyMedia } from "~/component/utils/audioGain";
 import { useWavesurfer } from "@wavesurfer/react";
 
 const AudioPlayer = ({ audioURL }) => {
@@ -10,7 +9,6 @@ const AudioPlayer = ({ audioURL }) => {
   const [volume, setVolume] = useLocalStorage("volume", 1);
 
   const containerRef = useRef(null);
-  const setting = useRef(null);
 
   const { wavesurfer, isPlaying, currentTime } = useWavesurfer({
     container: containerRef,
@@ -36,14 +34,6 @@ const AudioPlayer = ({ audioURL }) => {
     const newVolume = parseFloat(e.target.value);
     setVolume(newVolume);
   };
-
-  useEffect(() => {
-    if (wavesurfer) {
-      const media = wavesurfer?.getMediaElement();
-      media.crossOrigin = "anonymous";
-      amplifyMedia(media, volume * 20, setting);
-    }
-  }, [volume, wavesurfer]);
 
   useEffect(() => {
     if (wavesurfer) {
