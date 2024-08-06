@@ -135,7 +135,7 @@ export function OutputDisplay({
       ? "text-base"
       : "text-sm";
   let show_text = editData ? editData : output;
-  const textWithBrTags = show_text.replace(/(\r\n|\r|\n)+/g, "<br />");
+  const textWithBrTags = show_text?.replace(/(\r\n|\r|\n)+/g, "<br />");
   return (
     <div
       className={`p-2 first-letter 
