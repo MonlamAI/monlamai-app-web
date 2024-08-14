@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - test-UT-setup
+      - main
+      -staging
 
 
 jobs:
