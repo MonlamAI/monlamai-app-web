@@ -1,11 +1,12 @@
 import React from 'react';
 import { render, fireEvent, waitFor, screen, getByTitle } from '@testing-library/react';
 import { ImageCropper } from './ImageCropper'; 
-
+import { useLoaderData } from '@remix-run/react';
 // Mock dependencies
 jest.mock("@remix-run/react", () => ({
     useLoaderData:jest.fn().mockReturnValue({isMobile:false}),
 }))
+
 jest.mock('react-advanced-cropper', () => ({
     Cropper: React.forwardRef((props, ref) => <div {...props} ref={ref}>Cropper</div>),
 }));
@@ -32,6 +33,7 @@ describe('ImageCropper Component', () => {
     let uploadFileMock, handleResetMock;
 
     beforeEach(() => {
+        jest.clearAllMocks();
         uploadFileMock = jest.fn();
         handleResetMock = jest.fn();
     });
@@ -121,5 +123,26 @@ describe('ImageCropper Component', () => {
         fireEvent.click(getByText('Take Photo'));
         
         expect(screen.getByText('Capture Image')).toBeInTheDocument();
+    });
+
+    it('should upload an image in mobile', async () => {
+        useLoaderData.mockReturnValue({isMobile:true});
+        const { getByLabelText, getByText } = render(
+            <ImageCropper
+                uploadFile={uploadFileMock}
+                handleReset={handleResetMock}
+                uploadProgress={0}
+                scaning={false}
+            />
+        );
+        const fileInput = getByLabelText('Take Photo');
+        const file = new File(['dummy content'], 'example.jpg', { type: 'image/jpeg' });
+
+        fireEvent.change(fileInput, { target: { files: [file] } });
+        
+        await waitFor(() => {
+            expect(screen.getByText(/cropper/i)).toBeInTheDocument();
+            expect(screen.getByText(/save/i)).toBeInTheDocument();
+        });
     });
 });

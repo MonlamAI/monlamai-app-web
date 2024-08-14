@@ -1,5 +1,5 @@
 import { screen, render, fireEvent } from '@testing-library/react';
-import { TextOrDocumentComponent, CharacterOrFileSizeComponent, OutputDisplay, EditActionButtons, SubmitButton } from './UtilityComponent';
+import { TextOrDocumentComponent, CharacterOrFileSizeComponent, LoadingAnimation OutputDisplay, EditActionButtons, SubmitButton } from './UtilityComponent';
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import { motion } from 'framer-motion';
 
@@ -112,6 +112,13 @@ describe('CharacterOrFileSizeComponent', () => {
         render(<CharacterOrFileSizeComponent {...defaultProps} charCount="not a number" />);
         const spanElement = screen.queryByText('not a number'); // Trying to find the incorrect charCount value
         expect(spanElement).not.toBeInTheDocument();
+    });
+});
+
+describe('LoadingAnimation Component', () => {
+    it('renders the loading animation', () => {
+        render(<LoadingAnimation />);
+        expect(screen.getByText('Loading...')).toBeInTheDocument();
     });
 });
 

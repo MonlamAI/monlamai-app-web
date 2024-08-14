@@ -1,10 +1,9 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor,act } from '@testing-library/react';
 import { useFetcher, useSearchParams } from '@remix-run/react';
 import LanguageInput from './LanguageInput';
 import { resetFetcher } from '~/component/utils/resetFetcher';
 import { toast } from 'react-toastify';
 import LanguageDetect from 'languagedetect';
-import { eng_languagesOptions, tib_languageOptions } from '~/helper/const';
 import uselitteraTranlation from '~/component/hooks/useLitteraTranslation';
 
 jest.mock('@remix-run/react', () => ({
@@ -21,9 +20,11 @@ jest.mock('~/component/utils/resetFetcher', () => ({
     resetFetcher: jest.fn(),
 }));
 
-jest.mock('languagedetect', () => jest.fn(() => ({
-    detect: jest.fn(),
-})));
+// jest.mock('languagedetect', () => jest.fn(() => ({
+//     LanguageDetect: jest.fn().mockReturnValue({
+//         detect: jest.fn().mockReturnValue('en'),
+//     })
+// })));
 
 jest.mock('~/component/hooks/useLitteraTranslation', () => jest.fn());
 
@@ -34,7 +35,6 @@ describe('LanguageInput component', () => {
     let params
     let setParams
     let fetcherMock
-    let lngDetector
     let useLitteraTranslationMock
 
     const mockFetcherData = {
@@ -50,7 +50,7 @@ describe('LanguageInput component', () => {
             cb(params);
         });
         fetcherMock = jest.fn().mockReturnValue(mockFetcherData);
-        lngDetector = new LanguageDetect();
+        // lngDetector = new LanguageDetect();
         useLitteraTranslationMock = jest.fn().mockReturnValue({
             isTibetan: false,
             translation: {
@@ -84,6 +84,82 @@ describe('LanguageInput component', () => {
         // check if the outermost div has the correct class according to isTibetan
         expect(outerMostDiv).toHaveClass('font-poppins');
     });
+
+    it('should render the component when useFetcher has data', () => {
+        fetcherMock.mockReturnValueOnce({
+            ...mockFetcherData,
+            data: {
+                info:"info"
+            },
+            submit:jest.fn(()=>"en")
+        });
+
+        const { container } = render(
+            <LanguageInput
+                likefetcher={fetcherMock}
+                sourceText="how are you"
+                setSourceText={jest.fn()}
+                data=""
+                setTranslated={jest.fn()}
+            />
+        );
+
+        // default value of source language is detect language
+        expect(screen.getByText('Detect language')).toBeInTheDocument();
+        const switchLangBtn = screen.getByRole('button', { name: 'GoArrowSwitch' });
+        // check if switch button in dom
+        expect(switchLangBtn).toBeInTheDocument();
+        const outerMostDiv = container.querySelector("div")
+        // check if the outermost div has the correct class according to isTibetan
+        expect(outerMostDiv).toHaveClass('font-poppins');
+    });
+
+    it('should set input language en if source language is not in avialable languages', async() => {
+        fetcherMock.mockReturnValueOnce({
+            ...mockFetcherData,
+            submit: jest.fn(() => "en")
+
+        });
+
+        const { rerender, container } = render(
+            <LanguageInput
+                likefetcher={fetcherMock}
+                sourceText="یہ ایک اردو کا جملہ ہے۔"
+                setSourceText={jest.fn()}
+                data=""
+                setTranslated={jest.fn()}
+            />
+        );
+        fetcherMock.mockReturnValueOnce({
+            ...mockFetcherData,
+            data: {
+                info: "info",
+                name:'karma'
+            },
+            submit: jest.fn(() => "en")
+
+        });
+        rerender(<LanguageInput
+            likefetcher={fetcherMock}
+            sourceText="یہ ایک اردو کا جملہ ہے۔"
+            setSourceText={jest.fn()}
+            data=""
+            setTranslated={jest.fn()}
+        />);
+        
+        const selectElement = screen.getAllByRole('combobox');
+        expect(selectElement[0]).toBeInTheDocument();
+        
+        await act(async () => {
+            expect(selectElement[0].value).toBe('Tibetan');
+        })
+        const switchLangBtn = screen.getByRole('button', { name: 'GoArrowSwitch' });
+        // check if switch button in dom
+        expect(switchLangBtn).toBeInTheDocument();
+        const outerMostDiv = container.querySelector("div")
+        // check if the outermost div has the correct class according to isTibetan
+        expect(outerMostDiv).toHaveClass('font-poppins');
+    })
 
     it('should detect and set language when input text is provided', async () => {
         fetcherMock.mockReturnValueOnce({
@@ -145,7 +221,7 @@ describe('LanguageInput component', () => {
         expect(resetFetcher).toHaveBeenCalledWith(fetcherMock);
     });
 
-    it.only("Should select the language when the language is selected", () => {
+    it("Should select the language when the language is selected", () => {
         render(
             <LanguageInput
                 likefetcher={fetcherMock}
