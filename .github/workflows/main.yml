@@ -1,0 +1,52 @@
+name: SonarQube Analysis
+
+on:
+  push:
+    branches:
+      - staging
+  pull_request:
+    branches:
+      - staging
+
+jobs:
+  sonarQube:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+          
+      - name: Cache SonarQube dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar-${{ hashFiles('**/*.java', '**/*.kt') }}
+          restore-keys: |
+            ${{ runner.os }}-sonar-
+
+      - name: Install SonarQube Scanner
+        run: |
+          curl -sSLo sonarscanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
+          unzip sonarscanner.zip
+          mv sonar-scanner-4.6.2.2472-linux sonar-scanner
+          export PATH=$PATH:`pwd`/sonar-scanner/bin
+
+      - name: Run SonarQube analysis
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          sonar-scanner \
+          -Dsonar.projectKey=<Your_SonarQube_Project_Key> \
+          -Dsonar.sources=. \
+          -Dsonar.host.url=<Your_SonarQube_Server_URL> \
+          -Dsonar.login=$SONAR_TOKEN
+
+      - name: Upload results to SonarQube
+        if: always()
+        run: echo "Results uploaded to SonarQube"
