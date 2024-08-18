@@ -20,7 +20,7 @@ function TranslationSwitcher() {
       className="cursor-pointer text-[14px] mr-2 text-light_text-secondary dark:text-dark_text-secondary"
     >
       {isTibetan ? (
-        <span className=" flex gap-2 font-monlam rounded-full ">
+        <span className=" font-poppins flex gap-2 rounded-full ">
           <IoMdGlobe size={20} />
           <div>English</div>
         </span>
