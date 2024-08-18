@@ -211,16 +211,16 @@ export function SubmitButton({
   const { translation, locale } = uselitteraTranlation();
   const isFile = selectedTool === "document";
   const exceedsLimit = charCount > CHAR_LIMIT;
-  const empty_error = charCount === 0;
+  const isEmpty = charCount === 0;
   return (
     <Button
-      disabled={!isFile ? exceedsLimit || empty_error : disabled}
+      disabled={disabled || exceedsLimit || isEmpty}
       size="xs"
       title={exceedsLimit ? "Character limit exceeded" : ""}
       onClick={isFile ? submitFile : trigger}
       className={` bg-secondary-500 dark:bg-primary-500 hover:bg-secondary-400 dark:hover:bg-primary-400 
       enabled:hover:bg-secondary-400 enabled:dark:hover:bg-primary-400
-         text-white dark:text-black 
+         text-white dark:text-black  
       ${locale !== "bo_TI" ? "font-poppins" : "font-monlam"}`}
     >
       <span className="pr-2">{translation["translate"]}</span>

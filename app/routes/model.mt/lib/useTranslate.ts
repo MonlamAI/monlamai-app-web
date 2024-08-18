@@ -83,7 +83,13 @@ function cleanData(content) {
   return content;
 }
 
-const useTranslate = ({ target, text, data, setData }: useTranslateType) => {
+const useTranslate = ({
+  target,
+  text,
+  data,
+  setData,
+  savefetcher,
+}: useTranslateType) => {
   const { enable_replacement_mt } = useRouteLoaderData("root");
   const [responseTime, setResponseTime] = useState(0);
   const [done, setDone] = useState(false);

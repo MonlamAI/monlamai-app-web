@@ -176,6 +176,7 @@ export default function Index() {
   const likefetcher = useFetcher();
   const editfetcher = useFetcher();
   const translationFetcher = useFetcher();
+  const detectFetcher = useFetcher();
 
   const savefetcher = useFetcher();
   const editData = editfetcher.data?.edited;
@@ -278,6 +279,7 @@ export default function Index() {
           setTranslated={setData}
           likefetcher={likefetcher}
           sourceText={debounceSourceText}
+          detectFetcher={detectFetcher}
         />
 
         {(selectedTool === "text" || selectedTool === "document") && (
@@ -327,7 +329,7 @@ export default function Index() {
                         }}
                         selectedTool={selectedTool}
                         submitFile={handleFileSubmit}
-                        disabled={!file || file?.length === 0}
+                        disabled={detectFetcher.state !== "idle"}
                       />
                     </div>
                   )}

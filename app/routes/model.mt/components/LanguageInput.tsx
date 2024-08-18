@@ -40,12 +40,13 @@ function LanguageInput({
   setSourceText,
   data,
   setTranslated,
+  detectFetcher,
 }) {
   const [params, setParams] = useSearchParams();
   const sourceLang = params.get("source") || "detect language";
   const targetLang = params.get("target") || "bo";
   const [isRotated, setIsRotated] = useState(false);
-  const { submit, data: fetcherData } = useFetcher();
+  const { submit, data: fetcherData, status } = detectFetcher;
   const { isTibetan: isTib, translation } = uselitteraTranlation();
   const languagesOptions = isTib ? tib_languageOptions : eng_languagesOptions;
   function setTarget(lang: string) {
@@ -116,7 +117,6 @@ function LanguageInput({
     }
   }, [fetcherData]);
   useEffect(() => {
-    console.log("detect");
     if (sourceText?.trim() === "" && sourceLang !== "detect language") {
       setSource("detect language");
     }
