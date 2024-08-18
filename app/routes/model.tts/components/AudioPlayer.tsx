@@ -33,6 +33,9 @@ const AudioPlayer = ({ audioURL }) => {
   const handleVolumeChange = (e) => {
     const newVolume = parseFloat(e.target.value);
     setVolume(newVolume);
+    if (wavesurfer) {
+      wavesurfer.setVolume(newVolume);
+    }
   };
 
   useEffect(() => {
