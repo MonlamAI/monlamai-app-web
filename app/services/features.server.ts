@@ -9,6 +9,8 @@ const unleash = initialize({
 const isJobEnabled = unleash?.isEnabled("isJobEnabled");
 const enable_replacement_mt = unleash?.isEnabled("enable_replacement_mt");
 const show_about_lama = unleash?.isEnabled("show_about_lama");
+
+const useDharmaMitraAPI = unleash?.isEnabled("useDharmaMitraAPI");
 const file_upload_enable = process.env.enableFileUpload === "true";
 
 export {
@@ -16,6 +18,7 @@ export {
   enable_replacement_mt,
   show_about_lama,
   file_upload_enable,
+  useDharmaMitraAPI,
 };
 
 export default unleash;

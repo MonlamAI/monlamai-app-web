@@ -130,8 +130,8 @@ export const action: ActionFunction = async ({ request }) => {
       input: source,
       output: translation,
       responseTime: parseInt(responseTime),
-      inputLang: inputLang,
-      outputLang: outputLang,
+      inputLang,
+      outputLang,
       ip,
     });
     return { id: inferenceData?.id };
@@ -218,24 +218,10 @@ export default function Index() {
     text: sourceText,
     data,
     setData,
+    savefetcher,
+    editfetcher,
   });
-  useEffect(() => {
-    if (done === true && data) {
-      savefetcher.submit(
-        {
-          source: sourceText,
-          translation: data,
-          responseTime: responseTime,
-          inputLang: source_lang,
-          targetLang: target_lang,
-        },
-        {
-          method: "POST",
-        }
-      );
-      resetFetcher(editfetcher);
-    }
-  }, [done]);
+
   useEffect(() => {
     if (charCount === 0) {
       resetFetcher(editfetcher);

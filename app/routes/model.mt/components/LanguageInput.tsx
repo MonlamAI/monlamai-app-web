@@ -200,7 +200,6 @@ function LanguageInput({
           <option value="detect language" className={optionClass}>
             {translation?.detect}
           </option>
-
           {languagesOptions.map((lang) => (
             <option key={lang.code} value={lang.code} className={optionClass}>
               {lang.value}{" "}
