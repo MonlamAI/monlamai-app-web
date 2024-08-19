@@ -27,9 +27,9 @@ function TranslationSwitcher() {
         </span>
       )}
       {isTibetan && (
-        <span className=" flex gap-2 font-monlam rounded-full ">
+        <span className=" flex gap-2 font-poppins rounded-full ">
           <IoMdGlobe size={20} />
-          <div>དབྱིན་ཡིག</div>
+          <div>English</div>
         </span>
       )}
     </div>
