@@ -1,30 +1,121 @@
 [
   {
-    "name": "Team 1",
-    "description": "This is team 1",
-    "members": [
-      {
-        "name": "John Doe",
-        "role": "Developer"
-      },
-      {
-        "name": "Jane Doe",
-        "role": "Designer"
-      }
-    ]
+    "route": "khenrap-gyatso",
+    "name": "Khenrap Gyatso",
+    "team": "Admin Team",
+    "designation": "Chief editor",
+    "bios": "Khenrap Gyatso is a versatile Tibetan writer based in Dharamsala, India. With a background in journalism and social work, Gyatso has worked as a journalist for Voice of Tibet and as a social worker at the",
+    "educationalProfessionalBackground": "He is a graduated scholar, geshe, and writer, and has served as a teacher, editor, and editor-in-chief.",
+    "linkedInId": "No",
+    "headshot": "https://drive.google.com/open?id=1YoCRBR_IMgv_uitVp7plkvhk4vUMac_k"
   },
   {
-    "name": "Team 2",
-    "description": "This is team 2",
-    "members": [
-      {
-        "name": "John Doe",
-        "role": "Developer"
-      },
-      {
-        "name": "Jane Doe",
-        "role": "Designer"
-      }
-    ]
+    "route": "dawa-tsamchoe",
+    "name": "Dawa Tsamchoe་",
+    "team": "Admin Team",
+    "designation": "Human Resource Representative",
+    "bios": "Ambitious, Enthusiastic and lifelong learner.",
+    "educationalProfessionalBackground": "MBA in Human Resource and Finance. Three years of HR experience (Recruitment task in US company) and 4 years of experience as commerce and management lecturer in DLIHE.",
+    "linkedInId": "Dawa Tsamchoe",
+    "headshot": "https://drive.google.com/open?id=1qVLlzKr5AMYvdX7dNk7beg9Zr0FXxcXL"
+  },
+  {
+    "route": "jamyang-tsultrim",
+    "name": "Jamyang Tsultrim",
+    "team": "Admin Team",
+    "designation": "Admit. Object owners.",
+    "bios": "He is a Buddhist scholar with the titles of Geshe Lharampa and Ngagrampa, a specialist in Tibetan language and culture, and an experienced Monlam Dictionaries and Intelligence Project manager, always thinking in terms of innovation and productivity.",
+    "educationalProfessionalBackground": "​​​​​​​​​​​​​​​​",
+    "linkedInId": "Nil",
+    "headshot": "https://drive.google.com/open?id=1BSy3uZ5_tKt1Y-SqkGvhjNx6VY-gmQ2y"
+  },
+  {
+    "route": "tenzin-nyima",
+    "name": "Tenzin Nyima",
+    "team": "Admin Team",
+    "designation": "Executive Director",
+    "bios": "Tenzin Nyima is the Executive Director of Monlam Charitable Trust. With a decade of experience in finance and conflict resolution, Tenzin brings a unique blend of financial acumen and peacebuilding expertise to her leadership role. She holds a Bachelor of Commerce and a Post Graduate Diploma in Business Administration from MS University, complemented by certification in Tally software. Tenzin's 10-year plus tenure as Accountant and Finance Officer at the Tibetan Center for Conflict Resolution and Active Nonviolence Education Center honed her skills in financial management and program implementation. Known for her strong communication skills and team-building abilities, Tenzin is passionate about leveraging sound financial strategies to drive positive change in communities. She is committed to using her financial expertise to maximize the impact of Monlam Charitable Trust's initiatives, ensuring ethical and effective use of resources to create lasting social transformation.",
+    "educationalProfessionalBackground": "Love Nature, Music and very passionate about Fitness. Meeting new people.",
+    "linkedInId": "Tenzin Nyima",
+    "headshot": "https://drive.google.com/open?id=1JG1OAz4hk6jxbFpmKnR9JIewj9aapmN0"
+  },
+  {
+    "route": "kelsang-dolker",
+    "name": "Kelsang Dolker",
+    "team": "Admin Team",
+    "designation": "Outreach and Communication Officer",
+    "bios": "I am an attentive listener with a knack for calming tense situations. I also have a good sense of distinguishing reliable information from less credible claims , which helps me communicate clearly and make sound decisions. I always try to see the good in people.",
+    "educationalProfessionalBackground": "I studied in Central Tibetan Schools and in Tibetan Children Village. I enjoy reading, spending time with the elderlies , listening to stories and podcasts, and watching an unhealthy amount of SNL skits. And I follow everything Conan O' Brien does.",
+    "linkedInId": "Kelsang Dolker",
+    "headshot": "https://drive.google.com/open?id=1RjI5q6th6Y83GqucBiyL3QPfUgSjLy9H"
+  },
+  {
+    "route": "tenzin-dolker",
+    "name": "Tenzin Dolker",
+    "team": "Admin Team",
+    "designation": "Product Owner ",
+    "bios": "The only way to do great work is to love what you do!",
+    "educationalProfessionalBackground": "Tenzin Dolker, Product Owner at Monlam AI\nTenzin Dolker is a dedicated Product Owner at Monlam AI, \nleveraging her expertise in driving product innovation and strategy. With an undergraduate degree in Psychology and an MBA in HR and Marketing . Tenzin's proactive and optimistic approach thrives on transforming ideas into impactful solutions and brings a balanced and insightful perspective to her role, ensuring alignment with company goals and customer needs. Her commitment to excellence and collaborative spirit fuels Monlam AI's journey towards cutting-edge advancements in technology and AI solutions. Beyond her profession Tenzin finds joy in singing, cooking and exploring new places.These passions fuel her creativity and keep her grounded. ",
+    "linkedInId": "Tenzin Dolker",
+    "headshot": "https://drive.google.com/open?id=12_iKIhqFO-lu2lZqF_04OefGThZCMZXG"
+  },
+  {
+    "route": "tashi-dhondup",
+    "name": "Tashi Dhondup",
+    "team": "Tech Team",
+    "designation": "Data Analysis ",
+    "bios": "I am a Data Analyst at Monlam AI, specializing in building reliable data pipelines, detailed analyses, and impactful visualizations. With proficiency in machine learning, I've contributed to LLM chatbots and predictive models using ML/DL. My programming skills in Python, R, SQL, and Git enable scalable cloud solutions.\n\nPreviously, as a Firmware Developer at Luminous Power Tech, I designed adaptable firmware and enhanced device connectivity. At Renon, I led a team to create a comprehensive battery management system for EVs.\n\nOutside tech, I'm a professional model and actor in Bangalore, with 18+ TV ads and multiple e-commerce shoots for brands like Myntra and Ajio. I also volunteer with an NGO to raise awareness about climate change.",
+    "educationalProfessionalBackground": "I completed an Executive PG Programme in Machine Learning and AI at IIIT Bangalore and am currently pursuing a Master's in Machine Learning & AI at Liverpool John Moores University. I hold a B.Tech from Alliance University and completed my schooling at TCV Upper and Bylakuppe.",
+    "linkedInId": "uchiha-tashi",
+    "headshot": "https://drive.google.com/open?id=1iaHeJY4i6mwYjKhgCxLeU9jufMjIRXIA"
+  },
+  {
+    "route": "ngawang-trinley",
+    "name": "Ngawang Trinley",
+    "team": "Admin Team",
+    "designation": "Advisor སློབ་སྟོན་པ།",
+    "bios": "Ngawang Trinley is a multifaceted Buddhist Data Engineer based in Taipei, Taiwan. With extensive experience in Tibetan language technology, cultural preservation, and Buddhist studies, Trinley has co-founded innovative projects like Monlam AI (སྨོན་ལམ་རིག་ནུས།) and Esukhia (ནང་བསྟན་སྲི་ཞུ་ཁང་།). His career spans roles as a Digitization Manager at the Buddhist Digital Resource Center (ནང་བསྟན་དཔེ་ཚོགས་ལྟེ་གནས།) and as a lecturer at Palpung Buddhist Sciences College (དཔལ་སྤུངས་རིགས་གནས་སློབ་གླིང་།). ",
+    "educationalProfessionalBackground": "Trinley's diverse skill set encompasses Tibetan language and literature, ed-tech development, project management, and Buddhist philosophy, particularly in Kalachakra studies. Fluent in Tibetan, English, and French, he has contributed significantly to the digitization and preservation of Tibetan cultural heritage, developed NLP tools, and designed curriculum for Tibetan language education. His unique blend of traditional Buddhist education and modern technological expertise positions him at the forefront of bridging ancient wisdom with contemporary digital solutions.",
+    "linkedInId": "https://www.linkedin.com/in/ngawang-trinley-010b991a3/",
+    "headshot": "https://drive.google.com/open?id=1nm4Y70rRueIoYsvIR89eEY96tr4qYSfY"
+  },
+  {
+    "route": "tenzin-kunsang",
+    "name": "Tenzin Kunsang",
+    "team": "Tech Team",
+    "designation": "FullStack Web Developer",
+    "bios": "Raised in Bir, India, Tenzin Kunsang has been deeply immersed in web development for the past 3 to 4 years, honing his skills in both front-end and back-end technologies. After completing his engineering degree from Guru Gobind Singh Indraprastha University, Tenzin embarked on a career that combines his expertise in HTML, CSS, and JavaScript with frameworks like React and Vue.js to create dynamic and engaging user interfaces. On the back end, he applies his knowledge of Python (Django, Flask), Node.js, and PHP to build robust and scalable server-side applications, while managing databases such as MongoDB, PostgreSQL, and MySQL with ease.",
+    "educationalProfessionalBackground": "Tenzin Kunsang has built a robust professional profile as a freelancer, specializing in WordPress development and the creation of static blog pages. Outside of his professional endeavors, he is passionate about sports and fitness, engaging in activities such as football, gym workouts, and swimming.\nschooling: TCV GOPALPUR, TCV SELAKUI   \ncollege: GGSIPU DELHI",
+    "linkedInId": "https://www.linkedin.com/in/tenzin-kunsang-138599174/",
+    "headshot": "https://drive.google.com/open?id=1YSy9xU1Jm_Q_WzHCGGempScnSAuVOnS"
+  },
+  {
+    "route": "tenzin-tsundue",
+    "name": "Tenzin Tsundue",
+    "team": "Tech Team",
+    "designation": "Data Enginee",
+    "bios": "Tenzin Tsundue is proficient in Python programming and collaborates extensively with ChatGPT on diverse projects. Demonstrating a systematic approach, they effectively address development challenges and errors to achieve optimal outcomes.",
+    "educationalProfessionalBackground": "Tenzin hold a Bachelor of Technology degree in Computer Science from VIT Bhopal and a graduate of TCV Selakui, he enjoys basketball and anime in their leisure time.",
+    "linkedInId": "https://linkedin.com/in/tenzintsundue3",
+    "headshot": "https://drive.google.com/open?id=1mM6ERthDMlJqOp1BTal8wyR8dPW0PZ_s"
+  },
+  {
+    "route": "tenzin-gayche",
+    "name": "TenzIn Gayche",
+    "team": "Tech Team",
+    "designation": "ML Engineer",
+    "bios": "Gayche is a seasoned ML Engineer with a deep-rooted passion for pushing the boundaries of language technology. With two years of hands-on experience in Machine Translation and Large Language Models, he brings a wealth of expertise to the team. His BTech in Computer Science, with a specialization in data science, provides a strong foundation for his technical prowess.",
+    "educationalProfessionalBackground": "As a pioneer in the STT department, Gayche played a pivotal role in developing the team's inaugural text-to-speech model. His contributions have been instrumental in shaping the department's trajectory. Beyond his technical acumen, Gayche hobbies of birdwatching and painting lend a unique perspective to his work, fostering creativity and innovation. Driven by a desire to empower the Tibetan community, Gayche's ultimate goal is to elevate Tibetan language technology to par with other major languages. By bridging the digital divide, he aims to unlock a world of opportunities for Tibetan speakers.",
+    "linkedInId": "https://www.linkedin.com/in/tsering-dolma-1a2b3c4d/",
+    "headshot": "https://drive.google.com/open?id=1VECccdonfRuLk1eut3zJ7a4H1pKr_Qnp"
+  },
+  {
+    "route": "ganga-gyatso",
+    "name": "Ganga Gyatso",
+    "team": "Tech Team",
+    "designation": "ML Engineer",
+    "bios": "Ganga Gyatso is a problem solver at heart, always seeking innovative approaches to tackle complex challenges. With nearly a year at Monlam AI, Ganga has immersed themselves in the art of machine learning, gaining invaluable insights into the entire process—from sourcing and cleaning data to training and deploying models. To Ganga, this intricate workflow is nothing short of a beautiful system, a pure art of flow. Passionate about their work, Ganga deeply values the collaborative environment at Monlam AI, where the supportive and dependable colleagues make the journey all the more rewarding. Their commitment to advancing technology is matched only by their enthusiasm for the dynamic, Startup atmosphere they thrive in. Outside of work, Ganga enjoys swimming and playing football to keep a fresh mind, balancing their technical pursuits with activities that refresh and invigorate.",
+    "linkedInId": "https://www.linkedin.com/in/ganga-gyatso-030922280/",
+    "headshot": "https://drive.google.com/open?id=1FNf1LCdaop9FE_OKEzOI1v2BJSpLfaE6"
   }
 ]

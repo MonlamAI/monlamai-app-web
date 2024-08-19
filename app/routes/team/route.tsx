@@ -5,6 +5,7 @@ import { getUserDetail } from "~/services/session.server";
 import TeamMember from "./components/TeamMember";
 import { Outlet } from "@remix-run/react";
 import TibetanTeam from "~/helper/teamData/bo.json";
+import EnglishTeam from "~/helper/teamData/en.json";
 
 export const loader: LoaderFunction = async ({ request }) => {
   let userdata = await getUserDetail(request);
@@ -51,7 +52,7 @@ function Team() {
           <h2 className="text-2xl font-semibold mb-6">Meet Our Team</h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
-            {teamMembers.map((member, index) => (
+            {EnglishTeam.map((member, index) => (
               <TeamMember key={index} {...member} />
             ))}
             <Outlet />
