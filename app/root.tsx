@@ -127,7 +127,7 @@ export const meta: MetaFunction = () => {
     {
       name: "keywords",
       content:
-        "Monlam, AI , tibetan , dictionary ,translation ,orc , tts, stt ,login,སྨོན་ལམ་, རིག་ནུས།",
+        "Monlam, AI , tibetan , dictionary ,translation ,orc , tts, stt ,login, སྨོན་ལམ་, རིག་ནུས། , tibetan to english, best translator, en to bo, bo to en, english to tibetan, tibetan dictionary, tibetan translation, tibetan ocr, tibetan tts, tibetan stt, tibetan login",
     },
     {
       name: "apple-mobile-web-app-status-bar",
