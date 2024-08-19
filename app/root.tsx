@@ -34,7 +34,6 @@ import LocationComponent from "./component/LocationDetect";
 import {
   isJobEnabled,
   enable_replacement_mt,
-  show_about_lama,
   file_upload_enable,
 } from "./services/features.server";
 
@@ -70,7 +69,6 @@ export const loader: LoaderFunction = async ({ request, context }) => {
       user,
       isJobEnabled: isJobEnabled ?? false,
       enable_replacement_mt: enable_replacement_mt ?? false,
-      show_about_lama: show_about_lama ?? false,
       file_upload_enable: file_upload_enable ?? false,
       feedBucketAccess,
       feedbucketToken,
@@ -147,7 +145,7 @@ export const meta: MetaFunction = () => {
 function Document({ children, theme }: { children: React.ReactNode }) {
   const data = useLoaderData();
   return (
-    <html lang="en" className={theme ?? ""}>
+    <html lang="en" className={theme}>
       <head>
         <meta charSet="utf-8" />
         <meta
@@ -179,9 +177,9 @@ function App() {
   const [theme] = useTheme();
 
   return (
-    <Document theme={theme}>
+    <Document theme={theme ?? ""}>
       <LitteraProvider locales={["en_US", "bo_TI"]}>
-        <div className="flex flex-col flex-1">
+        <div className="flex flex-col flex-1 text-light_text-default dark:text-dark_text-secondary">
           <Header />
           <ClientOnly fallback={<div />}>{() => <AppInstaller />}</ClientOnly>
           {user && <LocationComponent />}
