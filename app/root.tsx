@@ -122,7 +122,7 @@ export const meta: MetaFunction = () => {
     {
       name: "description",
       content:
-        "Create an account or log in to Monlam , users can seamlessly utilize four powerful models for translation, text-to-speech, speech-to-text, and OCR (Optical Character Recognition).",
+        "Seamlessly utilize four powerful models for English to Tibetan translation and Tibetan to English translation, text-to-speech, speech-to-text, and OCR (Optical Character Recognition).",
     },
     {
       name: "keywords",
