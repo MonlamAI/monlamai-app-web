@@ -1,0 +1,30 @@
+[
+  {
+    "name": "Team 1",
+    "description": "This is team 1",
+    "members": [
+      {
+        "name": "John Doe",
+        "role": "Developer"
+      },
+      {
+        "name": "Jane Doe",
+        "role": "Designer"
+      }
+    ]
+  },
+  {
+    "name": "Team 2",
+    "description": "This is team 2",
+    "members": [
+      {
+        "name": "John Doe",
+        "role": "Developer"
+      },
+      {
+        "name": "Jane Doe",
+        "role": "Designer"
+      }
+    ]
+  }
+]
