@@ -41,18 +41,26 @@ import {
 import { saveIpAddress } from "~/modal/log.server";
 import getIpAddressByRequest from "~/component/utils/getIpAddress";
 import { ErrorPage } from "./component/ErrorPages";
-import { sessionStorage } from "~/services/session.server";
+import {
+  sessionStorage,
+  themeSessionResolver,
+} from "~/services/session.server";
 import { AppInstaller } from "~/component/AppInstaller.client";
 import { ClientOnly } from "remix-utils/client-only";
 import { update_pwa } from "~/modal/user.server";
 import { userPrefs } from "~/services/cookies.server";
+import {
+  ThemeProvider,
+  useTheme,
+  PreventFlashOnWrongTheme,
+} from "remix-themes";
 
 export const loader: LoaderFunction = async ({ request, context }) => {
   let userdata = await getUserSession(request);
   const feedBucketAccess = process.env.FEEDBUCKET_ACCESS;
   const feedbucketToken = process.env.FEEDBUCKET_TOKEN;
   let user = userdata ? await getUser(userdata?._json?.email) : null;
-
+  const { getTheme } = await themeSessionResolver(request);
   const cookieHeader = request.headers.get("Cookie");
   const cookie = (await userPrefs.parse(cookieHeader)) || {};
   cookie.token = await generateCSRFToken(request, user);
@@ -67,6 +75,7 @@ export const loader: LoaderFunction = async ({ request, context }) => {
       feedBucketAccess,
       feedbucketToken,
       AccessKey: process.env?.API_ACCESS_KEY,
+      theme: getTheme(),
     },
     {
       status: 200,
@@ -135,9 +144,10 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-function Document({ children }: { children: React.ReactNode }) {
+function Document({ children, theme }: { children: React.ReactNode }) {
+  const data = useLoaderData();
   return (
-    <html lang="en">
+    <html lang="en" className={theme ?? ""}>
       <head>
         <meta charSet="utf-8" />
         <meta
@@ -154,6 +164,7 @@ function Document({ children }: { children: React.ReactNode }) {
         />
         <meta name="apple-mobile-web-app-title" content="Monlam Chat" />
         <Meta />
+        <PreventFlashOnWrongTheme ssrTheme={Boolean(data.theme)} />
         <Links />
       </head>
       <body className="flex h-[100dvh]  mx-auto inset-0 overflow-y-auto overflow-x-hidden dark:bg-slate-700 dark:text-gray-200">
@@ -163,20 +174,12 @@ function Document({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default function App() {
+function App() {
   let { user } = useLoaderData();
-  let [isDarkMode, setIsDarkMode] = useLocalStorage("Darktheme", false);
-
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, []);
+  const [theme] = useTheme();
 
   return (
-    <Document>
+    <Document theme={theme}>
       <LitteraProvider locales={["en_US", "bo_TI"]}>
         <div className="flex flex-col flex-1">
           <Header />
@@ -197,6 +200,15 @@ export default function App() {
       </LitteraProvider>
       <ToastContainer />
     </Document>
+  );
+}
+
+export default function AppWithProviders() {
+  const data = useLoaderData();
+  return (
+    <ThemeProvider specifiedTheme={data.theme} themeAction="/action/set-theme">
+      <App />
+    </ThemeProvider>
   );
 }
 

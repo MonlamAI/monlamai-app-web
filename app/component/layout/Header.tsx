@@ -11,6 +11,7 @@ import { FaQuoteRight } from "react-icons/fa";
 import { ICON_SIZE } from "~/helper/const";
 import { FaArrowRightFromBracket } from "react-icons/fa6";
 import { TbApi } from "react-icons/tb";
+
 function Header() {
   const [showMenu, setShowMenu] = useState(false);
   const { isEnglish, translation } = uselitteraTranlation();

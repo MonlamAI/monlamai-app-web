@@ -2,6 +2,7 @@ import { createCookieSessionStorage, createCookie } from "@remix-run/node";
 import { getUser } from "~/modal/user.server";
 import jwt from "jsonwebtoken";
 // export the whole sessionStorage object
+import { createThemeSessionResolver } from "remix-themes";
 
 function getDate() {
   const expires = new Date();
@@ -63,4 +64,5 @@ export let returnToCookie = createCookie("return-to", {
   secure: process.env.NODE_ENV === "production",
 });
 
+export const themeSessionResolver = createThemeSessionResolver(sessionStorage);
 export let { getSession, commitSession, destroySession } = sessionStorage;
