@@ -57,8 +57,9 @@ function Header() {
         </div>
         {/* mobile view */}
         <div
-          className="hidden h-full fixed bg-neutral-100 top-0 left-0 right-0 w-full dark:bg-[--card-bg] shadow-lg z-40"
-          style={{ display: showMenu ? "block" : "" }}
+          className={`${
+            showMenu ? "block" : "hidden"
+          } h-full fixed bg-neutral-100 top-0 left-0 right-0 w-full dark:bg-[--card-bg] shadow-lg z-40`}
         >
           <NavLink
             className="flex items-center gap-2 p-4"

@@ -25,17 +25,30 @@ function ThemeSwitcher() {
     >
       {isDarkMode ? (
         <>
-          <MdOutlineLightMode size={ICON_SIZE} />
-          <span style={{ position: "relative", top: isTibetan ? "3px" : "0" }}>
-            {translation.lightmode}
-          </span>
+          {typeof document === undefined ? (
+            <>
+              {" "}
+              <MdOutlineLightMode size={ICON_SIZE} />
+              <span
+                style={{ position: "relative", top: isTibetan ? "3px" : "0" }}
+              >
+                {translation.lightmode}
+              </span>
+            </>
+          ) : null}
         </>
       ) : (
         <>
-          <MdDarkMode size={ICON_SIZE} />
-          <span style={{ position: "relative", top: isTibetan ? "3px" : "0" }}>
-            {translation.darkmode}
-          </span>
+          {typeof document === undefined ? (
+            <>
+              <MdDarkMode size={ICON_SIZE} />
+              <span
+                style={{ position: "relative", top: isTibetan ? "3px" : "0" }}
+              >
+                {translation.darkmode}
+              </span>
+            </>
+          ) : null}
         </>
       )}
     </div>

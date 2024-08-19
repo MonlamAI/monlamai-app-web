@@ -158,7 +158,6 @@ function Document({ children }: { children: React.ReactNode }) {
       </head>
       <body className="flex h-[100dvh]  mx-auto inset-0 overflow-y-auto overflow-x-hidden dark:bg-slate-700 dark:text-gray-200">
         {children}
-        {/* {show_feed_bucket && show && <script dangerouslySetInnerHTML={{ __html: feedbucketScript }}></scrip>} */}
       </body>
     </html>
   );

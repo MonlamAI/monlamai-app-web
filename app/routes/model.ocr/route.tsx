@@ -21,16 +21,12 @@ export const links: LinksFunction = () => [
   { rel: "stylesheet", href: crop_style },
 ];
 export async function loader({ request }: LoaderFunctionArgs) {
-  let userdata = await getUserSession(request);
-  let model = "ocr";
-  let user = null;
-  if (userdata) {
-    user = await getUser(userdata?._json.email);
-  }
+  let user = await getUserSession(request);
+
   let inferenceList = await shouldFetchInferenceList({
     request,
-    model,
-    user,
+    model: "ocr",
+    userId: user?.db_id,
   });
   const userAgent = request.headers.get("User-Agent") || "";
   const isMobile =
@@ -38,7 +34,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       userAgent
     );
   let fileUploadUrl = process.env?.FILE_SUBMIT_URL as string;
-  return { user: userdata, inferences: inferenceList, fileUploadUrl, isMobile };
+  return { user, inferences: inferenceList, fileUploadUrl, isMobile };
 }
 
 export const action: ActionFunction = async ({ request }) => {
