@@ -1,23 +1,21 @@
 import { ICON_SIZE } from "~/helper/const";
 import uselitteraTranlation from "./hooks/useLitteraTranslation";
-import useLocalStorage from "./hooks/useLocaleStorage";
+import { Theme, useTheme } from "remix-themes";
 import { MdOutlineLightMode, MdDarkMode } from "react-icons/md";
+import { useEffect } from "react";
+
 function ThemeSwitcher() {
-  let [isDarkMode, setIsDarkMode] = useLocalStorage("Darktheme", false);
+  const [theme, setTheme, { definedBy }] = useTheme();
   const { translation, isTibetan } = uselitteraTranlation();
 
   function handleClick() {
-    if (
-      !isDarkMode ||
-      (!("Darktheme" in localStorage) &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches)
-    ) {
-      document.documentElement.classList.add("dark");
+    if (theme === "dark") {
+      setTheme(Theme.LIGHT);
     } else {
-      document.documentElement.classList.remove("dark");
+      setTheme(Theme.DARK);
     }
-    setIsDarkMode(!isDarkMode);
   }
+  let isDarkMode = theme === Theme.DARK;
   return (
     <div
       onClick={handleClick}
@@ -25,17 +23,29 @@ function ThemeSwitcher() {
     >
       {isDarkMode ? (
         <>
-          <MdOutlineLightMode size={ICON_SIZE} />
-          <span style={{ position: "relative", top: isTibetan ? "3px" : "0" }}>
-            {translation.lightmode}
-          </span>
+          {typeof document !== undefined ? (
+            <>
+              <MdOutlineLightMode size={ICON_SIZE} />
+              <span
+                style={{ position: "relative", top: isTibetan ? "3px" : "0" }}
+              >
+                {translation.lightmode}
+              </span>
+            </>
+          ) : null}
         </>
       ) : (
         <>
-          <MdDarkMode size={ICON_SIZE} />
-          <span style={{ position: "relative", top: isTibetan ? "3px" : "0" }}>
-            {translation.darkmode}
-          </span>
+          {typeof document !== undefined ? (
+            <>
+              <MdDarkMode size={ICON_SIZE} />
+              <span
+                style={{ position: "relative", top: isTibetan ? "3px" : "0" }}
+              >
+                {translation.darkmode}
+              </span>
+            </>
+          ) : null}
         </>
       )}
     </div>

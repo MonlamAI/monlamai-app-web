@@ -11,6 +11,7 @@ import { FaQuoteRight } from "react-icons/fa";
 import { ICON_SIZE } from "~/helper/const";
 import { FaArrowRightFromBracket } from "react-icons/fa6";
 import { TbApi } from "react-icons/tb";
+
 function Header() {
   const [showMenu, setShowMenu] = useState(false);
   const { isEnglish, translation } = uselitteraTranlation();
@@ -57,8 +58,9 @@ function Header() {
         </div>
         {/* mobile view */}
         <div
-          className="hidden h-full fixed bg-neutral-100 top-0 left-0 right-0 w-full dark:bg-[--card-bg] shadow-lg z-40"
-          style={{ display: showMenu ? "block" : "" }}
+          className={`${
+            showMenu ? "block" : "hidden"
+          } h-full fixed bg-neutral-100 top-0 left-0 right-0 w-full dark:bg-[--card-bg] shadow-lg z-40`}
         >
           <NavLink
             className="flex items-center gap-2 p-4"

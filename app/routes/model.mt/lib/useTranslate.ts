@@ -5,6 +5,7 @@ import {
   en_bo_tibetan_replaces,
 } from "~/component/utils/replace";
 import { eng_languagesOptions } from "~/helper/const";
+import { resetFetcher } from "~/component/utils/resetFetcher";
 
 type useTranslateType = {
   target: string;
@@ -82,7 +83,13 @@ function cleanData(content) {
   return content;
 }
 
-const useTranslate = ({ target, text, data, setData }: useTranslateType) => {
+const useTranslate = ({
+  target,
+  text,
+  data,
+  setData,
+  savefetcher,
+}: useTranslateType) => {
   const { enable_replacement_mt } = useRouteLoaderData("root");
   const [responseTime, setResponseTime] = useState(0);
   const [done, setDone] = useState(false);
@@ -114,46 +121,19 @@ const useTranslate = ({ target, text, data, setData }: useTranslateType) => {
         const endTime = performance.now(); // Record end time
         setResponseTime(endTime - startTime); // Calculate response time
         setIsLoading(false);
-        setDone(true);
-      }
-    };
-    const dharmaapi = async () => {
-      setIsLoading(true);
-      setDone(false);
-      setError(null);
-      setData("");
-      let replaced = en_bo_english_replaces(text);
-      let input = enable_replacement_mt ? replaced : text;
-
-      const startTime = performance.now(); // Record start time
-      const dharmaurl = "https://dharmamitra.org/api/translation-no-stream/";
-      let target_lang =
-        eng_languagesOptions.find((l) => l.code === target)?.name ?? "tibetan";
-      const request_data = {
-        input_sentence: input,
-        input_encoding: "auto",
-        target_lang,
-      };
-      try {
-        let data = await fetch(dharmaurl, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
+        savefetcher.submit(
+          {
+            source: sourceText,
+            translation: data,
+            responseTime,
+            inputLang: source_lang,
+            targetLang: target_lang,
           },
-          body: JSON.stringify(request_data),
-        }).then((res) => res.json());
-        if (typeof data === "string") {
-          setData(en_bo_tibetan_replaces(data));
-        } else {
-          alert("translation is not supported for this language");
-        }
-      } catch (error) {
-        alert("language not supported");
-        setError(error.message);
-      } finally {
-        const endTime = performance.now(); // Record end time
-        setResponseTime(endTime - startTime); // Calculate response time
-        setIsLoading(false);
+          {
+            method: "POST",
+          }
+        );
+        resetFetcher(editfetcher);
         setDone(true);
       }
     };

@@ -2,6 +2,7 @@ import { LoaderFunctionArgs } from "@remix-run/node";
 import { verify_token } from "~/services/session.server";
 import { userPrefs } from "../services/cookies.server";
 import { eng_languagesOptions } from "~/helper/const";
+import { useDharmaMitraAPI } from "../services/features.server";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   let url = new URL(request.url);
@@ -18,20 +19,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
   const controller = new AbortController();
   const fileUploadUrl = process.env?.FILE_SUBMIT_URL;
-  // const formData = new FormData();
-  // let api_url = fileUploadUrl + "/mt/playground/stream";
-  // const AccessKey = process.env?.API_ACCESS_KEY;
-  // formData.append("input", text);
-  // formData.append("direction", target);
-  // return fetch(api_url, {
-  //   method: "POST",
-  //   body: formData,
-  //   headers: {
-  //     "x-api-key": AccessKey!, // Replace with your actual access key
-  //   },
-  //   signal: controller.signal,
-  // });
 
+  // if (useDharmaMitraAPI) {
   let api_url = "https://dharmamitra.org/api/translation-exp/";
   let DharmaKey = process.env?.DHARMA_API_KEY;
   let target_lang =
@@ -53,4 +42,19 @@ export async function loader({ request }: LoaderFunctionArgs) {
     },
     signal: controller.signal,
   });
+  // } else {
+  //   const formData = new FormData();
+  //   let api_url = fileUploadUrl + "/mt/playground/stream";
+  //   const AccessKey = process.env?.API_ACCESS_KEY;
+  //   formData.append("input", text);
+  //   formData.append("direction", target);
+  //   return fetch(api_url, {
+  //     method: "POST",
+  //     body: formData,
+  //     headers: {
+  //       "x-api-key": AccessKey!, // Replace with your actual access key
+  //     },
+  //     signal: controller.signal,
+  //   });
+  // }
 }

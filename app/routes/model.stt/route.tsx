@@ -45,15 +45,12 @@ export const meta: MetaFunction<typeof loader> = ({ matches }) => {
 };
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  let userdata = await getUserSession(request);
-  let user = null;
-  if (userdata) {
-    user = await getUser(userdata?._json.email);
-  }
+  let user = await getUserSession(request);
+
   let model = "stt";
   let inferences = await shouldFetchInferenceList({
     request,
-    user,
+    userId: user?.db_id,
     model,
   });
   return { user, fileUploadUrl: process.env?.FILE_SUBMIT_URL, inferences };

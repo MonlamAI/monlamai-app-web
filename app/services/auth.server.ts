@@ -43,8 +43,7 @@ const auth0Strategy = new Auth0Strategy(
         },
       }));
 
-    return profile;
+    return { db_id: userdata.id, ...profile };
   }
-
 );
 auth.use(auth0Strategy);

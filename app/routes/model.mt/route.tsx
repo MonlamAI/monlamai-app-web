@@ -10,12 +10,12 @@ import {
   useSearchParams,
   useRouteLoaderData,
 } from "@remix-run/react";
+import { json, redirect } from "@remix-run/node";
 import { useState, useRef, useEffect } from "react";
 import useDebounce from "~/component/hooks/useDebounceState";
 import { ErrorMessage } from "~/component/ErrorMessage";
 import ToolWraper from "~/component/ToolWraper";
 import {
-  getTodayInferenceByUserIdCountModel,
   getUserFileInferences,
   saveInference,
   updateEdit,
@@ -53,20 +53,21 @@ export const meta: MetaFunction<typeof loader> = ({ matches }) => {
 
 export const shouldFetchInferenceList = async ({
   request,
-  user,
+  userId,
   model,
 }: {
   request: Request;
-  user: any;
+  userId: number;
   model: string;
 }) => {
+  if (!userId) return null;
   let tool = new URL(request.url).searchParams.get("tool");
   const fileList = ["document", "file"];
   let fetchInferenceList = fileList.includes(tool!);
 
-  return user && fetchInferenceList
+  return fetchInferenceList
     ? await getUserFileInferences({
-        userId: user?.id,
+        userId,
         model,
       })
     : null;
@@ -74,36 +75,19 @@ export const shouldFetchInferenceList = async ({
 
 export async function loader({ request }: LoaderFunctionArgs) {
   let userdata = await getUserSession(request);
-  let user = await getUser(userdata?._json.email);
-  let model = "mt";
-  let checkNumberOfInferenceToday = user
-    ? await getTodayInferenceByUserIdCountModel(user?.id, model)
-    : null;
-  let checkLimit = checkNumberOfInferenceToday
-    ? checkNumberOfInferenceToday >= parseInt(process.env?.API_HIT_LIMIT!)
-    : false;
   let CHAR_LIMIT = parseInt(process.env?.MAX_TEXT_LENGTH_MT!);
-  let limitMessage =
-    "You have reached the daily limit of translation. Please try again tomorrow.";
 
-  const userAgent = request.headers.get("User-Agent") || "";
   const inferences = await shouldFetchInferenceList({
     request,
-    user,
-    model,
+    userId: userdata?.db_id,
+    model: "mt",
   });
-  const isMobile =
-    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-      userAgent
-    );
-  return {
+  return json({
     user: userdata,
-    limitMessage: checkLimit ? limitMessage : null,
     fileUploadUrl: process.env?.FILE_SUBMIT_URL,
     inferences,
     CHAR_LIMIT,
-    isMobile,
-  };
+  });
 }
 
 export const action: ActionFunction = async ({ request }) => {
@@ -130,8 +114,8 @@ export const action: ActionFunction = async ({ request }) => {
       input: source,
       output: translation,
       responseTime: parseInt(responseTime),
-      inputLang: inputLang,
-      outputLang: outputLang,
+      inputLang,
+      outputLang,
       ip,
     });
     return { id: inferenceData?.id };
@@ -176,6 +160,7 @@ export default function Index() {
   const likefetcher = useFetcher();
   const editfetcher = useFetcher();
   const translationFetcher = useFetcher();
+  const detectFetcher = useFetcher();
 
   const savefetcher = useFetcher();
   const editData = editfetcher.data?.edited;
@@ -218,24 +203,10 @@ export default function Index() {
     text: sourceText,
     data,
     setData,
+    savefetcher,
+    editfetcher,
   });
-  useEffect(() => {
-    if (done === true && data) {
-      savefetcher.submit(
-        {
-          source: sourceText,
-          translation: data,
-          responseTime: responseTime,
-          inputLang: source_lang,
-          targetLang: target_lang,
-        },
-        {
-          method: "POST",
-        }
-      );
-      resetFetcher(editfetcher);
-    }
-  }, [done]);
+
   useEffect(() => {
     if (charCount === 0) {
       resetFetcher(editfetcher);
@@ -292,6 +263,7 @@ export default function Index() {
           setTranslated={setData}
           likefetcher={likefetcher}
           sourceText={debounceSourceText}
+          detectFetcher={detectFetcher}
         />
 
         {(selectedTool === "text" || selectedTool === "document") && (
@@ -341,7 +313,7 @@ export default function Index() {
                         }}
                         selectedTool={selectedTool}
                         submitFile={handleFileSubmit}
-                        disabled={!file || file?.length === 0}
+                        disabled={detectFetcher.state !== "idle"}
                       />
                     </div>
                   )}

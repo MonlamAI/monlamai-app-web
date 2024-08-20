@@ -34,25 +34,32 @@ import LocationComponent from "./component/LocationDetect";
 import {
   isJobEnabled,
   enable_replacement_mt,
-  show_about_lama,
   file_upload_enable,
 } from "./services/features.server";
 
 import { saveIpAddress } from "~/modal/log.server";
 import getIpAddressByRequest from "~/component/utils/getIpAddress";
 import { ErrorPage } from "./component/ErrorPages";
-import { sessionStorage } from "~/services/session.server";
+import {
+  sessionStorage,
+  themeSessionResolver,
+} from "~/services/session.server";
 import { AppInstaller } from "~/component/AppInstaller.client";
 import { ClientOnly } from "remix-utils/client-only";
 import { update_pwa } from "~/modal/user.server";
 import { userPrefs } from "~/services/cookies.server";
+import {
+  ThemeProvider,
+  useTheme,
+  PreventFlashOnWrongTheme,
+} from "remix-themes";
 
 export const loader: LoaderFunction = async ({ request, context }) => {
   let userdata = await getUserSession(request);
   const feedBucketAccess = process.env.FEEDBUCKET_ACCESS;
   const feedbucketToken = process.env.FEEDBUCKET_TOKEN;
   let user = userdata ? await getUser(userdata?._json?.email) : null;
-
+  const { getTheme } = await themeSessionResolver(request);
   const cookieHeader = request.headers.get("Cookie");
   const cookie = (await userPrefs.parse(cookieHeader)) || {};
   cookie.token = await generateCSRFToken(request, user);
@@ -62,11 +69,11 @@ export const loader: LoaderFunction = async ({ request, context }) => {
       user,
       isJobEnabled: isJobEnabled ?? false,
       enable_replacement_mt: enable_replacement_mt ?? false,
-      show_about_lama: show_about_lama ?? false,
       file_upload_enable: file_upload_enable ?? false,
       feedBucketAccess,
       feedbucketToken,
       AccessKey: process.env?.API_ACCESS_KEY,
+      theme: getTheme(),
     },
     {
       status: 200,
@@ -126,7 +133,7 @@ export const meta: MetaFunction = () => {
     {
       name: "keywords",
       content:
-        "Monlam, AI , tibetan , dictionary ,translation ,orc , tts, stt ,login,སྨོན་ལམ་, རིག་ནུས།",
+        "Monlam, AI , tibetan , dictionary ,translation ,orc , tts, stt ,login,སྨོན་ལམ་, རིག་ནུས། , tibetan to english, english to tibetan, tibetan dictionary, tibetan translation, tibetan ocr, tibetan tts, tibetan stt, tibetan login",
     },
     {
       name: "apple-mobile-web-app-status-bar",
@@ -135,9 +142,10 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-function Document({ children }: { children: React.ReactNode }) {
+function Document({ children, theme }: { children: React.ReactNode }) {
+  const data = useLoaderData();
   return (
-    <html lang="en">
+    <html lang="en" className={theme}>
       <head>
         <meta charSet="utf-8" />
         <meta
@@ -154,32 +162,24 @@ function Document({ children }: { children: React.ReactNode }) {
         />
         <meta name="apple-mobile-web-app-title" content="Monlam Chat" />
         <Meta />
+        <PreventFlashOnWrongTheme ssrTheme={Boolean(data.theme)} />
         <Links />
       </head>
       <body className="flex h-[100dvh]  mx-auto inset-0 overflow-y-auto overflow-x-hidden dark:bg-slate-700 dark:text-gray-200">
         {children}
-        {/* {show_feed_bucket && show && <script dangerouslySetInnerHTML={{ __html: feedbucketScript }}></scrip>} */}
       </body>
     </html>
   );
 }
 
-export default function App() {
+function App() {
   let { user } = useLoaderData();
-  let [isDarkMode, setIsDarkMode] = useLocalStorage("Darktheme", false);
-
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, []);
+  const [theme] = useTheme();
 
   return (
-    <Document>
+    <Document theme={theme ?? ""}>
       <LitteraProvider locales={["en_US", "bo_TI"]}>
-        <div className="flex flex-col flex-1">
+        <div className="flex flex-col flex-1 text-light_text-default dark:text-dark_text-secondary">
           <Header />
           <ClientOnly fallback={<div />}>{() => <AppInstaller />}</ClientOnly>
           {user && <LocationComponent />}
@@ -198,6 +198,15 @@ export default function App() {
       </LitteraProvider>
       <ToastContainer />
     </Document>
+  );
+}
+
+export default function AppWithProviders() {
+  const data = useLoaderData();
+  return (
+    <ThemeProvider specifiedTheme={data.theme} themeAction="/action/set-theme">
+      <App />
+    </ThemeProvider>
   );
 }
 
