@@ -39,17 +39,11 @@ export const meta: MetaFunction = ({ matches }) => {
 };
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  let userdata = await getUserSession(request);
-  let user = null;
-  if (userdata) {
-    user = await getUser(userdata?._json.email);
-  }
-
-  let model = "tts";
+  let user = await getUserSession(request);
   let inferences = await shouldFetchInferenceList({
     request,
-    user,
-    model,
+    userId: user?.db_id,
+    model: "tts",
   });
   let CHAR_LIMIT = parseInt(process.env?.MAX_TEXT_LENGTH_TTS!);
 
