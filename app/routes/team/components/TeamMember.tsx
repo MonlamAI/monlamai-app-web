@@ -6,7 +6,7 @@ function TeamMember({ route, name, designation, headshot }) {
     <Link
       to={`/team/${route}`}
       state={{ name, designation, headshot }}
-      className="flex flex-col items-center px-4 py-6"
+      className="flex flex-col items-center px-4 py-6 text-center"
     >
       <img src={headshot} alt={name} className="w-56 h-56 rounded-full mb-2" />
       <h3 className="text-lg font-semibold">{name}</h3>

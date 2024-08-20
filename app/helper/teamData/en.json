@@ -73,8 +73,8 @@
     "route": "ngawang-trinley",
     "name": "Ngawang Trinley",
     "team": "Admin Team",
-    "designation": "Advisor སློབ་སྟོན་པ།",
-    "bios": "Ngawang Trinley is a multifaceted Buddhist Data Engineer based in Taipei, Taiwan. With extensive experience in Tibetan language technology, cultural preservation, and Buddhist studies, Trinley has co-founded innovative projects like Monlam AI (སྨོན་ལམ་རིག་ནུས།) and Esukhia (ནང་བསྟན་སྲི་ཞུ་ཁང་།). His career spans roles as a Digitization Manager at the Buddhist Digital Resource Center (ནང་བསྟན་དཔེ་ཚོགས་ལྟེ་གནས།) and as a lecturer at Palpung Buddhist Sciences College (དཔལ་སྤུངས་རིགས་གནས་སློབ་གླིང་།). ",
+    "designation": "Advisor",
+    "bios": "Ngawang Trinley is a multifaceted Buddhist Data Engineer based in Taipei, Taiwan. With extensive experience in Tibetan language technology, cultural preservation, and Buddhist studies, Trinley has co-founded innovative projects like Monlam AI and Esukhia. His career spans roles as a Digitization Manager at the Buddhist Digital Resource Center and as a lecturer at Palpung Buddhist Sciences College.",
     "educationalProfessionalBackground": "Trinley's diverse skill set encompasses Tibetan language and literature, ed-tech development, project management, and Buddhist philosophy, particularly in Kalachakra studies. Fluent in Tibetan, English, and French, he has contributed significantly to the digitization and preservation of Tibetan cultural heritage, developed NLP tools, and designed curriculum for Tibetan language education. His unique blend of traditional Buddhist education and modern technological expertise positions him at the forefront of bridging ancient wisdom with contemporary digital solutions.",
     "linkedInId": "https://www.linkedin.com/in/ngawang-trinley-010b991a3/",
     "headshot": "https://drive.google.com/open?id=1nm4Y70rRueIoYsvIR89eEY96tr4qYSfY"
@@ -117,5 +117,75 @@
     "bios": "Ganga Gyatso is a problem solver at heart, always seeking innovative approaches to tackle complex challenges. With nearly a year at Monlam AI, Ganga has immersed themselves in the art of machine learning, gaining invaluable insights into the entire process—from sourcing and cleaning data to training and deploying models. To Ganga, this intricate workflow is nothing short of a beautiful system, a pure art of flow. Passionate about their work, Ganga deeply values the collaborative environment at Monlam AI, where the supportive and dependable colleagues make the journey all the more rewarding. Their commitment to advancing technology is matched only by their enthusiasm for the dynamic, Startup atmosphere they thrive in. Outside of work, Ganga enjoys swimming and playing football to keep a fresh mind, balancing their technical pursuits with activities that refresh and invigorate.",
     "linkedInId": "https://www.linkedin.com/in/ganga-gyatso-030922280/",
     "headshot": "https://drive.google.com/open?id=1FNf1LCdaop9FE_OKEzOI1v2BJSpLfaE6"
+  },
+  {
+    "route": "tenzin-kalden",
+    "name": "Tenzin Kalden",
+    "team": "Tech Team",
+    "designation": "OCR Developer",
+    "bios": "Tenzin Kalden is passionate about untangling complex problems through pattern recognition, he thrives on finding innovative solutions and turning challenges into opportunities for growth.",
+    "educationalProfessionalBackground": "Kalden holds a bachelor's in automotive engineering and a PG diploma in CS, he is Enthusiastic about AI/ML and autonomous vehicles. When not exploring cutting-edge tech, Tenzin enjoys tinkering with model cars.",
+    "linkedInId": "https://www.linkedin.com/in/tenzin-kalden-991b98189/",
+    "headshot": "https://drive.google.com/open?id=14jkQdatFt_WzExBQwL89mt-Uwa8r93AP"
+  },
+  {
+    "route": "tenzin-tamdin",
+    "name": "Tenzin Tamdin",
+    "team": "Tech Team",
+    "designation": "FullStack Web Developer",
+    "bios": "Tenzin Tamdin is born in southern India and raised in the northern region of Ladakh, Tenzin Tamdin has over two years of experience in web application development. An avid reader and lifelong learner, Tamdin excels in table tennis and swimming.",
+    "educationalProfessionalBackground": " Tamdin graduated from St. Joseph's University, Bengaluru  with a B.Sc in PMC. He combines his technical expertise with a passion for continuous learning. Outside of work, Tamdin enjoys playing table tennis, swimming, and watching movies, balancing his professional life with active and leisurely pursuits.",
+    "linkedInId": "https://www.linkedin.com/in/tenzintamdin592/",
+    "headshot": ""
+  },
+  {
+    "route": "jimpa-gyatso",
+    "name": "Jimpa Gyatso",
+    "team": "Tech Team",
+    "designation": "Python developer",
+    "bios": "Jimpa Gyatso is a Python developer with a flair for transforming complex challenges into elegant solutions. Passionate about crafting clean code, efficient algorithms, and continuous learning. Experienced in generating datasets and training models, with a keen interest in advancing innovations in machine learning. Always up for a coding challenge and eager to push the boundaries of technology and data-driven solutions.",
+    "educationalProfessionalBackground": "He completed his Class 10 at TCV Chauntra and pursued PCMC at TCV Bylakuppe. He then earned his B.Tech in Computer Science from Jabalpur Engineering College through a Sherig seat. Professionally, he has freelanced as a frontend developer and worked as an Associate Software Engineer, focusing on networking protocols.He is passionate about coding and always excited to explore and learn new technology trends as a hobby.",
+    "linkedInId": "https://www.linkedin.com/in/jimpa-gyatso-46317b210/",
+    "headshot": "https://drive.google.com/open?id=1QzT_Weim0eqBT28HDYidpOEb8xiivRZ4"
+  },
+  {
+    "route": "tenzin-lhazey",
+    "name": "Tenzin Lhazey",
+    "team": "Admin Team",
+    "designation": "Accountant",
+    "bios": "",
+    "educationalProfessionalBackground": "Graduated B.COM & M.COM from Delhi University",
+    "linkedInId": "",
+    "headshot": "https://drive.google.com/open?id=1yghsAksJ3-qwxCgaI3QZo5bRCR5iAMZu"
+  },
+  {
+    "route": "karma-tsering",
+    "name": "Karma Tsering",
+    "team": "Tech Team",
+    "designation": "Software Tester",
+    "bios": "Karma Tsering is driven by a thirst for knowledge and a passion for personal growth, Karma Tsering is a dedicated professional with a solid foundation in Computer Science and Engineering. His curiosity fuels his continuous learning and improvement, making him a valuable asset to any team. With a keen interest in Buddhist philosophy, Karma brings a unique perspective and enriches every interaction.",
+    "educationalProfessionalBackground": "",
+    "linkedInId": "",
+    "headshot": "https://drive.google.com/open?id=1wmpyTjXUE2NzAJSJLmfEcJ0o50UO0pGF"
+  },
+  {
+    "route": "lobsang-monlam",
+    "name": "Lobsang Monlam",
+    "team": "Admin Team",
+    "designation": "Founder",
+    "bios": "Monlam la is a unique blend of ancient wisdom and modern innovation. Born in Amdo Ngawa, Tibet, he embarked on a monastic journey at a young age, immersing himself in the depths of Buddhist philosophy and Tibetan art. A natural-born innovator, Lobsang's early fascination with technology led to groundbreaking achievements, including the creation of an FM microphone for Dharma teachings at his monastery. This early exposure to technology, coupled with his profound spiritual knowledge, has shaped Lobsang's extraordinary career. As a Geshe graduate from Sera Mey Monastic University and the founder of Monlam IT Research Centre, he has dedicated his life to bridging the gap between tradition and technology. His pioneering work in developing Tibetan fonts and software has made a significant impact on the Tibetan community worldwide.",
+    "educationalProfessionalBackground": "Lobsang's life is a testament to the power of human potential, demonstrating that one can be both a deeply spiritual individual and a skilled technologist. His journey is an inspiration, showcasing the harmonious coexistence of tradition and modernity.",
+    "linkedInId": "",
+    "headshot": ""
+  },
+  {
+    "route": "kunchok-dolma",
+    "name": "Kunchok Dolma",
+    "team": "Admin Team",
+    "designation": "South Branch Project Coordinator",
+    "bios": "Kunchok Dolma, a Tibetan refugee born and raised in India, is a dedicated advocate for building meaningful relationships and fostering trust and collaboration. With a strong commitment to fairness and justice, she strives to drive positive change and inspire others to do the same. Kunchok holds a master's degree in Leadership and Governance from MIT Pune and graduated with a BA in English Honours from Miranda House, University of Delhi. She is also a proud alumna of TCV and brings five years of experience as a Project Officer at the Department of Health, CTA.",
+    "educationalProfessionalBackground": "In her personal life, Kunchok enjoys playing various sports, including table tennis, badminton, and carrom, though she modestly notes that she excels at none.",
+    "linkedInId": "www.linkedin.com/in/kunchok-dolma-060325321",
+    "headshot": "https://drive.google.com/open?id=1drShCFCdfuQ0tmO59TOQB5jPA5WGgtnw"
   }
 ]
