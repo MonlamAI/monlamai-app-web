@@ -9,24 +9,20 @@ on:
       - test-UT-setup
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [18]  # Specify Node.js version 18 or higher
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v2
 
-    - name: Set up Node.js ${{ matrix.node-version }}
+    - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: '18.x'
 
     - name: Install dependencies
-      run: npm install --legacy-peer-deps  # Use --legacy-peer-deps to handle peer dependency issues
+      run: npm install
 
     - name: Run tests
       run: npm test
