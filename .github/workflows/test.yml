@@ -28,7 +28,7 @@ jobs:
       run: npm install
 
     - name: Run tests with coverage
-      run: npm test "./app/routes/model.ocr/component/ImageCropper.test.js" --  --coverage 
+      run: npm test --  --coverage 
 
     - name: Upload coverage report
       uses: actions/upload-artifact@v3
