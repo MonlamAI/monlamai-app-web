@@ -25,7 +25,7 @@ jobs:
         run: npm install
 
       - name: Run tests and generate coverage
-        run: npm test "./app/routes/model.ocr/component/ImageCropper.test.js" -- --coverage
+        run: npm test "./app/component/__test__/ActionButtons.test.js" -- --coverage
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v1.8
