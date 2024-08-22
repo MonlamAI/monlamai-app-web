@@ -28,7 +28,7 @@ jobs:
       run: npm install
 
     - name: Run tests with coverage
-      run: npm run test "./app/component/utils/tests/" -- --coverage --forceExit 
+      run: npm run test -- --coverage  
 
     - name: Upload coverage report
       uses: actions/upload-artifact@v3
