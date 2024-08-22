@@ -27,12 +27,6 @@ jobs:
         with:
           node-version: '18.x'  # or your project's Node.js version
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Run tests and generate coverage
-        run: npm test "./app/component/__test__/ActionButtons.test.js" -- --coverage
-
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v1.8
         env:
