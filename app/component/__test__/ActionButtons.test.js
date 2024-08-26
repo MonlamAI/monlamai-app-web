@@ -198,3 +198,5 @@ describe("NonEditButtons", () => {
         expect(setEditText).toHaveBeenCalledWith("translated text");
     });
 });
+
+// check the sonarcloud analysis
