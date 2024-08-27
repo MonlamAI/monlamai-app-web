@@ -119,7 +119,7 @@
     "headshot": "/assets/team/ganga-gyatso.jpg"
   },
   {
-    "route": "tenzin-kalden-2",
+    "route": "tenzin-kalden",
     "name": "Tenzin Kalden",
     "team": "Tech Team",
     "designation": "Associate Software Engineer",
@@ -226,7 +226,7 @@
     "headshot": "/assets/team/tashi-tsering.jpg"
   },
   {
-    "route": "tenzin-kalden",
+    "route": "kalden",
     "name": "Tenzin Kalden",
     "team": "Tech Team",
     "designation": "Technical Lead",
