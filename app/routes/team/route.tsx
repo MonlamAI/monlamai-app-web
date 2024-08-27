@@ -23,32 +23,32 @@ function Team() {
         <div className="flex flex-col md:flex-row mb-8 justify-between items-center">
           <div className="w-full md:w-1/2 mb-4 text-left">
             <h1 className="text-4xl font-bold mb-4">Our Team</h1>
-            <p className="text-gray-700">
-              Welcome to a new era of innovation and progress! In today's world,
-              technology has reached remarkable heights, and Artificial
-              Intelligence (AI) stands at the forefront of this technological
-              revolution. AI's advancement in information technology is
-              reshaping how we access and utilize knowledge. The future
-              {/* ... rest of the paragraph */}
+            <p>
+              Our Team Each member of the Monlam AI team is dedicated to pushing
+              the boundaries of what technology can do for minority languages
+              and cultures. Our backgrounds are as diverse as our roles, yet we
+              are united by a commitment to making a meaningful impact. From
+              software engineers to Tibetan language experts and cultural
+              advisors, our team collaborates closely to ensure that our
+              projects align with the needs and aspirations of the Tibetan
+              community.
             </p>
           </div>
           <div className="w-full md:w-1/3">
             <img
               src="/assets/buddha.png"
               alt="Our office"
-              className="w-full h-80 object-contain rounded-xl"
+              className="w-full max-h-80 object-contain rounded-xl"
             />
           </div>
         </div>
         <h2 className="text-2xl font-semibold mb-6 text-center">
           Meet Our Team
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
-          {EnglishTeam
-            // .sort(() => Math.random() - 0.5)
-            .map((member, index) => (
-              <TeamMember key={index} {...member} />
-            ))}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-16">
+          {EnglishTeam.sort(() => Math.random() - 0.5).map((member, index) => (
+            <TeamMember key={index} {...member} />
+          ))}
           <Outlet />
         </div>
       </ToolWraper>
