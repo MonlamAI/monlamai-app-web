@@ -6,3 +6,4 @@ node_modules
 .env
 monlam.js
 reports/test-report.html
+coverage/

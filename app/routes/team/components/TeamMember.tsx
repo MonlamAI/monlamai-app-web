@@ -11,10 +11,10 @@ function TeamMember({ route, name, designation, headshot }) {
       <img
         src={"/assets/team/" + route + ".jpg"}
         alt={name}
-        className="w-52 h-52 rounded-full mb-2 object-cover"
+        className="aspect-square w-52 rounded-full mb-2 object-cover"
       />
       <h3 className="text-lg font-semibold">{name}</h3>
-      <p className="text-sm text-gray-600 dark:text-dark_text-secondary">
+      <p className="text-sm text-light_text-secondary dark:text-dark_text-secondary">
         {designation}
       </p>
     </Link>
