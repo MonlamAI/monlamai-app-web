@@ -214,12 +214,8 @@ function AboutLink() {
 function TeamLink() {
   const { translation, locale } = uselitteraTranlation();
   return (
-    <NavLink
-      to="#"
-      className="text-base capitalize text-gray-300 cursor-default"
-      unstable_viewTransition
-    >
-      {/* {translation.team} */}
+    <NavLink to="/team" className="text-base" unstable_viewTransition>
+      {translation.team}
     </NavLink>
   );
 }

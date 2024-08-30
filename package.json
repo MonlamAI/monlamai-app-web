@@ -52,6 +52,7 @@
     "node-schedule": "^2.1.1",
     "openai": "^4.12.4",
     "papaparse": "^5.4.1",
+    "posthog-js": "^1.157.0",
     "prisma": "^5.4.2",
     "react": "^18.2.0",
     "react-advanced-cropper": "^0.19.6",
