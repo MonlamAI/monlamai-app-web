@@ -18,7 +18,11 @@ function Team() {
   const teamData = isTibetan ? TibetanTeam : EnglishTeam;
 
   return (
-    <div className="m-auto w-[90%] md:w-[80%]  flex flex-col font-poppins">
+    <div
+      className={`m-auto w-[90%] md:w-[80%]  flex flex-col ${
+        isTibetan ? "font-monlam leading-loose" : "font-poppins"
+      }`}
+    >
       <ToolWraper title="team">
         <div className="flex flex-col md:flex-row mb-8 justify-between items-center">
           <div className="w-full md:w-1/2 mb-4 text-left">
