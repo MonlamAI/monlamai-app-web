@@ -38,7 +38,7 @@ function TeamDetailsPage() {
             <img
               src={userDetails?.headshot}
               alt={userDetails?.name}
-              className="max-w-72 max-h-72 object-fill"
+              className="w-72 h-72 object-cover"
             />
             {userDetails?.linkedInId !== "" && (
               <div className="flex items-center gap-4 mt-4">
