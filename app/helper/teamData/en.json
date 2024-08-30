@@ -214,7 +214,7 @@
     "team": "Admin Team",
     "designation": "Objective Owner",
     "bios": "",
-    "educationalProfessionalBackground": "༢༠༡༦ ལོར་ནོར་གླིང་བོད་ཀྱི་གཞུང་གཅེས་སྐྱོང་ཁང་ནས་རིག་གནས་རབ་འབྱམས་པ། ༢༠༢༠ལོར་ས་རཱ་མཐོ་སློབ་ནས་གཙུག་ལག་རབ་འབྱམས་པ་མཐར་ཕྱིན།",
+    "educationalProfessionalBackground": "",
     "linkedInId": "",
     "headshot": "/assets/team/gade.jpg"
   },
@@ -223,7 +223,7 @@
     "name": "Tashi Tsering",
     "team": "Tech Team",
     "designation": "Associate CTO",
-    "bios": "བཀྲ་ཤིས་ཚེ་རིང་གིས་དིལླཱིའི་གུ་རུ་གོ་བིནྡ་སིངྒ་ཨིན་དྲ་པྲསྠ་གཙུག་ལག་སློབ་གྲྭ་ཆེན་མོ་ནས་ཀམ་པུ་ཊར་ཚན་རིག་དང་འཕྲུལ་རིག་གི་བཟོ་རིག་གཙུག་ལག་རབ་འབྱམས་པའི་སློབ་ཚན་ཐོན་ཡོད། ཁོང་ལ་གྲངས་ཐོ་དཔྱད་ཞིབ་དང་། བཟོ་བཅོས། དབྱེ་འབྱེད་བཅས་ཀྱི་ཐད་ལ་ལོ་བཞིའི་ཉམས་མྱོང་ལྡན་པ་དང་། དེ་དག་གི་ཐོག་མཁས་པའི་གྲས་སུ་གྱུར་ཡོད། ཁོང་གིས་ནང་པའི་ཌི་ཇི་ཊལ་ཐོན་ཁུངས་ལྟེ་གནས་སུ་ལོ་གཉིས་རིང་འཕྲུལ་ཆས་སློབ་སྟོན་པའི་ཕྱག་ལས་གནང་ཡོད། བཀྲ་ཤིས་ནི་ཨོ་པན་པེ་ཆའི་ལྟེ་བའི་ཚོགས་མི་ཡང་ཡིན། ཁོང་གི་སྒེར་གྱི་དུས་ཚོད་དུ་གློག་བརྙན་ལྟ་རྒྱུ་དང་། དཔེ་ཀློག་རྒྱག་རྒྱུ། རི་བསྐོར་བ་བཅས་ལ་དགའ་མོས་ཡོད། ཉེ་ཆར་ཁོང་གིས་དྲ་ཚིགས་གཞི་གྲངས་མཛོད་སྐོར་ལ་སློབ་སྦྱོང་བྱེད་པར་དོ་སྣང་གསར་པ་སྐྱེས་ཡོད།",
+    "bios": "Tashi Tsering completed his B.Tech in Computer Science and Engineering from Guru Gobind Singh Indraprastha University, Delhi. With over four years of experience in data analysis, manipulation, and extraction, Tashi has developed a strong expertise in these areas. He worked as a Tech Consultant for the Buddhist Digital Resource Center for two years. Tashi is also a core member of the OpenPecha. In his free time, he enjoys watching movies, reading, and hiking. Recently, he has developed an interest in learning about graph databases.",
     "linkedInId": "https://www.linkedin.com/in/tashi-tsering-7989891b5/",
     "headshot": "/assets/team/tashi-tsering.jpg"
   },
