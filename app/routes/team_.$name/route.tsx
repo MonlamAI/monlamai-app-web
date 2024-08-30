@@ -22,7 +22,6 @@ function TeamDetailsPage() {
         isTibetan ? "font-monlam leading-loose" : "font-poppins"
       }`}
     >
-      {/* <ToolWraper title="team"> */}
       <div className="flex flex-col lg:flex-row mx-auto gap-10 lg:gap-14 mt-10">
         <div className="lg:w-1/3">
           <img
@@ -52,7 +51,6 @@ function TeamDetailsPage() {
           </div>
         </div>
       </div>
-      {/* </ToolWraper> */}
     </div>
   );
 }
