@@ -23,18 +23,13 @@ export const links: LinksFunction = () => [
 export async function loader({ request }: LoaderFunctionArgs) {
   let user = await getUserSession(request);
 
-  let inferenceList = await shouldFetchInferenceList({
-    request,
-    model: "ocr",
-    userId: user?.db_id,
-  });
   const userAgent = request.headers.get("User-Agent") || "";
   const isMobile =
     /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
       userAgent
     );
   let fileUploadUrl = process.env?.FILE_SUBMIT_URL as string;
-  return { user, inferences: inferenceList, fileUploadUrl, isMobile };
+  return { user, fileUploadUrl, isMobile };
 }
 
 export const action: ActionFunction = async ({ request }) => {

@@ -17,107 +17,47 @@ export const action: ActionFunction = async ({ request }) => {
   let show_coordinate = formdata.get("show_coordinate") as string;
 
   let imageUrl = formdata.get("imageUrl") as string;
-  if (imageUrl) {
-    let formData = new FormData();
-    formData.append("imageUrl", imageUrl);
-    let data;
-    try {
-      let res = await fetch(URL_File + "/ocr/upload", {
-        method: "POST",
-        body: formData,
-        headers: {
-          "x-api-key": process.env?.API_ACCESS_KEY!,
-        },
-      });
+  let formData = new FormData();
+  formData.append("imageUrl", imageUrl);
+  let data;
+  try {
+    let res = await fetch(URL_File + "/ocr/upload", {
+      method: "POST",
+      body: formData,
+      headers: {
+        "x-api-key": process.env?.API_ACCESS_KEY!,
+      },
+    });
 
-      data = await res.json();
-      if (data?.error) {
-        return {
-          error_message: data.error,
-        };
-      }
-    } catch (e) {
+    data = await res.json();
+    if (data?.error) {
       return {
-        error_message: "API server is not working! Please try again later.",
+        error_message: data.error,
       };
     }
-
-    const inferenceData = await saveInference({
-      userId: user?.id,
-      model: "ocr",
-      input: imageUrl,
-      type: "image",
-      output: data.content,
-      jobId: null,
-      ip,
-      responseTime: data.responseTime,
-    });
-    // let with_replacement = applyReplacements(inferenceData.output);
-
+  } catch (e) {
     return {
-      text: inferenceData.output,
-      coordinate: show_coordinate ? data?.coordinates : null,
-      inferenceId: inferenceData?.id,
+      error_message: "API server is not working! Please try again later.",
     };
   }
-  if (zip_input_url) {
-    let formData = new FormData();
-    const inferenceData = await saveInference({
-      userId: user?.id,
-      model: "ocr",
-      input: zip_input_url,
-      type: "zip",
-      output: "",
-      jobId: null,
-      ip,
-    });
-    try {
-      formData.append("zip_input_url", zip_input_url);
-      formData.append("inference_id", inferenceData.id);
 
-      let res = await fetch(URL_File + "/ocr/zip", {
-        method: "POST",
-        body: formData,
-        headers: {
-          "x-api-key": process.env?.API_ACCESS_KEY!,
-        },
-      });
-      let job = await res.json();
+  const inferenceData = await saveInference({
+    userId: user?.id,
+    model: "ocr",
+    input: imageUrl,
+    type: "image",
+    output: data.content,
+    jobId: null,
+    ip,
+    responseTime: data.responseTime,
+  });
+  // let with_replacement = applyReplacements(inferenceData.output);
 
-      return inferenceData;
-    } catch (e) {
-      return { error: FILE_SERVER_ISSUE_MESSAGE };
-    }
-  }
-  if (PDFurls) {
-    let job;
-    let inferenceData = await saveInference({
-      userId: user?.id,
-      model: "ocr",
-      input: PDFurls,
-      type: "pdf",
-      output: "",
-      ip,
-    });
-    console.log(inferenceData);
-    try {
-      let formData = new FormData();
-      formData.append("PDFurls", PDFurls);
-      formData.append("filename", filename);
-      formData.append("inference_id", inferenceData.id);
-      let res = await fetch(URL_File + "/ocr/pdf", {
-        method: "POST",
-        body: formData,
-        headers: {
-          "x-api-key": process.env?.API_ACCESS_KEY!,
-        },
-      });
-      job = await res.json();
-      console.log(job);
-      return PDFurls;
-    } catch (e) {
-      return { error: FILE_SERVER_ISSUE_MESSAGE };
-    }
-  }
+  return {
+    text: inferenceData.output,
+    coordinate: show_coordinate ? data?.coordinates : null,
+    inferenceId: inferenceData?.id,
+  };
+
   return null;
 };

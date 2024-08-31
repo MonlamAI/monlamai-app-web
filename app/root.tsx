@@ -34,7 +34,6 @@ import LocationComponent from "./component/LocationDetect";
 import {
   isJobEnabled,
   enable_replacement_mt,
-  file_upload_enable,
 } from "./services/features.server";
 
 import { saveIpAddress } from "~/modal/log.server";
@@ -69,7 +68,6 @@ export const loader: LoaderFunction = async ({ request, context }) => {
       user,
       isJobEnabled: isJobEnabled ?? false,
       enable_replacement_mt: enable_replacement_mt ?? false,
-      file_upload_enable: file_upload_enable ?? false,
       feedBucketAccess,
       feedbucketToken,
       AccessKey: process.env?.API_ACCESS_KEY,

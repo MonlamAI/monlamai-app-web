@@ -104,7 +104,7 @@ function TranslationRoute() {
         {model === "mt" ? (
           <MTHeader sourceLang={sourceLang} targetLang={targetLang} />
         ) : (
-          <HeaderComponent model={modelString} selectedTool="" />
+          <HeaderComponent model={modelString} />
         )}
         <div className="flex flex-1 rounded-sm overflow-hidden flex-col md:flex-row h-auto">
           <InputCard
