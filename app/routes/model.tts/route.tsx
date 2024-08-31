@@ -26,7 +26,7 @@ import HeaderComponent from "../../component/HeaderComponent";
 import Devider from "~/component/Devider";
 import AudioPlayer from "./components/AudioPlayer";
 import { ErrorBoundary } from "~/component/ErrorPages";
-
+import { CharacterSizeComponent } from "~/component/CharacterOrFileSize";
 export const meta: MetaFunction = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
   parentMeta.shift(1);
@@ -114,7 +114,7 @@ export default function Index() {
             </div>
             {charCount > 0 && sourceText?.trim() !== "" && (
               <div className="flex justify-between p-2 border-t border-t-dark_text-secondary dark:border-t-[--card-border]">
-                <CharacterOrFileSizeComponent
+                <CharacterSizeComponent
                   selectedTool={"text"}
                   charCount={charCount}
                   CHAR_LIMIT={CHAR_LIMIT}
