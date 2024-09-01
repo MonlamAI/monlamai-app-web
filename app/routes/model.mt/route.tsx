@@ -132,7 +132,7 @@ export default function Index() {
   let charCount = sourceText?.length;
 
   function handleCopy() {
-    navigator.clipboard.writeText(data);
+    navigator.clipboard.writeText(output);
   }
 
   let newText = editfetcher.data?.edited;
@@ -155,13 +155,13 @@ export default function Index() {
     setEdit(false);
     setEditText("");
   }
-  const [data, setData] = useState("");
+  const [output, setOutput] = useState("");
 
   let { isLoading, error, done, trigger, responseTime } = useTranslate({
     target: target_lang,
     text: sourceText,
-    data,
-    setData,
+    data: output,
+    setData: setOutput,
     savefetcher,
     editfetcher,
   });
@@ -169,13 +169,13 @@ export default function Index() {
   useEffectAfterFirstRender(() => {
     if (charCount === 0) {
       resetFetcher(editfetcher);
-      setData("");
+      setOutput("");
     }
   }, [charCount]);
   let inferenceId = savefetcher.data?.id;
 
   const handleReset = () => {
-    setData("");
+    setOutput("");
     setSourceText("");
     resetFetcher(translationFetcher);
     resetFetcher(editfetcher);
@@ -200,8 +200,8 @@ export default function Index() {
       <div className="rounded-[10px] mb-[100px] overflow-hidden border dark:border-[--card-border] border-dark_text-secondary">
         <LanguageInput
           setSourceText={setSourceText}
-          data={data}
-          setTranslated={setData}
+          data={output}
+          setTranslated={setOutput}
           likefetcher={likefetcher}
           sourceText={debounceSourceText}
           detectFetcher={detectFetcher}
@@ -285,7 +285,7 @@ export default function Index() {
                 <OutputDisplay
                   edit={edit}
                   editData={editData}
-                  output={data}
+                  output={output}
                   animate={true}
                   targetLang={target_lang}
                 />
@@ -305,7 +305,7 @@ export default function Index() {
                 handleEditSubmit={handleEditSubmit}
                 editfetcher={editfetcher}
                 editText={editText}
-                outputText={data}
+                outputText={output}
               />
             )}
             {!edit && inferenceId && sourceText !== "" && (
@@ -314,7 +314,7 @@ export default function Index() {
                 sourceText={sourceText}
                 inferenceId={inferenceId}
                 setEdit={setEdit}
-                text={newText ?? data}
+                text={newText ?? output}
                 handleCopy={handleCopy}
                 setEditText={setEditText}
                 sourceLang={source_lang}

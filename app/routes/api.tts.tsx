@@ -31,6 +31,7 @@ export const action: ActionFunction = async ({ request }) => {
       },
     });
     data = await response.json();
+    console.log(data);
   } catch (e) {
     return {
       error: API_ERROR_MESSAGE,
@@ -43,7 +44,6 @@ export const action: ActionFunction = async ({ request }) => {
     "tts",
     user?.id
   );
-
   if (!checkifModelExist) {
     const inferenceData = await saveInference({
       userId: user?.id,

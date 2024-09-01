@@ -157,11 +157,11 @@ function Document({ children, theme }: { children: React.ReactNode }) {
         <link rel="apple-touch-icon" href="img/logo192web.png" />
         <link rel="apple-touch-startup-image" href="img/logo1280x720web.png" />
         <link rel="apple-touch-startup-image" href="img/logo720x1280web.png" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta
           name="apple-mobile-web-app-status-bar-style"
           content="black-translucent"
         />
+        <meta name="mobile-web-app-capable" content="yes"></meta>
         <meta name="apple-mobile-web-app-title" content="Monlam Chat" />
         <Meta />
         <PreventFlashOnWrongTheme ssrTheme={Boolean(data.theme)} />

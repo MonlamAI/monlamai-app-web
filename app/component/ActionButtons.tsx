@@ -118,7 +118,7 @@ export function NonEditButtons({
   sourceLang,
 }: NonEditButtonProps) {
   let isOutputNull = !text || text === "";
-  if (isOutputNull || !isSelected) return null;
+  if (isOutputNull) return null;
   const { liked, disliked } = likefetcher.data?.vote || {};
   const ClickEdit = () => {
     setEditText(text);
