@@ -17,8 +17,7 @@ type useTranslateType = {
 function handleEventStream(
   text: string,
   direction: string,
-  onData: (data: string) => void,
-  enable_replacement_mt: boolean
+  onData: (data: string) => void
 ): Promise<void> {
   return new Promise((resolve, reject) => {
     const eventSource = new EventSource(
@@ -90,7 +89,6 @@ const useTranslate = ({
   setData,
   savefetcher,
 }: useTranslateType) => {
-  const { enable_replacement_mt } = useRouteLoaderData("root");
   const [responseTime, setResponseTime] = useState(0);
   const [done, setDone] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -114,7 +112,7 @@ const useTranslate = ({
 
       const startTime = performance.now(); // Record start time
       try {
-        await handleEventStream(input, target, setData, enable_replacement_mt);
+        await handleEventStream(input, target, setData);
       } catch (error) {
         setError(error.message);
       } finally {

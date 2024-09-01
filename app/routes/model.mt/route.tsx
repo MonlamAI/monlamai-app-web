@@ -43,6 +43,8 @@ import getIpAddressByRequest from "~/component/utils/getIpAddress";
 import { ErrorBoundary } from "~/component/ErrorPages";
 import TextComponent from "~/component/TextComponent";
 import { CharacterSizeComponent } from "~/component/CharacterOrFileSize";
+import useEffectAfterFirstRender from "~/component/hooks/useEffectAfterFirstRender";
+
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
   parentMeta.shift(1);
@@ -164,7 +166,7 @@ export default function Index() {
     editfetcher,
   });
 
-  useEffect(() => {
+  useEffectAfterFirstRender(() => {
     if (charCount === 0) {
       resetFetcher(editfetcher);
       setData("");
@@ -244,7 +246,10 @@ export default function Index() {
                           block: "start",
                         });
                       }}
-                      disabled={detectFetcher.state !== "idle"}
+                      disabled={
+                        detectFetcher.state !== "idle" ||
+                        source_lang === "detect language"
+                      }
                     />
                   </div>
                 )}

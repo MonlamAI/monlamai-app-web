@@ -78,7 +78,6 @@
     "sanitize-html": "^2.13.0",
     "socket.io-client": "^4.7.5",
     "source-map-support": "^0.5.21",
-    "unleash-client": "^5.5.2",
     "wavesurfer.js": "^7.6.4",
     "webhook-discord": "^3.7.8"
   },

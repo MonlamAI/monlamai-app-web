@@ -27,6 +27,8 @@ import Devider from "~/component/Devider";
 import AudioPlayer from "./components/AudioPlayer";
 import { ErrorBoundary } from "~/component/ErrorPages";
 import { CharacterSizeComponent } from "~/component/CharacterOrFileSize";
+import useEffectAfterFirstRender from "~/component/hooks/useEffectAfterFirstRender";
+
 export const meta: MetaFunction = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
   parentMeta.shift(1);
@@ -87,7 +89,7 @@ export default function Index() {
   }
   let actionError = fetcher.data?.error as string;
 
-  useEffect(() => {
+  useEffectAfterFirstRender(() => {
     if (sourceText === "") {
       resetFetcher(fetcher);
     }

@@ -14,7 +14,8 @@
 - [@tentamdin](https://github.com/tentamdin)
 
 - ## Prerequisites
-Before you begin, ensure you have the following installed on your local machine:
+
+  Before you begin, ensure you have the following installed on your local machine:
 
 - Node 16V above
 - Postgres 14V above
@@ -22,6 +23,7 @@ Before you begin, ensure you have the following installed on your local machine:
 ## Development
 
 ### 1. Clone the Repository
+
 First, clone the repository to your local machine:
 
 bash
@@ -34,13 +36,13 @@ cd monlam-ai-tools
 ### 2. Install the dependencies
 
 ```sh
-npm install 
+npm install
 ```
 
 ### 3. Set up Environment variable
 
 ```plaintext
-   DATABASE_URL: set up a postgres database and provide the link here   
+   DATABASE_URL: set up a postgres database and provide the link here
    MAX_TEXT_LENGTH_MT : max number text accepted in Machine translation
    MAX_TEXT_LENGTH_TTS: max number of text supported in text to speech
    AUTH0_CLIENT_ID : client id from auth0
@@ -49,8 +51,6 @@ npm install
    AUTH0_CALLBACK_URL : callback url to where the auth0 should redirect
    OPENAI_KEY : Chatgpt-api key (not required)
    ORIGIN : domain name where the app is hosted
-   UNLEASH_FLAG_URL : feature flag url (not required)
-   UNLEASH_FLAG_KEY : feature flag key (not required)
    API_HIT_LIMIT : limit for hitting api per user (not required)
    BUCKET_NAME_PRODUCTION : aws bucket name
    AWS_ACCESS_KEY_ID_PRODUCTION: aws access key
@@ -70,8 +70,7 @@ after setting up DATABASE_URL in .env file
 ```sh
 npx prisma migrate deploy
 ```
-   
-   
+
 ### 4. Run app locally
 
 ```sh

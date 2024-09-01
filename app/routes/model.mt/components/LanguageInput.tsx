@@ -91,7 +91,13 @@ function LanguageInput({
 
     setParams((prevParams) => {
       prevParams.set("source", targetLang);
-      prevParams.set("target", sourceLang);
+      if (sourceLang !== "detect language") {
+        prevParams.set("target", sourceLang);
+      } else if (sourceLang === "bo") {
+        prevParams.set("target", "en");
+      } else {
+        prevParams.set("target", "en");
+      }
       return prevParams;
     });
   }

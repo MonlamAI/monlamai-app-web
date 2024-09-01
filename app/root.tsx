@@ -31,10 +31,6 @@ import { useEffect, useState } from "react";
 import useLocalStorage from "./component/hooks/useLocaleStorage";
 import FeedBucket from "./component/FeedBucket";
 import LocationComponent from "./component/LocationDetect";
-import {
-  isJobEnabled,
-  enable_replacement_mt,
-} from "./services/features.server";
 
 import { saveIpAddress } from "~/modal/log.server";
 import getIpAddressByRequest from "~/component/utils/getIpAddress";
@@ -66,8 +62,7 @@ export const loader: LoaderFunction = async ({ request, context }) => {
   return json(
     {
       user,
-      isJobEnabled: isJobEnabled ?? false,
-      enable_replacement_mt: enable_replacement_mt ?? false,
+      isJobEnabled: false,
       feedBucketAccess,
       feedbucketToken,
       AccessKey: process.env?.API_ACCESS_KEY,
@@ -120,6 +115,7 @@ export const links: LinksFunction = () => [
   { rel: "manifest", href: "/manifest.webmanifest" },
   { rel: "apple-touch-icon", href: "/favicon-32x32.png" },
 ];
+
 export const meta: MetaFunction = () => {
   return [
     { title: "སྨོན་ལམ་རིག་ནུས། | Monlam AI | Tibetan Language AI Development" },
@@ -136,6 +132,14 @@ export const meta: MetaFunction = () => {
     {
       name: "apple-mobile-web-app-status-bar",
       content: "#0757b5",
+    },
+    {
+      "og:title":
+        "སྨོན་ལམ་རིག་ནུས། | Monlam AI | Tibetan Language AI Development",
+    },
+    {
+      "og:description":
+        "Create an account or log in to Monlam , users can seamlessly utilize four powerful models for translation, text-to-speech, speech-to-text, and OCR (Optical Character Recognition).",
     },
   ];
 };
@@ -165,6 +169,23 @@ function Document({ children, theme }: { children: React.ReactNode }) {
       </head>
       <body className="flex h-[100dvh]  mx-auto inset-0 overflow-y-auto overflow-x-hidden dark:bg-slate-700 dark:text-gray-200">
         {children}
+
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              url: "https://www.monlam.ai",
+              potentialAction: {
+                "@type": "SearchAction",
+                target:
+                  "https://www.monlam.ai/seo/search?q={search_term_string}",
+                "query-input": "required name=search_term_string",
+              },
+            }),
+          }}
+        />
       </body>
     </html>
   );
