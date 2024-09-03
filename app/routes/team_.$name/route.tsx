@@ -42,7 +42,11 @@ function TeamDetailsPage() {
             />
             {userDetails?.linkedInId !== "" && (
               <div className="flex items-center gap-4 mt-4">
-                <h5>{isTibetan?"ང་དྲ་རྒྱའི་ནང་ནས་འཚོལ།: ":"Find them online: " }</h5>
+                <h5>
+                  {isTibetan
+                    ? "ང་དྲ་རྒྱའི་ནང་ནས་འཚོལ། : "
+                    : "Find them online : "}
+                </h5>
                 <a
                   href={userDetails?.linkedInId}
                   target="_blank"
