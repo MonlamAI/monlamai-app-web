@@ -7,6 +7,7 @@ import LanguageDetect from "languagedetect";
 import { eng_languagesOptions, tib_languageOptions } from "~/helper/const";
 import { GoArrowSwitch } from "react-icons/go";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
+import useEffectOnce from "../../../component/hooks/useEffectOnce";
 
 const lngDetector = new LanguageDetect();
 
@@ -115,19 +116,19 @@ function LanguageInput({
     );
   };
 
-  useEffect(() => {
+  useEffectOnce(() => {
     if (fetcherData?.info) {
       detectAndSetLanguage(sourceText);
     } else if (fetcherData) {
       setLanguage(fetcherData.language);
     }
   }, [fetcherData]);
-  useEffect(() => {
+  useEffectOnce(() => {
     if (sourceText?.trim() === "" && sourceLang !== "detect language") {
       setSource("detect language");
     }
   }, [sourceText]);
-  useEffect(() => {
+  useEffectOnce(() => {
     if (sourceLang === "detect language" && sourceText?.trim() !== "") {
       detectLanguage(sourceText);
     }

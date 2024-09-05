@@ -34,7 +34,6 @@ export const action: ActionFunction = async ({ request }) => {
     });
 
     data = await response.json();
-    console.log(data);
   } catch (e) {
     return {
       error: API_ERROR_MESSAGE,

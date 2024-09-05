@@ -80,7 +80,6 @@ function SingleInptSection({ fetcher }: any) {
           const percentCompleted = Math.round(
             (progressEvent.loaded * 100) / progressEvent?.total
           );
-          console.log(percentCompleted);
           setUploadProgress(percentCompleted);
         },
       });
@@ -89,7 +88,6 @@ function SingleInptSection({ fetcher }: any) {
         const uploadedFilePath = uploadStatus.request.responseURL;
         const baseUrl = uploadedFilePath?.split("?")[0]!;
         setImageUrl(baseUrl!);
-        console.log(`File ${file.name} uploaded successfully.`, uploadStatus);
       }
     } catch (error) {
       console.error(`Error uploading file ${file.name}:`, error);

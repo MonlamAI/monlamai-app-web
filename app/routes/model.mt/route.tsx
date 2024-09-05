@@ -187,7 +187,6 @@ export default function Index() {
   }
   let outputRef = useRef<HTMLDivElement>();
   let showOptions = !edit && inferenceId && sourceText !== "";
-  console.log(edit, inferenceId, sourceText);
   return (
     <ToolWraper title="MT">
       {error && (
