@@ -8,10 +8,12 @@ import { eng_languagesOptions } from "~/helper/const";
 import { resetFetcher } from "~/component/utils/resetFetcher";
 
 type useTranslateType = {
-  target: string;
+  target_lang: string;
+  source_lang: string;
   text: string;
   data: string;
   setData: (data: string) => void;
+  editfetcher: any;
 };
 
 function handleEventStream(
@@ -83,11 +85,13 @@ function cleanData(content) {
 }
 
 const useTranslate = ({
-  target,
+  source_lang,
+  target_lang,
   text,
   data,
   setData,
   savefetcher,
+  editfetcher,
 }: useTranslateType) => {
   const [responseTime, setResponseTime] = useState(0);
   const [done, setDone] = useState(false);
@@ -112,7 +116,7 @@ const useTranslate = ({
 
       const startTime = performance.now(); // Record start time
       try {
-        await handleEventStream(input, target, setData);
+        await handleEventStream(input, target_lang, setData);
       } catch (error) {
         setError(error.message);
       } finally {
@@ -125,7 +129,7 @@ const useTranslate = ({
             translation: data,
             responseTime,
             inputLang: source_lang,
-            targetLang: target_lang,
+            target_lang,
           },
           {
             method: "POST",

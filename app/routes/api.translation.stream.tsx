@@ -2,7 +2,7 @@ import { LoaderFunctionArgs } from "@remix-run/node";
 import { verify_token } from "~/services/session.server";
 import { userPrefs } from "../services/cookies.server";
 import { eng_languagesOptions } from "~/helper/const";
-import { getUserSession } from "~/services/session.server";
+import { getUserDetail } from "~/services/session.server";
 export async function loader({ request }: LoaderFunctionArgs) {
   let url = new URL(request.url);
   let text = url.searchParams.get("text") as string;

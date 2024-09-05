@@ -21,12 +21,11 @@ import { TtsSubmitButton } from "./components/UtilityComponents";
 import { toast } from "react-toastify";
 import { getUserSession } from "~/services/session.server";
 import { LoaderFunctionArgs } from "@remix-run/node";
-import { InferenceList } from "~/component/InferenceList";
 import HeaderComponent from "../../component/HeaderComponent";
 import Devider from "~/component/Devider";
 import AudioPlayer from "./components/AudioPlayer";
 import { ErrorBoundary } from "~/component/ErrorPages";
-import { CharacterSizeComponent } from "~/component/CharacterOrFileSize";
+import { CharacterSizeComponent } from "~/component/CharacterSize";
 import useEffectAfterFirstRender from "~/component/hooks/useEffectAfterFirstRender";
 
 export const meta: MetaFunction = ({ matches }) => {

@@ -233,7 +233,7 @@ function LanguageInput({
         <Select
           onChange={(e) => handleChange(e, "target")}
           value={targetLang}
-          className="selectHeader w-max "
+          className="selectHeader w-fit "
           style={{ cursor: "pointer" }}
         >
           {languagesOptions.map((lang) => (
@@ -241,7 +241,10 @@ function LanguageInput({
               {lang.value}{" "}
               {beta.includes(lang.value) ? `(${translation?.beta})` : ""}
             </option>
-          ))}
+          ))}{" "}
+          <option value="detect language" className={"hidden"}>
+            {translation?.detect}
+          </option>
         </Select>
       </div>
     </div>

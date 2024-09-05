@@ -36,13 +36,12 @@ import { CancelButton } from "~/component/Buttons";
 import { RxCross2 } from "react-icons/rx";
 import useTranslate from "./lib/useTranslate";
 import { getUserSession } from "~/services/session.server";
-import { InferenceList } from "~/component/InferenceList";
 import Devider from "~/component/Devider";
 import { Spinner } from "flowbite-react";
 import getIpAddressByRequest from "~/component/utils/getIpAddress";
 import { ErrorBoundary } from "~/component/ErrorPages";
 import TextComponent from "~/component/TextComponent";
-import { CharacterSizeComponent } from "~/component/CharacterOrFileSize";
+import { CharacterSizeComponent } from "~/component/CharacterSize";
 import useEffectAfterFirstRender from "~/component/hooks/useEffectAfterFirstRender";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
@@ -157,7 +156,8 @@ export default function Index() {
   const [output, setOutput] = useState("");
 
   let { isLoading, error, done, trigger, responseTime } = useTranslate({
-    target: target_lang,
+    source_lang,
+    target_lang,
     text: sourceText,
     data: output,
     setData: setOutput,
@@ -186,7 +186,8 @@ export default function Index() {
     resetFetcher(editfetcher);
   }
   let outputRef = useRef<HTMLDivElement>();
-
+  let showOptions = !edit && inferenceId && sourceText !== "";
+  console.log(edit, inferenceId, sourceText);
   return (
     <ToolWraper title="MT">
       {error && (
@@ -307,7 +308,7 @@ export default function Index() {
                 outputText={output}
               />
             )}
-            {!edit && inferenceId && sourceText !== "" && (
+            {showOptions && (
               <NonEditButtons
                 likefetcher={likefetcher}
                 sourceText={sourceText}
