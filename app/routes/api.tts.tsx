@@ -9,27 +9,30 @@ import getIpAddressByRequest from "~/component/utils/getIpAddress";
 export const action: ActionFunction = async ({ request }) => {
   let ip = getIpAddressByRequest(request);
   let AMPLIFICATION_LEVEL = 5; //1-5 value is safe
-  let user = await getUserDetail(request);
-
+  let { user } = await getUserDetail(request);
   const formdata = await request.formData();
-  // const voiceType = formdata.get("voice") as string;
-  const userInput = formdata.get("sourceText") as string;
-  const API_URL = process.env.FILE_SUBMIT_URL as string;
-
+  const input_data = formdata.get("input") as string;
+  const API_URL = process.env.API_URL as string;
+  const AccessKey = process.env?.API_ACCESS_KEY;
   let data;
+  let url = API_URL + "/api/v1/tts";
   try {
-    let formData = new FormData();
-    formData.append("input", inputReplace(userInput));
+    const token = user ? user?.token : null;
+    const body = JSON.stringify({
+      input: inputReplace(input_data),
+      id_token: token,
+    });
 
-    formData.append("amplify", AMPLIFICATION_LEVEL.toString());
-
-    let response = await fetch(API_URL + "/tts/playground", {
+    const response = await fetch(url, {
       method: "POST",
-      body: formData,
+      body,
       headers: {
-        "x-api-key": process.env?.API_ACCESS_KEY!,
+        Accept: "application/json",
+        Authorization: AccessKey,
+        "Content-Type": "application/json",
       },
     });
+
     data = await response.json();
     console.log(data);
   } catch (e) {
@@ -39,23 +42,17 @@ export const action: ActionFunction = async ({ request }) => {
   }
   const { output, responseTime } = data;
 
-  const checkifModelExist = await checkIfInferenceExist(
-    userInput,
-    "tts",
-    user?.id
-  );
-  if (!checkifModelExist) {
+  if (output) {
     const inferenceData = await saveInference({
       userId: user?.id,
       model: "tts",
       modelVersion: "v1",
-      input: userInput,
+      input: input_data,
       output,
       responseTime,
       ip,
     });
-    return { data: output, inferenceData };
-  } else {
-    return { data: output, inferenceData: checkifModelExist };
+    return { output, inferenceData };
   }
+  return null;
 };

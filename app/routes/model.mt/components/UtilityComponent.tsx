@@ -1,7 +1,6 @@
 import { Button, Textarea } from "flowbite-react";
 import TextComponent from "~/component/TextComponent";
 import { motion } from "framer-motion";
-import FileUpload from "~/component/FileUpload";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import { BsArrowRight } from "react-icons/bs";
 import { FiFile } from "react-icons/fi";

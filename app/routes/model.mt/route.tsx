@@ -57,7 +57,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
   return json({
     user: userdata,
-    fileUploadUrl: process.env?.FILE_SUBMIT_URL,
     CHAR_LIMIT,
   });
 }

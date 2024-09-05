@@ -9,23 +9,27 @@ export let FILE_SERVER_ISSUE_MESSAGE =
 export const action: ActionFunction = async ({ request }) => {
   let ip = getIpAddressByRequest(request);
   let formdata = await request.formData();
-  let user = await getUserDetail(request);
-  let URL_File = process.env.FILE_SUBMIT_URL;
-  let zip_input_url = formdata.get("zip_input_url") as string;
-  let PDFurls = formdata.get("pdf_file") as string;
-  let filename = formdata.get("file_name") as string;
+  let { user } = await getUserDetail(request);
+  let URL_File = process.env.API_URL;
+  const AccessKey = process.env?.API_ACCESS_KEY;
   let show_coordinate = formdata.get("show_coordinate") as string;
 
   let imageUrl = formdata.get("imageUrl") as string;
-  let formData = new FormData();
-  formData.append("imageUrl", imageUrl);
+  const token = user ? user?.id_token : null;
+  let body = JSON.stringify({
+    input: imageUrl,
+    id_token: token,
+  });
   let data;
+  const startTime = performance.now();
   try {
-    let res = await fetch(URL_File + "/ocr/upload", {
+    let res = await fetch(URL_File + "/api/v1/ocr", {
       method: "POST",
-      body: formData,
+      body,
       headers: {
-        "x-api-key": process.env?.API_ACCESS_KEY!,
+        Accept: "application/json",
+        Authorization: AccessKey,
+        "Content-Type": "application/json",
       },
     });
 
@@ -40,16 +44,17 @@ export const action: ActionFunction = async ({ request }) => {
       error_message: "API server is not working! Please try again later.",
     };
   }
-
+  const endTime = performance.now();
+  const responseTime = endTime - startTime;
   const inferenceData = await saveInference({
     userId: user?.id,
     model: "ocr",
     input: imageUrl,
     type: "image",
-    output: data.content,
+    output: data?.output,
     jobId: null,
     ip,
-    responseTime: data.responseTime,
+    responseTime: responseTime,
   });
   // let with_replacement = applyReplacements(inferenceData.output);
 

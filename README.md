@@ -58,7 +58,7 @@ npm install
    AWS_REGION_PRODUCTION: aws region
    FEEDBUCKET_ACCESS : feedbucket access key (not required)
    FEEDBUCKET_TOKEN :feedbucket token (not required)
-   FILE_SUBMIT_URL : domain url for monlam api
+   API_URL : domain url for monlam api
    API_ACCESS_KEY : token used for verification of api user
    COOKIE_SECRET : session and cookie secret (can be anything not exposed)
 ```

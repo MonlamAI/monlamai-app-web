@@ -2,7 +2,7 @@ import { LoaderFunctionArgs } from "@remix-run/node";
 import { verify_token } from "~/services/session.server";
 import { userPrefs } from "../services/cookies.server";
 import { eng_languagesOptions } from "~/helper/const";
-
+import { getUserSession } from "~/services/session.server";
 export async function loader({ request }: LoaderFunctionArgs) {
   let url = new URL(request.url);
   let text = url.searchParams.get("text") as string;
@@ -15,10 +15,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
   if (!token_server) {
     return new Response("Invalid token", { status: 403 });
   }
-
-  const controller = new AbortController();
-  const fileUploadUrl = process.env?.FILE_SUBMIT_URL;
-
+  let { user } = await getUserDetail(request);
+  const API_URL = process.env?.API_URL;
   // if (useDharmaMitraAPI) {
   // let api_url = "https://dharmamitra.org/api/translation-exp/";
   // let DharmaKey = process.env?.DHARMA_API_KEY;
@@ -43,17 +41,21 @@ export async function loader({ request }: LoaderFunctionArgs) {
   // });
   // } else {
   const formData = new FormData();
-  let api_url = fileUploadUrl + "/mt/playground/stream";
+  let api_url = API_URL + "/api/v1/translation/stream";
   const AccessKey = process.env?.API_ACCESS_KEY;
-  formData.append("input", text);
-  formData.append("direction", target);
+  let body = JSON.stringify({
+    input: text,
+    target: target,
+    id_token: user ? user?.token : null,
+  });
   return fetch(api_url, {
     method: "POST",
-    body: formData,
+    body,
     headers: {
-      "x-api-key": AccessKey!, // Replace with your actual access key
+      Accept: "application/json",
+      Authorization: AccessKey,
+      "Content-Type": "application/json",
     },
-    signal: controller.signal,
   });
   // }
 }

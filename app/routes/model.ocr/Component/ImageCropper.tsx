@@ -201,17 +201,22 @@ export const ImageCropper = ({
         </div>
       ) : null}
       {!shouldCrop && imageSrc && (
-        <img
-          src={imageSrc}
-          alt="uploaded image"
-          className="w-full  flex-1 object-contain "
-          style={{
-            opacity:
-              uploadProgress && uploadProgress < 100
-                ? 0.2 + (uploadProgress / 100) * 0.8
-                : 1,
-          }}
-        />
+        <div className="relative flex flex-1 items-center ">
+          {scaning && (
+            <div className="absolute inset-0 border-t-2 border-green-400   animate-scan-overlay"></div>
+          )}
+          <img
+            src={imageSrc}
+            alt="uploaded image"
+            className="w-full  flex-1 object-contain  "
+            style={{
+              opacity:
+                uploadProgress && uploadProgress < 100
+                  ? 0.2 + (uploadProgress / 100) * 0.8
+                  : 1,
+            }}
+          />
+        </div>
       )}
       {imageSrc && !shouldCrop && (
         <div className="flex justify-between items-center py-2 px-1 border-t border-t-dark_text-secondary dark:border-t-light_text-secondary">

@@ -43,7 +43,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
   return {
     user,
-    fileUploadUrl: process.env?.FILE_SUBMIT_URL,
     CHAR_LIMIT,
   };
 }
@@ -57,9 +56,9 @@ export default function Index() {
   let { CHAR_LIMIT } = useLoaderData();
   const fetcher = useFetcher();
   const isLoading = fetcher.state !== "idle";
-  const data = fetcher.data?.data;
+  const data = fetcher.data;
+  const sourceUrl = fetcher.data?.output;
   const inferenceId = fetcher.data?.inferenceData?.id;
-  let sourceUrl = data;
 
   let charCount = sourceText?.length;
 
@@ -78,7 +77,7 @@ export default function Index() {
     } else {
       fetcher.submit(
         {
-          sourceText: sourceText,
+          input: sourceText,
         },
         {
           method: "POST",

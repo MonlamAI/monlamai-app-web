@@ -28,8 +28,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
       userAgent
     );
-  let fileUploadUrl = process.env?.FILE_SUBMIT_URL as string;
-  return { user, fileUploadUrl, isMobile };
+  return { user, isMobile };
 }
 
 export const action: ActionFunction = async ({ request }) => {

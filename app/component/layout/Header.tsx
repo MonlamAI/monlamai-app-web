@@ -47,7 +47,6 @@ function Header() {
         <div className="hidden lg:flex gap-2 ml-8 flex-1 justify-between ">
           <div className="flex items-center gap-8 text-sm ml-4">
             <AboutLink />
-            {data?.isJobEnabled && <JobLink />}
             <TeamLink />
           </div>
           <div className="flex items-center gap-4 mr-7">
@@ -80,14 +79,6 @@ function Header() {
             <div onClick={() => setShowMenu((p) => !p)} className="px-3 pt-3 ">
               <AboutLink />
             </div>
-            {data?.isJobEnabled && (
-              <>
-                <Devider />
-                <div onClick={() => setShowMenu((p) => !p)} className="px-3 ">
-                  <JobLink />
-                </div>
-              </>
-            )}
             <Devider />
             <div onClick={() => setShowMenu((p) => !p)} className="px-3">
               <ThemeSwitcher />
