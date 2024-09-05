@@ -3,8 +3,7 @@ import { saveInference } from "~/modal/inference.server";
 import applyReplacements from "./model.ocr/utils/replacements";
 import { getUserDetail } from "~/services/session.server";
 import getIpAddressByRequest from "~/component/utils/getIpAddress";
-export let FILE_SERVER_ISSUE_MESSAGE =
-  "File upload is not working temporarily! Please try again later.";
+import { API_ERROR_MESSAGE } from "~/helper/const";
 
 export const action: ActionFunction = async ({ request }) => {
   let ip = getIpAddressByRequest(request);
@@ -34,35 +33,31 @@ export const action: ActionFunction = async ({ request }) => {
     });
 
     data = await res.json();
-    if (data?.error) {
-      return {
-        error_message: data.error,
-      };
-    }
   } catch (e) {
     return {
-      error_message: "API server is not working! Please try again later.",
+      error: API_ERROR_MESSAGE,
     };
   }
   const endTime = performance.now();
   const responseTime = endTime - startTime;
-  const inferenceData = await saveInference({
-    userId: user?.id,
-    model: "ocr",
-    input: imageUrl,
-    type: "image",
-    output: data?.output,
-    jobId: null,
-    ip,
-    responseTime: responseTime,
-  });
-  // let with_replacement = applyReplacements(inferenceData.output);
-
+  if (data?.output) {
+    const inferenceData = await saveInference({
+      userId: user?.id,
+      model: "ocr",
+      input: imageUrl,
+      type: "image",
+      output: data?.output,
+      jobId: null,
+      ip,
+      responseTime: responseTime,
+    });
+    return {
+      text: inferenceData.output,
+      coordinate: show_coordinate ? data?.coordinates : null,
+      inferenceId: inferenceData?.id,
+    };
+  }
   return {
-    text: inferenceData.output,
-    coordinate: show_coordinate ? data?.coordinates : null,
-    inferenceId: inferenceData?.id,
+    error: API_ERROR_MESSAGE,
   };
-
-  return null;
 };

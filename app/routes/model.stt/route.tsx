@@ -86,7 +86,6 @@ export default function Index() {
     resetFetcher(editfetcher);
   };
   const isLoading = fetcher.state !== "idle";
-
   const handleReset = () => {
     // reset the audio element and the transcript
     setAudio(null);
@@ -131,8 +130,7 @@ export default function Index() {
     setEditText("");
   }
 
-  const errorMessage = fetcher.data?.error_message;
-  const actionError = fetcher.data?.error ?? errorMessage;
+  const actionError = fetcher.data?.error;
 
   const uploadFile = async (file: File) => {
     try {
@@ -175,14 +173,6 @@ export default function Index() {
   };
   return (
     <ToolWraper title="STT">
-      {actionError && (
-        <ErrorMessage
-          message={actionError}
-          handleClose={handleClose}
-          type="warning"
-        />
-      )}
-
       <div className=" rounded-[10px]  overflow-hidden border dark:border-[--card-border] border-dark_text-secondary">
         <HeaderComponent model="STT" />
         <div className="flex flex-col  lg:flex-row">
@@ -230,6 +220,13 @@ export default function Index() {
           <Devider />
           <CardComponent>
             <div className="w-full flex flex-1 min-h-[150px] lg:min-h-[30vh] text-black dark:text-gray-200 rounded-lg overflow-auto">
+              {actionError && (
+                <ErrorMessage
+                  message={actionError}
+                  handleClose={() => resetFetcher(fetcher)}
+                  type="warning"
+                />
+              )}
               {isLoading && (
                 <div className="flex flex-1 justify-center items-center">
                   <Spinner

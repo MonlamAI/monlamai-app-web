@@ -121,7 +121,7 @@ function SingleInptSection({ fetcher }: any) {
   const changeOrginalText = () => {
     setOrginalText(!isOrginalText);
   };
-
+  let actionError = fetcher.data?.error as string;
   const formatText = (text) => {
     // Replace multiple consecutive new lines with a single <br> tag
     // and replace single new lines with <br> tags
@@ -155,6 +155,13 @@ function SingleInptSection({ fetcher }: any) {
             ImageUrl ? "block" : "hidden"
           }`}
         >
+          {actionError && (
+            <ErrorMessage
+              message={actionError}
+              handleClose={() => resetFetcher(fetcher)}
+              type="warning"
+            />
+          )}
           {isActionSubmission ? (
             <div className="w-full flex flex-1 justify-center items-center">
               <Spinner

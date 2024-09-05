@@ -53,5 +53,7 @@ export const action: ActionFunction = async ({ request }) => {
     });
     return { output, inferenceData };
   }
-  return null;
+  return {
+    error: API_ERROR_MESSAGE,
+  };
 };

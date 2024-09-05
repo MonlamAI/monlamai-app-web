@@ -148,11 +148,7 @@ export default function Index() {
               )}
               {!isLoading && data && (
                 <div className="flex-1 h-full flex justify-center items-center">
-                  {data?.error ? (
-                    <div className="text-red-400">{data?.error}</div>
-                  ) : (
-                    <AudioPlayer audioURL={sourceUrl} />
-                  )}
+                  {sourceUrl && <AudioPlayer audioURL={sourceUrl} />}
                 </div>
               )}
             </div>

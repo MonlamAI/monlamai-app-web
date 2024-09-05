@@ -6,6 +6,7 @@ import {
 } from "~/component/utils/replace";
 import { eng_languagesOptions } from "~/helper/const";
 import { resetFetcher } from "~/component/utils/resetFetcher";
+import { toast } from "react-toastify";
 
 type useTranslateType = {
   target_lang: string;
@@ -50,6 +51,10 @@ function handleEventStream(
 
     eventSource.onerror = (event) => {
       eventSource.close();
+      toast("please report us the issue !", {
+        position: toast.POSITION.BOTTOM_CENTER,
+        closeOnClick: true,
+      });
       resolve("done");
     };
   });

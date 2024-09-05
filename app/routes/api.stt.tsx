@@ -28,6 +28,11 @@ export const action: ActionFunction = async ({ request }) => {
         "Content-Type": "application/json",
       },
     });
+    if (!response.ok) {
+      return {
+        error: API_ERROR_MESSAGE,
+      };
+    }
     data = await response.json();
   } catch (e) {
     return {
@@ -50,7 +55,6 @@ export const action: ActionFunction = async ({ request }) => {
     });
 
     return json({ text: output, inferenceId: inferenceData?.id });
-  } else {
-    return json({ error_message: "Failed to send the audio to the server" });
   }
+  return json({ error: API_ERROR_MESSAGE });
 };
