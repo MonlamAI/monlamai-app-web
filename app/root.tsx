@@ -48,6 +48,7 @@ import {
   useTheme,
   PreventFlashOnWrongTheme,
 } from "remix-themes";
+import Maintenance from "./component/Maintenance";
 
 export const loader: LoaderFunction = async ({ request, context }) => {
   let userdata = await getUserSession(request);
@@ -67,6 +68,7 @@ export const loader: LoaderFunction = async ({ request, context }) => {
       feedbucketToken,
       AccessKey: process.env?.API_ACCESS_KEY,
       theme: getTheme(),
+      IS_UNDER_MAINTENANCE: process.env?.IS_UNDER_MAINTENANCE,
     },
     {
       status: 200,
@@ -192,7 +194,7 @@ function Document({ children, theme }: { children: React.ReactNode }) {
 }
 
 function App() {
-  let { user } = useLoaderData();
+  let { user, IS_UNDER_MAINTENANCE } = useLoaderData();
   const [theme] = useTheme();
 
   return (
@@ -202,8 +204,14 @@ function App() {
           <Header />
           <ClientOnly fallback={<div />}>{() => <AppInstaller />}</ClientOnly>
           {user && <LocationComponent />}
+
           <div className="flex-1 flex justify-center pt-4  bg-neutral-50 dark:bg-[--main-bg] ">
             <div className="flex-1 max-w-[1280px] px-2 ">
+              {IS_UNDER_MAINTENANCE === "true" ? (
+                <Maintenance />
+              ) : (
+                <div class="md:pt-[100px]" />
+              )}
               <Outlet />
               <FeedBucket />
               {process.env.NODE_ENV === "development" && <LiveReload />}
