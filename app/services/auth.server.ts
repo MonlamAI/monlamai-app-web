@@ -19,9 +19,9 @@ const auth0Strategy = new Auth0Strategy(
   },
   async (data) => {
     let { profile, extraParams } = data;
-    //
     // Use the returned information to process or write to the DB.
     //
+    let id_token = extraParams?.id_token;
     let email = profile?._json?.email;
     let picture = profile?._json?.picture;
     let username = profile?._json?.given_name;
@@ -43,7 +43,7 @@ const auth0Strategy = new Auth0Strategy(
         },
       }));
 
-    return { db_id: userdata.id, ...profile };
+    return { db_id: userdata.id, id_token, ...profile };
   }
 );
 auth.use(auth0Strategy);

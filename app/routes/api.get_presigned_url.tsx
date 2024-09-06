@@ -2,10 +2,10 @@ import { ActionFunction } from "@remix-run/node";
 import AWS from "aws-sdk";
 
 const awsConfig = {
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID_PRODUCTION,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY_PRODUCTION,
-  region: process.env.AWS_REGION_PRODUCTION,
-  bucketName: process.env.BUCKET_NAME_PRODUCTION,
+  accessKeyId: process.env.AWS_ACCESS_ID,
+  secretAccessKey: process.env.AWS_SECRET_KEY,
+  region: process.env.AWS_REGION,
+  bucketName: process.env.AWS_BUCKET_NAME,
 };
 
 AWS.config.update(awsConfig);

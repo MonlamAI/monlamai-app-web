@@ -20,14 +20,11 @@ import {
   saveInference,
   updateEdit,
 } from "~/modal/inference.server";
-import ListInput from "~/component/ListInput";
 import { MAX_SIZE_SUPPORT_DOC } from "~/helper/const";
 import {
-  CharacterOrFileSizeComponent,
   EditActionButtons,
   OutputDisplay,
   SubmitButton,
-  TextOrDocumentComponent,
 } from "./components/UtilityComponent";
 import { NonEditButtons, NonEditModeActions } from "~/component/ActionButtons";
 import EditDisplay from "~/component/EditDisplay";
@@ -39,11 +36,13 @@ import { CancelButton } from "~/component/Buttons";
 import { RxCross2 } from "react-icons/rx";
 import useTranslate from "./lib/useTranslate";
 import { getUserSession } from "~/services/session.server";
-import { InferenceList } from "~/component/InferenceList";
 import Devider from "~/component/Devider";
 import { Spinner } from "flowbite-react";
 import getIpAddressByRequest from "~/component/utils/getIpAddress";
 import { ErrorBoundary } from "~/component/ErrorPages";
+import TextComponent from "~/component/TextComponent";
+import { CharacterSizeComponent } from "~/component/CharacterSize";
+import useEffectAfterFirstRender from "~/component/hooks/useEffectAfterFirstRender";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -51,41 +50,12 @@ export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   return [{ title: "Monlam | ཡིག་སྒྱུར་རིག་ནུས།" }, ...parentMeta];
 };
 
-export const shouldFetchInferenceList = async ({
-  request,
-  userId,
-  model,
-}: {
-  request: Request;
-  userId: number;
-  model: string;
-}) => {
-  if (!userId) return null;
-  let tool = new URL(request.url).searchParams.get("tool");
-  const fileList = ["document", "file"];
-  let fetchInferenceList = fileList.includes(tool!);
-
-  return fetchInferenceList
-    ? await getUserFileInferences({
-        userId,
-        model,
-      })
-    : null;
-};
-
 export async function loader({ request }: LoaderFunctionArgs) {
   let userdata = await getUserSession(request);
   let CHAR_LIMIT = parseInt(process.env?.MAX_TEXT_LENGTH_MT!);
 
-  const inferences = await shouldFetchInferenceList({
-    request,
-    userId: userdata?.db_id,
-    model: "mt",
-  });
   return json({
     user: userdata,
-    fileUploadUrl: process.env?.FILE_SUBMIT_URL,
-    inferences,
     CHAR_LIMIT,
   });
 }
@@ -141,15 +111,7 @@ export default function Index() {
   const target_lang = params.get("target") || "bo";
   const source_lang = params.get("source") || "en";
   const [sourceText, setSourceText] = useState("");
-  const selectedTool = params.get("tool") || "text";
-  const setSelectedTool = (tool: string) => {
-    setParams((p) => {
-      p.set("tool", tool);
-      return p;
-    });
-  };
 
-  const [file, setFile] = useState<File | null>(null);
   const { limitMessage, CHAR_LIMIT, user } = useLoaderData();
 
   const [edit, setEdit] = useState(false);
@@ -168,14 +130,9 @@ export default function Index() {
   let charCount = sourceText?.length;
 
   function handleCopy() {
-    navigator.clipboard.writeText(data);
+    navigator.clipboard.writeText(output);
   }
 
-  useEffect(() => {
-    setSourceText("");
-  }, [selectedTool]);
-
-  let TextSelected = selectedTool === "text";
   let newText = editfetcher.data?.edited;
 
   function handleEditSubmit() {
@@ -196,43 +153,32 @@ export default function Index() {
     setEdit(false);
     setEditText("");
   }
-  const [data, setData] = useState("");
+  const [output, setOutput] = useState("");
 
   let { isLoading, error, done, trigger, responseTime } = useTranslate({
-    target: target_lang,
+    source_lang,
+    target_lang,
     text: sourceText,
-    data,
-    setData,
+    data: output,
+    setData: setOutput,
     savefetcher,
     editfetcher,
   });
 
-  useEffect(() => {
+  useEffectAfterFirstRender(() => {
     if (charCount === 0) {
       resetFetcher(editfetcher);
-      setData("");
+      setOutput("");
     }
   }, [charCount]);
   let inferenceId = savefetcher.data?.id;
 
   const handleReset = () => {
-    setData("");
+    setOutput("");
     setSourceText("");
     resetFetcher(translationFetcher);
     resetFetcher(editfetcher);
     setEdit(false);
-  };
-
-  const handleFileSubmit = () => {
-    let formdata = new FormData();
-    formdata.append("fileUrl", inputUrl);
-    formdata.append("target_lang", target_lang as string);
-    formdata.append("source_lang", source_lang as string);
-
-    translationFetcher.submit(formdata, {
-      method: "POST",
-      action: "/mtFileUpload",
-    });
   };
 
   function handleErrorClose() {
@@ -240,15 +186,9 @@ export default function Index() {
     resetFetcher(editfetcher);
   }
   let outputRef = useRef<HTMLDivElement>();
-
+  let showOptions = !edit && inferenceId && sourceText !== "";
   return (
     <ToolWraper title="MT">
-      <ListInput
-        options={["text", "document"]}
-        selectedTool={selectedTool}
-        setSelectedTool={setSelectedTool}
-        reset={handleReset}
-      />
       {error && (
         <ErrorMessage
           message={error}
@@ -259,139 +199,128 @@ export default function Index() {
       <div className="rounded-[10px] mb-[100px] overflow-hidden border dark:border-[--card-border] border-dark_text-secondary">
         <LanguageInput
           setSourceText={setSourceText}
-          data={data}
-          setTranslated={setData}
+          data={output}
+          setTranslated={setOutput}
           likefetcher={likefetcher}
           sourceText={debounceSourceText}
           detectFetcher={detectFetcher}
         />
 
-        {(selectedTool === "text" || selectedTool === "document") && (
-          <div className="flex flex-col lg:flex-row ">
-            <CardComponent focussed={true}>
-              {limitMessage ? (
-                <div className="text-gray-500">
-                  {limitMessage} <br /> thank you for using MonlamAI
+        <div className="flex flex-col lg:flex-row ">
+          <CardComponent focussed={true}>
+            {limitMessage ? (
+              <div className="text-gray-500">
+                {limitMessage} <br /> thank you for using MonlamAI
+              </div>
+            ) : (
+              <>
+                <div className="flex relative h-auto min-h-[100px] lg:min-h-[40vh] w-full flex-1 flex-col justify-center">
+                  <TextComponent
+                    sourceText={sourceText}
+                    setSourceText={setSourceText}
+                    sourceLang={source_lang}
+                  />
+                  <CancelButton
+                    onClick={handleReset}
+                    hidden={!sourceText || sourceText === ""}
+                  >
+                    <RxCross2 size={16} />
+                  </CancelButton>
                 </div>
-              ) : (
-                <>
-                  <div className="flex relative h-auto min-h-[100px] lg:min-h-[40vh] w-full flex-1 flex-col justify-center">
-                    <TextOrDocumentComponent
-                      selectedTool={selectedTool}
-                      sourceText={sourceText}
-                      setSourceText={setSourceText}
-                      sourceLang={source_lang}
-                      setFile={setFile}
-                      setInputUrl={setInputUrl}
+                {charCount > 0 && sourceText?.trim() !== "" && !edit && (
+                  <div className="flex justify-between py-1.5 px-1 border-t border-t-dark_text-secondary dark:border-t-[--card-border]">
+                    <CharacterSizeComponent
+                      selectedTool={"text"}
+                      charCount={charCount}
+                      CHAR_LIMIT={CHAR_LIMIT}
+                      MAX_SIZE_SUPPORT={MAX_SIZE_SUPPORT_DOC}
                     />
-                    {selectedTool === "text" && (
-                      <CancelButton
-                        onClick={handleReset}
-                        hidden={!sourceText || sourceText === ""}
-                      >
-                        <RxCross2 size={16} />
-                      </CancelButton>
-                    )}
+                    <SubmitButton
+                      charCount={charCount}
+                      CHAR_LIMIT={CHAR_LIMIT}
+                      trigger={() => {
+                        trigger();
+                        outputRef.current?.scrollIntoView({
+                          behavior: "smooth",
+                          block: "start",
+                        });
+                      }}
+                      disabled={
+                        detectFetcher.state !== "idle" ||
+                        source_lang === "detect language"
+                      }
+                    />
                   </div>
-                  {charCount > 0 && sourceText?.trim() !== "" && !edit && (
-                    <div className="flex justify-between py-1.5 px-1 border-t border-t-dark_text-secondary dark:border-t-[--card-border]">
-                      <CharacterOrFileSizeComponent
-                        selectedTool={selectedTool}
-                        charCount={charCount}
-                        CHAR_LIMIT={CHAR_LIMIT}
-                        MAX_SIZE_SUPPORT={MAX_SIZE_SUPPORT_DOC}
-                      />
-                      <SubmitButton
-                        charCount={charCount}
-                        CHAR_LIMIT={CHAR_LIMIT}
-                        trigger={() => {
-                          trigger();
-                          outputRef.current?.scrollIntoView({
-                            behavior: "smooth",
-                            block: "start",
-                          });
-                        }}
-                        selectedTool={selectedTool}
-                        submitFile={handleFileSubmit}
-                        disabled={detectFetcher.state !== "idle"}
-                      />
-                    </div>
-                  )}
-                </>
-              )}
-            </CardComponent>
-            <Devider />
-            <CardComponent>
-              <div
-                ref={outputRef}
-                className={`flex flex-1 min-h-[150px] md:min-h-[15vh] lg:min-h-[30vh] h-auto w-full flex-col gap-2
+                )}
+              </>
+            )}
+          </CardComponent>
+          <Devider />
+          <CardComponent>
+            <div
+              ref={outputRef}
+              className={`flex flex-1 min-h-[150px] md:min-h-[15vh] lg:min-h-[30vh] h-auto w-full flex-col gap-2
               ${
                 target_lang === "bo"
                   ? "leading-loose tracking-wide"
                   : "font-poppins"
               } text-lg`}
-              >
-                {translationFetcher?.data?.error && (
-                  <ErrorMessage
-                    message={translationFetcher?.data?.error}
-                    handleClose={handleReset}
-                    type="warning"
-                  />
-                )}
-                {TextSelected && edit && (
-                  <EditDisplay
-                    editText={editText}
-                    setEditText={setEditText}
-                    targetLang={target_lang}
-                  />
-                )}
-                {TextSelected && sourceText !== "" && (
-                  <OutputDisplay
-                    edit={edit}
-                    editData={editData}
-                    output={data}
-                    animate={true}
-                    targetLang={target_lang}
-                  />
-                )}
-                {isLoading && (
-                  <div className="flex flex-1 items-center justify-center">
-                    <Spinner
-                      size="xl"
-                      className={"fill-secondary-500 dark:fill-primary-500"}
-                    />
-                  </div>
-                )}
-                {selectedTool === "document" && <InferenceList />}
-                {selectedTool === "document" && sourceText !== "" && (
-                  <DownloadDocument source={sourceText} lang={source_lang} />
-                )}
-              </div>
+            >
+              {translationFetcher?.data?.error && (
+                <ErrorMessage
+                  message={translationFetcher?.data?.error}
+                  handleClose={handleReset}
+                  type="warning"
+                />
+              )}
               {edit && (
-                <EditActionButtons
-                  handleCancelEdit={handleCancelEdit}
-                  handleEditSubmit={handleEditSubmit}
-                  editfetcher={editfetcher}
+                <EditDisplay
                   editText={editText}
-                  outputText={data}
-                />
-              )}
-              {!edit && inferenceId && sourceText !== "" && (
-                <NonEditButtons
-                  selectedTool={selectedTool}
-                  likefetcher={likefetcher}
-                  sourceText={sourceText}
-                  inferenceId={inferenceId}
-                  setEdit={setEdit}
-                  text={newText ?? data}
-                  handleCopy={handleCopy}
                   setEditText={setEditText}
-                  sourceLang={source_lang}
+                  targetLang={target_lang}
                 />
               )}
-            </CardComponent>
-          </div>
-        )}
+              {sourceText !== "" && (
+                <OutputDisplay
+                  edit={edit}
+                  editData={editData}
+                  output={output}
+                  animate={true}
+                  targetLang={target_lang}
+                />
+              )}
+              {isLoading && (
+                <div className="flex flex-1 items-center justify-center">
+                  <Spinner
+                    size="xl"
+                    className={"fill-secondary-500 dark:fill-primary-500"}
+                  />
+                </div>
+              )}
+            </div>
+            {edit && (
+              <EditActionButtons
+                handleCancelEdit={handleCancelEdit}
+                handleEditSubmit={handleEditSubmit}
+                editfetcher={editfetcher}
+                editText={editText}
+                outputText={output}
+              />
+            )}
+            {showOptions && (
+              <NonEditButtons
+                likefetcher={likefetcher}
+                sourceText={sourceText}
+                inferenceId={inferenceId}
+                setEdit={setEdit}
+                text={newText ?? output}
+                handleCopy={handleCopy}
+                setEditText={setEditText}
+                sourceLang={source_lang}
+              />
+            )}
+          </CardComponent>
+        </div>
       </div>
     </ToolWraper>
   );

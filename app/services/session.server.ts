@@ -35,7 +35,12 @@ export async function getUserDetail(request: Request) {
   if (userdata) {
     user = await getUser(userdata?._json.email);
   }
-  return user;
+  return {
+    user: {
+      token: userdata?.id_token,
+      ...user,
+    },
+  };
 }
 
 export async function generateCSRFToken(request: Request, user: any) {

@@ -31,11 +31,6 @@ import { useEffect, useState } from "react";
 import useLocalStorage from "./component/hooks/useLocaleStorage";
 import FeedBucket from "./component/FeedBucket";
 import LocationComponent from "./component/LocationDetect";
-import {
-  isJobEnabled,
-  enable_replacement_mt,
-  file_upload_enable,
-} from "./services/features.server";
 
 import { saveIpAddress } from "~/modal/log.server";
 import getIpAddressByRequest from "~/component/utils/getIpAddress";
@@ -53,6 +48,7 @@ import {
   useTheme,
   PreventFlashOnWrongTheme,
 } from "remix-themes";
+import Maintenance from "./component/Maintenance";
 
 export const loader: LoaderFunction = async ({ request, context }) => {
   let userdata = await getUserSession(request);
@@ -67,13 +63,12 @@ export const loader: LoaderFunction = async ({ request, context }) => {
   return json(
     {
       user,
-      isJobEnabled: isJobEnabled ?? false,
-      enable_replacement_mt: enable_replacement_mt ?? false,
-      file_upload_enable: file_upload_enable ?? false,
+      isJobEnabled: false,
       feedBucketAccess,
       feedbucketToken,
       AccessKey: process.env?.API_ACCESS_KEY,
       theme: getTheme(),
+      IS_UNDER_MAINTENANCE: process.env?.IS_UNDER_MAINTENANCE,
     },
     {
       status: 200,
@@ -122,6 +117,7 @@ export const links: LinksFunction = () => [
   { rel: "manifest", href: "/manifest.webmanifest" },
   { rel: "apple-touch-icon", href: "/favicon-32x32.png" },
 ];
+
 export const meta: MetaFunction = () => {
   return [
     { title: "སྨོན་ལམ་རིག་ནུས། | Monlam AI | Tibetan Language AI Development" },
@@ -139,6 +135,14 @@ export const meta: MetaFunction = () => {
       name: "apple-mobile-web-app-status-bar",
       content: "#0757b5",
     },
+    {
+      "og:title":
+        "སྨོན་ལམ་རིག་ནུས། | Monlam AI | Tibetan Language AI Development",
+    },
+    {
+      "og:description":
+        "Create an account or log in to Monlam , users can seamlessly utilize four powerful models for translation, text-to-speech, speech-to-text, and OCR (Optical Character Recognition).",
+    },
   ];
 };
 
@@ -155,11 +159,11 @@ function Document({ children, theme }: { children: React.ReactNode }) {
         <link rel="apple-touch-icon" href="img/logo192web.png" />
         <link rel="apple-touch-startup-image" href="img/logo1280x720web.png" />
         <link rel="apple-touch-startup-image" href="img/logo720x1280web.png" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta
           name="apple-mobile-web-app-status-bar-style"
           content="black-translucent"
         />
+        <meta name="mobile-web-app-capable" content="yes"></meta>
         <meta name="apple-mobile-web-app-title" content="Monlam Chat" />
         <Meta />
         <PreventFlashOnWrongTheme ssrTheme={Boolean(data.theme)} />
@@ -167,13 +171,30 @@ function Document({ children, theme }: { children: React.ReactNode }) {
       </head>
       <body className="flex h-[100dvh]  mx-auto inset-0 overflow-y-auto overflow-x-hidden dark:bg-slate-700 dark:text-gray-200">
         {children}
+
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              url: "https://www.monlam.ai",
+              potentialAction: {
+                "@type": "SearchAction",
+                target:
+                  "https://www.monlam.ai/seo/search?q={search_term_string}",
+                "query-input": "required name=search_term_string",
+              },
+            }),
+          }}
+        />
       </body>
     </html>
   );
 }
 
 function App() {
-  let { user } = useLoaderData();
+  let { user, IS_UNDER_MAINTENANCE } = useLoaderData();
   const [theme] = useTheme();
 
   return (
@@ -183,8 +204,14 @@ function App() {
           <Header />
           <ClientOnly fallback={<div />}>{() => <AppInstaller />}</ClientOnly>
           {user && <LocationComponent />}
+
           <div className="flex-1 flex justify-center pt-4  bg-neutral-50 dark:bg-[--main-bg] ">
             <div className="flex-1 max-w-[1280px] px-2 ">
+              {IS_UNDER_MAINTENANCE === "true" ? (
+                <Maintenance />
+              ) : (
+                <div class="md:pt-[100px]" />
+              )}
               <Outlet />
               <FeedBucket />
               {process.env.NODE_ENV === "development" && <LiveReload />}

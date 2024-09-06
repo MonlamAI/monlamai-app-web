@@ -1,26 +1,9 @@
 import { Button, Textarea } from "flowbite-react";
 import TextComponent from "~/component/TextComponent";
 import { motion } from "framer-motion";
-import FileUpload from "~/component/FileUpload";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import { BsArrowRight } from "react-icons/bs";
 import { FiFile } from "react-icons/fi";
-
-type TextOrDocumentComponentProps = {
-  selectedTool: string;
-  sourceText: string;
-  setSourceText: (text: string) => void;
-  sourceLang: string;
-  setFile: (file: any) => void;
-  setInputUrl: (data: string) => void;
-};
-
-type CharacterOrFileSizeComponentProps = {
-  selectedTool: string;
-  charCount: number | string;
-  CHAR_LIMIT: number | undefined;
-  MAX_SIZE_SUPPORT: string;
-};
 
 type EditActionButtonsProps = {
   handleCancelEdit: () => void;
@@ -37,69 +20,6 @@ type OutputDisplayProps = {
   editText: string;
   setEditText: (p: string) => void;
 };
-
-export function TextOrDocumentComponent({
-  selectedTool,
-  sourceText,
-  setSourceText,
-  sourceLang,
-  setFile,
-  setInputUrl,
-}: TextOrDocumentComponentProps) {
-  if (selectedTool === "text") {
-    return (
-      <TextComponent
-        sourceText={sourceText}
-        setSourceText={setSourceText}
-        sourceLang={sourceLang}
-      />
-    );
-  } else if (selectedTool === "document") {
-    return (
-      <FileUpload
-        setFile={setFile}
-        setInputUrl={setInputUrl}
-        supported={[".txt", ".docx"]}
-        model="mt"
-      />
-    );
-  }
-  return null;
-}
-
-export function CharacterOrFileSizeComponent({
-  selectedTool,
-  charCount,
-  CHAR_LIMIT,
-  MAX_SIZE_SUPPORT,
-}: CharacterOrFileSizeComponentProps) {
-  const { translation, isTibetan } = uselitteraTranlation();
-  return (
-    <div
-      className={`text-gray-400 text-xs p-2 ${
-        isTibetan ? "font-monlam" : "font-poppins"
-      }`}
-    >
-      {(selectedTool === "recording" || selectedTool === "file") &&
-        `${translation.duration} : ` + charCount}
-      {selectedTool === "text" && typeof charCount === "number" && (
-        <>
-          <span style={{ color: charCount > CHAR_LIMIT! ? "red" : "inherit" }}>
-            {charCount}
-          </span>{" "}
-          / {CHAR_LIMIT}
-        </>
-      )}
-      {selectedTool !== "recording" &&
-        selectedTool !== "text" &&
-        selectedTool !== "file" && (
-          <div className="text-gray-400 text-xs p-2">
-            max size: {MAX_SIZE_SUPPORT}
-          </div>
-        )}
-    </div>
-  );
-}
 
 export function LoadingAnimation() {
   return (
@@ -201,15 +121,12 @@ export function EditActionButtons({
 }
 
 export function SubmitButton({
-  selectedTool,
   trigger,
-  submitFile,
   charCount,
   CHAR_LIMIT,
   disabled,
 }: any) {
   const { translation, locale } = uselitteraTranlation();
-  const isFile = selectedTool === "document";
   const exceedsLimit = charCount > CHAR_LIMIT;
   const isEmpty = charCount === 0;
   return (
@@ -217,7 +134,7 @@ export function SubmitButton({
       disabled={disabled || exceedsLimit || isEmpty}
       size="xs"
       title={exceedsLimit ? "Character limit exceeded" : ""}
-      onClick={isFile ? submitFile : trigger}
+      onClick={trigger}
       className={` bg-secondary-500 dark:bg-primary-500 hover:bg-secondary-400 dark:hover:bg-primary-400 
       enabled:hover:bg-secondary-400 enabled:dark:hover:bg-primary-400
          text-white dark:text-black  

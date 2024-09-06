@@ -6,19 +6,21 @@ import {
 } from "~/component/utils/replace";
 import { eng_languagesOptions } from "~/helper/const";
 import { resetFetcher } from "~/component/utils/resetFetcher";
+import { toast } from "react-toastify";
 
 type useTranslateType = {
-  target: string;
+  target_lang: string;
+  source_lang: string;
   text: string;
   data: string;
   setData: (data: string) => void;
+  editfetcher: any;
 };
 
 function handleEventStream(
   text: string,
   direction: string,
-  onData: (data: string) => void,
-  enable_replacement_mt: boolean
+  onData: (data: string) => void
 ): Promise<void> {
   return new Promise((resolve, reject) => {
     const eventSource = new EventSource(
@@ -28,27 +30,31 @@ function handleEventStream(
     );
 
     eventSource.onmessage = (event) => {
-      // let data = JSON.parse(event.data);
-      // if (data?.generated_text) {
-      //   let text = data?.generated_text;
-      //
-      //   onData(replaced_text);
-      //   eventSource.close();
-      //   resolve(); // Resolve the promise when data is received
-      // } else {
-      let content = cleanData(event?.data);
-      if (content) {
-        onData((p) => {
-          let newChunk = p + content?.replace("</s>", "");
-          let replaced_text = en_bo_tibetan_replaces(newChunk);
-          return replaced_text;
-        });
+      let data = JSON.parse(event.data);
+      if (data?.generated_text) {
+        let text = data?.generated_text;
+        let replaced_text = en_bo_tibetan_replaces(text);
+        onData(replaced_text);
+        eventSource.close();
+        resolve(); // Resolve the promise when data is received
+      } else {
+        let content = cleanData(data.text);
+        if (content) {
+          onData((p) => {
+            let newChunk = p + content?.replace("</s>", "");
+            let replaced_text = en_bo_tibetan_replaces(newChunk);
+            return replaced_text;
+          });
+        }
       }
-      // }
     };
 
     eventSource.onerror = (event) => {
       eventSource.close();
+      toast("please report us the issue !", {
+        position: toast.POSITION.BOTTOM_CENTER,
+        closeOnClick: true,
+      });
       resolve("done");
     };
   });
@@ -84,13 +90,14 @@ function cleanData(content) {
 }
 
 const useTranslate = ({
-  target,
+  source_lang,
+  target_lang,
   text,
   data,
   setData,
   savefetcher,
+  editfetcher,
 }: useTranslateType) => {
-  const { enable_replacement_mt } = useRouteLoaderData("root");
   const [responseTime, setResponseTime] = useState(0);
   const [done, setDone] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -114,7 +121,7 @@ const useTranslate = ({
 
       const startTime = performance.now(); // Record start time
       try {
-        await handleEventStream(input, target, setData, enable_replacement_mt);
+        await handleEventStream(input, target_lang, setData);
       } catch (error) {
         setError(error.message);
       } finally {
@@ -123,11 +130,11 @@ const useTranslate = ({
         setIsLoading(false);
         savefetcher.submit(
           {
-            source: sourceText,
+            source: text,
             translation: data,
             responseTime,
             inputLang: source_lang,
-            targetLang: target_lang,
+            target_lang,
           },
           {
             method: "POST",
