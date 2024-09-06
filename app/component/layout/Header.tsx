@@ -7,7 +7,7 @@ import { RxCross1 } from "react-icons/rx";
 import uselitteraTranlation from "../hooks/useLitteraTranslation";
 import TranslationSwitcher from "../TranslationSwitcher";
 import ThemeSwitcher from "../ThemeSwitcher";
-import { FaQuoteRight } from "react-icons/fa";
+import { FaQuoteRight, FaUsers } from "react-icons/fa";
 import { ICON_SIZE } from "~/helper/const";
 import { FaArrowRightFromBracket } from "react-icons/fa6";
 import { TbApi } from "react-icons/tb";
@@ -79,6 +79,9 @@ function Header() {
             <div onClick={() => setShowMenu((p) => !p)} className="px-3 pt-3 ">
               <AboutLink />
             </div>
+            <div onClick={() => setShowMenu((p) => !p)} className="px-3 pt-3 ">
+              <TeamLink />
+            </div>
             <Devider />
             <div onClick={() => setShowMenu((p) => !p)} className="px-3">
               <ThemeSwitcher />
@@ -107,7 +110,7 @@ function Devider() {
 function Menu() {
   const { user } = useRouteLoaderData("root");
   const { translation, locale } = uselitteraTranlation();
-  let isEnglish = locale === "en_US";
+  const isEnglish = locale === "en_US";
   const isTibetan = locale === "bo_TI";
 
   if (!user)
@@ -205,8 +208,12 @@ function AboutLink() {
 function TeamLink() {
   const { translation, locale } = uselitteraTranlation();
   return (
-    <NavLink to="/team" className="text-base" unstable_viewTransition>
-      {translation.team}
+    <NavLink
+      to="/team"
+      className="text-base flex gap-2 items-center"
+      unstable_viewTransition
+    >
+      <FaUsers size={ICON_SIZE} className="md:hidden" /> {translation.team}
     </NavLink>
   );
 }

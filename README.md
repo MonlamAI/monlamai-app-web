@@ -51,11 +51,11 @@ npm install
    AUTH0_CALLBACK_URL : callback url to where the auth0 should redirect
    OPENAI_KEY : Chatgpt-api key (not required)
    ORIGIN : domain name where the app is hosted
-   API_HIT_LIMIT : limit for hitting api per user (not required)
-   BUCKET_NAME_PRODUCTION : aws bucket name
-   AWS_ACCESS_KEY_ID_PRODUCTION: aws access key
-   AWS_SECRET_ACCESS_KEY_PRODUCTION :aws secret key
-   AWS_REGION_PRODUCTION: aws region
+
+   AWS_BUCKET_NAME : aws bucket name
+   AWS_ACCESS_ID: aws access key
+   AWS_SECRET_KEY :aws secret key
+   AWS_REGION: aws region
    FEEDBUCKET_ACCESS : feedbucket access key (not required)
    FEEDBUCKET_TOKEN :feedbucket token (not required)
    API_URL : domain url for monlam api
