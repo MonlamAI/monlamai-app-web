@@ -7,6 +7,7 @@ import { useRouteLoaderData } from "@remix-run/react";
 
 function Lamas() {
   const [loaded, setLoaded] = useState(false);
+
   useEffect(() => {
     const img = new Image();
     img.onload = () => {
@@ -14,7 +15,9 @@ function Lamas() {
     };
     img.src = "/assets/lamas/dalai_lama.png";
   }, []);
+
   const { translation } = uselitteraTranlation();
+
   return (
     <div className="container mx-auto">
       <h2 className="lg:text-3xl text-xl font-bold my-10 lg:my-20 flex justify-center">
@@ -38,8 +41,7 @@ function Lamas() {
             src="/assets/lamas/dalai_lama.png"
             loading="lazy"
             alt="dalai_lama"
-            style={{ opacity: !loaded ? 0 : 1, height: !loaded ? 0 : "" }}
-            className="object-contain flex rounded-lg"
+            className="object-cover flex rounded-lg aspect-auto h-64 w-full" // Set height and ensure it fits the container
           />
         </div>
         {lamas.map((lama) => (
@@ -64,8 +66,8 @@ function EachLama({ lama }) {
   }, [lama.image]);
 
   return (
-    <div className="flex rounded-lg border border-gray-200  bg-white shadow-md dark:border-gray-700 dark:bg-gray-800 flex-col relative w-full md:max-w-xs  max-h-[250px] p-2">
-      <div className="flex flex-col justify-start items-center gap-3 ">
+    <div className="flex rounded-lg border border-gray-200  bg-white shadow-md dark:bg-[--card-bg] dark:border-[--card-border] flex-col relative w-full md:max-w-xs  max-h-[250px] p-2">
+      <div className="flex flex-1 justify-start flex-col  items-center gap-3 ">
         <div
           className={`${
             loaded ? "hidden" : ""
