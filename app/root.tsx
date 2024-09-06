@@ -207,11 +207,7 @@ function App() {
 
           <div className="flex-1 flex justify-center pt-4  bg-neutral-50 dark:bg-[--main-bg] ">
             <div className="flex-1 max-w-[1280px] px-2 ">
-              {IS_UNDER_MAINTENANCE === "true" ? (
-                <Maintenance />
-              ) : (
-                <div class="md:pt-[100px]" />
-              )}
+              {IS_UNDER_MAINTENANCE === "true" ? <Maintenance /> : null}
               <Outlet />
               <FeedBucket />
               {process.env.NODE_ENV === "development" && <LiveReload />}
