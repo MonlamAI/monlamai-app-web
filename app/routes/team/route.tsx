@@ -25,7 +25,7 @@ function Team() {
       }`}
     >
       <ToolWraper title="team">
-        <div className="flex flex-col md:flex-row mb-8 justify-between items-center">
+        <div className="flex flex-col md:flex-row mb-8 justify-between items-center gap-6">
           <div className="w-full md:w-1/2 mb-4 text-left">
             <h1 className="text-4xl font-bold mb-4">
               {isTibetan ? "ང་ཚོའི་རུ་ཁག།" : "Our Team"}
@@ -43,11 +43,11 @@ function Team() {
               projects align with the needs and aspirations of the Tibetan community.`}
             </p>
           </div>
-          <div className="w-full md:w-1/3">
+          <div className="w-full md:w-[50%]">
             <img
-              src="/assets/buddha.png"
+              src="/assets/team/team2.jpg"
               alt="Our office"
-              className="w-full max-h-80 object-contain rounded-xl"
+              className="w-full max-h-80 object-cover rounded-xl"
             />
           </div>
         </div>
