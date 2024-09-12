@@ -24,6 +24,8 @@ function AudioRecorder({
   const [tempAudioURL, setTempAudioURL] = useState<string | null>(null);
   const [recording, setRecording] = useState(false);
   const [audioChunks, setAudioChunks] = useState([]);
+  let localAudioChunks: [] = [];
+
   const toggleRecording = () => {
     if (!recording) {
       startRecording();
@@ -57,7 +59,7 @@ function AudioRecorder({
     let stream = await getMicrophonePermission();
     if (stream) {
       try {
-        let localAudioChunks: [] = [];
+        // let localAudioChunks: [] = [];
         setRecording(true);
         let browserName = getBrowser();
         const media = new MediaRecorder(stream, {
@@ -67,8 +69,9 @@ function AudioRecorder({
         mediaRecorder.current.start();
 
         stopRecordingTimeout = setTimeout(() => {
-          stopRecording(localAudioChunks);
-        }, 120000);
+          stopRecording();
+        }, 10000);
+
 
         mediaRecorder.current.ondataavailable = (event: any) => {
           if (typeof event.data === "undefined") return;
@@ -90,8 +93,9 @@ function AudioRecorder({
     //stops the recording instance
     mediaRecorder.current.stop();
     mediaRecorder.current.onstop = () => {
-      //creates a blob file from the audiochunks data
-      const audioBlob = new Blob(localAudioChunks||audioChunks);
+
+      const audioBlob = new Blob((localAudioChunks.length > 0 ? localAudioChunks : audioChunks));
+
       uploadAudio(audioBlob);
       setTempAudioURL(URL.createObjectURL(audioBlob));
       setAudioChunks([]);
