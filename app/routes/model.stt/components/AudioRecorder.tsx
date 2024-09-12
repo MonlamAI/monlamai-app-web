@@ -72,6 +72,7 @@ function AudioRecorder({
           stopRecording();
         }, 10000);
 
+
         mediaRecorder.current.ondataavailable = (event: any) => {
           if (typeof event.data === "undefined") return;
           if (event.data.size === 0) return;
@@ -83,7 +84,7 @@ function AudioRecorder({
       }
     }
   };
-  const stopRecording = () => {
+  const stopRecording = (localAudioChunks:[]=[]) => {
     if (stopRecordingTimeout) {
       clearTimeout(stopRecordingTimeout);
     }
@@ -92,7 +93,7 @@ function AudioRecorder({
     //stops the recording instance
     mediaRecorder.current.stop();
     mediaRecorder.current.onstop = () => {
-      //creates a blob file from the audiochunks data;
+
       const audioBlob = new Blob((localAudioChunks.length > 0 ? localAudioChunks : audioChunks));
 
       uploadAudio(audioBlob);

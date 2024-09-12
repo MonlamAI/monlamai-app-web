@@ -4,7 +4,11 @@ import { redirect } from "@remix-run/node";
 import { destroySession, getUserSession } from "~/services/session.server";
 
 export const loader: LoaderFunction = async ({ request }) => {
-  return redirect("/");
+  return redirect("/", {
+    headers: {
+      "Set-Cookie": await destroySession(),
+    },
+  });
 };
 
 export const action: ActionFunction = async ({ request }) => {

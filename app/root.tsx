@@ -22,13 +22,9 @@ import Header from "./component/layout/Header";
 import globalStyle from "./styles/global.css";
 import tailwindStyle from "./styles/tailwind.css";
 import { LitteraProvider } from "@assembless/react-littera";
-import { generateCSRFToken, getUserSession } from "~/services/session.server";
-import { getUser } from "./modal/user.server";
 import toastStyle from "react-toastify/dist/ReactToastify.css";
 import feedBucketStyle from "~/styles/feedbucket.css";
 import { ToastContainer } from "react-toastify";
-import { useEffect, useState } from "react";
-import useLocalStorage from "./component/hooks/useLocaleStorage";
 import FeedBucket from "./component/FeedBucket";
 import LocationComponent from "./component/LocationDetect";
 
@@ -36,12 +32,13 @@ import { saveIpAddress } from "~/modal/log.server";
 import getIpAddressByRequest from "~/component/utils/getIpAddress";
 import { ErrorPage } from "./component/ErrorPages";
 import {
-  sessionStorage,
   themeSessionResolver,
+  generateCSRFToken,
+  getUserSession,
 } from "~/services/session.server";
 import { AppInstaller } from "~/component/AppInstaller.client";
 import { ClientOnly } from "remix-utils/client-only";
-import { update_pwa } from "~/modal/user.server";
+import { update_pwa, getUser } from "~/modal/user.server";
 import { userPrefs } from "~/services/cookies.server";
 import {
   ThemeProvider,
