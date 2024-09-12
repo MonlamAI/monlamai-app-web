@@ -1,7 +1,5 @@
-import { LoaderFunction, redirect } from "remix";
 import { auth } from "~/services/auth.server";
 import { returnToCookie } from "~/services/session.server";
-import { commitSession, getSession } from "~/services/session.server";
 
 export let loader: LoaderFunction = async ({ request }) => {
   // get the returnTo from the cookie

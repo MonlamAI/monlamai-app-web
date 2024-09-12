@@ -1,9 +1,12 @@
-import { createCookieSessionStorage, createCookie } from "@remix-run/node";
+import {
+  createCookieSessionStorage,
+  createCookie,
+  redirect,
+} from "@remix-run/node";
 import { getUser } from "~/modal/user.server";
 import jwt from "jsonwebtoken";
 // export the whole sessionStorage object
 import { createThemeSessionResolver } from "remix-themes";
-
 function getDate() {
   const expires = new Date();
   expires.setDate(expires.getDate() + 7);
@@ -26,6 +29,28 @@ export let sessionStorage = createCookieSessionStorage({
 export async function getUserSession(request: Request) {
   const session = await getSession(request.headers.get("Cookie"));
   let user = session.get("user");
+  try {
+    const decoded = jwt.decode(user.id_token) as { exp: number }; // Decode the token to access the 'exp' field
+
+    if (decoded && decoded.exp) {
+      const currentTime = Math.floor(Date.now() / 1000); // Get the current time in seconds
+      if (decoded.exp < currentTime) {
+        redirect("/logout");
+        return null;
+      } else {
+        console.log("Token is valid");
+      }
+    } else {
+      console.log("Invalid token");
+      redirect("/logout");
+      return null;
+    }
+  } catch (e) {
+    console.log("Error decoding token:", e);
+    redirect("/logout");
+    return null;
+  }
+
   return user;
 }
 
