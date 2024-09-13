@@ -27,9 +27,6 @@ import feedBucketStyle from "~/styles/feedbucket.css";
 import { ToastContainer } from "react-toastify";
 import FeedBucket from "./component/FeedBucket";
 import LocationComponent from "./component/LocationDetect";
-
-import { saveIpAddress } from "~/modal/log.server";
-import getIpAddressByRequest from "~/component/utils/getIpAddress";
 import { ErrorPage } from "./component/ErrorPages";
 import {
   themeSessionResolver,
@@ -38,7 +35,7 @@ import {
 } from "~/services/session.server";
 import { AppInstaller } from "~/component/AppInstaller.client";
 import { ClientOnly } from "remix-utils/client-only";
-import { update_pwa, getUser } from "~/modal/user.server";
+import { getUser } from "~/modal/user.server";
 import { userPrefs } from "~/services/cookies.server";
 import {
   ThemeProvider,
@@ -74,20 +71,6 @@ export const loader: LoaderFunction = async ({ request, context }) => {
       },
     }
   );
-};
-
-export const action: ActionFunction = async ({ request }) => {
-  let formdata = await request.formData();
-  let userId = formdata.get("userId") as string;
-  let isPWA = formdata.get("isPWA") as string;
-  let device = formdata.get("device") as string;
-
-  let ip = getIpAddressByRequest(request);
-  if (!!userId) {
-    let data = update_pwa(userId, isPWA);
-  }
-  saveIpAddress({ userId, ipAddress: ip, isPWA, device });
-  return "data";
 };
 
 export const headers = ({ loaderHeaders, parentHeaders }: HeadersArgs) => {

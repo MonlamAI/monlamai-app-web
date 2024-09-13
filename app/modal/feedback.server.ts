@@ -23,26 +23,27 @@ export async function likedata(
   userId: number,
   model: modelType
 ) {
-  let data = await checkIfExist(source, userId, model);
-  if (!!data?.id) {
-    return await db.feedback.update({
-      where: {
-        id: data.id,
-      },
-      data: {
-        liked: true,
-        disliked: false,
-      },
+  const data = await checkIfExist(source, userId, model);
+
+  const feedbackData = {
+    liked: true,
+    disliked: false,
+  };
+  if (data?.id) {
+    // Update existing feedback entry
+    return db.feedback.update({
+      where: { id: data.id },
+      data: feedbackData,
     });
   } else {
-    return await db.feedback.create({
+    // Create new feedback entry
+    return db.feedback.create({
       data: {
-        source: source,
-        output: output,
-        liked: true,
-        disliked: false,
+        ...feedbackData,
+        source,
+        output,
         model,
-        userId: userId,
+        userId,
       },
     });
   }
