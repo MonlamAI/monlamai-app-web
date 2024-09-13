@@ -58,7 +58,8 @@ export function OutputDisplay({
   const textWithBrTags = show_text?.replace(/(\r\n|\r|\n)+/g, "<br />");
   return (
     <div
-      className={`p-2 first-letter 
+      id="translationOutput"
+      className={`p-2 first-letter  
       ${fontSize}
       ${isEng && "font-poppins "} ${isTib && "leading-loose font-monlam"} ${
         !isEng && !isTib && "font-notosans"

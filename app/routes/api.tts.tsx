@@ -1,15 +1,14 @@
-import { ActionFunction, json } from "@remix-run/node";
-import { base64ToBuffer } from "~/component/utils/base64ToBuffer";
+import type { ActionFunction } from "@remix-run/node";
 import inputReplace from "~/component/utils/ttsReplace.server";
 import { API_ERROR_MESSAGE } from "~/helper/const";
-import { checkIfInferenceExist, saveInference } from "~/modal/inference.server";
+import { saveInference } from "~/modal/inference.server";
 import { getUserDetail } from "~/services/session.server";
 import getIpAddressByRequest from "~/component/utils/getIpAddress";
 
 export const action: ActionFunction = async ({ request }) => {
-  let ip = getIpAddressByRequest(request);
-  let AMPLIFICATION_LEVEL = 5; //1-5 value is safe
-  let { user } = await getUserDetail(request);
+  const ip = getIpAddressByRequest(request);
+  const AMPLIFICATION_LEVEL = 5; //1-5 value is safe
+  const { user } = await getUserDetail(request);
   const formdata = await request.formData();
   const input_data = formdata.get("input") as string;
   const API_URL = process.env.API_URL as string;

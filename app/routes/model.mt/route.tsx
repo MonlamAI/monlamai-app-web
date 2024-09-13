@@ -3,30 +3,21 @@ import type {
   LoaderFunctionArgs,
   MetaFunction,
 } from "@remix-run/node";
-import {
-  ClientLoaderFunctionArgs,
-  useFetcher,
-  useLoaderData,
-  useSearchParams,
-  useRouteLoaderData,
-} from "@remix-run/react";
-import { json, redirect } from "@remix-run/node";
-import { useState, useRef, useEffect } from "react";
+import type { ClientLoaderFunctionArgs } from "@remix-run/react";
+import { useFetcher, useLoaderData, useSearchParams } from "@remix-run/react";
+import { json } from "@remix-run/node";
+import { useState, useRef } from "react";
 import useDebounce from "~/component/hooks/useDebounceState";
 import { ErrorMessage } from "~/component/ErrorMessage";
 import ToolWraper from "~/component/ToolWraper";
-import {
-  getUserFileInferences,
-  saveInference,
-  updateEdit,
-} from "~/modal/inference.server";
+import { saveInference, updateEdit } from "~/modal/inference.server";
 import { MAX_SIZE_SUPPORT_DOC } from "~/helper/const";
 import {
   EditActionButtons,
   OutputDisplay,
   SubmitButton,
 } from "./components/UtilityComponent";
-import { NonEditButtons, NonEditModeActions } from "~/component/ActionButtons";
+import { NonEditButtons } from "~/component/ActionButtons";
 import EditDisplay from "~/component/EditDisplay";
 import CardComponent from "~/component/Card";
 import { getUser } from "~/modal/user.server";
@@ -112,7 +103,7 @@ export default function Index() {
   const source_lang = params.get("source") || "en";
   const [sourceText, setSourceText] = useState("");
 
-  const { limitMessage, CHAR_LIMIT, user } = useLoaderData();
+  const { limitMessage, CHAR_LIMIT } = useLoaderData();
 
   const [edit, setEdit] = useState(false);
   const [editText, setEditText] = useState("");
@@ -155,7 +146,7 @@ export default function Index() {
   }
   const [output, setOutput] = useState("");
 
-  let { isLoading, error, done, trigger, responseTime } = useTranslate({
+  let { isLoading, error, trigger } = useTranslate({
     source_lang,
     target_lang,
     text: sourceText,

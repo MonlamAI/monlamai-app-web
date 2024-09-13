@@ -1,4 +1,4 @@
-import { models } from "@prisma/client";
+import type { models } from "@prisma/client";
 import { db } from "~/services/db.server";
 
 // here saved all the inference data like - user(userid), modal, input, output, response time?, edited?,
@@ -42,58 +42,6 @@ export async function updateEdit(inferenceId: string, edited: string) {
       edited,
     },
   });
-}
-
-export async function addFileInference({
-  input,
-  userId,
-  type,
-  model,
-  target_lang,
-  source_lang,
-  jobId,
-}) {
-  return await db.inference.create({
-    data: {
-      input,
-      model,
-      userId,
-      type,
-      output: "",
-      jobId,
-      inputLang: source_lang,
-      outputLang: target_lang,
-    },
-  });
-}
-
-export async function getUserFileInferences({ userId, model }) {
-  let OR = undefined;
-  if (model === "ocr") {
-    OR = [
-      {
-        input: { endsWith: ".zip" },
-      },
-      {
-        input: { endsWith: ".gz" },
-      },
-      {
-        input: { endsWith: ".pdf" },
-      },
-    ];
-  }
-  let result = await db.inference.findMany({
-    where: {
-      userId: typeof userId === "string" ? parseInt(userId) : userId,
-      model,
-      OR,
-    },
-    orderBy: {
-      updatedAt: "desc",
-    },
-    take: 20,
-  });
-  return result;
 }
 
 export async function deleteInference({ id }) {

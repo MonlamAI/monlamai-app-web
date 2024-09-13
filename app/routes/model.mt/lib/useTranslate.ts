@@ -17,7 +17,7 @@ type useTranslateType = {
   editfetcher: any;
 };
 
-function handleEventStream(
+async function handleEventStream(
   text: string,
   direction: string,
   onData: (data: string) => void
@@ -36,7 +36,7 @@ function handleEventStream(
         let replaced_text = en_bo_tibetan_replaces(text);
         onData(replaced_text);
         eventSource.close();
-        resolve(); // Resolve the promise when data is received
+        resolve("done"); // Resolve the promise when data is received
       } else {
         let content = cleanData(data.text);
         if (content) {
@@ -55,7 +55,7 @@ function handleEventStream(
         position: toast.POSITION.BOTTOM_CENTER,
         closeOnClick: true,
       });
-      resolve("done");
+      reject("error");
     };
   });
 }
@@ -111,7 +111,6 @@ const useTranslate = ({
       setError("Please enter some text for translation.");
       return;
     }
-
     const fetchData = async () => {
       setIsLoading(true);
       setDone(false);
@@ -128,18 +127,16 @@ const useTranslate = ({
         const endTime = performance.now(); // Record end time
         setResponseTime(endTime - startTime); // Calculate response time
         setIsLoading(false);
-        savefetcher.submit(
-          {
-            source: text,
-            translation: data,
-            responseTime,
-            inputLang: source_lang,
-            target_lang,
-          },
-          {
-            method: "POST",
-          }
-        );
+        let body = {
+          source: text,
+          translation: document.getElementById("translationOutput")?.innerText,
+          responseTime,
+          inputLang: source_lang,
+          targetLang: target_lang,
+        };
+        savefetcher.submit(body, {
+          method: "POST",
+        });
         resetFetcher(editfetcher);
         setDone(true);
       }

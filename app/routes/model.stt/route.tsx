@@ -1,31 +1,24 @@
 import { useState, useEffect } from "react";
-import { ActionFunction, LoaderFunctionArgs } from "@remix-run/node";
-import {
-  MetaFunction,
-  useFetcher,
-  useLoaderData,
-  useSearchParams,
-} from "@remix-run/react";
+import type { ActionFunction, LoaderFunctionArgs } from "@remix-run/node";
+import type { MetaFunction } from "@remix-run/react";
+import { useFetcher, useSearchParams } from "@remix-run/react";
 import { ErrorMessage } from "~/component/ErrorMessage";
 import ToolWraper from "~/component/ToolWraper";
 import CardComponent from "~/component/Card";
 import {
   EditActionButtons,
-  LoadingAnimation,
   OutputDisplay,
 } from "../model.mt/components/UtilityComponent";
-import { NonEditButtons, NonEditModeActions } from "~/component/ActionButtons";
-import { getUserFileInferences, updateEdit } from "~/modal/inference.server";
+import { NonEditButtons } from "~/component/ActionButtons";
+import { updateEdit } from "~/modal/inference.server";
 import EditDisplay from "~/component/EditDisplay";
 import { resetFetcher } from "~/component/utils/resetFetcher";
 import { RxCross2 } from "react-icons/rx";
 import { CancelButton } from "~/component/Buttons";
 import { MAX_SIZE_SUPPORT_AUDIO } from "~/helper/const";
-import { auth } from "~/services/auth.server";
 import { getUserSession } from "~/services/session.server";
 import AudioRecorder from "./components/AudioRecorder";
 import axios from "axios";
-import { getUser } from "~/modal/user.server";
 import HeaderComponent from "~/component/HeaderComponent";
 import { Spinner, Progress } from "flowbite-react";
 import Devider from "~/component/Devider";
@@ -41,9 +34,6 @@ export const meta: MetaFunction<typeof loader> = ({ matches }) => {
 
 export async function loader({ request }: LoaderFunctionArgs) {
   let user = await getUserSession(request);
-
-  let model = "stt";
-
   return { user };
 }
 
@@ -57,7 +47,6 @@ export const action: ActionFunction = async ({ request }) => {
 };
 export default function Index() {
   const fetcher = useFetcher();
-  const [params, setParams] = useSearchParams();
 
   const [uploadProgress, setUploadProgress] = useState(0);
 

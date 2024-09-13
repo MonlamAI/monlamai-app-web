@@ -4,11 +4,10 @@ import type {
   LoaderFunctionArgs,
   MetaFunction,
 } from "@remix-run/node";
-import { ErrorBoundary, shouldFetchInferenceList } from "../model.mt/route";
+import { ErrorBoundary } from "../model.mt/route";
 import ToolWraper from "~/component/ToolWraper";
 import OCR from "./Component/OCR";
-import { getUserFileInferences, updateEdit } from "~/modal/inference.server";
-import { getUser } from "~/modal/user.server";
+import { updateEdit } from "~/modal/inference.server";
 import { getUserSession } from "~/services/session.server";
 import crop_style from "react-advanced-cropper/dist/style.css";
 
