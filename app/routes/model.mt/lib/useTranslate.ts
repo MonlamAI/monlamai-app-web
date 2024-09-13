@@ -4,9 +4,9 @@ import {
   en_bo_english_replaces,
   en_bo_tibetan_replaces,
 } from "~/component/utils/replace";
-import { eng_languagesOptions } from "~/helper/const";
 import { resetFetcher } from "~/component/utils/resetFetcher";
 import { toast } from "react-toastify";
+import { API_ERROR_MESSAGE } from "~/helper/const";
 
 type useTranslateType = {
   target_lang: string;
@@ -17,10 +17,12 @@ type useTranslateType = {
   editfetcher: any;
 };
 
-async function handleEventStream(
+function handleEventStream(
   text: string,
   direction: string,
-  onData: (data: string) => void
+  onData: (data: string) => void,
+  isToasted: boolean,
+  setIsToasted: (value: boolean) => void
 ): Promise<void> {
   return new Promise((resolve, reject) => {
     const eventSource = new EventSource(
@@ -51,11 +53,15 @@ async function handleEventStream(
 
     eventSource.onerror = (event) => {
       eventSource.close();
-      toast("please report us the issue !", {
-        position: toast.POSITION.BOTTOM_CENTER,
-        closeOnClick: true,
-      });
-      reject("error");
+      if (!isToasted) {
+        toast(API_ERROR_MESSAGE, {
+          position: toast.POSITION.BOTTOM_CENTER,
+          closeOnClick: true,
+          onClose: () => setIsToasted(false)
+        });
+        setIsToasted(true);
+      }
+      resolve("done");
     };
   });
 }
@@ -102,6 +108,7 @@ const useTranslate = ({
   const [done, setDone] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [isToasted, setIsToasted] = useState(false);
 
   const trigger = async () => {
     setResponseTime(0);
@@ -111,6 +118,7 @@ const useTranslate = ({
       setError("Please enter some text for translation.");
       return;
     }
+
     const fetchData = async () => {
       setIsLoading(true);
       setDone(false);
@@ -120,23 +128,25 @@ const useTranslate = ({
 
       const startTime = performance.now(); // Record start time
       try {
-        await handleEventStream(input, target_lang, setData);
+        await handleEventStream(input, target_lang, setData, isToasted, setIsToasted);
       } catch (error) {
         setError(error.message);
       } finally {
         const endTime = performance.now(); // Record end time
         setResponseTime(endTime - startTime); // Calculate response time
         setIsLoading(false);
-        let body = {
-          source: text,
-          translation: document.getElementById("translationOutput")?.innerText,
-          responseTime,
-          inputLang: source_lang,
-          targetLang: target_lang,
-        };
-        savefetcher.submit(body, {
-          method: "POST",
-        });
+        savefetcher.submit(
+          {
+            source: text,
+            translation: data,
+            responseTime,
+            inputLang: source_lang,
+            target_lang,
+          },
+          {
+            method: "POST",
+          }
+        );
         resetFetcher(editfetcher);
         setDone(true);
       }
