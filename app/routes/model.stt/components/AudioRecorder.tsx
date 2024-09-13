@@ -24,7 +24,6 @@ function AudioRecorder({
   const [tempAudioURL, setTempAudioURL] = useState<string | null>(null);
   const [recording, setRecording] = useState(false);
   const [audioChunks, setAudioChunks] = useState([]);
-  let localAudioChunks: [] = [];
 
   const toggleRecording = () => {
     if (!recording) {
@@ -59,7 +58,7 @@ function AudioRecorder({
     let stream = await getMicrophonePermission();
     if (stream) {
       try {
-        // let localAudioChunks: [] = [];
+        let localAudioChunks: [] = [];
         setRecording(true);
         let browserName = getBrowser();
         const media = new MediaRecorder(stream, {
@@ -68,23 +67,22 @@ function AudioRecorder({
         mediaRecorder.current = media;
         mediaRecorder.current.start();
 
-        stopRecordingTimeout = setTimeout(() => {
-          stopRecording();
-        }, 10000);
-
-
         mediaRecorder.current.ondataavailable = (event: any) => {
           if (typeof event.data === "undefined") return;
           if (event.data.size === 0) return;
           localAudioChunks.push(event?.data);
         };
+        
         setAudioChunks(localAudioChunks);
+        stopRecordingTimeout = setTimeout(() => {
+          stopRecording();
+        }, 120000);
       } catch (error) {
         console.error("Error accessing the microphone:", error);
       }
     }
   };
-  const stopRecording = (localAudioChunks:[]=[]) => {
+  const stopRecording = () => {
     if (stopRecordingTimeout) {
       clearTimeout(stopRecordingTimeout);
     }
@@ -92,23 +90,22 @@ function AudioRecorder({
     setRecording(false);
     //stops the recording instance
     mediaRecorder.current.stop();
-    mediaRecorder.current.onstop = () => {
-
-      const audioBlob = new Blob((localAudioChunks.length > 0 ? localAudioChunks : audioChunks));
+    mediaRecorder.current.onstop = async() => {
+      const audioBlob = new Blob(audioChunks);
 
       uploadAudio(audioBlob);
       setTempAudioURL(URL.createObjectURL(audioBlob));
       setAudioChunks([]);
 
-      const reader = new FileReader();
+      // const reader = new FileReader();
 
-      // Define a callback function to handle the result
-      reader.onload = function () {
-        const base64String = reader.result;
-      };
+      // // Define a callback function to handle the result
+      // reader.onload = function () {
+      //   const base64String = reader.result;
+      // };
 
-      // Read the Blob as a data URL (Base64)
-      reader.readAsDataURL(audioBlob);
+      // // Read the Blob as a data URL (Base64)
+      // reader.readAsDataURL(audioBlob);
     };
   };
 
