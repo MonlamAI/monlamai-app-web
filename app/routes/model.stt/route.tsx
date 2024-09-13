@@ -156,10 +156,7 @@ export default function Index() {
     }
   };
   let isUploading = uploadProgress > 0 && uploadProgress < 99;
-  const handleClose = () => {
-    resetFetcher(fetcher);
-    resetFetcher(editfetcher);
-  };
+
   return (
     <ToolWraper title="STT">
       <div className=" rounded-[10px]  overflow-hidden border dark:border-[--card-border] border-dark_text-secondary">

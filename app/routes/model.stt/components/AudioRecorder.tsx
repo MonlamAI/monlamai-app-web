@@ -5,6 +5,7 @@ import { BsFillMicFill, BsFillStopFill } from "react-icons/bs";
 import { getBrowser } from "~/component/utils/getBrowserDetail";
 import AudioPlayer from "~/routes/model.tts/components/AudioPlayer";
 import RecordingAnimation from "./RecordingAnimation";
+import Timer from "./Timer";
 let stopRecordingTimeout: any;
 
 type AudioRecordProps = {
@@ -72,7 +73,7 @@ function AudioRecorder({
           if (event.data.size === 0) return;
           localAudioChunks.push(event?.data);
         };
-        
+
         setAudioChunks(localAudioChunks);
         stopRecordingTimeout = setTimeout(() => {
           stopRecording();
@@ -90,7 +91,7 @@ function AudioRecorder({
     setRecording(false);
     //stops the recording instance
     mediaRecorder.current.stop();
-    mediaRecorder.current.onstop = async() => {
+    mediaRecorder.current.onstop = async () => {
       const audioBlob = new Blob(audioChunks);
 
       uploadAudio(audioBlob);
@@ -111,6 +112,7 @@ function AudioRecorder({
 
   return (
     <div className="flex flex-col items-center gap-5 flex-1 justify-center">
+      {recording && <Timer start={recording} stop={!recording} />}
       {recording && mediaRecorder.current && getBrowser() !== "Safari" && (
         <LiveAudioVisualizer
           mediaRecorder={mediaRecorder.current}
