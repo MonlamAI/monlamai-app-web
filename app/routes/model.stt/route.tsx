@@ -120,7 +120,7 @@ export default function Index() {
   }
 
   const actionError = fetcher.data?.error;
-
+ console.log("actionError", actionError)
   const uploadFile = async (file: File) => {
     try {
       let formData = new FormData();
