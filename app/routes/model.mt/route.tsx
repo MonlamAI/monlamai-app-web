@@ -10,7 +10,6 @@ import { useState, useRef } from "react";
 import useDebounce from "~/component/hooks/useDebounceState";
 import { ErrorMessage } from "~/component/ErrorMessage";
 import ToolWraper from "~/component/ToolWraper";
-import { saveInference, updateEdit } from "~/modal/inference.server";
 import { MAX_SIZE_SUPPORT_DOC } from "~/helper/const";
 import {
   EditActionButtons,
@@ -34,6 +33,8 @@ import { ErrorBoundary } from "~/component/ErrorPages";
 import TextComponent from "~/component/TextComponent";
 import { CharacterSizeComponent } from "~/component/CharacterSize";
 import useEffectAfterFirstRender from "~/component/hooks/useEffectAfterFirstRender";
+import { v4 as uuidv4 } from "uuid";
+import { getHeaders } from "~/component/utils/getHeaders.server";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -58,29 +59,18 @@ export const action: ActionFunction = async ({ request }) => {
   let user = await getUser(userdata?._json?.email);
   let method = request.method;
   if (method === "PATCH") {
-    let edited = formdata.get("edited") as string;
-    let inferenceId = formdata.get("inferenceId") as string;
-    let updated = await updateEdit(inferenceId, edited);
-    return updated;
-  }
-  if (method === "POST") {
-    let source = formdata.get("source") as string;
-    let translation = formdata.get("translation") as string;
-    let responseTime = formdata.get("responseTime") as string;
-    let inputLang = formdata.get("inputLang") as string;
-    let outputLang = formdata.get("targetLang") as string;
-    const inferenceData = await saveInference({
-      userId: user?.id,
-      model: "mt",
-      input: source,
-      output: translation,
-      responseTime: parseInt(responseTime),
-      inputLang,
-      outputLang,
-      ip,
+    const edited = formdata.get("edited") as string;
+    const inferenceId = formdata.get("inferenceId") as string;
+    const api_url = process.env?.API_URL + `/api/v1/translation/${inferenceId}?action=edit&edit_text=${edited}`;
+    const headers=await getHeaders(request);
+    const data=await fetch(api_url, {
+      method: "PUT",
+      headers,
     });
-    return { id: inferenceData?.id };
+    let res=await data.json();
+    return res?.data?.editOutput
   }
+  return null;
 };
 
 export const clientLoader = async ({
@@ -107,17 +97,14 @@ export default function Index() {
 
   const [edit, setEdit] = useState(false);
   const [editText, setEditText] = useState("");
-  const [inputUrl, setInputUrl] = useState("");
-
+  const [inferenceId, setInferenceId] = useState(uuidv4());
   const debounceSourceText = useDebounce(sourceText, 1000);
   const likefetcher = useFetcher();
   const editfetcher = useFetcher();
   const translationFetcher = useFetcher();
   const detectFetcher = useFetcher();
 
-  const savefetcher = useFetcher();
-  const editData = editfetcher.data?.edited;
-
+  const editData = editfetcher.data;
   let charCount = sourceText?.length;
 
   function handleCopy() {
@@ -147,12 +134,12 @@ export default function Index() {
   const [output, setOutput] = useState("");
 
   let { isLoading, error, trigger } = useTranslate({
+    inferenceId,
     source_lang,
     target_lang,
     text: sourceText,
     data: output,
     setData: setOutput,
-    savefetcher,
     editfetcher,
   });
 
@@ -162,7 +149,6 @@ export default function Index() {
       setOutput("");
     }
   }, [charCount]);
-  let inferenceId = savefetcher.data?.id;
 
   const handleReset = () => {
     setOutput("");
@@ -308,6 +294,7 @@ export default function Index() {
                 handleCopy={handleCopy}
                 setEditText={setEditText}
                 sourceLang={source_lang}
+                inferenceType="translation"
               />
             )}
           </CardComponent>

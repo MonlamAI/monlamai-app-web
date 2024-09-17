@@ -25,6 +25,9 @@ import Devider from "~/component/Devider";
 import { ErrorBoundary } from "~/component/ErrorPages";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import { CharacterSizeComponent } from "~/component/CharacterSize";
+import { getHeaders } from "~/component/utils/getHeaders.server";
+
+
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
   parentMeta.shift(1);
@@ -41,15 +44,24 @@ export const action: ActionFunction = async ({ request }) => {
   let formdata = await request.formData();
   let edited = formdata.get("edited") as string;
   let inferenceId = formdata.get("inferenceId") as string;
-  let updated = await updateEdit(inferenceId, edited);
-
-  return updated;
+  if (request.method === "PATCH") {
+    const edited = formdata.get("edited") as string;
+    const inferenceId = formdata.get("inferenceId") as string;
+    const api_url = process.env?.API_URL + `/api/v1/stt/${inferenceId}?action=edit&edit_text=${edited}`;
+    const headers=await getHeaders(request);
+    const data=await fetch(api_url, {
+      method: "PUT",
+      headers,
+    });
+    let res=await data.json();
+    return res?.data?.editOutput
+  }
+  return null
 };
 export default function Index() {
   const fetcher = useFetcher();
 
   const [uploadProgress, setUploadProgress] = useState(0);
-
   const [audio, setAudio] = useState<Blob | null>(null);
   const [audioURL, setAudioURL] = useState<string | null>(null);
   const [edit, setEdit] = useState(false);
@@ -59,7 +71,6 @@ export default function Index() {
   let likefetcher = useFetcher();
   const editfetcher = useFetcher();
 
-  let editData = editfetcher.data?.edited;
   let liked = likefetcher.data?.liked;
   function handleCopy() {
     let textToCopy = text;
@@ -90,14 +101,9 @@ export default function Index() {
     }
   }, [audioURL]);
 
-  const handleFileChange = (file) => {
-    if (file) {
-      setAudio(file);
-      uploadFile(file);
-    }
-  };
+ 
   let text = fetcher.data?.text;
-  let inferenceId = fetcher.data?.inferenceId;
+  let inferenceId = fetcher.data?.id;
 
   function handleEditSubmit() {
     let edited = editText;
@@ -107,20 +113,18 @@ export default function Index() {
         edited,
       },
       {
-        method: "POST",
+        method: "PATCH",
       }
     );
     setEdit(false);
   }
-  let newText = editfetcher.data?.edited;
-
+  let editData = editfetcher.data;
   function handleCancelEdit() {
     setEdit(false);
     setEditText("");
   }
 
   const actionError = fetcher.data?.error;
- console.log("actionError", actionError)
   const uploadFile = async (file: File) => {
     try {
       let formData = new FormData();
@@ -156,6 +160,12 @@ export default function Index() {
     }
   };
   let isUploading = uploadProgress > 0 && uploadProgress < 99;
+  
+  useEffect(()=>{
+  if(editData){
+    setEditText(editData)
+  }
+  },[editData])
 
   return (
     <ToolWraper title="STT">
@@ -252,8 +262,9 @@ export default function Index() {
                 likefetcher={likefetcher}
                 sourceText={audioURL}
                 inferenceId={inferenceId}
+                inferenceType="stt"
                 setEdit={setEdit}
-                text={newText ?? text}
+                text={editData ?? text}
                 handleCopy={handleCopy}
                 setEditText={setEditText}
                 sourceLang="bo"

@@ -22,6 +22,7 @@ type NonEditModeActionsProps = {
   text: any;
   handleCopy: () => void;
   sourceLang: string;
+  inferenceType:"translation"|"ocr"|"tts"|"stt"
 };
 
 export function NonEditModeActions({
@@ -33,11 +34,13 @@ export function NonEditModeActions({
   text,
   handleCopy,
   sourceLang,
+  inferenceType
 }: NonEditModeActionsProps) {
   let isOutputNull = !text || text === "";
   if (isOutputNull || !isSelected) return null;
-  const { liked, disliked } = likefetcher.data?.vote || {};
-
+  // const { liked, disliked } = likefetcher.data?.vote || {};
+  let liked=false;
+  let disliked=false;
   return (
     <div
       className={`flex ${
@@ -75,6 +78,7 @@ export function NonEditModeActions({
               output={text}
               sourceText={sourceText}
               inferenceId={inferenceId}
+              inferenceType={inferenceType}
             />
           </div>
           <hr />
@@ -111,6 +115,7 @@ export function NonEditButtons({
   likefetcher,
   sourceText,
   inferenceId,
+  inferenceType,
   setEdit,
   setEditText,
   text,
@@ -119,7 +124,9 @@ export function NonEditButtons({
 }: NonEditButtonProps) {
   let isOutputNull = !text || text === "";
   if (isOutputNull) return null;
-  const { liked, disliked } = likefetcher.data?.vote || {};
+  // const { liked, disliked } = likefetcher.data?.vote || {};
+  let liked=false;
+  let disliked=false;
   const ClickEdit = () => {
     setEditText(text);
     setEdit(true);
@@ -137,6 +144,7 @@ export function NonEditButtons({
           output={text}
           sourceText={sourceText}
           inferenceId={inferenceId}
+          inferenceType={inferenceType}
           clickEdit={ClickEdit}
         />
         <CopyToClipboard textToCopy={text} onClick={handleCopy} />

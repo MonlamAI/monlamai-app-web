@@ -32,7 +32,7 @@ function SingleInptSection({ fetcher }: any) {
   const likeFetcher = useFetcher();
   const editfetcher = useFetcher();
 
-  const editData = editfetcher.data?.edited;
+  const editData = editfetcher.data;
   const data = fetcher?.data;
   // Replace non-Tibetan characters with an empty string
   const tibetanRegex = /[\u0F00-\u0FFF]/;
@@ -42,10 +42,9 @@ function SingleInptSection({ fetcher }: any) {
     text = "";
   }
 
-  const inferenceId = fetcher.data?.inferenceId;
+  const inferenceId = fetcher.data?.id;
   const isActionSubmission = fetcher.state !== "idle";
   const errorMessage = data?.error_message;
-
   const handleFormClear = () => {
     setImageUrl(null);
     handleCancelEdit();

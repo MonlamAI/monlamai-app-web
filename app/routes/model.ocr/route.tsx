@@ -10,6 +10,7 @@ import OCR from "./Component/OCR";
 import { updateEdit } from "~/modal/inference.server";
 import { getUserSession } from "~/services/session.server";
 import crop_style from "react-advanced-cropper/dist/style.css";
+import { getHeaders } from "~/component/utils/getHeaders.server";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -37,8 +38,15 @@ export const action: ActionFunction = async ({ request }) => {
   if (method === "PATCH") {
     let edited = formdata.get("edited") as string;
     let inferenceId = formdata.get("inferenceId") as string;
-    let updated = await updateEdit(inferenceId, edited);
-    return updated;
+    const api_url = process.env?.API_URL + `/api/v1/ocr/${inferenceId}?action=edit&edit_text=${edited}`;
+    const headers=await getHeaders(request);
+    const data=await fetch(api_url, {
+      method: "PUT",
+      headers,
+    });
+    let res=await data.json();
+    return res?.data?.editOutput
+
   }
 };
 

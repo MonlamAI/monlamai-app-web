@@ -1,12 +1,13 @@
-import { LoaderFunctionArgs } from "@remix-run/node";
-import { verify_token } from "~/services/session.server";
+import type { LoaderFunctionArgs } from "@remix-run/node";
 import { userPrefs } from "../services/cookies.server";
 import { eng_languagesOptions } from "~/helper/const";
-import { getUserDetail } from "~/services/session.server";
+import { getUserDetail, verify_token } from "~/services/session.server";
+import { getHeaders } from "../component/utils/getHeaders.server";
 export async function loader({ request }: LoaderFunctionArgs) {
   let url = new URL(request.url);
   let text = url.searchParams.get("text") as string;
   let target = url.searchParams.get("target") as string;
+  let inference_id = url.searchParams.get("id") as string;
   const cookieHeader = request.headers.get("Cookie");
   const cookie = (await userPrefs.parse(cookieHeader)) || {};
   let csrfToken = cookie.token;
@@ -17,45 +18,18 @@ export async function loader({ request }: LoaderFunctionArgs) {
   }
   let { user } = await getUserDetail(request);
   const API_URL = process.env?.API_URL;
-  // if (useDharmaMitraAPI) {
-  // let api_url = "https://dharmamitra.org/api/translation-exp/";
-  // let DharmaKey = process.env?.DHARMA_API_KEY;
-  // let target_lang =
-  //   eng_languagesOptions.find((l) => l.code === target)?.name ?? "tibetan";
-
-  // const data = {
-  //   input_sentence: text,
-  //   input_encoding: "auto",
-  //   do_grammar_explanation: true,
-  //   target_lang: target_lang,
-  //   model: "gemma2",
-  // };
-  // return fetch(api_url, {
-  //   method: "POST",
-  //   body: JSON.stringify(data),
-  //   headers: {
-  //     "x-key": DharmaKey!, // Replace with your actual access key
-  //     "Content-Type": "application/json",
-  //   },
-  //   signal: controller.signal,
-  // });
-  // } else {
-  const formData = new FormData();
+  
   let api_url = API_URL + "/api/v1/translation/stream";
-  const AccessKey = process.env?.API_ACCESS_KEY;
   let body = JSON.stringify({
     input: text,
-    target: target,
+    target,
     id_token: user ? user?.token : null,
+    inference_id,
   });
+  let headers = await getHeaders(request);
   return fetch(api_url, {
     method: "POST",
     body,
-    headers: {
-      Accept: "application/json",
-      Authorization: AccessKey,
-      "Content-Type": "application/json",
-    },
+    headers,
   });
-  // }
 }

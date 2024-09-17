@@ -55,9 +55,8 @@ export default function Index() {
   let { CHAR_LIMIT } = useLoaderData();
   const fetcher = useFetcher();
   const isLoading = fetcher.state !== "idle";
-  const data = fetcher.data;
   const sourceUrl = fetcher.data?.output;
-  const inferenceId = fetcher.data?.inferenceData?.id;
+  const inferenceId = fetcher.data?.id;
 
   let charCount = sourceText?.length;
 
@@ -146,20 +145,21 @@ export default function Index() {
                   />
                 </div>
               )}
-              {!isLoading && data && (
+              {!isLoading &&  inferenceId && (
                 <div className="flex-1 h-full flex justify-center items-center">
                   {sourceUrl && <AudioPlayer audioURL={sourceUrl} />}
                 </div>
               )}
             </div>
-            {data && (
+            {inferenceId && (
               <div className="flex justify-end py-3 px-5 border-t border-t-dark_text-secondary dark:border-t-[--card-border]">
                 <div className="flex gap-3 justify-end md:gap-5 items-center p-1">
                   <ReactionButtons
                     fetcher={likeFetcher}
-                    output={data ? `data:audio/wav;base64,${data}` : null}
+                    output={sourceUrl}
                     sourceText={sourceText}
                     inferenceId={inferenceId}
+                    inferenceType="tts"
                     clickEdit={undefined}
                   />
 

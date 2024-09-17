@@ -1,10 +1,9 @@
 import { NavLink } from "@remix-run/react";
 import { Card } from "flowbite-react";
-
 import { motion } from "framer-motion";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
-import { ModalType, models } from "~/helper/models";
-
+import type { ModalType } from "~/helper/models";
+import { models } from "~/helper/models";
 type EachProps = {
   model: ModalType;
 };

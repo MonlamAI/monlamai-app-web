@@ -18,6 +18,7 @@ type useTranslateType = {
 };
 
 function handleEventStream(
+  id: string,
   text: string,
   direction: string,
   onData: (data: string) => void,
@@ -28,7 +29,7 @@ function handleEventStream(
     const eventSource = new EventSource(
       `/api/translation/stream?text=${encodeURIComponent(
         text
-      )}&target=${encodeURIComponent(direction)}`
+      )}&target=${encodeURIComponent(direction)}&id=${id}`
     );
 
     eventSource.onmessage = (event) => {
@@ -57,7 +58,7 @@ function handleEventStream(
         toast(API_ERROR_MESSAGE, {
           position: toast.POSITION.BOTTOM_CENTER,
           closeOnClick: true,
-          onClose: () => setIsToasted(false)
+          onClose: () => setIsToasted(false),
         });
         setIsToasted(true);
       }
@@ -96,6 +97,7 @@ function cleanData(content) {
 }
 
 const useTranslate = ({
+  inferenceId,
   source_lang,
   target_lang,
   text,
@@ -128,25 +130,20 @@ const useTranslate = ({
 
       const startTime = performance.now(); // Record start time
       try {
-        await handleEventStream(input, target_lang, setData, isToasted, setIsToasted);
+        await handleEventStream(
+          inferenceId,
+          input,
+          target_lang,
+          setData,
+          isToasted,
+          setIsToasted
+        );
       } catch (error) {
         setError(error.message);
       } finally {
         const endTime = performance.now(); // Record end time
         setResponseTime(endTime - startTime); // Calculate response time
         setIsLoading(false);
-        savefetcher.submit(
-          {
-            source: text,
-            translation: data,
-            responseTime,
-            inputLang: source_lang,
-            target_lang,
-          },
-          {
-            method: "POST",
-          }
-        );
         resetFetcher(editfetcher);
         setDone(true);
       }

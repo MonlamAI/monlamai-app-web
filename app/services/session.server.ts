@@ -36,22 +36,16 @@ export async function getUserSession(request: Request) {
       const currentTime = Math.floor(Date.now() / 1000); // Get the current time in seconds
       if (decoded.exp < currentTime) {
         redirect("/logout");
-        return null;
       } else {
         console.log("Token is valid");
+        return user;
       }
-    } else {
-      console.log("Invalid token");
-      redirect("/logout");
-      return null;
     }
   } catch (e) {
     console.log("Error decoding token:", e);
-    redirect("/logout");
     return null;
   }
-
-  return user;
+  redirect("/logout");
 }
 
 export async function getUserDetail(request: Request) {
