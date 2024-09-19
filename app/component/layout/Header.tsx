@@ -1,4 +1,4 @@
-import { Form, NavLink, useRouteLoaderData, Link } from "@remix-run/react";
+import { Form, NavLink, useRouteLoaderData, Link,useFetcher } from "@remix-run/react";
 import { Button, CustomFlowbiteTheme, Dropdown } from "flowbite-react";
 import { useState } from "react";
 import { HiBriefcase, HiLogout } from "react-icons/hi";
@@ -6,11 +6,12 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { RxCross1 } from "react-icons/rx";
 import uselitteraTranlation from "../hooks/useLitteraTranslation";
 import TranslationSwitcher from "../TranslationSwitcher";
-import ThemeSwitcher from "../ThemeSwitcher";
+import ThemeSwitcher from "../ThemeSwitcher.client";
 import { FaQuoteRight, FaUsers } from "react-icons/fa";
 import { ICON_SIZE } from "~/helper/const";
 import { FaArrowRightFromBracket } from "react-icons/fa6";
 import { TbApi } from "react-icons/tb";
+import { ClientOnly } from "remix-utils/client-only";
 
 function Header() {
   const [showMenu, setShowMenu] = useState(false);
@@ -50,7 +51,11 @@ function Header() {
             <TeamLink />
           </div>
           <div className="flex items-center gap-4 mr-7">
+            <ClientOnly fallback={null}>
+              {()=>
             <ThemeSwitcher />
+              }
+            </ClientOnly>
             <TranslationSwitcher />
             <Menu />
           </div>
@@ -84,7 +89,11 @@ function Header() {
             </div>
             <Devider />
             <div onClick={() => setShowMenu((p) => !p)} className="px-3">
-              <ThemeSwitcher />
+            <ClientOnly fallback={null}>
+              {()=>
+            <ThemeSwitcher />
+              }
+            </ClientOnly>
             </div>
             <Devider />
             <div className="px-3">
@@ -132,6 +141,11 @@ function Menu() {
   const userEmail = user.emails[0].value;
   const userPhoto = user.photos[0].value;
   const userName = user.name.givenName;
+  const fetcher=useFetcher();
+
+  const logout = () => {
+  fetcher.submit({},{method:"post",action:"/logout"})  
+  }
   return (
     <>
       <Dropdown
@@ -153,12 +167,10 @@ function Menu() {
             {userEmail}
           </span>
         </Dropdown.Header>
-        <Dropdown.Item icon={HiLogout} className="mt-2">
-          <Form method="post" action="/logout">
-            <button className={isEnglish ? "font-poppins" : "font-monlam"}>
+        <Dropdown.Item icon={HiLogout} className="mt-2" onClick={logout}>
+            <div className={isEnglish ? "font-poppins" : "font-monlam"}>
               {translation.logout}
-            </button>
-          </Form>
+            </div>
         </Dropdown.Item>
         <Dropdown.Item icon={TbApi} className="mt-2">
           <a

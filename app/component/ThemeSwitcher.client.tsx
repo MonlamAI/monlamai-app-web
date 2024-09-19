@@ -22,30 +22,22 @@ function ThemeSwitcher() {
       className="flex flex-1 gap-2 items-center text-[14px] text-light_text-secondary dark:text-dark_text-secondary  cursor-pointer"
     >
       {isDarkMode ? (
-        <>
-          {typeof document !== undefined ? (
-            <>
+             <>
               <MdOutlineLightMode size={ICON_SIZE} />
               <span
                 style={{ position: "relative", top: isTibetan ? "3px" : "0" }}
               >
                 {translation.lightmode}
               </span>
-            </>
-          ) : null}
         </>
       ) : (
         <>
-          {typeof document !== undefined ? (
-            <>
               <MdDarkMode size={ICON_SIZE} />
               <span
                 style={{ position: "relative", top: isTibetan ? "3px" : "0" }}
               >
                 {translation.darkmode}
               </span>
-            </>
-          ) : null}
         </>
       )}
     </div>
