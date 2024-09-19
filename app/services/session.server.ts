@@ -29,23 +29,7 @@ export let sessionStorage = createCookieSessionStorage({
 export async function getUserSession(request: Request) {
   const session = await getSession(request.headers.get("Cookie"));
   let user = session.get("user");
-  try {
-    const decoded = jwt.decode(user.id_token) as { exp: number }; // Decode the token to access the 'exp' field
-
-    if (decoded && decoded.exp) {
-      const currentTime = Math.floor(Date.now() / 1000); // Get the current time in seconds
-      if (decoded.exp < currentTime) {
-        redirect("/logout");
-      } else {
-        console.log("Token is valid");
-        return user;
-      }
-    }
-  } catch (e) {
-    console.log("Error decoding token:", e);
-    return null;
-  }
-  redirect("/logout");
+  return user;
 }
 
 export async function getUserDetail(request: Request) {
@@ -69,16 +53,7 @@ export async function generateCSRFToken(request: Request, user: any) {
   return token;
 }
 
-export async function verify_token(token: string) {
-  let secretKey = process.env.API_ACCESS_KEY;
-  await jwt.verify(token, secretKey, (err, decoded) => {
-    if (err) {
-      throw new Error("Failed to authenticate token");
-    }
-    // Save decoded information to request object
-  });
-  return true;
-}
+
 
 export let returnToCookie = createCookie("return-to", {
   path: "/",

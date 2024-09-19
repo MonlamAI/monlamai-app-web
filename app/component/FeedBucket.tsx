@@ -10,11 +10,16 @@ function FeedBucket() {
     setShow(true);
     const feedbucket = document.querySelector("feedbucket-app");
     feedbucket?.classList.remove("hidden");
-
+    setTimeout(() => {
+      if (feedbucket) {
+        feedbucket.style.display = "block";
+      }
+    }, 0);
     (function (k) {
       const s = document.createElement("script");
       s.module = true;
       s.defer = true;
+      s.id = "feedbucket_data";
       s.src = "https://cdn.feedbucket.app/assets/feedbucket.js";
       s.dataset.feedbucket = k;
       document.head.appendChild(s);
@@ -27,9 +32,14 @@ function FeedBucket() {
     };
   };
   let hideFeedBucket = () => {
-    setShow(false);
     const feedbucket = document.querySelector("feedbucket-app");
+    setShow(false);
     feedbucket?.classList.add("hidden");
+    setTimeout(() => {
+      if (feedbucket) {
+        feedbucket.style.display = "none";
+      }
+    }, 0);
   };
   let esukhia_user = user?.email?.includes("@esukhia.org");
   let monlam_user = user?.email?.includes("@monlam.ai");

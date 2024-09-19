@@ -53,7 +53,6 @@ export const loader: LoaderFunction = async ({ request, context }) => {
   const cookieHeader = request.headers.get("Cookie");
   const cookie = (await userPrefs.parse(cookieHeader)) || {};
   cookie.token = await generateCSRFToken(request, user);
-
   return json(
     {
       user,
@@ -135,7 +134,7 @@ function Document({ children, theme }: { children: React.ReactNode }) {
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1"
-        />{" "}
+        />
         <link rel="apple-touch-icon" href="img/logo192web.png" />
         <link rel="apple-touch-startup-image" href="img/logo1280x720web.png" />
         <link rel="apple-touch-startup-image" href="img/logo720x1280web.png" />

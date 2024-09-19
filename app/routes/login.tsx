@@ -10,10 +10,12 @@ async function login(request: Request) {
   let returnTo = url.searchParams.get("returnTo") as string | null;
 
   try {
-    return await auth.authenticate("auth0", request, {
+    const data=await auth.authenticate("auth0", request, {
       successRedirect: returnTo ?? "/",
       failureRedirect: "/",
     });
+    console.log(data)
+    return 
   } catch (error) {
     if (!returnTo) throw error;
     if (error instanceof Response && isRedirect(error)) {

@@ -92,12 +92,10 @@ function SingleInptSection({ fetcher }: any) {
       console.error(`Error uploading file ${file.name}:`, error);
     }
   };
-
   function handleCancelEdit() {
     setEdit(false);
     setEditText("");
   }
-
   function handleEditSubmit() {
     let edited = editText;
     editfetcher.submit(
