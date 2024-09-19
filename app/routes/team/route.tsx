@@ -1,15 +1,15 @@
 import React from "react";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import ToolWraper from "~/component/ToolWraper";
-import { getUserDetail } from "~/services/session.server";
 import TeamMember from "./components/TeamMember";
 import { Outlet } from "@remix-run/react";
 import TibetanTeam from "~/helper/teamData/bo.json";
 import EnglishTeam from "~/helper/teamData/en.json";
 import { useMemo } from "react";
+import { auth } from "../../services/auth.server";
 
 export const loader: LoaderFunction = async ({ request }) => {
-  let userdata = await getUserDetail(request);
+  let userdata = await auth.isAuthenticated(request);
   return userdata;
 };
 

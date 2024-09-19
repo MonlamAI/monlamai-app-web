@@ -10,7 +10,6 @@ import {
   OutputDisplay,
 } from "../model.mt/components/UtilityComponent";
 import { NonEditButtons } from "~/component/ActionButtons";
-import { updateEdit } from "~/modal/inference.server";
 import EditDisplay from "~/component/EditDisplay";
 import { resetFetcher } from "~/component/utils/resetFetcher";
 import { RxCross2 } from "react-icons/rx";

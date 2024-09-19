@@ -1,12 +1,10 @@
 import { LinksFunction, LoaderFunction, redirect } from "@remix-run/node";
 
 import { useSearchParams } from "@remix-run/react";
-import { getInferences, getInferencesCount } from "~/modal/inference.server";
 import InferenceList from "./component/inferencesList";
 import { startOfMonth, endOfMonth } from "date-fns";
 import DateStyle from "react-date-range/dist/styles.css"; // default style
 import DateStyleDefault from "react-date-range/dist/theme/default.css";
-import { getUsersCount } from "~/modal/user.server";
 import UserCount from "./component/UserCount";
 import InferenceCount from "./component/InferenceCount";
 import { SelectionList } from "./component/SelectionList";
@@ -41,11 +39,11 @@ export const loader: LoaderFunction = async ({ request }) => {
   if (!isAdmin(userdata)) return redirect("/");
 
   if (!check || check === "user") {
-    let usercount = await getUsersCount();
+    let usercount = 3;
     return { usercount };
   }
   if (check === "inferenceCount") {
-    let inferenceCount = await getInferencesCount();
+    let inferenceCount = 2;
     return { inferenceCount };
   }
   if (check === "inferenceList") {

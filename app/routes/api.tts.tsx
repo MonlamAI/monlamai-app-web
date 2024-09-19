@@ -1,20 +1,19 @@
 import type { ActionFunction } from "@remix-run/node";
 import inputReplace from "~/component/utils/ttsReplace.server";
 import { API_ERROR_MESSAGE } from "~/helper/const";
-import { saveInference } from "~/modal/inference.server";
-import { getUserDetail } from "~/services/session.server";
 import { getHeaders } from "../component/utils/getHeaders.server";
+import { auth } from "~/services/auth.server";
 
 export const action: ActionFunction = async ({ request }) => {
   const AMPLIFICATION_LEVEL = 5; //1-5 value is safe
-  const { user } = await getUserDetail(request);
+  let user = await auth.isAuthenticated(request);
   const formdata = await request.formData();
   const input_data = formdata.get("input") as string;
   const API_URL = process.env.API_URL as string;
   let data;
   let url = API_URL + "/api/v1/tts";
   try {
-    const token = user ? user?.token : null;
+    const token = user ? user?.id_token : null;
     const body = JSON.stringify({
       input: inputReplace(input_data),
       id_token: token,

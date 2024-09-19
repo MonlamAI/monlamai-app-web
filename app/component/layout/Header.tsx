@@ -128,6 +128,10 @@ function Menu() {
         </Button>
       </Form>
     );
+
+  const userEmail = user.emails[0].value;
+  const userPhoto = user.photos[0].value;
+  const userName = user.name.givenName;
   return (
     <>
       <Dropdown
@@ -137,16 +141,16 @@ function Menu() {
         renderTrigger={() => (
           <img
             className="h-6 w-6 rounded-full hidden md:block  cursor-pointer"
-            src={user.picture}
-            title={user.email}
-            alt={user.email}
+            src={userPhoto}
+            title={userEmail}
+            alt={userEmail}
             referrerPolicy="no-referrer"
           />
         )}
       >
         <Dropdown.Header>
           <span className="block truncate text-sm font-medium font-poppins">
-            {user.email}
+            {userEmail}
           </span>
         </Dropdown.Header>
         <Dropdown.Item icon={HiLogout} className="mt-2">

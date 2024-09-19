@@ -54,9 +54,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 export const action: ActionFunction = async ({ request }) => {
   let formdata = await request.formData();
-  let userdata = await getUserSession(request);
-  let ip = getIpAddressByRequest(request);
-  let user = await getUser(userdata?._json?.email);
   let method = request.method;
   if (method === "PATCH") {
     const edited = formdata.get("edited") as string;

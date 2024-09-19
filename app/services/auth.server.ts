@@ -25,25 +25,7 @@ const auth0Strategy = new Auth0Strategy(
     let email = profile?._json?.email;
     let picture = profile?._json?.picture;
     let username = profile?._json?.given_name;
-    const userdata =
-      email &&
-      (await db.user.upsert({
-        where: {
-          email,
-        },
-        create: {
-          picture,
-          username,
-          email,
-        },
-        update: {
-          picture,
-          username,
-          email,
-        },
-      }));
-
-    return { db_id: userdata.id, id_token, ...profile };
+    return { id_token, ...profile };
   }
 );
 auth.use(auth0Strategy);

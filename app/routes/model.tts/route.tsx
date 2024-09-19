@@ -16,7 +16,6 @@ import { CancelButton } from "~/component/Buttons";
 import TextComponent from "~/component/TextComponent";
 import { ErrorMessage } from "~/component/ErrorMessage";
 import CardComponent from "~/component/Card";
-import { getUser } from "~/modal/user.server";
 import { TtsSubmitButton } from "./components/UtilityComponents";
 import { toast } from "react-toastify";
 import { getUserSession } from "~/services/session.server";
@@ -27,6 +26,7 @@ import AudioPlayer from "./components/AudioPlayer";
 import { ErrorBoundary } from "~/component/ErrorPages";
 import { CharacterSizeComponent } from "~/component/CharacterSize";
 import useEffectAfterFirstRender from "~/component/hooks/useEffectAfterFirstRender";
+import { auth } from "../../services/auth.server";
 
 export const meta: MetaFunction = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -36,9 +36,8 @@ export const meta: MetaFunction = ({ matches }) => {
 };
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  let user = await getUserSession(request);
-
-  let CHAR_LIMIT = parseInt(process.env?.MAX_TEXT_LENGTH_TTS!);
+  const user =  await auth.isAuthenticated(request);
+  const CHAR_LIMIT = parseInt(process.env?.MAX_TEXT_LENGTH_TTS!);
 
   return {
     user,

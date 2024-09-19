@@ -7,7 +7,6 @@ import type {
 import { ErrorBoundary } from "../model.mt/route";
 import ToolWraper from "~/component/ToolWraper";
 import OCR from "./Component/OCR";
-import { updateEdit } from "~/modal/inference.server";
 import { getUserSession } from "~/services/session.server";
 import crop_style from "react-advanced-cropper/dist/style.css";
 import { getHeaders } from "~/component/utils/getHeaders.server";

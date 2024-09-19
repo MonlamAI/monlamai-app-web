@@ -3,7 +3,6 @@ import {
   createCookie,
   redirect,
 } from "@remix-run/node";
-import { getUser } from "~/modal/user.server";
 import jwt from "jsonwebtoken";
 // export the whole sessionStorage object
 import { createThemeSessionResolver } from "remix-themes";
@@ -32,19 +31,6 @@ export async function getUserSession(request: Request) {
   return user;
 }
 
-export async function getUserDetail(request: Request) {
-  let userdata = await getUserSession(request);
-  let user = null;
-  if (userdata) {
-    user = await getUser(userdata?._json.email);
-  }
-  return {
-    user: {
-      token: userdata?.id_token,
-      ...user,
-    },
-  };
-}
 
 export async function generateCSRFToken(request: Request, user: any) {
   let secretKey = process.env.API_ACCESS_KEY;

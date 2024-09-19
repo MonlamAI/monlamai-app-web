@@ -1,12 +1,11 @@
 import type { ActionFunction } from "@remix-run/node";
-import { saveInference } from "~/modal/inference.server";
-import { getUserDetail } from "~/services/session.server";
 import { API_ERROR_MESSAGE } from "~/helper/const";
 import { getHeaders } from "../component/utils/getHeaders.server";
+import { auth } from "~/services/auth.server";
 
 export const action: ActionFunction = async ({ request }) => {
   let formdata = await request.formData();
-  let { user } = await getUserDetail(request);
+  let user = await auth.isAuthenticated(request);
   let URL_File = process.env.API_URL;
   let show_coordinate = formdata.get("show_coordinate") as string;
   let imageUrl = formdata.get("imageUrl") as string;
@@ -16,7 +15,6 @@ export const action: ActionFunction = async ({ request }) => {
     id_token: token,
   });
   let data;
-  const startTime = performance.now();
   try {
     let res = await fetch(URL_File + "/api/v1/ocr", {
       method: "POST",
@@ -30,8 +28,6 @@ export const action: ActionFunction = async ({ request }) => {
       error: API_ERROR_MESSAGE,
     };
   }
-  const endTime = performance.now();
-  const responseTime = endTime - startTime;
   if (!data?.output) return {
     error: API_ERROR_MESSAGE,
   };

@@ -26,7 +26,6 @@ import toastStyle from "react-toastify/dist/ReactToastify.css";
 import feedBucketStyle from "~/styles/feedbucket.css";
 import { ToastContainer } from "react-toastify";
 import FeedBucket from "./component/FeedBucket";
-import LocationComponent from "./component/LocationDetect";
 import { ErrorPage } from "./component/ErrorPages";
 import {
   themeSessionResolver,
@@ -35,7 +34,6 @@ import {
 } from "~/services/session.server";
 import { AppInstaller } from "~/component/AppInstaller.client";
 import { ClientOnly } from "remix-utils/client-only";
-import { getUser } from "~/modal/user.server";
 import { userPrefs } from "~/services/cookies.server";
 import {
   ThemeProvider,
@@ -43,31 +41,21 @@ import {
   PreventFlashOnWrongTheme,
 } from "remix-themes";
 import Maintenance from "./component/Maintenance";
+import { auth } from "./services/auth.server";
 
 export const loader: LoaderFunction = async ({ request, context }) => {
-  let userdata = await getUserSession(request);
+  const user = await auth.isAuthenticated(request);
   const feedBucketAccess = process.env.FEEDBUCKET_ACCESS;
   const feedbucketToken = process.env.FEEDBUCKET_TOKEN;
-  let user = userdata ? await getUser(userdata?._json?.email) : null;
   const { getTheme } = await themeSessionResolver(request);
-  const cookieHeader = request.headers.get("Cookie");
-  const cookie = (await userPrefs.parse(cookieHeader)) || {};
-  cookie.token = await generateCSRFToken(request, user);
   return json(
     {
       user,
       isJobEnabled: false,
       feedBucketAccess,
       feedbucketToken,
-      AccessKey: process.env?.API_ACCESS_KEY,
       theme: getTheme(),
       IS_UNDER_MAINTENANCE: process.env?.IS_UNDER_MAINTENANCE,
-    },
-    {
-      status: 200,
-      headers: {
-        "Set-Cookie": await userPrefs.serialize(cookie),
-      },
     }
   );
 };
@@ -150,7 +138,6 @@ function Document({ children, theme }: { children: React.ReactNode }) {
       </head>
       <body className="flex h-[100dvh]  mx-auto inset-0 overflow-y-auto overflow-x-hidden dark:bg-slate-700 dark:text-gray-200">
         {children}
-
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -173,17 +160,15 @@ function Document({ children, theme }: { children: React.ReactNode }) {
 }
 
 function App() {
-  let { user, IS_UNDER_MAINTENANCE } = useLoaderData();
+  let {  IS_UNDER_MAINTENANCE } = useLoaderData();
   const [theme] = useTheme();
-
+ console.log( "theme", theme)
   return (
     <Document theme={theme ?? ""}>
       <LitteraProvider locales={["en_US", "bo_TI"]}>
         <div className="flex flex-col flex-1 text-light_text-default dark:text-dark_text-secondary">
           <Header />
           <ClientOnly fallback={<div />}>{() => <AppInstaller />}</ClientOnly>
-          {user && <LocationComponent />}
-
           <div className="flex-1 flex justify-center pt-4  bg-neutral-50 dark:bg-[--main-bg] ">
             <div className="flex-1 max-w-[1280px] px-2 ">
               {IS_UNDER_MAINTENANCE === "true" ? <Maintenance /> : null}
