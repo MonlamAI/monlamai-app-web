@@ -162,7 +162,6 @@ function Document({ children, theme }: { children: React.ReactNode }) {
 function App() {
   let {  IS_UNDER_MAINTENANCE } = useLoaderData();
   const [theme] = useTheme();
- console.log( "theme", theme)
   return (
     <Document theme={theme ?? ""}>
       <LitteraProvider locales={["en_US", "bo_TI"]}>

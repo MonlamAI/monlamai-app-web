@@ -1,5 +1,4 @@
 import type { ActionFunction } from "@remix-run/node";
-import { createVote, getExistingVote } from "~/modal/vote.server";
 import { getHeaders } from "~/component/utils/getHeaders.server";
 
 export const action: ActionFunction = async ({ request }) => {
