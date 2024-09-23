@@ -12,13 +12,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
   let user = await auth.isAuthenticated(request);
   const API_URL = process.env?.API_URL;
   let api_url = API_URL + "/api/v1/translation/stream";
+  let token=user ? user?.id_token : null;
   let body = JSON.stringify({
     input: text,
     target,
-    id_token: user ? user?.id_token : null,
     inference_id,
   });
-  let headers = await getHeaders(request);
+  let headers = await getHeaders(request,token);
+  console.log(headers)
   return fetch(api_url, {
     method: "POST",
     body,

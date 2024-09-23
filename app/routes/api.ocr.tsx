@@ -12,14 +12,13 @@ export const action: ActionFunction = async ({ request }) => {
   const token = user ? user?.id_token : null;
   let body = JSON.stringify({
     input: imageUrl,
-    id_token: token,
   });
   let data;
   try {
     let res = await fetch(URL_File + "/api/v1/ocr", {
       method: "POST",
       body,
-      headers: await getHeaders(request),
+      headers: await getHeaders(request,token),
     });
 
     data = await res.json();

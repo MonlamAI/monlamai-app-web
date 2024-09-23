@@ -16,9 +16,8 @@ export const action: ActionFunction = async ({ request }) => {
     const token = user ? user?.id_token : null;
     const body = JSON.stringify({
       input: inputReplace(input_data),
-      id_token: token,
     });
-    const headers = await getHeaders(request);
+    const headers = await getHeaders(request,token);
     const response = await fetch(url, {
       method: "POST",
       body,

@@ -14,9 +14,8 @@ export const action: ActionFunction = async ({ request }) => {
     const token = user ? user?.id_token : null;
     let body = JSON.stringify({
       input: audioURL,
-      id_token: token,
     });
-    let headers = await getHeaders(request);
+    let headers = await getHeaders(request,token);
     let response = await fetch(API_URL + "/api/v1/stt", {
       method: "POST",
       body,
