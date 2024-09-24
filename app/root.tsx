@@ -5,7 +5,7 @@ import type {
   HeadersArgs,
   ActionFunction,
 } from "@remix-run/node";
-import { json } from "@remix-run/node";
+import { json,redirect } from "@remix-run/node";
 import {
   Links,
   LiveReload,
@@ -45,6 +45,9 @@ import { auth } from "./services/auth.server";
 
 export const loader: LoaderFunction = async ({ request, context }) => {
   const user = await auth.isAuthenticated(request);
+  if(user && user?.expires_on){
+    if(user.expires_on > Date.now()) return redirect("/logout")    
+  }
   const feedBucketAccess = process.env.FEEDBUCKET_ACCESS;
   const feedbucketToken = process.env.FEEDBUCKET_TOKEN;
   const { getTheme } = await themeSessionResolver(request);
