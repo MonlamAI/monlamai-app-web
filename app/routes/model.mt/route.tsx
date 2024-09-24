@@ -94,7 +94,7 @@ export default function Index() {
 
   const [edit, setEdit] = useState(false);
   const [editText, setEditText] = useState("");
-  const [inferenceId, setInferenceId] = useState(uuidv4());
+  const [inferenceId, setInferenceId] = useState(null);
   const debounceSourceText = useDebounce(sourceText, 1000);
   const likefetcher = useFetcher();
   const editfetcher = useFetcher();
@@ -109,7 +109,6 @@ export default function Index() {
   }
 
   let newText = editfetcher.data?.edited;
-
   function handleEditSubmit() {
     let edited = editText;
     editfetcher.submit(
@@ -132,6 +131,7 @@ export default function Index() {
 
   let { isLoading, error, trigger } = useTranslate({
     inferenceId,
+    setInferenceId,
     source_lang,
     target_lang,
     text: sourceText,
@@ -153,6 +153,7 @@ export default function Index() {
     resetFetcher(translationFetcher);
     resetFetcher(editfetcher);
     setEdit(false);
+    setInferenceId(null);
   };
 
   function handleErrorClose() {

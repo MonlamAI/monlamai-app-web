@@ -18,24 +18,26 @@ type useTranslateType = {
 };
 
 function handleEventStream(
-  id: string,
+  setInferenceId,
   text: string,
   direction: string,
   onData: (data: string) => void,
   isToasted: boolean,
-  setIsToasted: (value: boolean) => void
+  setIsToasted: (value: boolean) => void,
+  
 ): Promise<void> {
   return new Promise((resolve, reject) => {
     const eventSource = new EventSource(
       `/api/translation/stream?text=${encodeURIComponent(
         text
-      )}&target=${encodeURIComponent(direction)}&id=${id}`
+      )}&target=${encodeURIComponent(direction)}`
     );
 
     eventSource.onmessage = (event) => {
       let data = JSON.parse(event.data);
       if (data?.generated_text) {
         let text = data?.generated_text;
+        if(data?.id) setInferenceId(data?.id)
         let replaced_text = en_bo_tibetan_replaces(text);
         onData(replaced_text);
         eventSource.close();
@@ -98,6 +100,7 @@ function cleanData(content) {
 
 const useTranslate = ({
   inferenceId,
+  setInferenceId,
   source_lang,
   target_lang,
   text,
@@ -131,7 +134,7 @@ const useTranslate = ({
       const startTime = performance.now(); // Record start time
       try {
         await handleEventStream(
-          inferenceId,
+          setInferenceId,
           input,
           target_lang,
           setData,

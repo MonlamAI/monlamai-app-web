@@ -8,7 +8,6 @@ export const action: ActionFunction = async ({ request }) => {
   let action = formdata.get("action") as string;
   
   const api_url = process.env?.API_URL + `/api/v1/${inferenceType}/${inferenceId}?action=${action}`;
-  
   const headers=await getHeaders(request);
   const data=await fetch(api_url, {
     method: "PUT",

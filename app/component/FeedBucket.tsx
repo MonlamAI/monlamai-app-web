@@ -6,6 +6,10 @@ import { RxCross2 } from "react-icons/rx";
 function FeedBucket() {
   let { user, feedBucketAccess, feedbucketToken } = useRouteLoaderData("root");
   let [show, setShow] = useState(false);
+  
+  if(!user) return null;
+  const display_name=user.displayName
+  const email=user.emails[0].value
   let feedFunction = () => {
     setShow(true);
     const feedbucket = document.querySelector("feedbucket-app");
@@ -26,8 +30,8 @@ function FeedBucket() {
     })(feedbucketToken);
     window.feedbucketConfig = {
       reporter: {
-        name: user.username,
-        email: user.email,
+        name: display_name,
+        email: email,
       },
     };
   };
@@ -41,12 +45,13 @@ function FeedBucket() {
       }
     }, 0);
   };
-  let esukhia_user = user?.email?.includes("@esukhia.org");
-  let monlam_user = user?.email?.includes("@monlam.ai");
+  let esukhia_user = email?.includes("@esukhia.org");
+  let monlam_user = email?.includes("@monlam.ai");
+  const show_feedbucket= monlam_user ||
+  esukhia_user ||
+  JSON.parse(feedBucketAccess).includes(email)
   if (
-    monlam_user ||
-    esukhia_user ||
-    JSON.parse(feedBucketAccess).includes(user?.email)
+   show_feedbucket
   ) {
     return (
       <div
