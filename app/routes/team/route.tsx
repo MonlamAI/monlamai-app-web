@@ -1,11 +1,9 @@
-import React from "react";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import ToolWraper from "~/component/ToolWraper";
 import TeamMember from "./components/TeamMember";
 import { Outlet } from "@remix-run/react";
 import TibetanTeam from "~/helper/teamData/bo.json";
 import EnglishTeam from "~/helper/teamData/en.json";
-import { useMemo } from "react";
 import { auth } from "../../services/auth.server";
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -27,10 +25,14 @@ function Team() {
       <ToolWraper title="team">
         <div className="flex flex-col md:flex-row mb-8 justify-between items-center gap-6">
           <div className="w-full md:w-1/2 mb-4 text-left">
-            <h1 className="text-4xl font-bold mb-4">
-              {isTibetan ? "ང་ཚོའི་རུ་ཁག།" : "Our Team"}
+            <h1
+              className={`text-4xl font-bold mb-4 ${
+                isTibetan ? "leading-loose" : ""
+              }`}
+            >
+              {translation.ourTeam}
             </h1>
-            <p>
+            <p className={`${isTibetan ? "leading-loose" : ""}`}>
               {isTibetan
                 ? `
               མོན་ལམ་བཟོ་ལས་རིག་པའི་རུ་ཁག་གི་ཁོངས་མི་རེ་རེས་གྲངས་ཉུང་མི་རིགས་ཀྱི་སྐད་ཡིག་དང་རིག་གཞུང་གི་ཆེད་དུ་འཕྲུལ་རིག་གིས་ཅི་ཞིག་བྱེད་ཐུབ་པའི་ས་མཚམས་རྒྱ་བསྐྱེད་གཏོང་རྒྱུར་ཧུར་བརྩོན་བྱེད་བཞིན་ཡོད། ང་ཚོའི་རྒྱབ་ལྗོངས་ནི་ང་ཚོའི་ལས་འགན་ལྟར་སྣ་མང་ཡིན་ཡང་། ང་ཚོ་ནི་དོན་སྙིང་ལྡན་པའི་ཤུགས་རྐྱེན་ཞིག་ཐེབས་ཐབས་བྱ་རྒྱུའི་ཆོད་སེམས་ཀྱིས་མཉམ་དུ་འབྲེལ་ཡོད། མཉེན་ཆས་བཟོ་སྐྲུན་པ་ནས་བོད་སྐད་ཆེད་མཁས་པ་དང་རིག་གཞུང་སློབ་སྟོན་པའི་བར། ང་ཚོའི་རུ་ཁག་གིས་ང་ཚོའི་ལས་འཆར་རྣམས་བོད་མིའི་སྤྱི་ཚོགས་ཀྱི་དགོས་མཁོ་དང་རེ་བ་དང་མཐུན་པ་ཡོང་བར་ཉེ་བར་མཉམ་ལས་བྱེད་བཞིན་ཡོད།`
