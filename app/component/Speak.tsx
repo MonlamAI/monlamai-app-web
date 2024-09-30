@@ -1,39 +1,92 @@
 import { useFetcher } from "@remix-run/react";
-import React, { useEffect, useMemo, useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaPause } from "react-icons/fa6";
-import { ICON_SIZE } from "~/helper/const";
-import { HiMiniSpeakerWave } from "react-icons/hi2";
 import { Spinner } from "flowbite-react";
-import useAudioPlayer from "./hooks/useAudioPlayer";
+import { FaVolumeUp } from "react-icons/fa";
 
-function Speak({
-  text,
-  getText,
-}: {
+type propType = {
   text: string | null;
-  getText?: () => string;
-}) {
+  lang: "bo" | "en";
+  isDark?: boolean;
+};
+
+function Speak({ text, lang, isDark }: propType) {
   const fetcher = useFetcher();
   const audioRef = useRef<HTMLAudioElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [playingEnglish, setPlayingEnglish] = useState(false);
+  const [audioCache, setAudioCache] = useState<{ [key: string]: string }>({}); // Cache for audio data
 
-  const { isPlaying, pauseAudio } = useAudioPlayer(audioRef, fetcher.data);
+  function speak(eng_text) {
+    if (playingEnglish) {
+      setPlayingEnglish(false);
+    }
+    if ("speechSynthesis" in window) {
+      if (window.speechSynthesis.speaking) {
+        // If already speaking, cancel the current speech
+        window.speechSynthesis.cancel();
+      } else {
+        // If not speaking, play the new text
+        const utterance = new SpeechSynthesisUtterance(eng_text);
+        utterance.lang = "en-US"; // Set language, adjust as needed
+        window.speechSynthesis.speak(utterance);
+        setPlayingEnglish(true);
+        utterance.onend = () => {
+          setPlayingEnglish(false);
+        };
+      }
+    } else {
+      console.error("Text-to-Speech is not supported in this browser.");
+    }
+  }
 
-  const handlePlayClick = () => {
-    const url = "/api/tts";
-    const sourceText = getText ? getText() : text;
-    fetcher.submit({ sourceText }, { action: url, method: "POST" });
+  const pauseAudio = () => {
+    audioRef.current?.pause();
+    setIsPlaying(false);
   };
 
-  const audioSourceUrl = useMemo(() => {
-    return fetcher.data ? fetcher.data?.data : undefined;
-  }, [fetcher.data]);
-
+  useEffect(() => {
+    if (fetcher.data) {
+      audioRef.current?.play();
+      setIsPlaying(true);
+    } else {
+      setIsPlaying(false);
+    }
+    return () => {
+      if (!audioRef.current?.paused) {
+        audioRef.current?.pause();
+        setIsPlaying(false);
+      }
+    };
+  }, [fetcher.data, audioRef]);
+  const handlePlayClick = () => {
+    if (lang == "en") speak(text);
+    else if (audioCache[text]) {
+      // If cached, use the cached audio URL
+      audioRef.current?.setAttribute("src", audioCache[text]);
+      audioRef.current?.play();
+      setIsPlaying(true);
+    } else {
+      console.log(text)
+      // Otherwise, fetch the new audio and cache it
+      fetcher.submit({ input: text }, { action: "/api/tts", method: "POST" });
+    }
+  };
+  const audioSourceUrl = fetcher.data?.output;
+  if (audioSourceUrl && !audioCache[text]) {
+    // Cache the fetched audio URL if not already cached
+    setAudioCache((prevCache) => ({ ...prevCache, [text]: audioSourceUrl }));
+  }
   return (
     <>
-      {isPlaying ? (
-        <div onClick={pauseAudio} className="flex items-center ">
-          <FaPause size={ICON_SIZE} className="dark:fill-primary-500" />
-        </div>
+      {isPlaying || playingEnglish ? (
+        <button
+          onClick={pauseAudio}
+          type="button"
+          className="flex items-center "
+        >
+          <FaPause size={20} className="dark:fill-primary-500" />
+        </button>
       ) : (
         <>
           {fetcher.state !== "idle" ? (
@@ -42,25 +95,29 @@ function Speak({
               className={"fill-secondary-500 dark:fill-primary-500"}
             />
           ) : (
-            // <div className="speaker_loading  ml-2"></div>
-            <div
+            <button
+              type="button"
               onClick={handlePlayClick}
+              id="audioplay"
               className="flex items-center cursor-pointer"
             >
-              <HiMiniSpeakerWave
-                size={ICON_SIZE}
-                className="dark:fill-primary-500"
+              <FaVolumeUp
+                size={20}
+                className="text-light_text-secondary dark:text-dark_text-secondary"
+                style={{ color: isDark ? "black" : "" }}
               />
-            </div>
+            </button>
           )}
         </>
       )}
-      {fetcher.data && (
+      {audioCache[text] && (
         <audio
-          src={audioSourceUrl}
+          src={audioCache[text]}
           ref={audioRef}
           onEnded={() => pauseAudio()}
-        ></audio>
+        >
+          <track kind="captions" />
+        </audio>
       )}
     </>
   );

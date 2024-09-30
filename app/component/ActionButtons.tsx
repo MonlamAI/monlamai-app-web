@@ -47,7 +47,7 @@ export function NonEditModeActions({
         sourceLang == "en" ? "justify-between" : "justify-end"
       } p-2`}
     >
-      {sourceLang == "en" && <Speak text={text} />}
+      <Speak text={text} lang={sourceLang==='en'?'bo':'en'}/>
       <div className="flex gap-3 md:gap-5 justify-end items-center">
         <Dropdown
           className="mt-2 w-52 text-center"
@@ -137,7 +137,7 @@ export function NonEditButtons({
         sourceLang == "en" ? "justify-between" : "justify-end"
       } py-[8px] px-5 border-t dark:border-t-[--card-border] border-t-dark_text-secondary`}
     >
-      {sourceLang == "en" && <Speak text={text} />}
+         <Speak text={text} lang={sourceLang==='en'?'bo':'en'}/>
       <div className="flex gap-3 justify-end items-center p-[4px]">
         <ReactionButtons
           fetcher={likefetcher}

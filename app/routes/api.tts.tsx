@@ -5,7 +5,6 @@ import { getHeaders } from "../component/utils/getHeaders.server";
 import { auth } from "~/services/auth.server";
 
 export const action: ActionFunction = async ({ request }) => {
-  const AMPLIFICATION_LEVEL = 5; //1-5 value is safe
   let user = await auth.isAuthenticated(request);
   const formdata = await request.formData();
   const input_data = formdata.get("input") as string;

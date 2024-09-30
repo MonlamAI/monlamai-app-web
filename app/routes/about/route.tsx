@@ -5,6 +5,7 @@ import Sponsors from "~/routes/about/components/Sponsors";
 import { Intro } from "./components/Intro";
 import ToolWraper from "~/component/ToolWraper";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
+import { auth } from "~/services/auth.server";
 
 export const loader: LoaderFunction = async ({ request }) => {
   let userdata = await auth.isAuthenticated(request);
