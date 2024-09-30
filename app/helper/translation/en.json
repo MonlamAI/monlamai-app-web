@@ -69,5 +69,6 @@
   "duration": "Duration",
   "status": "Status",
   "install": "Install",
-  "install_message": "Install our app for a smoother experience!"
+  "install_message": "Install our app for a smoother experience!",
+  "ourTeam": "Our Team"
 }
