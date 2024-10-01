@@ -73,7 +73,7 @@
     "route": "ngawang-trinley",
     "name": "Ngawang Trinley",
     "team": "Admin Team",
-    "designation": "Technical Director",
+    "designation": "CTO",
     "bios": "Ngawang Trinley is a multifaceted Buddhist Data Engineer based in Taipei, Taiwan. With extensive experience in Tibetan language technology, cultural preservation, and Buddhist studies, Trinley has co-founded innovative projects like Monlam AI and Esukhia. His career spans roles as a Digitization Manager at the Buddhist Digital Resource Center and as a lecturer at Palpung Buddhist Sciences College.",
     "educationalProfessionalBackground": "Trinley's diverse skill set encompasses Tibetan language and literature, ed-tech development, project management, and Buddhist philosophy, particularly in Kalachakra studies. Fluent in Tibetan, English, and French, he has contributed significantly to the digitization and preservation of Tibetan cultural heritage, developed NLP tools, and designed curriculum for Tibetan language education. His unique blend of traditional Buddhist education and modern technological expertise positions him at the forefront of bridging ancient wisdom with contemporary digital solutions.",
     "linkedInId": "https://www.linkedin.com/in/ngawang-trinley-010b991a3/",
@@ -222,7 +222,7 @@
     "route": "tashi-tsering",
     "name": "Tashi Tsering",
     "team": "Tech Team",
-    "designation": "Associate CTO",
+    "designation": "Associate Technical Lead",
     "bios": "Tashi Tsering completed his B.Tech in Computer Science and Engineering from Guru Gobind Singh Indraprastha University, Delhi. With over four years of experience in data analysis, manipulation, and extraction, Tashi has developed a strong expertise in these areas. He worked as a Tech Consultant for the Buddhist Digital Resource Center for two years. Tashi is also a core member of the OpenPecha. In his free time, he enjoys watching movies, reading, and hiking. Recently, he has developed an interest in learning about graph databases.",
     "linkedInId": "https://www.linkedin.com/in/tashi-tsering-7989891b5/",
     "headshot": "/assets/team/tashi-tsering.jpg"
