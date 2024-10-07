@@ -1,4 +1,4 @@
-import { Form, NavLink, useRouteLoaderData, Link } from "@remix-run/react";
+import { Form, NavLink, useRouteLoaderData, Link,useFetcher } from "@remix-run/react";
 import { Button, CustomFlowbiteTheme, Dropdown } from "flowbite-react";
 import { useState } from "react";
 import { HiBriefcase, HiLogout } from "react-icons/hi";
@@ -6,11 +6,13 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { RxCross1 } from "react-icons/rx";
 import uselitteraTranlation from "../hooks/useLitteraTranslation";
 import TranslationSwitcher from "../TranslationSwitcher";
-import ThemeSwitcher from "../ThemeSwitcher";
-import { FaQuoteRight } from "react-icons/fa";
+import ThemeSwitcher from "../ThemeSwitcher.client";
+import { FaQuoteRight, FaUsers } from "react-icons/fa";
 import { ICON_SIZE } from "~/helper/const";
 import { FaArrowRightFromBracket } from "react-icons/fa6";
 import { TbApi } from "react-icons/tb";
+import { ClientOnly } from "remix-utils/client-only";
+
 function Header() {
   const [showMenu, setShowMenu] = useState(false);
   const { isEnglish, translation } = uselitteraTranlation();
@@ -46,19 +48,23 @@ function Header() {
         <div className="hidden lg:flex gap-2 ml-8 flex-1 justify-between ">
           <div className="flex items-center gap-8 text-sm ml-4">
             <AboutLink />
-            {data?.isJobEnabled && <JobLink />}
             <TeamLink />
           </div>
           <div className="flex items-center gap-4 mr-7">
+            <ClientOnly fallback={null}>
+              {()=>
             <ThemeSwitcher />
+              }
+            </ClientOnly>
             <TranslationSwitcher />
             <Menu />
           </div>
         </div>
         {/* mobile view */}
         <div
-          className="hidden h-full fixed bg-neutral-100 top-0 left-0 right-0 w-full dark:bg-[--card-bg] shadow-lg z-40"
-          style={{ display: showMenu ? "block" : "" }}
+          className={`${
+            showMenu ? "block" : "hidden"
+          } h-full fixed bg-neutral-100 top-0 left-0 right-0 w-full dark:bg-[--card-bg] shadow-lg z-40`}
         >
           <NavLink
             className="flex items-center gap-2 p-4"
@@ -78,17 +84,16 @@ function Header() {
             <div onClick={() => setShowMenu((p) => !p)} className="px-3 pt-3 ">
               <AboutLink />
             </div>
-            {data?.isJobEnabled && (
-              <>
-                <Devider />
-                <div onClick={() => setShowMenu((p) => !p)} className="px-3 ">
-                  <JobLink />
-                </div>
-              </>
-            )}
+            <div onClick={() => setShowMenu((p) => !p)} className="px-3 pt-3 ">
+              <TeamLink />
+            </div>
             <Devider />
             <div onClick={() => setShowMenu((p) => !p)} className="px-3">
-              <ThemeSwitcher />
+            <ClientOnly fallback={null}>
+              {()=>
+            <ThemeSwitcher />
+              }
+            </ClientOnly>
             </div>
             <Devider />
             <div className="px-3">
@@ -114,7 +119,7 @@ function Devider() {
 function Menu() {
   const { user } = useRouteLoaderData("root");
   const { translation, locale } = uselitteraTranlation();
-  let isEnglish = locale === "en_US";
+  const isEnglish = locale === "en_US";
   const isTibetan = locale === "bo_TI";
 
   if (!user)
@@ -132,6 +137,15 @@ function Menu() {
         </Button>
       </Form>
     );
+
+  const userEmail = user.emails[0].value;
+  const userPhoto = user.photos[0].value;
+  const userName = user.name.givenName;
+  const fetcher=useFetcher();
+
+  const logout = () => {
+  fetcher.submit({},{method:"post",action:"/logout"})  
+  }
   return (
     <>
       <Dropdown
@@ -141,24 +155,22 @@ function Menu() {
         renderTrigger={() => (
           <img
             className="h-6 w-6 rounded-full hidden md:block  cursor-pointer"
-            src={user.picture}
-            title={user.email}
-            alt={user.email}
+            src={userPhoto}
+            title={userEmail}
+            alt={userEmail}
             referrerPolicy="no-referrer"
           />
         )}
       >
         <Dropdown.Header>
           <span className="block truncate text-sm font-medium font-poppins">
-            {user.email}
+            {userEmail}
           </span>
         </Dropdown.Header>
-        <Dropdown.Item icon={HiLogout} className="mt-2">
-          <Form method="post" action="/logout">
-            <button className={isEnglish ? "font-poppins" : "font-monlam"}>
+        <Dropdown.Item icon={HiLogout} className="mt-2" onClick={logout}>
+            <div className={isEnglish ? "font-poppins" : "font-monlam"}>
               {translation.logout}
-            </button>
-          </Form>
+            </div>
         </Dropdown.Item>
         <Dropdown.Item icon={TbApi} className="mt-2">
           <a
@@ -213,11 +225,11 @@ function TeamLink() {
   const { translation, locale } = uselitteraTranlation();
   return (
     <NavLink
-      to="#"
-      className="text-base capitalize text-gray-300 cursor-default"
+      to="/team"
+      className="text-base flex gap-2 items-center"
       unstable_viewTransition
     >
-      {/* {translation.team} */}
+      <FaUsers size={ICON_SIZE} className="md:hidden" /> {translation.team}
     </NavLink>
   );
 }

@@ -4,15 +4,24 @@ import uselitteraTranlation from "./hooks/useLitteraTranslation";
 import { Breadcrumb } from "flowbite-react";
 import { HiHome } from "react-icons/hi";
 import { Link } from "@remix-run/react";
+import TibetanTeam from "~/helper/teamData/bo.json";
+import EnglishTeam from "~/helper/teamData/en.json";
 
 export const HomeIconWrapper = () => {
   return <HiHome className="dark:fill-primary-500 fill-secondary-500" />;
 };
 
-function ToolWraper({ title, children }) {
+function ToolWraper({ title, subRoute, children }) {
   let model = models.find((model) => model.name === title) ?? null;
   let { translation, locale } = uselitteraTranlation();
   let isEnglish = locale === "en_US";
+
+  const teamData = isEnglish ? EnglishTeam : TibetanTeam;
+
+  const userDetails = teamData.find(
+    (member) => member.route === subRoute?.subRoute
+  );
+
   return (
     <>
       <Breadcrumb
@@ -28,10 +37,25 @@ function ToolWraper({ title, children }) {
             {translation["home"]}
           </Link>
         </Breadcrumb.Item>
-        <Breadcrumb.Item href="#" theme={breadcrumb_theme.item}>
-          {translation[title]}
-        </Breadcrumb.Item>
+        {subRoute ? (
+          <>
+            <Breadcrumb.Item href="/team" theme={breadcrumb_theme.item}>
+              {translation[title]}
+            </Breadcrumb.Item>
+            <Breadcrumb.Item
+              href={subRoute.route}
+              theme={breadcrumb_theme.item}
+            >
+              {userDetails?.name}
+            </Breadcrumb.Item>
+          </>
+        ) : (
+          <Breadcrumb.Item href="#" theme={breadcrumb_theme.item}>
+            {translation[title]}
+          </Breadcrumb.Item>
+        )}
       </Breadcrumb>
+
       <div className="pt-[24px]">{children}</div>
     </>
   );

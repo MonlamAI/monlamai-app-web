@@ -6,7 +6,7 @@ import {
   Spinner,
   ToggleSwitch,
 } from "flowbite-react";
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { resetFetcher } from "~/component/utils/resetFetcher";
 import { useFetcher, useLoaderData } from "@remix-run/react";
 import axios from "axios";
@@ -14,7 +14,6 @@ import { EditActionButtons } from "~/routes/model.mt/components/UtilityComponent
 import EditDisplay from "~/component/EditDisplay";
 import CardComponent from "~/component/Card";
 import { NonEditButtons } from "~/component/ActionButtons";
-import TooltipComponent from "./Tooltip";
 import { ImageCropper } from "~/routes/model.ocr/Component/ImageCropper";
 import Devider from "~/component/Devider";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
@@ -33,7 +32,7 @@ function SingleInptSection({ fetcher }: any) {
   const likeFetcher = useFetcher();
   const editfetcher = useFetcher();
 
-  const editData = editfetcher.data?.edited;
+  const editData = editfetcher.data;
   const data = fetcher?.data;
   // Replace non-Tibetan characters with an empty string
   const tibetanRegex = /[\u0F00-\u0FFF]/;
@@ -43,10 +42,9 @@ function SingleInptSection({ fetcher }: any) {
     text = "";
   }
 
-  const inferenceId = fetcher.data?.inferenceId;
+  const inferenceId = fetcher.data?.id;
   const isActionSubmission = fetcher.state !== "idle";
   const errorMessage = data?.error_message;
-
   const handleFormClear = () => {
     setImageUrl(null);
     handleCancelEdit();
@@ -81,7 +79,6 @@ function SingleInptSection({ fetcher }: any) {
           const percentCompleted = Math.round(
             (progressEvent.loaded * 100) / progressEvent?.total
           );
-          console.log(percentCompleted);
           setUploadProgress(percentCompleted);
         },
       });
@@ -90,18 +87,15 @@ function SingleInptSection({ fetcher }: any) {
         const uploadedFilePath = uploadStatus.request.responseURL;
         const baseUrl = uploadedFilePath?.split("?")[0]!;
         setImageUrl(baseUrl!);
-        console.log(`File ${file.name} uploaded successfully.`, uploadStatus);
       }
     } catch (error) {
       console.error(`Error uploading file ${file.name}:`, error);
     }
   };
-
   function handleCancelEdit() {
     setEdit(false);
     setEditText("");
   }
-
   function handleEditSubmit() {
     let edited = editText;
     editfetcher.submit(
@@ -124,7 +118,7 @@ function SingleInptSection({ fetcher }: any) {
   const changeOrginalText = () => {
     setOrginalText(!isOrginalText);
   };
-
+  let actionError = fetcher.data?.error as string;
   const formatText = (text) => {
     // Replace multiple consecutive new lines with a single <br> tag
     // and replace single new lines with <br> tags
@@ -138,7 +132,6 @@ function SingleInptSection({ fetcher }: any) {
         className={`${isTibetan ? "font-monlam" : "font-poppins"}`}
       >
         <div className="w-full relative h-full min-h-[30vh] md:min-h-[45vh] flex flex-col items-center justify-center  gap-5">
-          {/* <TooltipComponent /> */}
           <div className="w-full h-full flex flex-col flex-1">
             {ImageUrl && (
               <img src={ImageUrl} onLoad={handleSubmit} className="hidden" />
@@ -159,6 +152,13 @@ function SingleInptSection({ fetcher }: any) {
             ImageUrl ? "block" : "hidden"
           }`}
         >
+          {actionError && (
+            <ErrorMessage
+              message={actionError}
+              handleClose={() => resetFetcher(fetcher)}
+              type="warning"
+            />
+          )}
           {isActionSubmission ? (
             <div className="w-full flex flex-1 justify-center items-center">
               <Spinner
@@ -176,15 +176,6 @@ function SingleInptSection({ fetcher }: any) {
                 />
               )}
               <div className="text-lg tracking-wide leading-loose">
-                {/* {errorMessage && (
-                  <div
-                    className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
-                    role="alert"
-                  >
-                    <strong className="font-bold">Error: </strong>
-                    <span className="block sm:inline">{errorMessage}</span>
-                  </div>
-                )} */}
                 {errorMessage && (
                   <ErrorMessage
                     message={errorMessage}

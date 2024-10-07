@@ -2,7 +2,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { MdPlayArrow, MdPause } from "react-icons/md";
 import useLocalStorage from "~/component/hooks/useLocaleStorage";
-import { amplifyMedia } from "~/component/utils/audioGain";
 import { useWavesurfer } from "@wavesurfer/react";
 
 const AudioPlayer = ({ audioURL }) => {
@@ -10,7 +9,6 @@ const AudioPlayer = ({ audioURL }) => {
   const [volume, setVolume] = useLocalStorage("volume", 1);
 
   const containerRef = useRef(null);
-  let setting = useRef();
 
   const { wavesurfer, isPlaying, currentTime } = useWavesurfer({
     container: containerRef,
@@ -23,7 +21,6 @@ const AudioPlayer = ({ audioURL }) => {
     barWidth: 4,
   });
   const maxDuration = wavesurfer?.getDuration();
-  console.log(currentTime, maxDuration);
 
   const changePlaybackRate = () => {
     const rates = [1, 1.25, 1.5, 2, 0.5];
@@ -32,12 +29,6 @@ const AudioPlayer = ({ audioURL }) => {
     const newRate = rates[nextIndex];
     setPlaybackRate(newRate);
   };
-
-  useEffect(() => {
-    if (wavesurfer) {
-      wavesurfer.setPlaybackRate(playbackRate);
-    }
-  }, [playbackRate]);
 
   const handleVolumeChange = (e) => {
     const newVolume = parseFloat(e.target.value);
@@ -48,11 +39,10 @@ const AudioPlayer = ({ audioURL }) => {
   };
 
   useEffect(() => {
-    if (wavesurfer && !setting.current && audioURL) {
-      const media = wavesurfer?.getMediaElement();
-      setting.current = amplifyMedia(media, volume);
+    if (wavesurfer) {
+      wavesurfer.setPlaybackRate(playbackRate);
     }
-  }, []);
+  }, [playbackRate, wavesurfer]);
 
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
@@ -121,7 +111,6 @@ const AudioPlayer = ({ audioURL }) => {
       <div className="flex flex-1 flex-col justify-between gap-2">
         {/* Placeholder for the waveform */}
         <div className="my-auto" ref={containerRef} />
-
         <div className="flex items-center justify-between gap-5">
           <button
             onClick={() => {

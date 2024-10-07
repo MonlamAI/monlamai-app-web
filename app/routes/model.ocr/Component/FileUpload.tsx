@@ -2,8 +2,7 @@ import axios from "axios";
 import { FileInput, Label, Progress } from "flowbite-react";
 import { useEffect, useState } from "react";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
-import { fileSupported } from "~/component/utils/fileSizeFormat";
-import { formatBytes } from "~/component/utils/formatSize";
+import { fileSupported, formatBytes } from "~/component/utils/fileSizeFormat";
 
 function FileUpload({
   file,
@@ -59,7 +58,6 @@ function FileUpload({
         const uploadedFilePath = uploadStatus.config.url;
         const baseUrl = uploadedFilePath?.split("?")[0]!;
         setInputUrl(baseUrl);
-        console.log(`File ${file.name} uploaded successfully.`, uploadStatus);
       }
     } catch (error) {
       console.error(`Error uploading file ${file.name}:`, error);

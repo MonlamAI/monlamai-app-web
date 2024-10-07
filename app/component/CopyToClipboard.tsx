@@ -43,7 +43,7 @@ const CopyToClipboard = ({ textToCopy, onClick }: CopyToClipboardProps) => {
         <ReactionButton
           icon={<MdContentCopy size={ICON_SIZE} />}
           onClick={handleCopy}
-          className="copy-success"
+          className="text-green-500"
         />
       )}
     </>

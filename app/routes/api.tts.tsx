@@ -1,64 +1,40 @@
-import { ActionFunction, json } from "@remix-run/node";
-import { base64ToBuffer } from "~/component/utils/base64ToBuffer";
+import type { ActionFunction } from "@remix-run/node";
 import inputReplace from "~/component/utils/ttsReplace.server";
-import { verifyDomain } from "~/component/utils/verifyDomain";
 import { API_ERROR_MESSAGE } from "~/helper/const";
-import { checkIfInferenceExist, saveInference } from "~/modal/inference.server";
-import { getUserDetail } from "~/services/session.server";
-import getIpAddressByRequest from "~/component/utils/getIpAddress";
+import { getHeaders } from "../component/utils/getHeaders.server";
+import { auth } from "~/services/auth.server";
 
 export const action: ActionFunction = async ({ request }) => {
-  let ip = getIpAddressByRequest(request);
-  const isDomainAllowed = verifyDomain(request);
-  if (!isDomainAllowed) {
-    // If the referer is not from the expected domain, return a forbidden response
-    return json({ message: "Access forbidden" }, { status: 403 });
-  }
-
-  let user = await getUserDetail(request);
-
+  let user = await auth.isAuthenticated(request);
   const formdata = await request.formData();
-  // const voiceType = formdata.get("voice") as string;
-  const userInput = formdata.get("sourceText") as string;
-  const API_URL = process.env.FILE_SUBMIT_URL as string;
-
+  const input_data = formdata.get("input") as string;
+  const API_URL = process.env.API_URL as string;
   let data;
+  let url = API_URL + "/api/v1/tts";
   try {
-    let formData = new FormData();
-    formData.append("input", inputReplace(userInput));
-    let response = await fetch(API_URL + "/tts/playground", {
-      method: "POST",
-      body: formData,
-      headers: {
-        "x-api-key": process.env?.API_ACCESS_KEY!,
-      },
+    const token = user ? user?.id_token : null;
+    const body = JSON.stringify({
+      input: inputReplace(input_data),
     });
+    const headers = await getHeaders(request,token);
+    const response = await fetch(url, {
+      method: "POST",
+      body,
+      headers,
+    });
+
     data = await response.json();
   } catch (e) {
     return {
       error: API_ERROR_MESSAGE,
     };
   }
-  const { output, responseTime } = data;
+  const { output,id } = data;
 
-  const checkifModelExist = await checkIfInferenceExist(
-    userInput,
-    "tts",
-    user?.id
-  );
+  if (!output)
+    return {
+      error: API_ERROR_MESSAGE,
+    };
 
-  if (!checkifModelExist) {
-    const inferenceData = await saveInference({
-      userId: user?.id,
-      model: "tts",
-      modelVersion: "v1",
-      input: userInput,
-      output,
-      responseTime,
-      ip,
-    });
-    return { data: output, inferenceData };
-  } else {
-    return { data: output, inferenceData: checkifModelExist };
-  }
+  return { output ,id};
 };

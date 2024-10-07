@@ -46,7 +46,6 @@ export function ErrorPage({ error }: RootErrorPageProps) {
 
 export function ErrorBoundary() {
   const error = useRouteError();
-
   useEffect(() => {
     if (isRouteErrorResponse(error)) {
       toast.warn(API_ERROR_MESSAGE, {

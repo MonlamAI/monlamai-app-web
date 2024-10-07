@@ -3,9 +3,6 @@ import { redirect } from "@remix-run/node";
 
 import { destroySession, getUserSession } from "~/services/session.server";
 
-export const loader: LoaderFunction = async ({ request }) => {
-  return redirect("/");
-};
 
 export const action: ActionFunction = async ({ request }) => {
   let clientId = process.env.AUTH0_CLIENT_ID as string;
@@ -19,11 +16,15 @@ export const action: ActionFunction = async ({ request }) => {
       ? "http://localhost:3000"
       : "https://" + (requestUrl.hostname as string);
 
-  let url = `https://${domain}/v2/logout?client_id=${clientId}&returnTo=${redirect_url}`;
-
-  return redirect(url, {
+  let url = `https://${domain}/v2/logout`;
+  const logoutURL = new URL(url);
+  logoutURL.searchParams.set("client_id", clientId);
+  logoutURL.searchParams.set("returnTo", redirect_url);
+  return redirect(logoutURL.toString(), {
     headers: {
       "Set-Cookie": await destroySession(session),
     },
   });
 };
+
+export const loader: LoaderFunction = action;

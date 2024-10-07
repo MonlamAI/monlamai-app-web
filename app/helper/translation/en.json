@@ -47,7 +47,7 @@
   "image": "Image",
   "zip": "Zip",
   "PDF": "PDF",
-  "team": "team",
+  "team": "Team",
   "home": "home",
   "darkmode": "Dark mode",
   "lightmode": "Light mode",
@@ -69,5 +69,6 @@
   "duration": "Duration",
   "status": "Status",
   "install": "Install",
-  "install_message": "Install our app for a smoother experience!"
+  "install_message": "Install our app for a smoother experience!",
+  "ourTeam": "Our Team"
 }

@@ -5,6 +5,7 @@ import { BsFillMicFill, BsFillStopFill } from "react-icons/bs";
 import { getBrowser } from "~/component/utils/getBrowserDetail";
 import AudioPlayer from "~/routes/model.tts/components/AudioPlayer";
 import RecordingAnimation from "./RecordingAnimation";
+import Timer from "./Timer";
 let stopRecordingTimeout: any;
 
 type AudioRecordProps = {
@@ -24,6 +25,7 @@ function AudioRecorder({
   const [tempAudioURL, setTempAudioURL] = useState<string | null>(null);
   const [recording, setRecording] = useState(false);
   const [audioChunks, setAudioChunks] = useState([]);
+
   const toggleRecording = () => {
     if (!recording) {
       startRecording();
@@ -66,16 +68,16 @@ function AudioRecorder({
         mediaRecorder.current = media;
         mediaRecorder.current.start();
 
-        stopRecordingTimeout = setTimeout(() => {
-          stopRecording();
-        }, 120000);
-
         mediaRecorder.current.ondataavailable = (event: any) => {
           if (typeof event.data === "undefined") return;
           if (event.data.size === 0) return;
           localAudioChunks.push(event?.data);
         };
+
         setAudioChunks(localAudioChunks);
+        stopRecordingTimeout = setTimeout(() => {
+          stopRecording();
+        }, 120000);
       } catch (error) {
         console.error("Error accessing the microphone:", error);
       }
@@ -89,27 +91,28 @@ function AudioRecorder({
     setRecording(false);
     //stops the recording instance
     mediaRecorder.current.stop();
-    mediaRecorder.current.onstop = () => {
-      //creates a blob file from the audiochunks data
+    mediaRecorder.current.onstop = async () => {
       const audioBlob = new Blob(audioChunks);
+
       uploadAudio(audioBlob);
       setTempAudioURL(URL.createObjectURL(audioBlob));
       setAudioChunks([]);
 
-      const reader = new FileReader();
+      // const reader = new FileReader();
 
-      // Define a callback function to handle the result
-      reader.onload = function () {
-        const base64String = reader.result;
-      };
+      // // Define a callback function to handle the result
+      // reader.onload = function () {
+      //   const base64String = reader.result;
+      // };
 
-      // Read the Blob as a data URL (Base64)
-      reader.readAsDataURL(audioBlob);
+      // // Read the Blob as a data URL (Base64)
+      // reader.readAsDataURL(audioBlob);
     };
   };
 
   return (
     <div className="flex flex-col items-center gap-5 flex-1 justify-center">
+      {recording && <Timer start={recording} stop={!recording} />}
       {recording && mediaRecorder.current && getBrowser() !== "Safari" && (
         <LiveAudioVisualizer
           mediaRecorder={mediaRecorder.current}

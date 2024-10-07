@@ -1,8 +1,11 @@
-import { createCookieSessionStorage } from "@remix-run/node";
-import { getUser } from "~/modal/user.server";
+import {
+  createCookieSessionStorage,
+  createCookie,
+  redirect,
+} from "@remix-run/node";
 import jwt from "jsonwebtoken";
 // export the whole sessionStorage object
-
+import { createThemeSessionResolver } from "remix-themes";
 function getDate() {
   const expires = new Date();
   expires.setDate(expires.getDate() + 7);
@@ -28,14 +31,6 @@ export async function getUserSession(request: Request) {
   return user;
 }
 
-export async function getUserDetail(request: Request) {
-  let userdata = await getUserSession(request);
-  let user = null;
-  if (userdata) {
-    user = await getUser(userdata?._json.email);
-  }
-  return user;
-}
 
 export async function generateCSRFToken(request: Request, user: any) {
   let secretKey = process.env.API_ACCESS_KEY;
@@ -44,15 +39,15 @@ export async function generateCSRFToken(request: Request, user: any) {
   return token;
 }
 
-export async function verify_token(token: string) {
-  let secretKey = process.env.API_ACCESS_KEY;
-  await jwt.verify(token, secretKey, (err, decoded) => {
-    if (err) {
-      throw new Error("Failed to authenticate token");
-    }
-    // Save decoded information to request object
-  });
-  return true;
-}
 
+
+export let returnToCookie = createCookie("return-to", {
+  path: "/",
+  httpOnly: true,
+  sameSite: "lax",
+  maxAge: 60, // 1 minute because it makes no sense to keep it for a long time
+  secure: process.env.NODE_ENV === "production",
+});
+
+export const themeSessionResolver = createThemeSessionResolver(sessionStorage);
 export let { getSession, commitSession, destroySession } = sessionStorage;

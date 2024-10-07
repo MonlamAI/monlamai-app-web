@@ -1,6 +1,6 @@
 import { Spinner } from "flowbite-react";
 import { FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa";
-import React from "react";
+import React,{useState} from "react";
 import { ICON_SIZE } from "~/helper/const";
 import { FaPencil } from "react-icons/fa6";
 interface ReactionButtonsProps {
@@ -9,10 +9,9 @@ interface ReactionButtonsProps {
   sourceText: string | null;
   inferenceId: string;
   clickEdit: () => void | undefined;
+ inferenceType:"translation"|"ocr"|"tts"|"stt"
 }
 
-const API_ENDPOINT = "/api/feedback";
-const IDLE_STATE = "idle";
 
 function ReactionButtons({
   fetcher,
@@ -20,28 +19,31 @@ function ReactionButtons({
   sourceText,
   inferenceId,
   clickEdit,
+  inferenceType
 }: ReactionButtonsProps) {
   if (!inferenceId) return null;
-  const { liked, disliked } = fetcher.data?.vote || {};
+  const { data } = fetcher;
+  const [liked, setLiked] = useState(false);
+  const [disliked, setDisliked] = useState(false);
 
   const isLoading =
-    fetcher.state !== IDLE_STATE && fetcher.formData?.get("action");
-
-  const handleReaction = async (action: "liked" | "disliked") => {
+    fetcher.state !== 'idle' && fetcher.formData?.get("action");
+  const handleReaction = async (action: "like" | "dislike") => {
+    if(action==='like'){
+    setLiked(!liked)
+    setDisliked(false)
+    }
+    if(action==='dislike'){
+      setDisliked(!disliked)
+      setLiked(false)
+    }
     if (!output || !sourceText) return;
     fetcher.submit(
-      { inferenceId, action },
-      { method: "POST", action: API_ENDPOINT }
+      { inferenceId, action, inferenceType },
+      { method: "POST", action: "/api/feedback" }
     );
   };
-
-  if (isLoading)
-    return (
-      <Spinner
-        size="lg"
-        className={"fill-secondary-300 dark:fill-primary-500"}
-      />
-    );
+  
 
   return (
     <>
@@ -54,12 +56,12 @@ function ReactionButtons({
       )}
       <ReactionButton
         icon={<FaRegThumbsUp size={ICON_SIZE} />}
-        onClick={() => handleReaction("liked")}
+        onClick={() => handleReaction("like")}
         className={`hover:text-green-400 ${liked && "text-green-400"}`}
       />
       <ReactionButton
         icon={<FaRegThumbsDown size={ICON_SIZE} />}
-        onClick={() => handleReaction("disliked")}
+        onClick={() => handleReaction("dislike")}
         className={`hover:text-red-400 ${disliked && "text-red-400"}`}
       />
     </>

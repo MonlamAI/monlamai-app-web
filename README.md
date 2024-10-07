@@ -6,31 +6,72 @@
   <br>
 </h1>
 
-## _Project Name_
-
-Monlam AI Tools
+## Monlam AI Tools
 
 ## Owner(s)
-
-_Change to the owner(s) of the new repo. (This template's owners are:)_
 
 - [@tenkus47](https://github.com/tenkus47)
 - [@tentamdin](https://github.com/tentamdin)
 
-# Welcome to Monlam AI web !
+- ## Prerequisites
 
-- [Docs](https://remix.run/docs)
+  Before you begin, ensure you have the following installed on your local machine:
+
+- Node 16V above
+- Postgres 14V above
 
 ## Development
 
-From your terminal:
+### 1. Clone the Repository
 
-1. install the dependencies
+First, clone the repository to your local machine:
+
+bash
+
+```Copy code
+git clone https://github.com/OpenPecha/monlam-ai-tools.git
+cd monlam-ai-tools
+```
+
+### 2. Install the dependencies
 
 ```sh
-npm install 
+npm install
 ```
-2. run app locally
+
+### 3. Set up Environment variable
+
+```plaintext
+   DATABASE_URL: set up a postgres database and provide the link here
+   MAX_TEXT_LENGTH_MT : max number text accepted in Machine translation
+   MAX_TEXT_LENGTH_TTS: max number of text supported in text to speech
+   AUTH0_CLIENT_ID : client id from auth0
+   AUTH0_CLIENT_SECRET :client secret from auth0
+   AUTH0_DOMAIN : domain name provided by auth0
+   AUTH0_CALLBACK_URL : callback url to where the auth0 should redirect
+   OPENAI_KEY : Chatgpt-api key (not required)
+   ORIGIN : domain name where the app is hosted
+
+   AWS_BUCKET_NAME : aws bucket name
+   AWS_ACCESS_ID: aws access key
+   AWS_SECRET_KEY :aws secret key
+   AWS_REGION: aws region
+   FEEDBUCKET_ACCESS : feedbucket access key (not required)
+   FEEDBUCKET_TOKEN :feedbucket token (not required)
+   API_URL : domain url for monlam api
+   API_ACCESS_KEY : token used for verification of api user
+   COOKIE_SECRET : session and cookie secret (can be anything not exposed)
+```
+
+### 3. Setup database
+
+after setting up DATABASE_URL in .env file
+
+```sh
+npx prisma migrate deploy
+```
+
+### 4. Run app locally
 
 ```sh
 npm run dev

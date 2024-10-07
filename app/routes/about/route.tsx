@@ -2,13 +2,13 @@ import { type LoaderFunction } from "@remix-run/node";
 import Instructor from "~/routes/about/components/Instructors";
 import Lamas from "~/routes/about/components/Lama";
 import Sponsors from "~/routes/about/components/Sponsors";
-import { getUserDetail } from "~/services/session.server";
 import { Intro } from "./components/Intro";
 import ToolWraper from "~/component/ToolWraper";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
+import { auth } from "~/services/auth.server";
 
 export const loader: LoaderFunction = async ({ request }) => {
-  let userdata = await getUserDetail(request);
+  let userdata = await auth.isAuthenticated(request);
   return userdata;
 };
 

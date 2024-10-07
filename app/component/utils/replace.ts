@@ -339,17 +339,16 @@ export function en_bo_english_replaces(text: string) {
 // replaces for the english to tibetan -> output  after getting responce from the api
 export function en_bo_tibetan_replaces(text: string) {
   let result = text;
-  result = result.replaceAll("མཚན་རྟགས།", "ནང་འཛུལ།");
+
   let regex = /([༠-༩]{2})([ཀ-ྼ])/g;
   result = result.replaceAll(regex, "$1 $2");
 
-  result = result.replaceAll("འཚོ་བ།", "ཐད་གཏོང་།");
   result = result.replaceAll("ད་དུང་མང་ཙམ་ཐོས་དགོས།", "ད་དུང་དེ་ལས་མང་བ།");
   result = result.replaceAll("དངོས་སུ་བརྙན་འཕྲིན་ལས།", "བརྙན་འཕྲིན་ཐད་གཏོང་།");
 
-  if (result.endsWith("་")) {
-    result = result.slice(0, -1) + "།";
-  }
+  // if (result.endsWith("་")) {
+  //   result = result.slice(0, -1) + "།";
+  // }
 
   result = result.replaceAll("སྡིངས་ཆ་རྫོད་པ་", "སྤྱི་ཚོགས་དཀྲུགས་པ་");
   result = result.replaceAll("རྫོད་པ", "སྐྱོན་གཏོང་བ");
@@ -939,6 +938,16 @@ export function en_bo_tibetan_replaces(text: string) {
   result = result.replaceAll("་༧", "་ ༧");
   result = result.replaceAll("་༨", "་ ༨");
   result = result.replaceAll("་༩", "་ ༩");
+  result = result.replaceAll("་0", "་ 0");
+  result = result.replaceAll("་1", "་ 1");
+  result = result.replaceAll("་2", "་ 2");
+  result = result.replaceAll("་3", "་ 3");
+  result = result.replaceAll("་4", "་ 4");
+  result = result.replaceAll("་5", "་ 5");
+  result = result.replaceAll("་6", "་ 6");
+  result = result.replaceAll("་7", "་ 7");
+  result = result.replaceAll("་8", "་ 8");
+  result = result.replaceAll("་9", "་ 9");
 
   result = result.replaceAll("༠་", "༠ ");
   result = result.replaceAll("༡་", "༡ ");
@@ -1335,26 +1344,31 @@ export function en_bo_tibetan_replaces(text: string) {
   result = result.replaceAll("བྷ་རཱ་ཏི་ཡ་ཛ་ནཱ་ཐཱ་ཏཱ་", "བྷ་རཱ་ཏི་ཇན་དཱ་");
   result = result.replaceAll("བཞི་བཅུ་ང་གསུམ", "བཞི་བཅུ་ཞེ་གསུམ");
   result = result.replaceAll("གྷོ་ར་ཛི་ར་ཐི་", "གྷུ་ཇི་ར་ཐི་");
-  result = result.replaceAll("སྲིད་བློན་ནེ་རཱལ་གྱིས་", "སྲིད་བློན་ནེ་རེན་དྷར་མོ་དྷིས་ཡིས་");
+  result = result.replaceAll(
+    "སྲིད་བློན་ནེ་རཱལ་གྱིས་",
+    "སྲིད་བློན་ནེ་རེན་དྷར་མོ་དྷིས་ཡིས་"
+  );
   result = result.replaceAll("བཟོས་མིའི་རྣམ་འགྱུར", "བཟོས་མིའི་རིག་ནུས");
   result = result.replaceAll("མིས་བཟོས་ཤེས་རིག", "བཟོས་མིའི་རིག་ནུས");
   result = result.replaceAll("མིས་བཟོས་ཀླད་པའི་", "བཟོས་མིའི་རིག་ནུས་ཀྱི་");
-  result = result.replaceAll("ཤར་ཏུར་ཀི་སི་ཐནཤར་ཏུ་ཀེ་སི་ཐན་", "ཤིན་ཅང་ངམ་ཤར་ཏུར་ཀི་སི་ཐན་");
-  result = result.replaceAll("།  ", "། ");
+  result = result.replaceAll(
+    "ཤར་ཏུར་ཀི་སི་ཐནཤར་ཏུ་ཀེ་སི་ཐན་",
+    "ཤིན་ཅང་ངམ་ཤར་ཏུར་ཀི་སི་ཐན་"
+  );
+  result = result.replaceAll("—", " ");
+  result = result.replaceAll("  ", " ");
+  result = result.replaceAll("པན་བ་བསྟན་འཛིན་ཚེ་རིང་", "སྤེན་པ་ཚེ་རིང་");
+  result = result.replaceAll("པཎ་ཆེན་ཚེ་རིང་", "སྤེན་པ་ཚེ་རིང་");
+  result = result.replaceAll("གོ་ལོག", "མགོ་ལོག");
 
+  result = result.replaceAll(/🔽🔽/g, "\n\r");
+  result = result.replaceAll(/🔽/g, "\n\r");
 
- 
-
-  //ཤར་ཏུར་ཀི་སི་ཐནཤར་ཏུ་ཀེ་སི་ཐན་
+  //——
 
   result = result.replaceAll(/(\d+)([^\d]+)/g, "$1 $2");
   result = result.replaceAll(/([\u0F20-\u0F33]+)([^\u0F20-\u0F33]+)/g, "$1 $2");
 
-
-
-
-
-  
   return result;
 }
 

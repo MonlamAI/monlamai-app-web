@@ -7,6 +7,7 @@ import LanguageDetect from "languagedetect";
 import { eng_languagesOptions, tib_languageOptions } from "~/helper/const";
 import { GoArrowSwitch } from "react-icons/go";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
+import useEffectOnce from "../../../component/hooks/useEffectOnce";
 
 const lngDetector = new LanguageDetect();
 
@@ -40,12 +41,13 @@ function LanguageInput({
   setSourceText,
   data,
   setTranslated,
+  detectFetcher,
 }) {
   const [params, setParams] = useSearchParams();
   const sourceLang = params.get("source") || "detect language";
   const targetLang = params.get("target") || "bo";
   const [isRotated, setIsRotated] = useState(false);
-  const { submit, data: fetcherData } = useFetcher();
+  const { submit, data: fetcherData, status } = detectFetcher;
   const { isTibetan: isTib, translation } = uselitteraTranlation();
   const languagesOptions = isTib ? tib_languageOptions : eng_languagesOptions;
   function setTarget(lang: string) {
@@ -90,7 +92,13 @@ function LanguageInput({
 
     setParams((prevParams) => {
       prevParams.set("source", targetLang);
-      prevParams.set("target", sourceLang);
+      if (sourceLang !== "detect language") {
+        prevParams.set("target", sourceLang);
+      } else if (sourceLang === "bo") {
+        prevParams.set("target", "en");
+      } else {
+        prevParams.set("target", "en");
+      }
       return prevParams;
     });
   }
@@ -108,18 +116,19 @@ function LanguageInput({
     );
   };
 
-  useEffect(() => {
+  useEffectOnce(() => {
     if (fetcherData?.info) {
       detectAndSetLanguage(sourceText);
     } else if (fetcherData) {
       setLanguage(fetcherData.language);
     }
   }, [fetcherData]);
-
-  useEffect(() => {
+  useEffectOnce(() => {
     if (sourceText?.trim() === "" && sourceLang !== "detect language") {
       setSource("detect language");
     }
+  }, [sourceText]);
+  useEffectOnce(() => {
     if (sourceLang === "detect language" && sourceText?.trim() !== "") {
       detectLanguage(sourceText);
     }
@@ -198,7 +207,6 @@ function LanguageInput({
           <option value="detect language" className={optionClass}>
             {translation?.detect}
           </option>
-
           {languagesOptions.map((lang) => (
             <option key={lang.code} value={lang.code} className={optionClass}>
               {lang.value}{" "}
@@ -226,7 +234,7 @@ function LanguageInput({
         <Select
           onChange={(e) => handleChange(e, "target")}
           value={targetLang}
-          className="selectHeader w-max "
+          className="selectHeader w-fit "
           style={{ cursor: "pointer" }}
         >
           {languagesOptions.map((lang) => (
@@ -234,7 +242,10 @@ function LanguageInput({
               {lang.value}{" "}
               {beta.includes(lang.value) ? `(${translation?.beta})` : ""}
             </option>
-          ))}
+          ))}{" "}
+          <option value="detect language" className={"hidden"}>
+            {translation?.detect}
+          </option>
         </Select>
       </div>
     </div>

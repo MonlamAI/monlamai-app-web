@@ -4,19 +4,27 @@ import {
   en_bo_english_replaces,
   en_bo_tibetan_replaces,
 } from "~/component/utils/replace";
+import { resetFetcher } from "~/component/utils/resetFetcher";
+import { toast } from "react-toastify";
+import { API_ERROR_MESSAGE } from "~/helper/const";
 
 type useTranslateType = {
-  target: string;
+  target_lang: string;
+  source_lang: string;
   text: string;
   data: string;
   setData: (data: string) => void;
+  editfetcher: any;
 };
 
 function handleEventStream(
+  setInferenceId,
   text: string,
   direction: string,
   onData: (data: string) => void,
-  enable_replacement_mt: boolean
+  isToasted: boolean,
+  setIsToasted: (value: boolean) => void,
+  
 ): Promise<void> {
   return new Promise((resolve, reject) => {
     const eventSource = new EventSource(
@@ -27,21 +35,20 @@ function handleEventStream(
 
     eventSource.onmessage = (event) => {
       let data = JSON.parse(event.data);
-
       if (data?.generated_text) {
         let text = data?.generated_text;
-        let replaced_text = enable_replacement_mt
-          ? en_bo_tibetan_replaces(text)
-          : text;
+        if(data?.id) setInferenceId(data?.id)
+        let replaced_text = en_bo_tibetan_replaces(text);
         onData(replaced_text);
         eventSource.close();
-        resolve(); // Resolve the promise when data is received
+        resolve("done"); // Resolve the promise when data is received
       } else {
-        let content = data?.token?.text;
+        let content = cleanData(data.text);
         if (content) {
           onData((p) => {
-            let newChunk = p + content.replace("</s>", "");
-            return newChunk;
+            let newChunk = p + content?.replace("</s>", "");
+            let replaced_text = en_bo_tibetan_replaces(newChunk);
+            return replaced_text;
           });
         }
       }
@@ -49,17 +56,64 @@ function handleEventStream(
 
     eventSource.onerror = (event) => {
       eventSource.close();
-      reject(new Error("EventSource error")); // Reject the promise on error
+      if (!isToasted) {
+        toast(API_ERROR_MESSAGE, {
+          position: toast.POSITION.BOTTOM_CENTER,
+          closeOnClick: true,
+          onClose: () => setIsToasted(false),
+        });
+        setIsToasted(true);
+      }
+      resolve("done");
     };
   });
 }
 
-const useTranslate = ({ target, text, data, setData }: useTranslateType) => {
-  const { enable_replacement_mt } = useRouteLoaderData("root");
+function cleanData(content) {
+  if (!content) return content;
+
+  // Check and remove quotes from the first, second, last, or second-last positions
+  if (
+    (content[0] === '"' || content[0] === "'") &&
+    (content[1] === '"' || content[1] === "'")
+  ) {
+    content = content.slice(2);
+  } else if (content[0] === '"' || content[0] === "'") {
+    content = content.slice(1);
+  }
+
+  if (
+    (content[content.length - 1] === '"' ||
+      content[content.length - 1] === "'") &&
+    (content[content.length - 2] === '"' || content[content.length - 2] === "'")
+  ) {
+    content = content.slice(0, -2);
+  } else if (
+    content[content.length - 1] === '"' ||
+    content[content.length - 1] === "'"
+  ) {
+    content = content.slice(0, -1);
+  }
+
+  return content;
+}
+
+const useTranslate = ({
+  inferenceId,
+  setInferenceId,
+  source_lang,
+  target_lang,
+  text,
+  data,
+  setData,
+  savefetcher,
+  editfetcher,
+}: useTranslateType) => {
   const [responseTime, setResponseTime] = useState(0);
   const [done, setDone] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [isToasted, setIsToasted] = useState(false);
 
   const trigger = async () => {
     setResponseTime(0);
@@ -75,18 +129,25 @@ const useTranslate = ({ target, text, data, setData }: useTranslateType) => {
       setDone(false);
       setError(null);
       setData("");
-      let replaced = en_bo_english_replaces(text);
-      let input = enable_replacement_mt ? replaced : text;
+      let input = en_bo_english_replaces(text);
 
       const startTime = performance.now(); // Record start time
       try {
-        await handleEventStream(input, target, setData, enable_replacement_mt);
+        await handleEventStream(
+          setInferenceId,
+          input,
+          target_lang,
+          setData,
+          isToasted,
+          setIsToasted
+        );
       } catch (error) {
         setError(error.message);
       } finally {
         const endTime = performance.now(); // Record end time
         setResponseTime(endTime - startTime); // Calculate response time
         setIsLoading(false);
+        resetFetcher(editfetcher);
         setDone(true);
       }
     };

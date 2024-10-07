@@ -29,12 +29,20 @@ function TextComponent({ sourceText, setSourceText, sourceLang }) {
       .replace(/<\/div>/g, "");
     setSourceText(cleanText);
   };
+  const handlePaste = (evt) => {
+    evt.preventDefault();
 
+    const text = (evt.clipboardData || window.clipboardData).getData(
+      "text/plain"
+    );
+    document.execCommand("insertText", false, text);
+  };
   useEffect(() => {
     if (sourceText === "") {
       setHTML("");
     }
   }, [sourceText]);
+
   return (
     <>
       <ContentEditable
@@ -42,6 +50,7 @@ function TextComponent({ sourceText, setSourceText, sourceLang }) {
         html={html} // innerHTML of the editable div
         disabled={false} // use true to disable editing
         onChange={handleChange} // handle innerHTML change
+        onPaste={handlePaste}
         tagName="article" // Use a custom HTML tag (uses a div by default)
         className={`p-2 pr-6 w-full rounded-none resize-none flex-1 bg-transparent border-0 dark:border:0 focus:outline-none dark:focus:outline-none focus:ring-transparent dark:focus:ring-transparent caret-slate-500 placeholder:text-slate-300 placeholder:font-monlam placeholder:text-lg
           ${fontSize} ${isEng && "font-poppins  "} ${

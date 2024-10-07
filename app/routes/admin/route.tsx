@@ -1,17 +1,16 @@
 import { LinksFunction, LoaderFunction, redirect } from "@remix-run/node";
-import { useLoaderData, useSearchParams } from "@remix-run/react";
-import React from "react";
-import { getInferences, getInferencesCount } from "~/modal/inference.server";
+
+import { useSearchParams } from "@remix-run/react";
 import InferenceList from "./component/inferencesList";
 import { startOfMonth, endOfMonth } from "date-fns";
 import DateStyle from "react-date-range/dist/styles.css"; // default style
 import DateStyleDefault from "react-date-range/dist/theme/default.css";
-import { getUsersCount } from "~/modal/user.server";
 import UserCount from "./component/UserCount";
 import InferenceCount from "./component/InferenceCount";
 import { SelectionList } from "./component/SelectionList";
 import LeafLetStyle from "leaflet/dist/leaflet.css";
 import { getUserSession } from "~/services/session.server";
+import { returnToCookie } from "~/services/session.server";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: DateStyle },
@@ -28,17 +27,23 @@ function isAdmin(user) {
 
 export const loader: LoaderFunction = async ({ request }) => {
   let userdata = await getUserSession(request);
-
-  if (!isAdmin(userdata)) return redirect("/");
-  const url = new URL(request.url);
+  let url = new URL(request.url);
+  let returnTo = "/admin";
   const check = url.searchParams.get("check");
+  let headers = new Headers();
+  if (returnTo) {
+    headers.append("Set-Cookie", await returnToCookie.serialize(returnTo));
+  }
+
+  if (!userdata) return redirect("/login", { headers });
+  if (!isAdmin(userdata)) return redirect("/");
 
   if (!check || check === "user") {
-    let usercount = await getUsersCount();
+    let usercount = 3;
     return { usercount };
   }
   if (check === "inferenceCount") {
-    let inferenceCount = await getInferencesCount();
+    let inferenceCount = 2;
     return { inferenceCount };
   }
   if (check === "inferenceList") {

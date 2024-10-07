@@ -93,6 +93,16 @@ export default {
           tertiary: "#B3B3B3",
         },
       },
+      animation: {
+        "scan-overlay": "scan 4s ease-in-out infinite",
+      },
+      keyframes: {
+        scan: {
+          "0%": { transform: "translateY(0%)" },
+          "50%": { transform: "translateY(100%)" },
+          "100%": { transform: "translateY(0%)" },
+        },
+      },
     },
     fontFamily: {
       poppins: ["Inter", "Poppins", "sans-serif"],

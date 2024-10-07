@@ -14,7 +14,6 @@ import { ICON_SIZE } from "~/helper/const";
 import LikeDislike from "~/styles/LikeDislike";
 
 type NonEditModeActionsProps = {
-  selectedTool: string;
   likefetcher: any;
   sourceText: string;
   inferenceId: string;
@@ -23,10 +22,10 @@ type NonEditModeActionsProps = {
   text: any;
   handleCopy: () => void;
   sourceLang: string;
+  inferenceType:"translation"|"ocr"|"tts"|"stt"
 };
 
 export function NonEditModeActions({
-  selectedTool,
   likefetcher,
   sourceText,
   inferenceId,
@@ -35,22 +34,20 @@ export function NonEditModeActions({
   text,
   handleCopy,
   sourceLang,
+  inferenceType
 }: NonEditModeActionsProps) {
-  let isSelected =
-    selectedTool === "text" ||
-    selectedTool === "recording" ||
-    selectedTool === "file";
   let isOutputNull = !text || text === "";
   if (isOutputNull || !isSelected) return null;
-  const { liked, disliked } = likefetcher.data?.vote || {};
-
+  // const { liked, disliked } = likefetcher.data?.vote || {};
+  let liked=false;
+  let disliked=false;
   return (
     <div
       className={`flex ${
         sourceLang == "en" ? "justify-between" : "justify-end"
       } p-2`}
     >
-      {selectedTool !== "File" && sourceLang == "en" && <Speak text={text} />}
+      <Speak text={text} lang={sourceLang==='en'?'bo':'en'}/>
       <div className="flex gap-3 md:gap-5 justify-end items-center">
         <Dropdown
           className="mt-2 w-52 text-center"
@@ -81,6 +78,7 @@ export function NonEditModeActions({
               output={text}
               sourceText={sourceText}
               inferenceId={inferenceId}
+              inferenceType={inferenceType}
             />
           </div>
           <hr />
@@ -103,7 +101,6 @@ export function NonEditModeActions({
 }
 
 type NonEditButtonProps = {
-  selectedTool: string;
   likefetcher: any;
   sourceText: string;
   inferenceId: string;
@@ -115,23 +112,21 @@ type NonEditButtonProps = {
 };
 
 export function NonEditButtons({
-  selectedTool,
   likefetcher,
   sourceText,
   inferenceId,
+  inferenceType,
   setEdit,
   setEditText,
   text,
   handleCopy,
   sourceLang,
 }: NonEditButtonProps) {
-  let isSelected =
-    selectedTool === "text" ||
-    selectedTool === "recording" ||
-    selectedTool === "file";
   let isOutputNull = !text || text === "";
-  if (isOutputNull || !isSelected) return null;
-  const { liked, disliked } = likefetcher.data?.vote || {};
+  if (isOutputNull) return null;
+  // const { liked, disliked } = likefetcher.data?.vote || {};
+  let liked=false;
+  let disliked=false;
   const ClickEdit = () => {
     setEditText(text);
     setEdit(true);
@@ -142,13 +137,14 @@ export function NonEditButtons({
         sourceLang == "en" ? "justify-between" : "justify-end"
       } py-[8px] px-5 border-t dark:border-t-[--card-border] border-t-dark_text-secondary`}
     >
-      {selectedTool !== "File" && sourceLang == "en" && <Speak text={text} />}
+         <Speak text={text} lang={sourceLang==='en'?'bo':'en'}/>
       <div className="flex gap-3 justify-end items-center p-[4px]">
         <ReactionButtons
           fetcher={likefetcher}
           output={text}
           sourceText={sourceText}
           inferenceId={inferenceId}
+          inferenceType={inferenceType}
           clickEdit={ClickEdit}
         />
         <CopyToClipboard textToCopy={text} onClick={handleCopy} />
