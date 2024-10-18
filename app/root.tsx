@@ -44,7 +44,7 @@ import Maintenance from "./component/Maintenance";
 import { auth } from "./services/auth.server";
 
 export const loader: LoaderFunction = async ({ request, context }) => {
-  const user = await auth.isAuthenticated(request);
+  const user = await auth.isAuthenticated(request)??null;
   if(user && user?.expires_on){
     if(user.expires_on > Date.now()) return redirect("/logout")    
   }
