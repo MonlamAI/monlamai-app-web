@@ -21,7 +21,6 @@ function Sponsors() {
             </div>
           );
         })}
-        {!isTibetan ? (
           <p className="font-poppins prose mt-2 text-center">
             The machine translation capability provided in{" "}
             <span className="font-monlam">ཡིག་སྒྱུར་རིག་ནུས།</span> was
@@ -31,13 +30,6 @@ function Sponsors() {
             Large Language Models were trained on extensive data provided by
             Monlam.ai.
           </p>
-        ) : (
-          <p className="font-monlam mt-2 text-center leading-loose">
-            ཡིག་སྒྱུར་རིག་ནུས་ནང་མཁོ་སྤྲོད་བྱས་པའི་འཕྲུལ་ཆས་ཡིག་སྒྱུར་གྱི་ནུས་པ་དེ་ནི་ཀེ་ལི་ཕོར་ནི་ཡ་གཙུག་ལག་སློབ་ཆེན་གྱི་བྷར་ཀི་ལེ་རྫས་འགྱུར་ཞིབ་འཇུག་ཁང་(BAIR)
-            དུ་སློབ་དཔོན་ཆེན་མོ་ཀརྚ་ཀོཊ་ཛེར་གྱི་ལམ་སྟོན་འོག་སེ་བྷ་སི་ཊིན་ནེ་རི་ཌི་ཆི་ཡིས་གསར་གཏོད་བྱས་པ་ཞིག་རེད།
-            མི་ཏྲ་ལས་འཆར་གྱི་ཆ་ཤས་སུ་སྒོ་མོ་ལྔ་མཛོད་ཀྱིས་མཁོ་སྤྲོད་བྱས་པའི་རྒྱ་ཆེ་བའི་གཞི་གྲངས་ཐོག་གཞི་རྒྱ་ཆེ་བའི་སྐད་བརྡའི་དཔེ་དབྱིབས་རྣམས་སྦྱོང་བརྡར་བྱས་ཡོད།
-          </p>
-        )}
       </div>
     </div>
   );
