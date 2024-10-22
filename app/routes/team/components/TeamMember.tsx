@@ -5,9 +5,7 @@ function TeamMember({ route, name, designation, headshot }) {
   let { translation, isTibetan } = uselitteraTranlation();
 
   return (
-    <Link
-      to={`/team/${route}`}
-      state={{ name, designation, headshot }}
+    <div
       className={`flex flex-col items-center px-4 py-6 text-center ${
         isTibetan ? "font-monlam leading-loose" : "font-poppins"
       }`}
@@ -29,7 +27,7 @@ function TeamMember({ route, name, designation, headshot }) {
       >
         {designation}
       </p>
-    </Link>
+    </div>
   );
 }
 
