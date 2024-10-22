@@ -5,13 +5,15 @@ import {
   useLoaderData,
   useSearchParams,
 } from "@remix-run/react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState,useCallback } from "react";
 import ReactionButtons from "~/component/ReactionButtons";
 import ToolWraper from "~/component/ToolWraper";
 import { MAX_SIZE_SUPPORT_DOC } from "~/helper/const";
 import ShareLink from "~/component/ShareLink";
 import { resetFetcher } from "~/component/utils/resetFetcher";
 import { RxCross2 } from "react-icons/rx";
+import { ClientOnly } from "remix-utils/client-only";
+
 import { CancelButton } from "~/component/Buttons";
 import TextComponent from "~/component/TextComponent";
 import { ErrorMessage } from "~/component/ErrorMessage";
@@ -27,6 +29,7 @@ import { ErrorBoundary } from "~/component/ErrorPages";
 import { CharacterSizeComponent } from "~/component/CharacterSize";
 import useEffectAfterFirstRender from "~/component/hooks/useEffectAfterFirstRender";
 import { auth } from "../../services/auth.server";
+import AudioPlayerComponent from "./components/AudioStreamPlayer.client";
 
 export const meta: MetaFunction = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -47,49 +50,102 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 export default function Index() {
   const [sourceText, setSourceText] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [inputUrl, setInputUrl] = useState("");
   const [params, setParams] = useSearchParams();
-
+  const [audioList, setAudioList] = useState([]);
   let { CHAR_LIMIT } = useLoaderData();
-  const fetcher = useFetcher();
-  const isLoading = fetcher.state !== "idle";
-  const sourceUrl = fetcher.data?.output;
-  const inferenceId = fetcher.data?.id;
+  // const fetcher = useFetcher();
+  // const isLoading = fetcher.state !== "idle";
+  // const sourceUrl = fetcher.data?.output;
+  // const inferenceId = fetcher.data?.id;
+  const [inferenceId, setInferenceId] = useState(null); 
+
+
+ 
 
   let charCount = sourceText?.length;
 
   const handleReset = () => {
     setSourceText("");
-    resetFetcher(fetcher);
+    // resetFetcher(fetcher);
   };
 
   let likeFetcher = useFetcher();
 
-  function submitHandler(e) {
-    if (!sourceText || !sourceText.trim()) {
-      toast.info("Text input is required for text-to-speech.", {
-        position: toast.POSITION.BOTTOM_CENTER,
-      });
-    } else {
-      fetcher.submit(
-        {
-          input: sourceText,
-        },
-        {
-          method: "POST",
-          action: "/api/tts",
-        }
-      );
-    }
-  }
-  let actionError = fetcher.data?.error as string;
 
+  const handleEventStream = useCallback(async (text) => {
+    let eventSource = null;
+    
+    try {
+      setIsLoading(true);
+      
+      // Create new promise for stream handling
+      return new Promise((resolve, reject) => {
+        // Close any existing connection
+        if (eventSource) {
+          eventSource.close();
+        }
+        
+        // Create new EventSource
+        eventSource = new EventSource(
+          `/api/tts/stream?text=${encodeURIComponent(text)}`
+        );
+        
+        // Handle messages
+        eventSource.onmessage = (event) => {
+          try {
+            const data = JSON.parse(event.data);
+            
+            if (data.output) {
+              setAudioList(prev => [...prev, data.output]);
+            }
+            
+            if (data.done || data.error) {
+              eventSource.close();
+              resolve();
+            }
+          } catch (err) {
+            console.error('Error parsing event data:', err);
+          }
+        };
+        
+        // Handle errors
+        eventSource.onerror = (error) => {
+          console.error('EventSource error:', error);
+          eventSource.close();
+          reject(error);
+        };
+      });
+      
+    } catch (error) {
+      console.error('Stream handling error:', error);
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+
+  const submitHandler = async (e) => {
+    try {
+      // Reset audio list before starting new stream
+      setAudioList([]);
+      await handleEventStream(sourceText);
+    } catch (error) {
+      console.error('Submit handler error:', error);
+      setIsLoading(false);
+    }
+  };
   useEffectAfterFirstRender(() => {
     if (sourceText === "") {
-      resetFetcher(fetcher);
+      // resetFetcher(fetcher);
     }
   }, [sourceText]);
+
+console.log(audioList)
+ 
   return (
     <ToolWraper title="TTS">
       <div className="rounded-[10px] overflow-hidden border dark:border-[--card-border] border-dark_text-secondary">
@@ -129,13 +185,7 @@ export default function Index() {
           <Devider />
           <CardComponent>
             <div className="flex min-h-[156px] lg:min-h-[30vh] h-full w-full flex-1 flex-col gap-2">
-              {actionError && (
-                <ErrorMessage
-                  message={actionError}
-                  handleClose={() => resetFetcher(fetcher)}
-                  type="warning"
-                />
-              )}
+             
               {isLoading && (
                 <div className="flex flex-1 justify-center items-center">
                   <Spinner
@@ -144,9 +194,16 @@ export default function Index() {
                   />
                 </div>
               )}
-              {!isLoading &&  inferenceId && (
+                <ClientOnly fallback={null}>
+      {() => <AudioPlayerComponent audioUrls={audioList} />}
+    </ClientOnly>
+            
+              {!isLoading &&  inferenceId  && (
                 <div className="flex-1 h-full flex justify-center items-center">
-                  {sourceUrl && <AudioPlayer audioURL={sourceUrl} />}
+                  {/* {sourceUrl && <AudioPlayer audioURL={sourceUrl} />}
+                   */}
+              
+                  
                 </div>
               )}
             </div>
@@ -174,3 +231,6 @@ export default function Index() {
 }
 
 export { ErrorBoundary };
+
+
+

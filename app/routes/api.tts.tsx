@@ -10,31 +10,22 @@ export const action: ActionFunction = async ({ request }) => {
   const input_data = formdata.get("input") as string;
   const API_URL = process.env.API_URL as string;
   let data;
-  let url = API_URL + "/api/v1/tts";
+  let url = API_URL + "/api/v1/tts/stream";
   try {
     const token = user ? user?.id_token : null;
     const body = JSON.stringify({
       input: inputReplace(input_data),
     });
     const headers = await getHeaders(request,token);
-    const response = await fetch(url, {
+    return fetch(url, {
       method: "POST",
       body,
       headers,
     });
-
-    data = await response.json();
   } catch (e) {
     return {
       error: API_ERROR_MESSAGE,
     };
   }
-  const { output,id } = data;
 
-  if (!output)
-    return {
-      error: API_ERROR_MESSAGE,
-    };
-
-  return { output ,id};
 };
