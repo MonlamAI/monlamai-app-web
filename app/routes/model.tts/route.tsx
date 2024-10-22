@@ -200,8 +200,7 @@ console.log(audioList)
             
               {!isLoading &&  inferenceId  && (
                 <div className="flex-1 h-full flex justify-center items-center">
-                  {/* {sourceUrl && <AudioPlayer audioURL={sourceUrl} />}
-                   */}
+                
               
                   
                 </div>
