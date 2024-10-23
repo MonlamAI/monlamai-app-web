@@ -58,7 +58,7 @@ export default function Index() {
   let { CHAR_LIMIT } = useLoaderData();
   // const fetcher = useFetcher();
   // const isLoading = fetcher.state !== "idle";
-  // const sourceUrl = fetcher.data?.output;
+  const sourceUrl = JSON.stringify(audioList??[]);
   // const inferenceId = fetcher.data?.id;
   const [inferenceId, setInferenceId] = useState(null); 
 
@@ -79,7 +79,6 @@ export default function Index() {
     let eventSource = null;
     
     try {
-      setIsLoading(true);
       
       // Create new promise for stream handling
       return new Promise((resolve, reject) => {
@@ -87,7 +86,6 @@ export default function Index() {
         if (eventSource) {
           eventSource.close();
         }
-        
         // Create new EventSource
         eventSource = new EventSource(
           `/api/tts/stream?text=${encodeURIComponent(text)}`
@@ -97,12 +95,17 @@ export default function Index() {
         eventSource.onmessage = (event) => {
           try {
             const data = JSON.parse(event.data);
-            
+            if(data.inference_id){
+              setInferenceId(data.inference_id);
+            }
             if (data.output) {
               setAudioList(prev => [...prev, data.output]);
+              setIsLoading(false)
             }
             
-            if (data.done || data.error) {
+            if (data.done || data.error || data.response) {
+              setAudioList(prev => [...prev, 'done']);
+              setIsLoading(false)
               eventSource.close();
               resolve();
             }
@@ -123,13 +126,14 @@ export default function Index() {
       console.error('Stream handling error:', error);
       throw error;
     } finally {
-      setIsLoading(false);
     }
   }, []);
 
 
   const submitHandler = async (e) => {
     try {
+      setIsLoading(true);
+
       // Reset audio list before starting new stream
       setAudioList([]);
       await handleEventStream(sourceText);
@@ -144,8 +148,7 @@ export default function Index() {
     }
   }, [sourceText]);
 
-console.log(audioList)
- 
+ console.log(isLoading)
   return (
     <ToolWraper title="TTS">
       <div className="rounded-[10px] overflow-hidden border dark:border-[--card-border] border-dark_text-secondary">
@@ -194,15 +197,13 @@ console.log(audioList)
                   />
                 </div>
               )}
-                <ClientOnly fallback={null}>
-      {() => <AudioPlayerComponent audioUrls={audioList} />}
-    </ClientOnly>
+               
             
               {!isLoading &&  inferenceId  && (
                 <div className="flex-1 h-full flex justify-center items-center">
-                
-              
-                  
+                <ClientOnly fallback={null}>
+                {() => <AudioPlayerComponent audioList={audioList} />}
+                </ClientOnly>
                 </div>
               )}
             </div>
