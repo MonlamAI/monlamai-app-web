@@ -90,32 +90,61 @@ export const links: LinksFunction = () => [
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "སྨོན་ལམ་རིག་ནུས། | Monlam AI | Tibetan Language AI Development" },
+    { title: "Monlam Chat | AI-Powered Tibetan Chatbot | chat.monlam.ai" },
     {
       name: "description",
       content:
-        "Seamlessly utilize four powerful models for English to Tibetan translation and Tibetan to English translation, text-to-speech, speech-to-text, and OCR (Optical Character Recognition).",
+        "Monlam Chat is an AI-powered chatbot that understands and communicates in Tibetan. Whether you're learning the Tibetan language or seeking translation assistance, Monlam Chat is available 24/7 to help you at chat.monlam.ai.",
     },
     {
       name: "keywords",
       content:
-        "Monlam, AI , tibetan , dictionary ,translation ,orc , tts, stt ,login,སྨོན་ལམ་, རིག་ནུས། , tibetan to english, english to tibetan, tibetan dictionary, tibetan translation, tibetan ocr, tibetan tts, tibetan stt, tibetan login",
-
+        "Monlam Chat, Tibetan language, AI chatbot, Tibetan chatbot, Tibetan language learning, Tibetan translation, Tibetan speech recognition, chat in Tibetan, AI-driven chatbot, Tibetan text-to-speech",
     },
     {
       name: "apple-mobile-web-app-status-bar",
       content: "#0757b5",
     },
     {
-      "og:title":
-        "སྨོན་ལམ་རིག་ནུས། | Monlam AI | Tibetan Language AI Development",
+      name:"og:title", 
+      content:"Monlam Chat | AI-Powered Tibetan Chatbot | chat.monlam.ai",
     },
     {
-      "og:description":
-        "Create an account or log in to Monlam , users can seamlessly utilize four powerful models for translation, text-to-speech, speech-to-text, and OCR (Optical Character Recognition).",
+      name:  "og:description",
+      content:  "Monlam Chat is an AI-powered chatbot that helps with Tibetan language conversations, translations, and more. Available 24/7 at chat.monlam.ai.",
+    },
+    {
+      name:"og:url", 
+      content:"https://chat.monlam.ai",
+    },
+    {
+      name:"og:type",
+      content: "website",
+    },
+    {
+      name:"og:image",
+      content:"https://chat.monlam.ai/static/og-image.jpg", // Replace with actual image URL
+    },
+    {
+      name: "twitter:card",
+      content: "summary_large_image",
+    },
+    {
+      name: "twitter:title",
+      content: "Monlam Chat | AI-Powered Tibetan Chatbot | chat.monlam.ai",
+    },
+    {
+      name: "twitter:description",
+      content:
+        "Chat with Monlam Chat, an AI-powered Tibetan chatbot for language assistance, translation, and more. Try it at chat.monlam.ai.",
+    },
+    {
+      name: "twitter:image",
+      content: "https://chat.monlam.ai/static/twitter-image.jpg", // Replace with actual image URL
     },
   ];
 };
+
 
 function Document({ children, theme }: { children: React.ReactNode }) {
   const data = useLoaderData();
