@@ -2,7 +2,8 @@ import { useLocation } from "@remix-run/react";
 import { AiFillFacebook } from "react-icons/ai";
 import instasvg from "~/styles/instagram.svg";
 import twittersvg from "~/styles/twitter.svg";
-
+import { AiFillInstagram } from "react-icons/ai";
+import { FaXTwitter } from "react-icons/fa6";
 import uselitteraTranlation from "../hooks/useLitteraTranslation";
 function Footer() {
   let location = useLocation();
@@ -15,21 +16,19 @@ function Footer() {
       name: "facebook",
       link: "https://www.facebook.com/profile.php?id=100092133731838",
       icon: <AiFillFacebook />,
-      color: "#3b5998",
+      color: "#b3b3b3",
     },
     {
       name: "instagram",
       link: "https://www.instagram.com/monlam_ai/",
-      icon: <img src={instasvg} style={{ height: 34, objectFit: "contain" }} />,
-      color: "#e4405f",
+      icon: <AiFillInstagram/>,
+      color: "#b3b3b3",
     },
     {
       name: "twitter",
       link: "https://twitter.com/Monlam_AI",
-      icon: (
-        <img src={twittersvg} style={{ height: 26, objectFit: "contain" }} />
-      ),
-      color: "#55acee",
+      icon: <FaXTwitter/>,
+      color: "#b3b3b3",
     },
   ];
 
@@ -53,6 +52,7 @@ function Footer() {
           </div>
         </div>
         <div className="flex flex-wrap items-center">
+          <div className="text-[#b3b3b3] mr-3">Follow us on:</div>
           {logos.map((logo) => {
             return (
               <a
@@ -61,7 +61,7 @@ function Footer() {
                 target="_blank"
                 rel="noreferrer"
                 className={`mr-2 hover:underline md:mr-3 transition-all duration-500 `}
-                style={{ color: logo.color, fontSize: 26 }}
+                style={{ color: logo.color, fontSize: 20 }}
                 aria-label={logo.name}
               >
                 {logo.icon}
