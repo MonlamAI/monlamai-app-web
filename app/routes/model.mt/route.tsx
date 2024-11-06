@@ -35,6 +35,7 @@ import { CharacterSizeComponent } from "~/component/CharacterSize";
 import useEffectAfterFirstRender from "~/component/hooks/useEffectAfterFirstRender";
 import { v4 as uuidv4 } from "uuid";
 import { getHeaders } from "~/component/utils/getHeaders.server";
+import SelectModel from "./components/SelectModel";
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   const parentMeta = matches.flatMap((match) => match.meta ?? []);
@@ -89,9 +90,8 @@ export default function Index() {
   const target_lang = params.get("target") || "bo";
   const source_lang = params.get("source") || "en";
   const [sourceText, setSourceText] = useState("");
-
+  const [model, setModel] = useState("Matlad");
   const { limitMessage, CHAR_LIMIT } = useLoaderData();
-
   const [edit, setEdit] = useState(false);
   const [editText, setEditText] = useState("");
   const [inferenceId, setInferenceId] = useState(null);
@@ -138,6 +138,7 @@ export default function Index() {
     data: output,
     setData: setOutput,
     editfetcher,
+    model
   });
 
   useEffectAfterFirstRender(() => {
@@ -171,6 +172,9 @@ export default function Index() {
           type="info"
         />
       )}
+      <div className='flex justify-end mb-3 items-center'>
+       Model: <SelectModel  setModel={setModel} model={model}/>
+      </div>
       <div className="rounded-[10px] mb-[100px] overflow-hidden border dark:border-[--card-border] border-dark_text-secondary">
         <LanguageInput
           setSourceText={setSourceText}
