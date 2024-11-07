@@ -27,11 +27,15 @@ let auth0Strategy = new Auth0Strategy(
     // Get the user data from your DB or API using the tokens and profile
     //     // Use the returned information to process or write to the DB.
     //     //
+    console.log(refreshToken)
         let id_token = extraParams?.id_token;
         let expires_on= parseJwt(id_token);
         let email = profile?._json?.email;
         let picture = profile?._json?.picture;
         let username = profile?._json?.given_name;
+        if(!isTokenExpired(expires_on)){
+          console.log(isTokenExpired(expires_on))
+        }
         return { id_token,expires_on, ...profile };
   },
 );
@@ -43,16 +47,9 @@ export function isTokenExpired(expirationTime: number): boolean {
 
 function parseJwt(token) {
   try {
-    // Split the token into its three parts
     const [, payloadBase64] = token.split('.');
-    
-    // Base64 decode the payload
     const payloadJson = atob(payloadBase64);
-    
-    // Parse the JSON
     const payload = JSON.parse(payloadJson);
-    
-    // Extract and return the expiration time
     return payload.exp;
   } catch (e) {
     console.error('Error parsing JWT:', e);
