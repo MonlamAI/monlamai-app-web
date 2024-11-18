@@ -34,9 +34,9 @@ export const eng_languagesOptions = [
   // { value: "Spanish", code: "es", name: "spanish" },
   // { value: "Portuguese", code: "pt", name: "portuguese" },
   // { value: "Dutch", code: "nl", name: "dutch" },
-  {"value": "Czech", "code": "cs", "name": "czech"},
-  {"value": "Vietnamese", "code": "vi", "name": "vietnamese"},
-  {"value": "Mongolian", "code": "mn", "name": "mongolian"},
+  {value: "Czech", code: "cs", name: "czech"},
+  {value: "Vietnamese", code: "vi", name: "vietnamese"},
+  {value: "Mongolian", code: "mn", name: "mongolian"},
 ];
 
 export const tib_languageOptions = [
@@ -56,9 +56,9 @@ export const tib_languageOptions = [
   // { value: "སི་པེན།", code: "es", name: "spanish" },
   // { value: "ཕོ་ཆུ་གྷལ།", code: "pt", name: "portuguese" },
   // { value: "ཧོ་ལན", code: "nl", name: "dutch" },
-  {"value": "Czech", "code": "cs", "name": "czech"},
-  {"value": "Vietnamese", "code": "vi", "name": "vietnamese"},
-  {"value": "Mongolian", "code": "mn", "name": "mongolian"},
+  {value: "Czech", code: "cs", name: "czech"},
+  {value: "Vietnamese", code: "vi", name: "vietnamese"},
+  {value: "Mongolian", code: "mn", name: "mongolian"},
 ];
 
 export const ICON_SIZE = 20;
