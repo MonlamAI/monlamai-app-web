@@ -3,9 +3,9 @@ import { Select, Tooltip } from "flowbite-react";
 
 
 export const models= [{
-    name:"Matlad",
+    name:"MONLAM-MITRA",
 },{
-    name:"Melong"
+    name:"MONLAM-MELONG"
 }]
 
 function SelectModel({setModel,model}) {
