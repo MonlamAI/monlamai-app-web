@@ -36,7 +36,6 @@ export const eng_languagesOptions = [
   // { value: "Dutch", code: "nl", name: "dutch" },
   {value: "Czech", code: "cs", name: "czech"},
   {value: "Vietnamese", code: "vi", name: "vietnamese"},
-  {value: "Mongolian", code: "mn", name: "mongolian"},
 ];
 
 export const tib_languageOptions = [
@@ -58,7 +57,6 @@ export const tib_languageOptions = [
   // { value: "ཧོ་ལན", code: "nl", name: "dutch" },
   {value: "Czech", code: "cs", name: "czech"},
   {value: "Vietnamese", code: "vi", name: "vietnamese"},
-  {value: "Mongolian", code: "mn", name: "mongolian"},
 ];
 
 export const ICON_SIZE = 20;
