@@ -12,11 +12,11 @@ export async function loader({ request }: LoaderFunctionArgs) {
   let user = await auth.isAuthenticated(request);
   const API_URL = process.env?.API_URL;
   let api_url = API_URL;
-  if(model==='Matlad'){
+  if(model==='MONLAM-MITRA'){
     api_url = API_URL + "/api/v1/translation/mt/stream";
   }
 
-  if(model==='Melong'){
+  if(model==='MONLAM-MELONG'){
     api_url = API_URL + "/api/v1/translation/stream";
   }
 
