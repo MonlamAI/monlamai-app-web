@@ -8,9 +8,19 @@ export async function loader({ request }: LoaderFunctionArgs) {
   let url = new URL(request.url);
   let text = url.searchParams.get("text") as string;
   let target = url.searchParams.get("target") as string;
+  let model = url.searchParams.get("model") as string;
   let user = await auth.isAuthenticated(request);
   const API_URL = process.env?.API_URL;
-  let api_url = API_URL + "/api/v1/translation/stream";
+  let api_url = API_URL;
+  if(model==='MONLAM-MITRA'){
+    api_url = API_URL + "/api/v1/translation/mt/stream";
+  }
+
+  if(model==='MONLAM-MELONG'){
+    api_url = API_URL + "/api/v1/translation/stream";
+  }
+
+
   let token=user ? user?.id_token : null;
   let body = JSON.stringify({
     input: text,

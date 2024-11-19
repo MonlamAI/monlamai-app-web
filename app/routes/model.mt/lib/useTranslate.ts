@@ -15,6 +15,7 @@ type useTranslateType = {
   data: string;
   setData: (data: string) => void;
   editfetcher: any;
+  model:string;
 };
 
 function handleEventStream(
@@ -24,13 +25,13 @@ function handleEventStream(
   onData: (data: string) => void,
   isToasted: boolean,
   setIsToasted: (value: boolean) => void,
-  
+  model:string
 ): Promise<void> {
   return new Promise((resolve, reject) => {
     const eventSource = new EventSource(
       `/api/translation/stream?text=${encodeURIComponent(
         text
-      )}&target=${encodeURIComponent(direction)}`
+      )}&target=${encodeURIComponent(direction)}&model=${model}`
     );
 
     eventSource.onmessage = (event) => {
@@ -108,6 +109,7 @@ const useTranslate = ({
   setData,
   savefetcher,
   editfetcher,
+  model
 }: useTranslateType) => {
   const [responseTime, setResponseTime] = useState(0);
   const [done, setDone] = useState(false);
@@ -139,7 +141,8 @@ const useTranslate = ({
           target_lang,
           setData,
           isToasted,
-          setIsToasted
+          setIsToasted,
+          model
         );
       } catch (error) {
         setError(error.message);

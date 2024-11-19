@@ -15,6 +15,7 @@ module.exports = {
     "react-leaflet",
     "leaflet",
     "@wavesurfer/react",
+    "react-markdown"
   ],
   tailwind: true,
   browserNodeBuiltinsPolyfill: {

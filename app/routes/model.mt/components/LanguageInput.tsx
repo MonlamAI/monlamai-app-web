@@ -190,7 +190,7 @@ function LanguageInput({
   };
   let optionClass =
     "language-options bg-white dark:bg-[--card-bg] text-black dark:text-white  ";
-  let beta = ["French", "Chinese", "Hindi", "ཧྥ་རན་སི།", "རྒྱ་ཡིག", "ཧིན་དྷི།"];
+  let beta = ["French", "Chinese", "Hindi","Germen","Japanese","Vietnamese","Germen","Czech", "ཧྥ་རན་སི།", "རྒྱ་ཡིག", "ཧིན་དྷི།"];
   return (
     <div
       className={`${

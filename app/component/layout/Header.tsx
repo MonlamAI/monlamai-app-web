@@ -223,6 +223,7 @@ function AboutLink() {
 }
 function TeamLink() {
   const { translation, locale } = uselitteraTranlation();
+  return null;
   return (
     <NavLink
       to="/team"
