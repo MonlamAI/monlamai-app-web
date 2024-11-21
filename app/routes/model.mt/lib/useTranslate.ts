@@ -39,7 +39,11 @@ function handleEventStream(
       if (data?.generated_text) {
         let text = data?.generated_text;
         if(data?.id) setInferenceId(data?.id)
-        let replaced_text = en_bo_tibetan_replaces(text);
+
+        let replaced_text = text
+        if(model!=='MONLAM-MELONG'){
+         replaced_text= en_bo_tibetan_replaces(text);
+        }
         onData(replaced_text);
         eventSource.close();
         resolve("done"); // Resolve the promise when data is received
@@ -48,7 +52,10 @@ function handleEventStream(
         if (content) {
           onData((p) => {
             let newChunk = p + content?.replace("</s>", "");
-            let replaced_text = en_bo_tibetan_replaces(newChunk);
+            let replaced_text =newChunk;
+            if(model!=='MONLAM-MELONG'){
+            replaced_text=  en_bo_tibetan_replaces(newChunk);
+            }
             return replaced_text;
           });
         }
@@ -131,7 +138,11 @@ const useTranslate = ({
       setDone(false);
       setError(null);
       setData("");
-      let input = en_bo_english_replaces(text);
+
+      let input =text;
+      if(model!=='MONLAM-MELONG'){
+        input = en_bo_english_replaces(text);
+      }
 
       const startTime = performance.now(); // Record start time
       try {
