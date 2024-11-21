@@ -103,36 +103,15 @@ function LanguageInput({
     });
   }
 
-  // Debounced function to handle input changes
-  const detectLanguage = (text: string) => {
-    submit(
-      {
-        inputText: text,
-      },
-      {
-        method: "POST",
-        action: "/api/detectLanguage",
-      }
-    );
-  };
-
+  
   useEffectOnce(() => {
-    if (fetcherData?.info) {
       detectAndSetLanguage(sourceText);
-    } else if (fetcherData) {
-      setLanguage(fetcherData.language);
-    }
-  }, [fetcherData]);
+  }, [sourceText]);
   useEffectOnce(() => {
     if (sourceText?.trim() === "" && sourceLang !== "detect language") {
       setSource("detect language");
     }
   }, [sourceText]);
-  useEffectOnce(() => {
-    if (sourceLang === "detect language" && sourceText?.trim() !== "") {
-      detectLanguage(sourceText);
-    }
-  }, [sourceText, sourceLang]);
 
   const detectAndSetLanguage = (text: string) => {
     if (sourceLang !== "detect language") return;
