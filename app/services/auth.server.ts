@@ -24,10 +24,7 @@ let auth0Strategy = new Auth0Strategy(
     domain: AUTH0_DOMAIN,
   },
   async ({ accessToken, refreshToken, extraParams, profile }) => {
-    // Get the user data from your DB or API using the tokens and profile
-    //     // Use the returned information to process or write to the DB.
-    //     //
-    console.log(refreshToken)
+   
         let id_token = extraParams?.id_token;
         let expires_on= parseJwt(id_token);
         let email = profile?._json?.email;

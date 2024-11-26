@@ -9,7 +9,6 @@ export const action: ActionFunction = async ({ request }) => {
   let URL_File = process.env.API_URL;
   let show_coordinate = formdata.get("show_coordinate") as string;
   let imageUrl = formdata.get("imageUrl") as string;
-  const token = user ? user?.id_token : null;
   let body = JSON.stringify({
     input: imageUrl,
   });
@@ -18,7 +17,7 @@ export const action: ActionFunction = async ({ request }) => {
     let res = await fetch(URL_File + "/api/v1/ocr", {
       method: "POST",
       body,
-      headers: await getHeaders(request,token),
+      headers: await getHeaders(request,user),
     });
 
     data = await res.json();
