@@ -1,9 +1,8 @@
 import getIpAddressByRequest from "~/component/utils/getIpAddress";
 
-export const getHeaders = async (request: Request, token?: string) => {
+export const getHeaders = async (request: Request, user?: any) => {
   const AccessKey = process.env?.API_ACCESS_KEY;
   let ip = getIpAddressByRequest(request);
-
   // Base headers
   let headers: Record<string, string> = {
     Accept: "application/json",
@@ -13,9 +12,8 @@ export const getHeaders = async (request: Request, token?: string) => {
     "Client-IP": ip,
   };
 
-  // If a token is passed, add it as a cookie
-  if (token) {
-    headers["Cookie"] = `id_token=${token};`;
+  if (user) {
+    headers["Cookie"] = `email=${user.emails[0].value};`;
   }
 
   return headers;

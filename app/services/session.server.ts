@@ -31,7 +31,6 @@ export async function getUserSession(request: Request) {
   return user;
 }
 
-
 export async function generateCSRFToken(request: Request, user: any) {
   let secretKey = process.env.API_ACCESS_KEY;
   let data = !!user ? user : {};

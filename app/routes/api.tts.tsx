@@ -12,12 +12,12 @@ export const action: ActionFunction = async ({ request }) => {
   let data;
   let url = API_URL + "/api/v1/tts/stream";
   try {
-    const token = user ? user?.id_token : null;
     const body = JSON.stringify({
       input: inputReplace(input_data),
     });
-    const headers = await getHeaders(request,token);
-    return fetch(url, {
+
+    const headers = await getHeaders(request,user);
+    const response = await fetch(url, {
       method: "POST",
       body,
       headers,

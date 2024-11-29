@@ -92,7 +92,7 @@ export default function Index() {
   const target_lang = params.get("target") || "bo";
   const source_lang = params.get("source") || "en";
   const [sourceText, setSourceText] = useState("");
-  const [model, setModel] = useState("Melong");
+  const [model, setModel] = useState("MONLAM-MELONG");
   const { limitMessage, CHAR_LIMIT } = useLoaderData();
   const [edit, setEdit] = useState(false);
   const [editText, setEditText] = useState("");

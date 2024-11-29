@@ -19,14 +19,11 @@ export async function loader({ request }: LoaderFunctionArgs) {
   if(model==='MONLAM-MELONG'){
     api_url = API_URL + "/api/v1/translation/stream";
   }
-
-
-  let token=user ? user?.id_token : null;
   let body = JSON.stringify({
     input: text,
     target,
   });
-  let headers = await getHeaders(request,token);
+  let headers = await getHeaders(request,user);
   return fetch(api_url, {
     method: "POST",
     body,
