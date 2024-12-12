@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Play, Pause } from 'lucide-react';
+import { FaPlay,FaPause } from "react-icons/fa6";
 
 function AudioQueuePlayer({ audioList }) {
   const queue = audioList;
@@ -71,7 +71,7 @@ function AudioQueuePlayer({ audioList }) {
         onEnded={handleAudioEnd}
       />
       <button onClick={togglePlayPause}>
-        {isPlaying ? <Pause size={24} /> : <Play size={24} />}
+        {isPlaying ? <FaPause size={24} /> : <FaPlay size={24} />}
       </button>
     </div>
   );
