@@ -110,7 +110,7 @@ const AudioPlayer = ({ audioURL }) => {
       </div>
       <div className="flex flex-1 flex-col justify-between gap-2">
         {/* Placeholder for the waveform */}
-        <div className="my-auto" ref={containerRef} />
+        {/* <div className="my-auto" ref={containerRef} /> */}
         <div className="flex items-center justify-between gap-5">
           <button
             onClick={() => {
