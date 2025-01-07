@@ -26,7 +26,7 @@ function SingleInptSection({ fetcher }: any) {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [edit, setEdit] = useState(false);
   const [editText, setEditText] = useState("");
-  const [isOrginalText, setOrginalText] = useState(false);
+  const [isOriginalText, setOriginalText] = useState(false);
   const { isTibetan } = uselitteraTranlation();
 
   const likeFetcher = useFetcher();
@@ -115,8 +115,8 @@ function SingleInptSection({ fetcher }: any) {
     navigator.clipboard.writeText(textToCopy);
   }
 
-  const changeOrginalText = () => {
-    setOrginalText(!isOrginalText);
+  const changeOriginalText = () => {
+    setOriginalText(!isOriginalText);
   };
   let actionError = fetcher.data?.error as string;
   const formatText = (text) => {
@@ -170,9 +170,9 @@ function SingleInptSection({ fetcher }: any) {
             <>
               {!edit && text && (
                 <ToggleSwitch
-                  checked={isOrginalText}
-                  label="Orginal lines"
-                  onChange={changeOrginalText}
+                  checked={isOriginalText}
+                  label="Original lines"
+                  onChange={changeOriginalText}
                 />
               )}
               <div className="text-lg tracking-wide leading-loose">
@@ -189,7 +189,7 @@ function SingleInptSection({ fetcher }: any) {
                     dangerouslySetInnerHTML={{
                       __html:
                         // text?.replaceAll("\n", "<br>"),
-                        isOrginalText
+                        isOriginalText
                           ? formatText(text)
                           : formatText(applyReplacements(text)),
                     }}
