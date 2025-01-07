@@ -1,10 +1,10 @@
 import { ClientOnly } from "remix-utils/client-only";
-import Privacy_policy from "../component/Privacy_policy.client";
+import Policy from "../component/Policy.client";
 
 
 
 export default function PrivacyPolicy() {
    return <div>
-   <ClientOnly fallback={<div />}>{() => <Privacy_policy />}</ClientOnly>
+   <ClientOnly fallback={<div />}>{() => <Policy productName={'Monlam Translate'} />}</ClientOnly>
    </div>
 }
