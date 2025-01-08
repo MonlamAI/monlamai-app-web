@@ -1,2 +1,11 @@
 User-agent: *
-Disallow:
+Disallow: /api/
+Disallow: /callback/
+Disallow: /auth0/
+Disallow: /login/
+Disallow: /logout/
+Disallow: /terms/
+Disallow: /admin/
+Disallow: /action/
+
+
