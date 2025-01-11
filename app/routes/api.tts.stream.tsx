@@ -13,11 +13,10 @@ export async function loader({ request }: LoaderFunctionArgs) {
   let user = await auth.isAuthenticated(request);
   const API_URL = process.env?.API_URL;
   let api_url = API_URL + "/api/v1/tts/stream";
-  let token=user ? user?.id_token : null;
   const body = JSON.stringify({
     input: inputReplace(text),
   });
-  let headers = await getHeaders(request,token);
+  let headers = await getHeaders(request,user);
   return fetch(api_url, {
     method: "POST",
     body,

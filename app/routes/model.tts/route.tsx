@@ -39,9 +39,11 @@ export const meta: MetaFunction = ({ matches }) => {
 };
 
 export async function loader({ request }: LoaderFunctionArgs) {
+  const user =  await auth.isAuthenticated(request);
   const CHAR_LIMIT = parseInt(process.env?.MAX_TEXT_LENGTH_TTS!);
 
   return {
+    user,
     CHAR_LIMIT,
   };
 }
