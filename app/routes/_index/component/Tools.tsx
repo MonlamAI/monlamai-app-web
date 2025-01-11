@@ -27,7 +27,7 @@ function EachModel({ model }: EachProps) {
   const { translation, locale } = uselitteraTranlation();
   const isEnglish = locale === "en_US";
   return (
-    <NavLink to={"/model/" + link} prefetch="render"  className="w-full" unstable_viewTransition>
+    <NavLink to={"/model/" + link} prefetch={link==='mt'?"render":"intent"}  className="w-full" unstable_viewTransition>
       {({ isTransitioning }) => (
         <motion.div whileHover={{ scale: 0.98 }}>
           <Card

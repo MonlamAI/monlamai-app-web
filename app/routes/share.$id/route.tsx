@@ -10,6 +10,7 @@ import AudioPlayer from "~/routes/model.tts/components/AudioPlayer";
 import HeaderComponent from "~/component/HeaderComponent";
 import Devider from "~/component/Devider";
 import { ClientOnly } from "remix-utils/client-only";
+import { getHeaders } from "~/component/utils/getHeaders.server";
 
 const langLabels = {
   bo: "བོད་སྐད།",
@@ -23,14 +24,17 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   const userdata = await auth.isAuthenticated(request);
   const id = params.id;
   if (!id) throw new Error("ID parameter is missing");
-
-  const data = await db.inference.findUnique({
-    where: { id },
+  let headers = await getHeaders(request);
+  const API_URL = process.env.API_URL as string;
+  let response = await fetch(API_URL + "/share/"+id, {
+    method: "GET",
+    headers,
   });
-  if (!data) throw new Error(`No data found for ID: ${id}`);
-
-  const langDir = data.inputLang === "en" ? "en2bo" : "bo2en";
-  const model: string = data?.model;
+  let record=await response.json();
+  if (!record) throw new Error(`No data found for ID: ${id}`);
+  const data=record.record;
+  const langDir = record.record.inputLang === "en" ? "en2bo" : "bo2en";
+  const model: string = record.table=='translation'?"mt":record.table;
   return { id, data, user: userdata, langDir, model };
 };
 
@@ -79,9 +83,9 @@ function OutputCard({ content, className, model }) {
     </CardComponent>
   );
 }
-function TranslationRoute() {
-  const { id, data, user, langDir, model } = useLoaderData();
-
+function ShareRoute() {
+  const props= useLoaderData();
+  const { id, data, user, langDir, model }=props;
   if (!data) {
     return (
       <div className="flex gap-2 flex-col text-center capitalize">
@@ -151,4 +155,4 @@ function MTHeader({ sourceLang, targetLang }) {
   );
 }
 
-export default TranslationRoute;
+export default ShareRoute;

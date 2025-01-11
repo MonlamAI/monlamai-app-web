@@ -34,11 +34,6 @@ export const meta: MetaFunction<typeof loader> = ({ matches }) => {
   return [{ title: "Monlam | སྒྲ་འཛིན་རིག་ནུས།" }, ...parentMeta];
 };
 
-export async function loader({ request }: LoaderFunctionArgs) {
-  let user = await getUserSession(request);
-  return { user };
-}
-
 export const action: ActionFunction = async ({ request }) => {
   let formdata = await request.formData();
   let edited = formdata.get("edited") as string;
