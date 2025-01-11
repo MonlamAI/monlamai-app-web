@@ -39,7 +39,8 @@ export const instructors = [
     name: "Dr Marieke Meelen",
     tibetan_name: "མར་ཡེ་ཀེ་མེ་ལེན྄།",
     image: "/assets/instructors/Marieke.jpeg",
-    description: "Director of studies in Linguistics, Cambridge University",
+    description:
+      "Associate Professor in Historical Linguistics, Cambridge University",
   },
   {
     id: 7,
