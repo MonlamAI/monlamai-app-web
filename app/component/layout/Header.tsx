@@ -138,7 +138,7 @@ function Menu() {
       </Form>
     );
   const userEmail = user.emails[0].value;
-  const userPhoto = user.photos[0].value;
+  const userPhoto = user.emails[0].value.includes('appleid')?`https://eu.ui-avatars.com/api/?name=${userEmail}&size=250`:user.photos[0].value;
   const userName = user.name?.givenName?.split(" ")[0] || user?.displayName;
   const fetcher=useFetcher();
 
@@ -157,7 +157,6 @@ function Menu() {
             src={userPhoto}
             title={userEmail}
             alt={userEmail}
-            referrerPolicy="no-referrer"
           />
         )}
       >
