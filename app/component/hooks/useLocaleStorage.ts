@@ -7,22 +7,16 @@ function useLocalStorage(key, initialValue) {
       const item = window?.localStorage?.getItem(key);
       return item ? JSON.parse(item) : initialValue;
     } catch (error) {
-      // If there's an error, return the initial value
-      // console.error("Error retrieving data from localStorage:", error);
       return initialValue;
     }
   });
 
   // Function to set a value in localStorage
   const setValue = (value) => {
-    try {
       // Save the state to localStorage
       window?.localStorage.setItem(key, JSON.stringify(value));
-      // Update the state with the new value
       setStoredValue(value);
-    } catch (error) {
-      console.error("Error storing data in localStorage:", error);
-    }
+    
   };
 
   useEffect(() => {
@@ -32,7 +26,6 @@ function useLocalStorage(key, initialValue) {
         try {
           setStoredValue(JSON.parse(event.newValue));
         } catch (error) {
-          console.error("Error parsing data from localStorage:", error);
         }
       }
     };

@@ -14,7 +14,6 @@ async function login(request: Request) {
       successRedirect: returnTo ?? "/",
       failureRedirect: "/",
     });
-    console.log(data)
     return 
   } catch (error) {
     if (!returnTo) throw error;

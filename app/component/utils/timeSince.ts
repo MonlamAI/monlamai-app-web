@@ -32,7 +32,6 @@ export default function timeSince(date: string | number | Date): string {
     }
     return "Just now";
     } catch (error) {
-    console.log("error in timeSince")
     return "Invalid Date"
   }
 }

@@ -67,7 +67,6 @@ function Speak({ text, lang, isDark }: propType) {
       audioRef.current?.play();
       setIsPlaying(true);
     } else {
-      console.log(text)
       // Otherwise, fetch the new audio and cache it
       fetcher.submit({ input: text }, { action: "/api/tts", method: "POST" });
     }

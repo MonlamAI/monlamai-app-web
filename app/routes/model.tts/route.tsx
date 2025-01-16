@@ -110,20 +110,17 @@ export default function Index() {
               resolve();
             }
           } catch (err) {
-            console.error('Error parsing event data:', err);
           }
         };
         
         // Handle errors
         eventSource.onerror = (error) => {
-          console.error('EventSource error:', error);
           eventSource.close();
           reject(error);
         };
       });
       
     } catch (error) {
-      console.error('Stream handling error:', error);
       throw error;
     } finally {
     }
@@ -138,7 +135,6 @@ export default function Index() {
       setAudioList([]);
       await handleEventStream(sourceText);
     } catch (error) {
-      console.error('Submit handler error:', error);
       setIsLoading(false);
     }
   };
@@ -148,7 +144,6 @@ export default function Index() {
     }
   }, [sourceText]);
 
- console.log(isLoading)
   return (
     <ToolWraper title="TTS">
       <div className="rounded-[10px] overflow-hidden border dark:border-[--card-border] border-dark_text-secondary">

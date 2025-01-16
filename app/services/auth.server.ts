@@ -29,11 +29,7 @@ let auth0Strategy = new Auth0Strategy(
         const email = profile?._json?.email;
         const picture = profile?._json?.picture;
         const username = profile?._json?.given_name;
-        if(!isTokenExpired(expires_on)){
-          console.log(isTokenExpired(expires_on))
-        }
-      
-
+        if(isTokenExpired(expires_on)) console.log('token expired')
         return { id_token,expires_on, ...profile };
   },
 );
@@ -50,7 +46,6 @@ function parseJwt(token) {
     const payload = JSON.parse(payloadJson);
     return payload.exp;
   } catch (e) {
-    console.error('Error parsing JWT:', e);
     return null;
   }
 }
