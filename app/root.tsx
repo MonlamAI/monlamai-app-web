@@ -55,8 +55,7 @@ export const loader: LoaderFunction = async ({ request, context }) => {
           picture:user.photos[0].value
         });
         const API_URL = process.env?.API_URL;
-
-          let created_user=fetch(API_URL+'/api/v1/user/create', {
+        let created_user=await fetch(API_URL+'/api/v1/user/create', {
             method: "POST",
             body,
             headers,
