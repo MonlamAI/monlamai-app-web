@@ -11,7 +11,6 @@ export const getHeaders = async (request: Request, user?: any) => {
     "Content-Type": "application/json",
     "Client-IP": ip,
   };
-
   if (user) {
     headers["Cookie"] = `email=${user.emails[0].value};`;
   }

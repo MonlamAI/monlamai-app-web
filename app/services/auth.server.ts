@@ -23,16 +23,17 @@ let auth0Strategy = new Auth0Strategy(
     clientSecret: AUTH0_CLIENT_SECRET,
     domain: AUTH0_DOMAIN,
   },
-  async ({ accessToken, refreshToken, extraParams, profile }) => {
-   
-        let id_token = extraParams?.id_token;
-        let expires_on= parseJwt(id_token);
-        let email = profile?._json?.email;
-        let picture = profile?._json?.picture;
-        let username = profile?._json?.given_name;
+  async ({ accessToken, refreshToken, extraParams, profile}) => {
+        const id_token = extraParams?.id_token;
+        const expires_on= parseJwt(id_token);
+        const email = profile?._json?.email;
+        const picture = profile?._json?.picture;
+        const username = profile?._json?.given_name;
         if(!isTokenExpired(expires_on)){
           console.log(isTokenExpired(expires_on))
         }
+      
+
         return { id_token,expires_on, ...profile };
   },
 );

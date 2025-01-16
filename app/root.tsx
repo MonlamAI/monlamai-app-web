@@ -42,9 +42,31 @@ import {
 } from "remix-themes";
 import Maintenance from "./component/Maintenance";
 import { auth } from "./services/auth.server";
+import { getHeaders } from "~/component/utils/getHeaders.server";
 
 export const loader: LoaderFunction = async ({ request, context }) => {
   const user = await auth.isAuthenticated(request)??null;
+  if(user){
+      try{
+          let headers = await getHeaders(request);
+          let body = JSON.stringify({
+          email:user.emails[0].value,
+          name:user.displayName,
+          picture:user.photos[0].value
+        });
+        const API_URL = process.env?.API_URL;
+
+          let created_user=fetch(API_URL+'/api/v1/user/create', {
+            method: "POST",
+            body,
+            headers,
+          });
+        }
+        catch(e){
+          console.log(e)
+        }
+  }
+
   if(user && user?.expires_on){
     if(user.expires_on > Date.now()) return redirect("/logout")    
   }
