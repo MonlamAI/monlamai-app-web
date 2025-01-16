@@ -137,10 +137,9 @@ function Menu() {
         </Button>
       </Form>
     );
-
   const userEmail = user.emails[0].value;
   const userPhoto = user.photos[0].value;
-  const userName = user.name.givenName;
+  const userName = user.name?.givenName?.split(" ")[0] || user?.displayName;
   const fetcher=useFetcher();
 
   const logout = () => {
