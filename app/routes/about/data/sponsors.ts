@@ -1,5 +1,5 @@
 export const sponsors = [
-  "/assets/sponsors/usaid.png",
+  // "/assets/sponsors/usaid.png",
   "/assets/sponsors/tibetfund.png",
   "/assets/sponsors/bdrc.png",
   "/assets/sponsors/mitra.png",
