@@ -40,7 +40,7 @@ export const meta: MetaFunction = ({ matches }) => {
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const user =  await auth.isAuthenticated(request);
-  const CHAR_LIMIT = parseInt(process.env?.MAX_TEXT_LENGTH_TTS!);
+  const CHAR_LIMIT = parseInt(process.env?.MAX_TEXT_LENGTH_TTS!)||1000;
 
   return {
     user,
