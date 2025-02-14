@@ -174,9 +174,9 @@ export default function Index() {
           type="info"
         />
       )}
-      <div className="flex justify-end mb-3 items-center">
+      {/* <div className="flex justify-end mb-3 items-center">
         Model: <SelectModel setModel={setModel} model={model} />
-      </div>
+      </div> */}
       <div className="rounded-[10px] mb-[100px] overflow-hidden border dark:border-[--card-border] border-dark_text-secondary">
         <LanguageInput
           setSourceText={setSourceText}
