@@ -25,6 +25,7 @@ import { ErrorBoundary } from "~/component/ErrorPages";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
 import { CharacterSizeComponent } from "~/component/CharacterSize";
 import { getHeaders } from "~/component/utils/getHeaders.server";
+import Maintenance from "~/component/Maintenance";
 
 
 export const meta: MetaFunction<typeof loader> = ({ matches }) => {
@@ -160,7 +161,7 @@ export default function Index() {
     setEditText(editData)
   }
   },[editData])
-
+  return <Maintenance/>
   return (
     <ToolWraper title="STT">
       <div className=" rounded-[10px]  overflow-hidden border dark:border-[--card-border] border-dark_text-secondary">
