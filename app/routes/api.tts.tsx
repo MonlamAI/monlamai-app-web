@@ -3,7 +3,7 @@ import inputReplace from "~/component/utils/ttsReplace.server";
 import { API_ERROR_MESSAGE } from "~/helper/const";
 import { getHeaders } from "../component/utils/getHeaders.server";
 import { auth } from "~/services/auth.server";
-import {validateInput} from "~/lib/inputValidator.server";
+import { validateInput } from "~/lib/inputValidator.server";
 
 export const action: ActionFunction = async ({ request }) => {
   let user = await auth.isAuthenticated(request);
@@ -15,7 +15,7 @@ export const action: ActionFunction = async ({ request }) => {
   if (!validation.isValid) {
     return {
       error: validation.error,
-      charCount: validation.charCount
+      charCount: validation.charCount,
     };
   }
   try {
@@ -23,7 +23,7 @@ export const action: ActionFunction = async ({ request }) => {
       input: inputReplace(input_data),
     });
 
-    const headers = await getHeaders(request,user);
+    const headers = await getHeaders(request, user);
     const response = await fetch(url, {
       method: "POST",
       body,
@@ -34,5 +34,5 @@ export const action: ActionFunction = async ({ request }) => {
       error: API_ERROR_MESSAGE,
     };
   }
-
+  return null;
 };

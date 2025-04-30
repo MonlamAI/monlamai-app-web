@@ -5,7 +5,7 @@ import type {
   HeadersArgs,
   ActionFunction,
 } from "@remix-run/node";
-import { json,redirect } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
 import {
   Links,
   LiveReload,
@@ -23,18 +23,11 @@ import globalStyle from "./styles/global.css";
 import tailwindStyle from "./styles/tailwind.css";
 import { LitteraProvider } from "@assembless/react-littera";
 import toastStyle from "react-toastify/dist/ReactToastify.css";
-import feedBucketStyle from "~/styles/feedbucket.css";
 import { ToastContainer } from "react-toastify";
-import FeedBucket from "./component/FeedBucket";
 import { ErrorPage } from "./component/ErrorPages";
-import {
-  themeSessionResolver,
-  generateCSRFToken,
-  getUserSession,
-} from "~/services/session.server";
+import { themeSessionResolver } from "~/services/session.server";
 import { AppInstaller } from "~/component/AppInstaller.client";
 import { ClientOnly } from "remix-utils/client-only";
-import { userPrefs } from "~/services/cookies.server";
 import {
   ThemeProvider,
   useTheme,
@@ -45,43 +38,36 @@ import { auth } from "./services/auth.server";
 import { getHeaders } from "~/component/utils/getHeaders.server";
 
 export const loader: LoaderFunction = async ({ request, context }) => {
-  const user = await auth.isAuthenticated(request)??null;
-  if(user){
-      try{
-          let headers = await getHeaders(request);
-          let body = JSON.stringify({
-          email:user.emails[0].value,
-          name:user.displayName,
-          picture:user.photos[0].value
-        });
-        const API_URL = process.env?.API_URL;
-        let created_user=await fetch(API_URL+'/api/v1/user/create', {
-            method: "POST",
-            body,
-            headers,
-          });
-        }
-        catch(e){
-          console.log(e)
-        }
+  const user = (await auth.isAuthenticated(request)) ?? null;
+  if (user) {
+    try {
+      let headers = await getHeaders(request);
+      let body = JSON.stringify({
+        email: user.emails[0].value,
+        name: user.displayName,
+        picture: user.photos[0].value,
+      });
+      const API_URL = process.env?.API_URL;
+      let created_user = await fetch(API_URL + "/api/v1/user/create", {
+        method: "POST",
+        body,
+        headers,
+      });
+    } catch (e) {
+      console.log(e);
+    }
   }
 
-  if(user && user?.expires_on){
-    if(user.expires_on > Date.now()) return redirect("/logout")    
+  if (user && user?.expires_on) {
+    if (user.expires_on > Date.now()) return redirect("/logout");
   }
-  const feedBucketAccess = process.env.FEEDBUCKET_ACCESS;
-  const feedbucketToken = process.env.FEEDBUCKET_TOKEN;
   const { getTheme } = await themeSessionResolver(request);
-  return json(
-    {
-      user,
-      isJobEnabled: false,
-      feedBucketAccess,
-      feedbucketToken,
-      theme: getTheme(),
-      IS_UNDER_MAINTENANCE: process.env?.IS_UNDER_MAINTENANCE,
-    }
-  );
+  return json({
+    user,
+    isJobEnabled: false,
+    theme: getTheme(),
+    IS_UNDER_MAINTENANCE: process.env?.IS_UNDER_MAINTENANCE,
+  });
 };
 
 export const headers = ({ loaderHeaders, parentHeaders }: HeadersArgs) => {
@@ -92,7 +78,6 @@ export const links: LinksFunction = () => [
   { rel: "stylesheet", href: tailwindStyle },
   { rel: "stylesheet", href: globalStyle },
   { rel: "stylesheet", href: toastStyle },
-  { rel: "stylesheet", href: feedBucketStyle },
 
   {
     rel: "icon",
@@ -121,7 +106,6 @@ export const meta: MetaFunction = () => {
       name: "keywords",
       content:
         "Monlam, AI , tibetan , dictionary ,translation ,orc , tts, stt ,login,སྨོན་ལམ་, རིག་ནུས། , tibetan to english, english to tibetan, tibetan dictionary, tibetan translation, tibetan ocr, tibetan tts, tibetan stt, tibetan login",
-
     },
     {
       name: "apple-mobile-web-app-status-bar",
@@ -144,10 +128,7 @@ function Document({ children, theme }: { children: React.ReactNode }) {
     <html lang="en" className={theme}>
       <head>
         <meta charSet="utf-8" />
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1"
-        />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="apple-touch-icon" href="img/logo192web.png" />
         <link rel="apple-touch-startup-image" href="img/logo1280x720web.png" />
         <link rel="apple-touch-startup-image" href="img/logo720x1280web.png" />
@@ -185,7 +166,7 @@ function Document({ children, theme }: { children: React.ReactNode }) {
 }
 
 function App() {
-  let {  IS_UNDER_MAINTENANCE } = useLoaderData();
+  let { IS_UNDER_MAINTENANCE } = useLoaderData();
   const [theme] = useTheme();
   return (
     <Document theme={theme ?? ""}>
@@ -197,7 +178,6 @@ function App() {
             <div className="flex-1 max-w-[1280px] px-2 ">
               {IS_UNDER_MAINTENANCE === "true" ? <Maintenance /> : null}
               <Outlet />
-              <FeedBucket />
               {process.env.NODE_ENV === "development" && <LiveReload />}
             </div>
           </div>
