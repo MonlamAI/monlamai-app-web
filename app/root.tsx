@@ -53,6 +53,7 @@ export const loader: LoaderFunction = async ({ request, context }) => {
         body,
         headers,
       });
+      console.log(created_user);
     } catch (e) {
       console.log(e);
     }
