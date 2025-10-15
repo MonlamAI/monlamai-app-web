@@ -32,6 +32,11 @@ app.use(compression());
 // You may want to be more aggressive with this caching
 app.use(express.static("public", { maxAge: "1h" }));
 
+// Serve robots.txt explicitly before Remix routes
+app.get("/robots.txt", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "robots.txt"));
+});
+
 // http://expressjs.com/en/advanced/best-practice-security.html#at-a-minimum-disable-x-powered-by-header
 app.disable("x-powered-by");
 
