@@ -51,6 +51,7 @@ export const action: ActionFunction = async ({ request }) => {
     let res=await data.json();
     return res?.data?.editOutput
   }
+  console.log("Inside route.tsx")
   return null
 };
 export default function Index() {
@@ -123,12 +124,18 @@ export default function Index() {
   const uploadFile = async (file: File) => {
     try {
       let formData = new FormData();
-      let filename = file?.name ? file?.name : "recording";
-
-      let uniqueFilename = Date.now() + "-" + filename + ".mp3";
+      let originalName = file?.name ? file?.name : "recording";
+      // pick an extension that matches the MIME type and avoid forcing .mp3
+      const mime = file.type || "audio/webm";
+      const ext = mime === "audio/mp4" ? "m4a" : mime === "audio/webm" ? "webm" : mime === "audio/wav" ? "wav" : "bin";
+      // remove any existing extension from originalName
+      const base = originalName.replace(/\.[^/.]+$/, "");
+      let uniqueFilename = `${Date.now()}-${base}.${ext}`;
       formData.append("filename", uniqueFilename);
       formData.append("filetype", file.type);
       formData.append("bucket", "/STT/input");
+
+      console.log(`file name is : ${originalName}`)
 
       const response = await axios.post("/api/get_presigned_url", formData);
       const { url } = response.data;
@@ -161,7 +168,7 @@ export default function Index() {
     setEditText(editData)
   }
   },[editData])
-  return <Maintenance/>
+  // return <Maintenance/>
   return (
     <ToolWraper title="STT">
       <div className=" rounded-[10px]  overflow-hidden border dark:border-[--card-border] border-dark_text-secondary">

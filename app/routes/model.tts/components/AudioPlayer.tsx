@@ -4,14 +4,18 @@ import { MdPlayArrow, MdPause } from "react-icons/md";
 import useLocalStorage from "~/component/hooks/useLocaleStorage";
 import { useWavesurfer } from "@wavesurfer/react";
 
-const AudioPlayer = ({ audioURL }) => {
+type AudioPlayerProps = { audioURL: string };
+const AudioPlayer = ({ audioURL }: AudioPlayerProps) => {
   const [playbackRate, setPlaybackRate] = useState(1); // 1, 1.25, 1.5, 2, 0.5 (default 1)
   const [volume, setVolume] = useLocalStorage("volume", 1);
 
   const containerRef = useRef(null);
+  const audioElRef = useRef<HTMLAudioElement | null>(null);
 
   const { wavesurfer, isPlaying, currentTime } = useWavesurfer({
     container: containerRef,
+    // Prefer MediaElement backend for broad codec support (webm/m4a)
+    media: audioElRef.current as any,
     url: audioURL,
     barHeight: 12,
     cursorWidth: 0,
@@ -30,7 +34,7 @@ const AudioPlayer = ({ audioURL }) => {
     setPlaybackRate(newRate);
   };
 
-  const handleVolumeChange = (e) => {
+  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newVolume = parseFloat(e.target.value);
     setVolume(newVolume);
     if (wavesurfer) {
@@ -44,7 +48,7 @@ const AudioPlayer = ({ audioURL }) => {
     }
   }, [playbackRate, wavesurfer]);
 
-  const formatTime = (seconds) => {
+  const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = Math.floor(seconds % 60);
     return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
@@ -109,8 +113,9 @@ const AudioPlayer = ({ audioURL }) => {
         </button>
       </div>
       <div className="flex flex-1 flex-col justify-between gap-2">
-        {/* Placeholder for the waveform */}
-        {/* <div className="my-auto" ref={containerRef} /> */}
+        {/* Invisible elements required by Wavesurfer even if waveform not displayed */}
+        <div className="my-auto" ref={containerRef} style={{ width: 0, height: 0, overflow: "hidden" }} />
+        <audio ref={audioElRef} src={audioURL} preload="auto" style={{ display: "none" }} />
         <div className="flex items-center justify-between gap-5">
           <button
             onClick={() => {
@@ -121,21 +126,21 @@ const AudioPlayer = ({ audioURL }) => {
             {isPlaying ? <MdPause size={36} /> : <MdPlayArrow size={36} />}
           </button>
           <div className="flex flex-1 justify-center items-center">
-            <div className="text-sm">{formatTime(currentTime)}</div>
+            <div className="text-sm">{formatTime(typeof currentTime === 'number' ? currentTime : 0)}</div>
             <input
               type="range"
               min="0"
-              max={Math.floor(maxDuration) || 0}
+              max={Math.floor((maxDuration ?? 0))}
               step="0.1"
-              value={currentTime}
+              value={typeof currentTime === 'number' ? currentTime : 0}
               onChange={(e) => {
                 // update the current time of the audio per second and seek to the new time
                 const newTime = parseFloat(e.target.value);
-                wavesurfer?.seekTo(newTime / maxDuration);
+                wavesurfer?.seekTo(maxDuration ? (newTime / maxDuration) : 0);
               }}
               className="mx-2 h-1 w-full appearance-none bg-gray-300 dark:bg-primary-500 rounded-full"
             />
-            <div className="text-sm">{formatTime(maxDuration)}</div>
+            <div className="text-sm">{formatTime(Math.floor(maxDuration ?? 0))}</div>
           </div>
         </div>
       </div>

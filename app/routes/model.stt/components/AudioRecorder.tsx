@@ -24,7 +24,7 @@ function AudioRecorder({
   let mediaRecorder: any = useRef();
   const [tempAudioURL, setTempAudioURL] = useState<string | null>(null);
   const [recording, setRecording] = useState(false);
-  const [audioChunks, setAudioChunks] = useState([]);
+  const [audioChunks, setAudioChunks] = useState<BlobPart[]>([]);
 
   const toggleRecording = () => {
     if (!recording) {
@@ -59,7 +59,7 @@ function AudioRecorder({
     let stream = await getMicrophonePermission();
     if (stream) {
       try {
-        let localAudioChunks: [] = [];
+        let localAudioChunks: BlobPart[] = [];
         setRecording(true);
         let browserName = getBrowser();
         const media = new MediaRecorder(stream, {
@@ -92,9 +92,14 @@ function AudioRecorder({
     //stops the recording instance
     mediaRecorder.current.stop();
     mediaRecorder.current.onstop = async () => {
-      const audioBlob = new Blob(audioChunks);
+      const mimeType = mediaRecorder.current?.mimeType || "audio/webm";
+      const audioBlob = new Blob(audioChunks, { type: mimeType });
 
-      uploadAudio(audioBlob);
+      // create a File with an extension that matches the MIME type
+      const ext = mimeType === "audio/mp4" ? "m4a" : mimeType === "audio/webm" ? "webm" : "wav";
+      const file = new File([audioBlob], `recording.${ext}`, { type: mimeType });
+
+      uploadAudio(file);
       setTempAudioURL(URL.createObjectURL(audioBlob));
       setAudioChunks([]);
 
@@ -123,7 +128,7 @@ function AudioRecorder({
       {recording && mediaRecorder.current && getBrowser() === "Safari" && (
         <RecordingAnimation />
       )}
-      {!audioURL && !isUploading && !isLoading && (
+      {!tempAudioURL && !audioURL && !isUploading && !isLoading && (
         <Button
           size="lg"
           color="gray"
@@ -138,9 +143,9 @@ function AudioRecorder({
         </Button>
       )}
 
-      {audioURL && !isUploading && (
+      {(tempAudioURL || audioURL) && (
         <div className="pt-8 w-full h-full">
-          <AudioPlayer audioURL={audioURL} />
+          <AudioPlayer audioURL={tempAudioURL || audioURL} />
         </div>
       )}
     </div>
