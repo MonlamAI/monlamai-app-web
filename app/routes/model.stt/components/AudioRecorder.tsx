@@ -22,9 +22,10 @@ function AudioRecorder({
   isUploading,
 }: AudioRecordProps) {
   let mediaRecorder: any = useRef();
+  const chunksRef = useRef<BlobPart[]>([]);
   const [tempAudioURL, setTempAudioURL] = useState<string | null>(null);
   const [recording, setRecording] = useState(false);
-  const [audioChunks, setAudioChunks] = useState<BlobPart[]>([]);
+  // use a ref for chunks to avoid state timing issues during recording
 
   const toggleRecording = () => {
     if (!recording) {
@@ -57,30 +58,28 @@ function AudioRecorder({
   };
   const startRecording = async () => {
     let stream = await getMicrophonePermission();
-    if (stream) {
-      try {
-        let localAudioChunks: BlobPart[] = [];
-        setRecording(true);
-        let browserName = getBrowser();
-        const media = new MediaRecorder(stream, {
-          mimeType: browserName !== "Safari" ? "audio/webm" : "audio/mp4",
-        });
-        mediaRecorder.current = media;
-        mediaRecorder.current.start();
+    if (!stream) return;
+    try {
+      chunksRef.current = [];
+      setRecording(true);
+      const browserName = getBrowser();
+      const mimeType = browserName !== "Safari" ? "audio/webm;codecs=opus" : "audio/mp4";
+      const media = new MediaRecorder(stream, { mimeType });
+      mediaRecorder.current = media;
 
-        mediaRecorder.current.ondataavailable = (event: any) => {
-          if (typeof event.data === "undefined") return;
-          if (event.data.size === 0) return;
-          localAudioChunks.push(event?.data);
-        };
+      mediaRecorder.current.ondataavailable = (event: BlobEvent) => {
+        if (!event?.data || event.data.size === 0) return;
+        chunksRef.current.push(event.data);
+      };
 
-        setAudioChunks(localAudioChunks);
-        stopRecordingTimeout = setTimeout(() => {
-          stopRecording();
-        }, 120000);
-      } catch (error) {
-        console.error("Error accessing the microphone:", error);
-      }
+      // emit data every second to ensure tail data is flushed across browsers
+      mediaRecorder.current.start(1000);
+
+      stopRecordingTimeout = setTimeout(() => {
+        stopRecording();
+      }, 30000);
+    } catch (error) {
+      console.error("Error accessing the microphone:", error);
     }
   };
   const stopRecording = () => {
@@ -90,18 +89,30 @@ function AudioRecorder({
 
     setRecording(false);
     //stops the recording instance
+    try {
+      // Flush any buffered data before stopping
+      mediaRecorder.current?.requestData?.();
+    } catch {}
+
+    const stream: MediaStream | undefined = mediaRecorder.current?.stream;
+
     mediaRecorder.current.stop();
     mediaRecorder.current.onstop = async () => {
       const mimeType = mediaRecorder.current?.mimeType || "audio/webm";
-      const audioBlob = new Blob(audioChunks, { type: mimeType });
+      const audioBlob = new Blob(chunksRef.current, { type: mimeType });
 
       // create a File with an extension that matches the MIME type
-      const ext = mimeType === "audio/mp4" ? "m4a" : mimeType === "audio/webm" ? "webm" : "wav";
+      const ext = mimeType.includes("audio/mp4") ? "m4a" : mimeType.includes("audio/webm") ? "webm" : "wav";
       const file = new File([audioBlob], `recording.${ext}`, { type: mimeType });
 
-      uploadAudio(file);
       setTempAudioURL(URL.createObjectURL(audioBlob));
-      setAudioChunks([]);
+      uploadAudio(file);
+      chunksRef.current = [];
+
+      // fully release microphone tracks
+      try {
+        stream?.getTracks().forEach((t) => t.stop());
+      } catch {}
 
       // const reader = new FileReader();
 
@@ -145,7 +156,7 @@ function AudioRecorder({
 
       {(tempAudioURL || audioURL) && (
         <div className="pt-8 w-full h-full">
-          <AudioPlayer audioURL={tempAudioURL || audioURL} />
+          <AudioPlayer audioURL={(tempAudioURL || audioURL) as string} />
         </div>
       )}
     </div>

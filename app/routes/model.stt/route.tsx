@@ -207,7 +207,7 @@ export default function Index() {
                 <div className="flex justify-between">
                   <CharacterSizeComponent
                     selectedTool={"recording"}
-                    charCount={"2 min "}
+                    charCount={"30 sec "}
                     CHAR_LIMIT={undefined}
                     MAX_SIZE_SUPPORT={MAX_SIZE_SUPPORT_AUDIO}
                   />
