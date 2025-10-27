@@ -30,8 +30,6 @@ export const action: ActionFunction = async ({ request }) => {
       error: API_ERROR_MESSAGE,
     };
   }
-  console.log("Inside api.stt")
-  console.log(JSON.stringify(data))
   const { output,id } = data;
 
   if (!output) return json({ error: API_ERROR_MESSAGE });

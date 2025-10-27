@@ -51,7 +51,6 @@ export const action: ActionFunction = async ({ request }) => {
     let res=await data.json();
     return res?.data?.editOutput
   }
-  console.log("Inside route.tsx")
   return null
 };
 export default function Index() {
@@ -134,9 +133,6 @@ export default function Index() {
       formData.append("filename", uniqueFilename);
       formData.append("filetype", file.type);
       formData.append("bucket", "/STT/input");
-
-      console.log(`file name is : ${originalName}`)
-
       const response = await axios.post("/api/get_presigned_url", formData);
       const { url } = response.data;
       // Use Axios to upload the file to S3
