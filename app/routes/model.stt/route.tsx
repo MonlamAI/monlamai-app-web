@@ -12,14 +12,13 @@ import {
 import { NonEditButtons } from "~/component/ActionButtons";
 import EditDisplay from "~/component/EditDisplay";
 import { resetFetcher } from "~/component/utils/resetFetcher";
-import { RxCross2 } from "react-icons/rx";
-import { CancelButton } from "~/component/Buttons";
+ 
 import { MAX_SIZE_SUPPORT_AUDIO } from "~/helper/const";
 import { getUserSession } from "~/services/session.server";
 import AudioRecorder from "./components/AudioRecorder";
 import axios from "axios";
 import HeaderComponent from "~/component/HeaderComponent";
-import { Spinner, Progress } from "flowbite-react";
+import { Spinner, Progress, Button } from "flowbite-react";
 import Devider from "~/component/Devider";
 import { ErrorBoundary } from "~/component/ErrorPages";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
@@ -68,6 +67,7 @@ export default function Index() {
   const [audioURL, setAudioURL] = useState<string | null>(null);
   const [edit, setEdit] = useState(false);
   const [editText, setEditText] = useState("");
+  const [resetSeq, setResetSeq] = useState(0);
   const { isTibetan, translation } = uselitteraTranlation();
 
   let likefetcher = useFetcher();
@@ -93,6 +93,8 @@ export default function Index() {
     setAudio(null);
     setAudioURL(null);
     setEdit(false);
+    setUploadProgress(0);
+    setResetSeq((v) => v + 1);
     resetFetcher(editfetcher);
     resetFetcher(fetcher);
   };
@@ -197,15 +199,14 @@ export default function Index() {
                 </div>
               )}
               <AudioRecorder
+                key={resetSeq}
                 audioURL={audioURL}
                 uploadAudio={uploadFile}
                 isLoading={isLoading}
                 isUploading={isUploading}
               />
 
-              <CancelButton onClick={handleReset} hidden={!audioURL}>
-                <RxCross2 size={20} />
-              </CancelButton>
+              {/* Removed duplicate close button; 'New transcription' handles reset */}
               {!isUploading && (
                 <div className="flex justify-between">
                   <CharacterSizeComponent
@@ -274,6 +275,19 @@ export default function Index() {
                 setEditText={setEditText}
                 sourceLang="bo"
               />
+            )}
+            {!edit && inferenceId && audioURL && (
+              <div className="flex justify-end p-2">
+                <Button
+                  color="light"
+                  size="sm"
+                  onClick={handleReset}
+                  disabled={isLoading}
+                  className="font-poppins"
+                >
+                  New transcription
+                </Button>
+              </div>
             )}
           </CardComponent>
         </div>

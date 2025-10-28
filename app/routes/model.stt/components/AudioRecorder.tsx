@@ -155,8 +155,10 @@ function AudioRecorder({
       )}
 
       {(tempAudioURL || audioURL) && (
-        <div className="pt-8 w-full h-full">
-          <AudioPlayer audioURL={(tempAudioURL || audioURL) as string} />
+        <div className="pt-8 w-full h-full flex justify-center items-center">
+          <div className="w-full max-w-[560px]">
+            <AudioPlayer audioURL={(tempAudioURL || audioURL) as string} />
+          </div>
         </div>
       )}
     </div>
