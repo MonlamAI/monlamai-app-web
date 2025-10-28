@@ -42,14 +42,21 @@ export const action: ActionFunction = async ({ request }) => {
   if (request.method === "PATCH") {
     const edited = formdata.get("edited") as string;
     const inferenceId = formdata.get("inferenceId") as string;
-    const api_url = process.env?.API_URL + `/api/v1/stt/${inferenceId}?action=edit&edit_text=${edited}`;
-    const headers=await getHeaders(request);
-    const data=await fetch(api_url, {
-      method: "PUT",
-      headers,
-    });
-    let res=await data.json();
-    return res?.data?.editOutput
+    const api_url =
+      process.env?.API_URL +
+      `/api/v1/stt/${inferenceId}?action=edit&edit_text=${encodeURIComponent(edited)}`;
+    try {
+      const headers = await getHeaders(request);
+      const resp = await fetch(api_url, {
+        method: "PUT",
+        headers,
+      });
+      if (!resp.ok) return null;
+      let res = await resp.json();
+      return res?.data?.editOutput ?? edited;
+    } catch (e) {
+      return null;
+    }
   }
   return null
 };

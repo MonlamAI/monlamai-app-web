@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { ICON_SIZE } from "~/helper/const";
 import { ReactionButton } from "./ReactionButtons";
 import { MdContentCopy } from "react-icons/md";
+import { toast } from "react-toastify";
 let timer: any;
 
 type CopyToClipboardProps = {
@@ -28,6 +29,11 @@ const CopyToClipboard = ({ textToCopy, onClick }: CopyToClipboardProps) => {
     }
 
     setIsCopied(true);
+    toast.success("Copied to clipboard", {
+      autoClose: 1200,
+      pauseOnHover: false,
+      closeOnClick: true,
+    });
     timer = setTimeout(() => {
       setIsCopied(false);
     }, 2000);
