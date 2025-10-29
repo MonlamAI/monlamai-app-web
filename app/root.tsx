@@ -155,7 +155,7 @@ function Document({ children, theme }: { children: React.ReactNode }) {
         <PreventFlashOnWrongTheme ssrTheme={Boolean(data.theme)} />
         <Links />
       </head>
-      <body className="flex h-[100dvh]  mx-auto inset-0 overflow-y-auto overflow-x-hidden dark:bg-slate-700 dark:text-gray-200">
+      <body className="flex h-[100dvh]  mx-auto inset-0 overflow-y-auto overflow-x-hidden dark:text-gray-200">
         {children}
         <script
           type="application/ld+json"
@@ -187,7 +187,7 @@ function App() {
         <div className="flex flex-col flex-1 text-light_text-default dark:text-dark_text-secondary">
           <Header />
           <ClientOnly fallback={<div />}>{() => <AppInstaller />}</ClientOnly>
-          <div className="flex-1 flex justify-center pt-4  bg-neutral-50 dark:bg-[--main-bg] ">
+          <div className="flex-1 flex justify-center pt-4 ">
             <div className="flex-1 max-w-[1280px] px-2 ">
               {IS_UNDER_MAINTENANCE === "true" ? <Maintenance /> : null}
               <Outlet />

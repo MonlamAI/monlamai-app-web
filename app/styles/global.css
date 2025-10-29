@@ -160,3 +160,27 @@ html {
 textarea{
   background:transparent !important;
 }
+
+/* Global background image for all pages */
+html {
+  background-image: linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)), url('/monlam_bg.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  min-height: 100%;
+}
+
+/* Dark mode: slightly darken overlay to preserve readability */
+html.dark {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), url('/monlam_bg.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
+
+body {
+  background: transparent;
+  min-height: 100%;
+}

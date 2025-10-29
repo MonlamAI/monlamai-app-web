@@ -33,7 +33,7 @@ function Tools() {
         </section>
 
         {/* Tools grid */}
-        <section className="bg-gradient-to-b from-gray-50 to-white dark:from-transparent dark:to-transparent rounded-none">
+        <section className="rounded-none bg-transparent dark:bg-transparent">
           <div id="tools" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {models
               .filter((m) => m.name !== "TTS")
