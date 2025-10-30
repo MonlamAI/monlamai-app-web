@@ -52,7 +52,7 @@ function Footer() {
           </div>
         </div>
         <div className="flex flex-wrap items-center">
-          <div className="text-[#b3b3b3] mr-3">Follow us on:</div>
+          <div className="text-[#b3b3b3] mr-3">{translation.follow_us}</div>
           {logos.map((logo) => {
             return (
               <a

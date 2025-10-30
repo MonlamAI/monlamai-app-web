@@ -21,8 +21,6 @@
   "ocr_question": "what text you want to recognize from Image?",
   "homepageHeading": "Empowering Tibetan Language Technology",
   "homepageTagline": "Explore our AI tools built to make Tibetan language accessible to everyone.",
-  "homepageCTAExplore": "Explore Tools",
-  "homepageCTATryMT": "Try Translation Tool",
   "MT": "Translation",
   "STT": "Speech to Text",
   "TTS": "Text to Speech",
@@ -62,6 +60,7 @@
   "synthesis": "Synthesis",
   "crop": "crop",
   "login_message": "to use our beta feature.",
+  "Developer": "Developer",
   "beta": "BETA",
   "uploading_audio_message": "please wait while audio is uploading... ",
   "or": "OR",
@@ -73,5 +72,6 @@
   "status": "Status",
   "install": "Install",
   "install_message": "Install our app for a smoother experience!",
-  "ourTeam": "Our Team"
+  "ourTeam": "Our Team",
+  "follow_us": "Follow us on:"
 }
