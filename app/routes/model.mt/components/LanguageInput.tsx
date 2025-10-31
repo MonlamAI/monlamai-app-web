@@ -53,24 +53,32 @@ function LanguageInput({
   function setTarget(lang: string) {
     setParams((prevParams) => {
       prevParams.set("target", lang);
+      /*
+      // Previously, changing target auto-adjusted source.
+      // Keeping for reference, but disabled to avoid unexpected source changes.
       if (lang === "bo") {
         prevParams.set("source", "en");
       }
       if (lang !== "bo") {
         prevParams.set("source", "bo");
       }
+      */
       return prevParams;
     });
   }
   function setSource(lang: string) {
     setParams((prevParams) => {
       prevParams.set("source", lang);
+      /*
+      // Previously, changing source auto-adjusted target.
+      // Keeping for reference, but disabled to avoid unexpected target changes.
       if (lang !== "bo") {
         prevParams.set("target", "bo");
       }
       if (lang === "bo") {
         prevParams.set("target", "en");
       }
+      */
       return prevParams;
     });
   }
@@ -169,7 +177,8 @@ function LanguageInput({
   };
   let optionClass =
     "language-options bg-white dark:bg-[--card-bg] text-black dark:text-white  ";
-  let beta = ["French", "Chinese", "Hindi","Germen","Japanese","Vietnamese","Germen","Czech", "ཧྥ་རན་སི།", "རྒྱ་ཡིག", "ཧིན་དྷི།"];
+  // let beta = ["French", "Chinese", "Hindi","Germen","Japanese","Vietnamese","Germen","Czech", "ཧྥ་རན་སི།", "རྒྱ་ཡིག", "ཧིན་དྷི།"];
+  let beta = [""];
   return (
     <div
       className={`${

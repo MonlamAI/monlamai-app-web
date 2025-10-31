@@ -133,6 +133,7 @@ html {
   background-color: transparent; /* Custom background color */
   border: 0; /* Custom border color */
   padding: 0.5rem; /* Custom padding */
+  padding-right: 2.5rem; /* Ensure space for dropdown arrow */
   border-radius: 0.375rem; /* Custom border radius */
   transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for focus state */
   color:gray;
@@ -151,6 +152,7 @@ html {
   background-color: transparent; /* Custom background color */
   border: 0; /* Custom border color */
   padding: 0.5rem; /* Custom padding */
+  padding-right: 2.5rem; /* Ensure space for dropdown arrow */
   border-radius: 0.375rem; /* Custom border radius */
   transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for focus state */
   color:white;

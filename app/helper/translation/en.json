@@ -60,6 +60,7 @@
   "synthesis": "Synthesis",
   "crop": "crop",
   "login_message": "to use our beta feature.",
+  "Developer": "Developer",
   "beta": "BETA",
   "uploading_audio_message": "please wait while audio is uploading... ",
   "or": "OR",
@@ -71,9 +72,7 @@
   "status": "Status",
   "install": "Install",
   "install_message": "Install our app for a smoother experience!",
-  "ourTeam": "Our Team"
-,
-  "follow_us": "Follow us on:"
-,
+  "ourTeam": "Our Team",
+  "follow_us": "Follow us on:",
   "copied": "Copied to clipboard"
 }
