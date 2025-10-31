@@ -24,7 +24,7 @@ function Team() {
     >
       <ToolWraper title="team">
         <div className="flex flex-col md:flex-row mb-8 justify-between items-center gap-6">
-          <div className="w-full md:w-1/2 mb-4 text-left">
+          <div className="w-full md:w-1/2 mb-4 text-left readable mx-auto">
             <h1
               className={`text-4xl font-bold mb-4 ${
                 isTibetan ? "leading-loose" : ""

@@ -186,3 +186,9 @@ body {
   background: transparent;
   min-height: 100%;
 }
+
+/* Readability utility: constrain line length for long paragraphs */
+.readable { max-width: 68ch; }
+/* Do not constrain on desktop/tablet; keep full width at >= md */
+@media (min-width: 768px){ .readable { max-width: none; } }
+.readable p { margin-bottom: 0.75rem; }
