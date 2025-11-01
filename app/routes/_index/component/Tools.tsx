@@ -56,7 +56,7 @@ function EachModel({ model }: EachProps) {
           <Card
             theme={{
               root: {
-                base: "flex rounded-2xl border border-neutral-200 bg-shadow-md dark:border-[--card-border] bg-neutral dark:bg-[--card-bg] hover:ring-1 hover:ring-secondary-300 dark:hover:ring-primary-600/40 shadow-sm hover:shadow-md transition-colors transition-shadow duration-200 transform hover:-translate-y-1",
+                base: "flex rounded-2xl border border-neutral-200 dark:border-[--card-border] bg-neutral dark:bg-[--card-bg] hover:ring-1 hover:ring-secondary-300 dark:hover:ring-primary-600/40 shadow-xl shadow-[0_4px_20px_rgba(0,0,0,0.09)] dark:shadow-[0_4px_20px_rgba(255,255,255,0.08)] transition-all duration-300 hover:-translate-y-[2px] hover:shadow-2xl dark:hover:shadow-[0_8px_28px_rgba(255,255,255,0.12)]",
                 children: `flex flex-col justify-start items-start space-y-2 md:space-y-3 ${
                   isEnglish ? "font-poppins" : "font-monlam"
                 }`,

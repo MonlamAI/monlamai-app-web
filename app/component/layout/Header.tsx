@@ -19,7 +19,7 @@ function Header() {
   const data = useRouteLoaderData("root");
   return (
     <nav
-      className={`flex p-4 md:p-[24px] border-b border-b-neutral-200 bg-neutral-100 dark:bg-[--card-bg] dark:border-b-[--card-border] justify-center  flex-col lg:flex-row  ${
+      className={`flex p-4 md:p-[24px] border-b border-b-neutral-200 bg-neutral-50 dark:bg-[--card-bg] dark:border-b-[--card-border] justify-center  flex-col lg:flex-row  ${
         isEnglish ? "font-poppins" : "font-monlam"
       } `}
     >
@@ -64,7 +64,7 @@ function Header() {
         <div
           className={`${
             showMenu ? "block" : "hidden"
-          } h-full fixed bg-neutral-100 top-0 left-0 right-0 w-full dark:bg-[--card-bg] shadow-lg z-40`}
+          } h-full fixed bg-neutral-50 top-0 left-0 right-0 w-full dark:bg-[--card-bg] shadow-lg z-40`}
         >
           <NavLink
             className="flex items-center gap-2 p-4"

@@ -35,7 +35,7 @@ function dashboard() {
   }, [debounced_input]);
   return (
     <Card
-      className="max-w-md md:ml-20 relative"
+      className="max-w-md md:ml-20 relative dark:shadow-[0_4px_20px_rgba(255,255,255,0.08)] dark:transition-all dark:duration-300 dark:hover:-translate-y-[2px] dark:hover:shadow-[0_8px_28px_rgba(255,255,255,0.12)]"
       style={{
         maxHeight: "60vh",
         overflow: "auto",

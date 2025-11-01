@@ -163,19 +163,19 @@ textarea{
   background:transparent !important;
 }
 
-/* Global background image for all pages */
-html {
-  background-image: linear-gradient(rgba(255, 255, 255, 0.70), rgba(255, 255, 255, 0.70)), url('/monlam_bg.png');
+/* Global background image for all pages - LIGHT THEME ONLY */
+html.light,
+body.light {
+  background: linear-gradient(rgba(255, 255, 255, 0.70), rgba(255, 255, 255, 0.70)), url('/monlam_bg.png');
   background-size: cover;
   background-position: center;
-  background-attachment: fixed;
   background-repeat: no-repeat;
-  min-height: 100%;
+  background-attachment: fixed;
 }
 
 /* Dark mode: slightly darken overlay to preserve readability */
 html.dark {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url('/monlam_bg.png');
+  background-image: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url('/monlam_bg_dark.png');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
