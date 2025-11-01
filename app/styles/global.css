@@ -133,6 +133,7 @@ html {
   background-color: transparent; /* Custom background color */
   border: 0; /* Custom border color */
   padding: 0.5rem; /* Custom padding */
+  padding-right: 2.5rem; /* Ensure space for dropdown arrow */
   border-radius: 0.375rem; /* Custom border radius */
   transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for focus state */
   color:gray;
@@ -151,6 +152,7 @@ html {
   background-color: transparent; /* Custom background color */
   border: 0; /* Custom border color */
   padding: 0.5rem; /* Custom padding */
+  padding-right: 2.5rem; /* Ensure space for dropdown arrow */
   border-radius: 0.375rem; /* Custom border radius */
   transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for focus state */
   color:white;
@@ -160,3 +162,33 @@ html {
 textarea{
   background:transparent !important;
 }
+
+/* Global background image for all pages - LIGHT THEME ONLY */
+html.light,
+body.light {
+  background: linear-gradient(rgba(255, 255, 255, 0.70), rgba(255, 255, 255, 0.70)), url('/monlam_bg.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+/* Dark mode: slightly darken overlay to preserve readability */
+html.dark {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url('/monlam_bg_dark.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
+
+body {
+  background: transparent;
+  min-height: 100%;
+}
+
+/* Readability utility: constrain line length for long paragraphs */
+.readable { max-width: 68ch; }
+/* Do not constrain on desktop/tablet; keep full width at >= md */
+@media (min-width: 768px){ .readable { max-width: none; } }
+.readable p { margin-bottom: 0.75rem; }

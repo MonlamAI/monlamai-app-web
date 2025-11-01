@@ -37,7 +37,7 @@ export function NonEditModeActions({
   inferenceType
 }: NonEditModeActionsProps) {
   let isOutputNull = !text || text === "";
-  if (isOutputNull || !isSelected) return null;
+  if (isOutputNull) return null;
   // const { liked, disliked } = likefetcher.data?.vote || {};
   let liked=false;
   let disliked=false;
@@ -128,7 +128,7 @@ export function NonEditButtons({
   let liked=false;
   let disliked=false;
   const ClickEdit = () => {
-    setEditText(text);
+    setEditText(text ?? ""); //safe
     setEdit(true);
   };
   return (
@@ -137,7 +137,8 @@ export function NonEditButtons({
         sourceLang == "en" ? "justify-between" : "justify-end"
       } py-[8px] px-5 border-t dark:border-t-[--card-border] border-t-dark_text-secondary`}
     >
-         <Speak text={text} lang={sourceLang==='en'?'bo':'en'}/>
+      {/* Speaker button disabled on STT for now. Re-enable by uncommenting the next line. */}
+         {/* <Speak text={text} lang={sourceLang==='en'?'bo':'en'}/> */}
       <div className="flex gap-3 justify-end items-center p-[4px]">
         <ReactionButtons
           fetcher={likefetcher}

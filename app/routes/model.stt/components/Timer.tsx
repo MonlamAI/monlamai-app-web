@@ -5,11 +5,14 @@ interface TimerProps {
   stop: boolean;
 }
 
+const TOTAL_SECONDS = 30;
+
 const Timer: React.FC<TimerProps> = ({ start, stop }) => {
-  const [timeLeft, setTimeLeft] = useState(120); // 120 seconds = 2 minutes
+  const [timeLeft, setTimeLeft] = useState(TOTAL_SECONDS);
   const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
+    // reseet to 30 seconds on every new start
     if (start && !stop) {
       if (intervalId) return; // Avoid multiple intervals
 
@@ -38,7 +41,7 @@ const Timer: React.FC<TimerProps> = ({ start, stop }) => {
     return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
   };
 
-  const isWarning = timeLeft <= 15 && timeLeft > 0; // 1:45 = 15 seconds left
+  const isWarning = timeLeft <= 5 && timeLeft > 0;
 
   return (
     <div className="flex items-center justify-center">

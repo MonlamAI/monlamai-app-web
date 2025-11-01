@@ -36,7 +36,7 @@ function Footer() {
     <footer
       className={` ${
         !isAboutPage ? "lg:fixed" : ""
-      } bg-neutral-100 bottom-0 left-0 w-full p-3 dark:bg-[--card-bg] text-light_text-secondary dark:text-dark_text-tertiary shadow-md dark:shadow-none transition-all duration-500 `}
+      } bg-neutral-50 bottom-0 left-0 w-full p-3 dark:bg-[--card-bg] text-light_text-secondary dark:text-dark_text-tertiary shadow-md dark:shadow-none transition-all duration-500 `}
       style={{
         fontFamily: isEnglish ? "Inter" : "monlam",
         lineHeight: "normal",
@@ -48,11 +48,11 @@ function Footer() {
             <img src="/assets/logo.png" width="40px" alt="Monalm AI" />
           </span>
           <div className="hidden md:block hover:underline text-[1rem] cursor-default leading-relaxed text-center">
-            {isEnglish ? "© Monlam AI 2024" : "© སྨོན་ལམ་རིག་ནུས། ༢༠༢༤"}
+            {isEnglish ? "© Monlam AI 2025" : "© སྨོན་ལམ་རིག་ནུས། ༢༠༢༥"}
           </div>
         </div>
         <div className="flex flex-wrap items-center">
-          <div className="text-[#b3b3b3] mr-3">Follow us on:</div>
+          <div className="text-[#b3b3b3] mr-3">{translation.follow_us}</div>
           {logos.map((logo) => {
             return (
               <a

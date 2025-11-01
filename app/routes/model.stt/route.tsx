@@ -12,14 +12,13 @@ import {
 import { NonEditButtons } from "~/component/ActionButtons";
 import EditDisplay from "~/component/EditDisplay";
 import { resetFetcher } from "~/component/utils/resetFetcher";
-import { RxCross2 } from "react-icons/rx";
-import { CancelButton } from "~/component/Buttons";
+ 
 import { MAX_SIZE_SUPPORT_AUDIO } from "~/helper/const";
 import { getUserSession } from "~/services/session.server";
 import AudioRecorder from "./components/AudioRecorder";
 import axios from "axios";
 import HeaderComponent from "~/component/HeaderComponent";
-import { Spinner, Progress } from "flowbite-react";
+import { Spinner, Progress, Button } from "flowbite-react";
 import Devider from "~/component/Devider";
 import { ErrorBoundary } from "~/component/ErrorPages";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
@@ -42,14 +41,21 @@ export const action: ActionFunction = async ({ request }) => {
   if (request.method === "PATCH") {
     const edited = formdata.get("edited") as string;
     const inferenceId = formdata.get("inferenceId") as string;
-    const api_url = process.env?.API_URL + `/api/v1/stt/${inferenceId}?action=edit&edit_text=${edited}`;
-    const headers=await getHeaders(request);
-    const data=await fetch(api_url, {
-      method: "PUT",
-      headers,
-    });
-    let res=await data.json();
-    return res?.data?.editOutput
+    const api_url =
+      process.env?.API_URL +
+      `/api/v1/stt/${inferenceId}?action=edit&edit_text=${encodeURIComponent(edited)}`;
+    try {
+      const headers = await getHeaders(request);
+      const resp = await fetch(api_url, {
+        method: "PUT",
+        headers,
+      });
+      if (!resp.ok) return null;
+      let res = await resp.json();
+      return res?.data?.editOutput ?? edited;
+    } catch (e) {
+      return null;
+    }
   }
   return null
 };
@@ -61,6 +67,7 @@ export default function Index() {
   const [audioURL, setAudioURL] = useState<string | null>(null);
   const [edit, setEdit] = useState(false);
   const [editText, setEditText] = useState("");
+  const [resetSeq, setResetSeq] = useState(0);
   const { isTibetan, translation } = uselitteraTranlation();
 
   let likefetcher = useFetcher();
@@ -86,6 +93,8 @@ export default function Index() {
     setAudio(null);
     setAudioURL(null);
     setEdit(false);
+    setUploadProgress(0);
+    setResetSeq((v) => v + 1);
     resetFetcher(editfetcher);
     resetFetcher(fetcher);
   };
@@ -123,13 +132,16 @@ export default function Index() {
   const uploadFile = async (file: File) => {
     try {
       let formData = new FormData();
-      let filename = file?.name ? file?.name : "recording";
-
-      let uniqueFilename = Date.now() + "-" + filename + ".mp3";
+      let originalName = file?.name ? file?.name : "recording";
+      // pick an extension that matches the MIME type and avoid forcing .mp3
+      const mime = file.type || "audio/webm";
+      const ext = mime === "audio/mp4" ? "m4a" : mime === "audio/webm" ? "webm" : mime === "audio/wav" ? "wav" : "bin";
+      // remove any existing extension from originalName
+      const base = originalName.replace(/\.[^/.]+$/, "");
+      let uniqueFilename = `${Date.now()}-${base}.${ext}`;
       formData.append("filename", uniqueFilename);
       formData.append("filetype", file.type);
       formData.append("bucket", "/STT/input");
-
       const response = await axios.post("/api/get_presigned_url", formData);
       const { url } = response.data;
       // Use Axios to upload the file to S3
@@ -161,7 +173,7 @@ export default function Index() {
     setEditText(editData)
   }
   },[editData])
-  return <Maintenance/>
+  // return <Maintenance/>
   return (
     <ToolWraper title="STT">
       <div className=" rounded-[10px]  overflow-hidden border dark:border-[--card-border] border-dark_text-secondary">
@@ -187,20 +199,19 @@ export default function Index() {
                 </div>
               )}
               <AudioRecorder
+                key={resetSeq}
                 audioURL={audioURL}
                 uploadAudio={uploadFile}
                 isLoading={isLoading}
                 isUploading={isUploading}
               />
 
-              <CancelButton onClick={handleReset} hidden={!audioURL}>
-                <RxCross2 size={20} />
-              </CancelButton>
+              {/* Removed duplicate close button; 'New transcription' handles reset */}
               {!isUploading && (
                 <div className="flex justify-between">
                   <CharacterSizeComponent
                     selectedTool={"recording"}
-                    charCount={"2 min "}
+                    charCount={"30 sec "}
                     CHAR_LIMIT={undefined}
                     MAX_SIZE_SUPPORT={MAX_SIZE_SUPPORT_AUDIO}
                   />
@@ -264,6 +275,19 @@ export default function Index() {
                 setEditText={setEditText}
                 sourceLang="bo"
               />
+            )}
+            {!edit && inferenceId && audioURL && (
+              <div className="flex justify-end p-2">
+                <Button
+                  color="light"
+                  size="sm"
+                  onClick={handleReset}
+                  disabled={isLoading}
+                  className="font-poppins"
+                >
+                  New transcription
+                </Button>
+              </div>
             )}
           </CardComponent>
         </div>

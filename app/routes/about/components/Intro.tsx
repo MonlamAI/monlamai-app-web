@@ -7,14 +7,14 @@ export function Intro() {
   return (
     <div className="flex flex-col mb-20 justify-center items-center gap-10 lg:flex-row">
       <div
-        className={`leading-8 text-md ${
+        className={`leading-8 text-md readable mx-auto text-left ${
           isEnglish ? "font-poppins" : "font-monlam leading-loose"
         }`}
       >
         <h4 className="text-2xl mb-4 text-center">
           {isEnglish ? "Introduction" : "ངོ་སྤྲོད།"}
         </h4>
-        <p>
+        <p className="mb-4">
           {!isEnglish
             ? `དེང་སྐབས་འཛམ་གླིང་ཁྱོན་ཡོངས་སུ་ཚན་རྩལ་འཕྲུལ་རིག་ཆེས་ཆེར་དར་ཞིང་། ལྷག་པར་ཉེ་བའི་ལོ་འདི་འགར་ཀུན་གྱིས་ཚ་ཚ་འུར་འུར་དུ་གླེང་བཞིན་པའི་མིས་བཟོས་རིག་ནུས་(Artificial intelligence)ཞེས་པ་བརྡ་འཕྲིན་འཕྲུལ་རིག་ཁྲོད་ཚད་གཞི་ཆེས་མཐོ་ཤོས་སུ་གྱུར་ཡོད་ལ། འབྱུང་འགྱུར་འཕྲུལ་རིག་འདི་བརྒྱུད་ནས་ད་ལྟའི་འགྲོ་བ་མི་ཐུན་མོང་གི་ལོངས་སྤྱོད་དུ་གྱུར་པའི་ཤེས་ཡོན་མཐའ་དག་སྔར་ལས་ནུས་པ་ལྡན་པ་དང་། ལས་ཆོད་མཐོར་འདེགས་གཏོང་ཐུབ་པར་མ་ཟད། ང་ཚོ་བོད་མི་རིགས་ལྟ་བུའི་ཤེས་རིག་རྒྱ་ཆེ་ཡང་སྤྱོད་མཁན་གྲངས་ཉུང་བའི་རིགས་ལ་དམིགས་བསལ་ཕན་ཐོགས་རྒྱ་ཆེར་འབྱུང་ངེས།`
             : ` Welcome to a new era of innovation and progress! In today's world,

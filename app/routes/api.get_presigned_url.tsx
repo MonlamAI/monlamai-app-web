@@ -1,5 +1,7 @@
 import { ActionFunction } from "@remix-run/node";
 import AWS from "aws-sdk";
+import dotenv from "dotenv";
+dotenv.config();
 
 const awsConfig = {
   accessKeyId: process.env.AWS_ACCESS_ID,
