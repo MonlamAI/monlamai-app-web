@@ -33,7 +33,7 @@
     "route": "placeholder",
     "name": "Jamyang Gendun",
     "team": "Admin Team",
-    "designation": "Objective Owner (Amke)",
+    "designation": "Objective Owner",
     "bios": "",
     "educationalProfessionalBackground": "",
     "linkedInId": "",
@@ -53,7 +53,7 @@
     "route": "ju-tenkyong",
     "name": "Ju Tenkyong",
     "team": "Admin Team",
-    "designation": "",
+    "designation": "Dictionary Chief Editor",
     "bios": "",
     "educationalProfessionalBackground": "",
     "linkedInId": "",
@@ -83,7 +83,7 @@
     "route": "khenrap-gyatso",
     "name": "Khenrap Gyatso",
     "team": "Admin Team",
-    "designation": "Tibetan Chief Editor",
+    "designation": "AI Tibetan Chief Editor",
     "bios": "Khenrap Gyatso is a versatile Tibetan writer based in Dharamsala, India. With a background in journalism and social work, Gyatso has worked as a journalist for Voice of Tibet and as a social worker at the",
     "educationalProfessionalBackground": "He is a graduated scholar, geshe, and writer, and has served as a teacher, editor, and editor-in-chief.",
     "linkedInId": "",
@@ -113,7 +113,7 @@
     "route": "placeholder",
     "name": "Lhakpa Wangyal",
     "team": "Admin Team",
-    "designation": "Objective Owner (Khamke)",
+    "designation": "Objective Owner",
     "bios": "",
     "educationalProfessionalBackground": "",
     "linkedInId": "",
@@ -153,7 +153,7 @@
     "route": "tenzin-gayche",
     "name": "Tenzin Gayche",
     "team": "Tech Team",
-    "designation": "Senior Software Engineer",
+    "designation": "AI Advisor",
     "bios": "Gayche is a seasoned ML Engineer with a deep-rooted passion for pushing the boundaries of language technology. With two years of hands-on experience in Machine Translation and Large Language Models, he brings a wealth of expertise to the team. His BTech in Computer Science, with a specialization in data science, provides a strong foundation for his technical prowess.",
     "educationalProfessionalBackground": "As a pioneer in the STT department, Gayche played a pivotal role in developing the team's inaugural text-to-speech model. His contributions have been instrumental in shaping the department's trajectory. Beyond his technical acumen, Gayche hobbies of birdwatching and painting lend a unique perspective to his work, fostering creativity and innovation. Driven by a desire to empower the Tibetan community, Gayche's ultimate goal is to elevate Tibetan language technology to par with other major languages. By bridging the digital divide, he aims to unlock a world of opportunities for Tibetan speakers.",
     "linkedInId": "",
@@ -170,7 +170,7 @@
     "headshot": "/assets/team/tenzin-kunsang.jpg"
   },
   {
-    "route": "placeholder",
+    "route": "tenzin-norsang",
     "name": "Tenzin Norsang",
     "team": "Admin Team",
     "designation": "Chief Development Officer",
@@ -190,7 +190,7 @@
     "headshot": "/assets/team/tenzin-nyima.jpg"
   },
   {
-    "route": "placeholder",
+    "route": "tenzin-paljor",
     "name": "Tenzin Paljor",
     "team": "Tech Team",
     "designation": "Deputy Technical Lead",
@@ -200,7 +200,7 @@
     "headshot": "/assets/team/tenzin-paljor.jpg"
   },
   {
-    "route": "placeholder",
+    "route": "tenzin-sherab",
     "name": "Tenzin Sherab",
     "team": "Tech Team",
     "designation": "Software Engineer",
@@ -210,7 +210,7 @@
     "headshot": "/assets/team/tenzin-sherab.jpg"
   },
   {
-    "route": "placeholder",
+    "route": "tenzin-tashi",
     "name": "Tenzin Tashi",
     "team": "Tech Team",
     "designation": "UI/UX Designer",
@@ -230,7 +230,7 @@
     "headshot": "/assets/team/tenzin-thinley.jpg"
   },
   {
-    "route": "placeholder",
+    "route": "tenzing-dhugkar",
     "name": "Tenzing Dhugkar Lingkar",
     "team": "Tech Team",
     "designation": "Software Engineer",
@@ -250,10 +250,10 @@
     "headshot": "/assets/team/tsering-ngodup.jpg"
   },
   {
-    "route": "placeholder",
+    "route": "tsering-wangchuk",
     "name": "Tsering Wangchuk",
     "team": "Admin Team",
-    "designation": "Data Director",
+    "designation": "Director of Data",
     "bios": "",
     "educationalProfessionalBackground": "",
     "linkedInId": "",
