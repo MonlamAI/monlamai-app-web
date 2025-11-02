@@ -7,3 +7,4 @@ node_modules
 monlam.js
 reports/test-report.html
 coverage/
+.DS_Store

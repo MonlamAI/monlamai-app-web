@@ -1,6 +1,6 @@
 [
   {
-    "route": "lobsang-monlam",
+    "route": "lobsang-monlam1",
     "name": "Lobsang Monlam",
     "team": "Admin Team",
     "designation": "Founder",
@@ -40,7 +40,7 @@
     "headshot": "/assets/team/jamyang-gendun.jpg"
   },
   {
-    "route": "jamyang-tsultrim",
+    "route": "jamyang-tsultrim1",
     "name": "Jamyang Tsultrim",
     "team": "Admin Team",
     "designation": "Dictionary Lead",
@@ -50,7 +50,7 @@
     "headshot": "/assets/team/jamyang-tsultrim.jpg"
   },
   {
-    "route": "ju-tenkyong",
+    "route": "ju-tenkyong1",
     "name": "Ju Tenkyong",
     "team": "Admin Team",
     "designation": "Dictionary Chief Editor",
@@ -60,7 +60,7 @@
     "headshot": "/assets/team/ju-tenkyong.jpg"
   },
   {
-    "route": "kalsang-dhondup",
+    "route": "kalsang-dhondup1",
     "name": "Kalsang Dhondup",
     "team": "Tech Team",
     "designation": "Software Engineer",
@@ -70,7 +70,7 @@
     "headshot": "/assets/team/kalsang-dhondup.jpg"
   },
   {
-    "route": "kelsang-dolker",
+    "route": "kelsang-dolker1",
     "name": "Kelsang Dolker",
     "team": "Admin Team",
     "designation": "Outreach & Communication Officer",
@@ -80,7 +80,7 @@
     "headshot": "/assets/team/kelsang-dolker.jpg"
   },
   {
-    "route": "khenrap-gyatso",
+    "route": "khenrap-gyatso1",
     "name": "Khenrap Gyatso",
     "team": "Admin Team",
     "designation": "AI Tibetan Chief Editor",
@@ -90,7 +90,7 @@
     "headshot": "/assets/team/khenrap-gyatso.jpg"
   },
   {
-    "route": "kunchok-dolma",
+    "route": "kunchok-dolma1",
     "name": "Kunchok Dolma",
     "team": "Admin Team",
     "designation": "South Branch Project Coordinator",
@@ -100,7 +100,7 @@
     "headshot": "/assets/team/kunchok-dolma.jpg"
   },
   {
-    "route": "kunchok-sangjee",
+    "route": "kunchok-sangjee1",
     "name": "Kunchok Sangjee",
     "team": "Admin Team",
     "designation": "Dictionary Editor",
@@ -120,7 +120,7 @@
     "headshot": "/assets/team/lhakpa-wangyal.jpg"
   },
   {
-    "route": "lobsang-palden",
+    "route": "lobsang-palden1",
     "name": "Lobsang Palden",
     "team": "Admin Team",
     "designation": "Typographer",
@@ -130,7 +130,7 @@
     "headshot": "/assets/team/lobsang-palden.jpg"
   },
   {
-    "route": "sherab-gamtso",
+    "route": "sherab-gamtso1",
     "name": "Sherab Gamtso",
     "team": "Admin Team",
     "designation": "Dictionary Editor",
@@ -140,7 +140,7 @@
     "headshot": "/assets/team/sherab-gamtso.jpg"
   },
   {
-    "route": "shugtso",
+    "route": "shugtso1",
     "name": "Shugtso",
     "team": "Admin Team",
     "designation": "Objective Owner (Misc.)/Treasurer",
@@ -150,7 +150,7 @@
     "headshot": "/assets/team/shugtso.jpg"
   },
   {
-    "route": "tenzin-gayche",
+    "route": "tenzin-gayche1",
     "name": "Tenzin Gayche",
     "team": "Tech Team",
     "designation": "AI Advisor",
@@ -170,7 +170,7 @@
     "headshot": "/assets/team/tenzin-kunsang.jpg"
   },
   {
-    "route": "tenzin-norsang",
+    "route": "tenzin-norsang1",
     "name": "Tenzin Norsang",
     "team": "Admin Team",
     "designation": "Chief Development Officer",
@@ -180,7 +180,7 @@
     "headshot": "/assets/team/tenzin-norsang.jpg"
   },
   {
-    "route": "tenzin-nyima",
+    "route": "tenzin-nyima1",
     "name": "Tenzin Nyima",
     "team": "Admin Team",
     "designation": "Executive Director",
@@ -190,7 +190,7 @@
     "headshot": "/assets/team/tenzin-nyima.jpg"
   },
   {
-    "route": "tenzin-paljor",
+    "route": "tenzin-paljor1",
     "name": "Tenzin Paljor",
     "team": "Tech Team",
     "designation": "Deputy Technical Lead",
@@ -200,7 +200,7 @@
     "headshot": "/assets/team/tenzin-paljor.jpg"
   },
   {
-    "route": "tenzin-sherab",
+    "route": "tenzin-sherab1",
     "name": "Tenzin Sherab",
     "team": "Tech Team",
     "designation": "Software Engineer",
@@ -210,7 +210,7 @@
     "headshot": "/assets/team/tenzin-sherab.jpg"
   },
   {
-    "route": "tenzin-tashi",
+    "route": "tenzin-tashi1",
     "name": "Tenzin Tashi",
     "team": "Tech Team",
     "designation": "UI/UX Designer",
@@ -220,7 +220,7 @@
     "headshot": "/assets/team/tenzin-tashi.jpg"
   },
   {
-    "route": "tenzin-thinley",
+    "route": "tenzin-thinley1",
     "name": "Tenzin Thinley",
     "team": "Admin Team",
     "designation": "Fundraising Officer",
@@ -230,7 +230,7 @@
     "headshot": "/assets/team/tenzin-thinley.jpg"
   },
   {
-    "route": "tenzing-dhugkar",
+    "route": "tenzing-dhugkar1",
     "name": "Tenzing Dhugkar Lingkar",
     "team": "Tech Team",
     "designation": "Software Engineer",
@@ -250,7 +250,7 @@
     "headshot": "/assets/team/tsering-ngodup.jpg"
   },
   {
-    "route": "tsering-wangchuk",
+    "route": "tsering-wangchuk1",
     "name": "Tsering Wangchuk",
     "team": "Admin Team",
     "designation": "Director of Data",

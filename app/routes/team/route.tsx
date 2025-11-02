@@ -46,7 +46,7 @@ function Team() {
           </div>
           <div className="w-full md:w-[50%]">
             <img
-              src="/assets/team/team3.jpg"
+              src="/assets/team/teampic.jpg"
               alt="Our office"
               className="w-full max-h-80 object-cover rounded-xl"
             />
