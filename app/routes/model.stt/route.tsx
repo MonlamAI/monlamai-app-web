@@ -279,13 +279,16 @@ export default function Index() {
             {!edit && inferenceId && audioURL && (
               <div className="flex justify-end p-2">
                 <Button
-                  color="light"
-                  size="sm"
+                  pill
                   onClick={handleReset}
                   disabled={isLoading}
-                  className="font-poppins"
+                  className="font-poppins bg-secondary-500 hover:bg-secondary-600 text-white dark:bg-primary-500 dark:hover:bg-primary-600 shadow-md hover:shadow-lg transition-all duration-300 ease-out hover:-translate-y-[1px] focus:outline-none focus:ring-2 focus:ring-secondary-300 dark:focus:ring-primary-600 rounded-full px-5 py-2.5"
                 >
-                  New transcription
+                  {isTibetan ? (
+                    <span className="font-monlam">སྒྲ་འཇུག་གསར་དུ་བྱོས།</span>
+                  ) : (
+                    "New transcription"
+                  )}
                 </Button>
               </div>
             )}
