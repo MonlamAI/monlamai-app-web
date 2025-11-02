@@ -1,24 +1,38 @@
 import { useFetcher, useSearchParams } from "@remix-run/react";
 import { Select, Tooltip } from "flowbite-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ChangeEvent } from "react";
 import { FaArrowRightArrowLeft } from "react-icons/fa6";
 import { resetFetcher } from "~/component/utils/resetFetcher";
 import LanguageDetect from "languagedetect";
 import { eng_languagesOptions, tib_languageOptions } from "~/helper/const";
 import { GoArrowSwitch } from "react-icons/go";
 import uselitteraTranlation from "~/component/hooks/useLitteraTranslation";
-import useEffectOnce from "../../../component/hooks/useEffectOnce";
 
 const lngDetector = new LanguageDetect();
 
 // Utility function to check if the input is Tibetan
-function isTibetan(input) {
+function isTibetan(input: string) {
   const tibetanRegex = /[\u0F00-\u0FFF]+/;
   return tibetanRegex.test(input);
 }
 
+// Map language-detect names to our supported codes
+const DETECT_TO_CODE: Record<string, string> = {
+  english: "en",
+  tibetan: "bo",
+  chinese: "zh-new", // default to simplified if unsure
+  "traditional chinese": "zh-old",
+  "simplified chinese": "zh-new",
+  hindi: "hi",
+  japanese: "ja",
+  french: "fr-new",
+  german: "de",
+  czech: "cs",
+  vietnamese: "vi",
+};
+
 // Finds the first common element between two arrays
-function findFirstCommonElement(array1, array2) {
+function findFirstCommonElement(array1: string[], array2: string[]) {
   for (let element of array1) {
     if (array2.includes(element)) {
       return element;
@@ -27,7 +41,7 @@ function findFirstCommonElement(array1, array2) {
   return undefined;
 }
 
-function getLanguageFromOption(text, array2) {
+function getLanguageFromOption(text: string, array2: string[]) {
   let language = text?.includes("zh") ? "zh" : text;
   if (array2.includes(language)) {
     return language;
@@ -42,6 +56,13 @@ function LanguageInput({
   data,
   setTranslated,
   detectFetcher,
+}: {
+  likefetcher: any;
+  sourceText: string;
+  setSourceText: (text: string) => void;
+  data: string;
+  setTranslated: (text: string) => void;
+  detectFetcher: any;
 }) {
   const [params, setParams] = useSearchParams();
   const sourceLang = params.get("source") || "detect language";
@@ -83,7 +104,7 @@ function LanguageInput({
     });
   }
 
-  function handleChange(e, type) {
+  function handleChange(e: ChangeEvent<HTMLSelectElement>, type: "target" | "source") {
     const lang = e.target.value;
     if (type === "target") {
       setTarget(lang);
@@ -100,10 +121,8 @@ function LanguageInput({
 
     setParams((prevParams) => {
       prevParams.set("source", targetLang);
-      if (sourceLang !== "detect language") {
+      if (sourceLang && sourceLang !== "detect language") {
         prevParams.set("target", sourceLang);
-      } else if (sourceLang === "bo") {
-        prevParams.set("target", "en");
       } else {
         prevParams.set("target", "en");
       }
@@ -111,18 +130,22 @@ function LanguageInput({
     });
   }
 
-  
-  useEffectOnce(() => {
-      detectAndSetLanguage(sourceText);
-  }, [sourceText]);
-  useEffectOnce(() => {
+  // Detect language reactively while typing
+  useEffect(() => {
+    detectAndSetLanguage(sourceText);
+  }, [sourceText, sourceLang]);
+  // Reset to 'detect language' when input cleared
+  useEffect(() => {
     if (sourceText?.trim() === "" && sourceLang !== "detect language") {
       setSource("detect language");
     }
-  }, [sourceText]);
+  }, [sourceText, sourceLang]);
 
   const detectAndSetLanguage = (text: string) => {
     if (sourceLang !== "detect language") return;
+
+    // guard for very short inputs
+    if (!text || text.trim().length < 2) return;
 
     if (isTibetan(text)) {
       setParams((prevParams) => {
@@ -133,28 +156,40 @@ function LanguageInput({
       return;
     }
 
-    let detectedLanguages = lngDetector.detect(text);
-    let ranked = detectedLanguages.map((l) => l[0]);
-    let option = languagesOptions.map((l) => l.value.toLowerCase());
-    let common = findFirstCommonElement(ranked, option);
-
-    if (common) {
-      let detectedLang = languagesOptions.find(
-        (lang) => lang.value.toLowerCase() === common
-      );
-      setParams((prevParams) => {
-        prevParams.set("source", detectedLang?.code || "en");
-        return prevParams;
-      });
-    } else {
-      setParams((prevParams) => {
-        prevParams.set("source", "en");
-        return prevParams;
-      });
+    // Use detector results -> map to our supported codes
+    const supported = new Set(languagesOptions.map((l) => l.code));
+    const results = (lngDetector.detect(text, 5) as [string, number][]) || [];
+    let picked: string | undefined;
+    for (const [name] of results) {
+      const code = DETECT_TO_CODE[name.toLowerCase()];
+      if (code && supported.has(code)) {
+        picked = code;
+        break;
+      }
     }
+    // Heuristics if detector uncertain
+    if (!picked) {
+      if (/[\u4E00-\u9FFF]/.test(text)) {
+        picked = supported.has("zh-new") ? "zh-new" : supported.has("zh-old") ? "zh-old" : "en";
+      } else if (/[\u3040-\u309F\u30A0-\u30FF]/.test(text)) {
+        picked = supported.has("ja") ? "ja" : "en";
+      } else if (/[\u0900-\u097F]/.test(text)) {
+        picked = supported.has("hi") ? "hi" : "en";
+      } else if (/[\u010D\u010C]/i.test(text) && supported.has("cs")) {
+        picked = "cs";
+      } else if (/[\u00C0-\u017F]/.test(text) && supported.has("fr-new")) {
+        picked = "fr-new";
+      } else {
+        picked = "en";
+      }
+    }
+    setParams((prevParams) => {
+      prevParams.set("source", picked!);
+      return prevParams;
+    });
   };
 
-  const setLanguage = (detectedLanguage) => {
+  const setLanguage = (detectedLanguage: string) => {
     if (sourceLang !== "detect language") return;
 
     if (detectedLanguage == "bo") {
@@ -230,10 +265,7 @@ function LanguageInput({
               {lang.value}{" "}
               {beta.includes(lang.value) ? `(${translation?.beta})` : ""}
             </option>
-          ))}{" "}
-          <option value="detect language" className={"hidden"}>
-            {translation?.detect}
-          </option>
+          ))}
         </Select>
       </div>
     </div>
