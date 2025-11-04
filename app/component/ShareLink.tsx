@@ -5,6 +5,7 @@ import CopyToClipboard from "./CopyToClipboard";
 import { ReactionButton } from "./ReactionButtons";
 import { FaShareAlt } from "react-icons/fa";
 import { ICON_SIZE } from "~/helper/const";
+import uselitteraTranlation from "./hooks/useLitteraTranslation";
 // Custom hook for getting share URLs
 function useShareUrl(link: string) {
   const baseShareUrl = link;
@@ -44,6 +45,7 @@ function SocialShareButton({ icon, onClick, color }) {
 
 function ShareLink({ inferenceId }) {
   const [isOpen, setIsOpen] = useState(false);
+  const { isTibetan } = uselitteraTranlation();
   const link = inferenceId
     ? useMemo(
         () => window.location.origin + `/share/${inferenceId}`,
@@ -72,13 +74,22 @@ function ShareLink({ inferenceId }) {
         placement="bottom"
         dismissOnClick={true}
         renderTrigger={() => (
-          <span className="focus:outline-none cursor-pointer  text-gray-500 dark:text-dark_text-secondary disabled:opacity-20 ">
+          <span
+            className="focus:outline-none cursor-pointer  text-gray-500 dark:text-dark_text-secondary disabled:opacity-20 "
+            title={isTibetan ? "[Share – Tibetan]" : "Share"}
+          >
             <FaShareAlt size={ICON_SIZE} className="dark:fill-primary-500" />
           </span>
         )}
         size="md"
       >
-        <Dropdown.Header>Share</Dropdown.Header>
+        <Dropdown.Header>
+          {isTibetan ? (
+            <span className="font-monlam">བརྒྱུད་སྤེལ།</span>
+          ) : (
+            "Share"
+          )}
+        </Dropdown.Header>
         <div className="">
           <div className="flex gap-2 justify-center items-center mb-2 p-2 ">
             <TextInput type="text" value={link} readOnly />

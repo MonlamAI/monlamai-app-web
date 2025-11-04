@@ -5,7 +5,7 @@ interface ValidationResult {
     charCount: number;
   }
   
-  export const validateInput = (input: string, maxChars: number = 1000): ValidationResult => {
+  export const validateInput = (input: string, maxChars: number = 5000): ValidationResult => {
     if (!input || input.trim().length === 0) {
       throw new Error("Input text is required");
     }
