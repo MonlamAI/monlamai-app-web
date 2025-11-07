@@ -21,7 +21,7 @@ function SelectModel({setModel,model}) {
     <Select
     onChange={(e) => handleChange(e, "source")}
     value={model }
-    className="selectHeader  w-[160px]"
+    className="selectHeader min-w-[160px] w-fit"
     style={{ cursor: "pointer" }}
   >
     {models.map((lang) => (

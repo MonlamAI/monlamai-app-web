@@ -55,8 +55,8 @@ export const tib_languageOptions = [
   // { value: "སི་པེན།", code: "es", name: "spanish" },
   // { value: "ཕོ་ཆུ་གྷལ།", code: "pt", name: "portuguese" },
   // { value: "ཧོ་ལན", code: "nl", name: "dutch" },
-  {value: "Czech", code: "cs", name: "czech"},
-  {value: "Vietnamese", code: "vi", name: "vietnamese"},
+  {value: "ཅེག", code: "cs", name: "czech"},
+  {value: "ཝེ་ཏི་ནམ།", code: "vi", name: "vietnamese"},
 ];
 
 export const ICON_SIZE = 20;

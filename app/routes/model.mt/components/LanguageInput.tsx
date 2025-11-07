@@ -224,7 +224,7 @@ function LanguageInput({
         <Select
           onChange={(e) => handleChange(e, "source")}
           value={sourceLang}
-          className="selectHeader  w-[160px]"
+          className="selectHeader min-w-[160px] w-fit"
           style={{ cursor: "pointer" }}
         >
           <option value="detect language" className={optionClass}>
