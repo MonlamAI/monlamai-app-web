@@ -145,25 +145,33 @@ export default function Index() {
       const response = await axios.post("/api/get_presigned_url", formData);
       const { url } = response.data;
       // Use Axios to upload the file to S3
+      // Show bar immediately
+      setUploadProgress(1);
       const uploadStatus = await axios.put(url, file, {
         headers: {
           "Content-Type": file.type,
         },
         onUploadProgress: (progressEvent) => {
-          const percentCompleted = Math.round(
-            (progressEvent.loaded * 100) / progressEvent.total
-          );
-          setUploadProgress(percentCompleted);
+          // total can be undefined for S3 PUT; fallback to file.size
+          const total = progressEvent?.total ?? file.size ?? 1;
+          const loaded = progressEvent?.loaded ?? 0;
+          const percent = Math.round((loaded * 100) / total);
+          // keep a little headroom until the server confirms success
+          setUploadProgress(Math.min(98, percent));
         },
       });
 
       if (uploadStatus.status === 200) {
+        // mark upload complete so the UI hides the progress bar
+        setUploadProgress(100);
         const uploadedFilePath = uploadStatus.request.responseURL;
         const baseUrl = uploadedFilePath?.split("?")[0]!;
         setAudioURL(baseUrl!);
       }
     } catch (error) {
       console.error(`Error uploading file ${file.name}:`, error);
+      // reset the bar on error
+      setUploadProgress(0);
     }
   };
   let isUploading = uploadProgress > 0 && uploadProgress < 99;
@@ -211,7 +219,7 @@ export default function Index() {
                 <div className="flex justify-between">
                   <CharacterSizeComponent
                     selectedTool={"recording"}
-                    charCount={"30 sec "}
+                    charCount={"3 min "}
                     CHAR_LIMIT={undefined}
                     MAX_SIZE_SUPPORT={MAX_SIZE_SUPPORT_AUDIO}
                   />

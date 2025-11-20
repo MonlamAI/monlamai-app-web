@@ -5,7 +5,7 @@ interface TimerProps {
   stop: boolean;
 }
 
-const TOTAL_SECONDS = 30;
+const TOTAL_SECONDS = 180;
 
 const Timer: React.FC<TimerProps> = ({ start, stop }) => {
   const [timeLeft, setTimeLeft] = useState(TOTAL_SECONDS);

@@ -77,7 +77,7 @@ function AudioRecorder({
 
       stopRecordingTimeout = setTimeout(() => {
         stopRecording();
-      }, 30000);
+      }, 180000);
     } catch (error) {
       console.error("Error accessing the microphone:", error);
     }
