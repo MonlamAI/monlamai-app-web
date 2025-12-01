@@ -12,10 +12,11 @@ import { ICON_SIZE } from "~/helper/const";
 import { FaArrowRightFromBracket } from "react-icons/fa6";
 import { TbApi } from "react-icons/tb";
 import { ClientOnly } from "remix-utils/client-only";
+import { FiExternalLink } from "react-icons/fi";
 
 function Header() {
   const [showMenu, setShowMenu] = useState(false);
-  const { isEnglish, translation } = uselitteraTranlation();
+  const { isEnglish, isTibetan, translation } = uselitteraTranlation();
   const data = useRouteLoaderData("root");
   return (
     <nav
@@ -37,6 +38,16 @@ function Header() {
           />
           <span className="text-xl md:text-2xl ">{translation.monlamAI}</span>
         </NavLink>
+        {/* mobile try melong button */}
+        <a
+          href="https://melong.ai/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="lg:hidden inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs border border-secondary-500 text-secondary-600 hover:bg-secondary-50 dark:border-primary-500 dark:text-primary-400 dark:hover:bg-primary-900/30 transition-colors mr-2"
+          aria-label="Try Melong AI"
+        >
+          {isTibetan ? "མེ་ལོང་རིག་ནུས་" : "Try Melong AI"} <FiExternalLink className="inline-block" />
+        </a>
         <button
           className={`block lg:hidden right-2 z-50 pr-2 ${
             showMenu ? "fixed" : ""
@@ -51,6 +62,15 @@ function Header() {
             <TeamLink />
           </div>
           <div className="flex items-center gap-4 mr-7">
+            <a
+              href="https://melong.ai/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs border border-secondary-500 text-secondary-600 hover:bg-secondary-50 dark:border-primary-500 dark:text-primary-400 dark:hover:bg-primary-900/30 transition-colors"
+              aria-label="Try Melong AI"
+            >
+              {isTibetan ? "མེ་ལོང་རིག་ནུས་" : "Try Melong AI"} <FiExternalLink className="inline-block" />
+            </a>
             <ClientOnly fallback={null}>
               {()=>
             <ThemeSwitcher />
@@ -81,6 +101,17 @@ function Header() {
           </NavLink>
           <Devider />
           <div className="flex flex-col gap-4 text-light_text-secondary dark:text-dark_text-secondary">
+            <div className="px-3 pt-3">
+              <a
+                href="https://melong.ai/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 rounded-full px-3 py-2 text-sm border border-secondary-500 text-secondary-600 hover:bg-secondary-50 dark:border-primary-500 dark:text-primary-400 dark:hover:bg-primary-900/30 transition-colors"
+                aria-label="Try Melong AI"
+              >
+                {isTibetan ? "མེ་ལོང་རིག་ནུས་" : "Try Melong AI"} <FiExternalLink className="inline-block" />
+              </a>
+            </div>
             <div onClick={() => setShowMenu((p) => !p)} className="px-3 pt-3 ">
               <AboutLink />
             </div>
