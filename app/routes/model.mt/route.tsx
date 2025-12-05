@@ -6,7 +6,7 @@ import type {
 import type { ClientLoaderFunctionArgs } from "@remix-run/react";
 import { useFetcher, useLoaderData, useSearchParams } from "@remix-run/react";
 import { json } from "@remix-run/node";
-import { useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import useDebounce from "~/component/hooks/useDebounceState";
 import { ErrorMessage } from "~/component/ErrorMessage";
 import ToolWraper from "~/component/ToolWraper";
@@ -46,10 +46,13 @@ export const meta: MetaFunction<typeof loader> = ({ matches }) => {
 export async function loader({ request }: LoaderFunctionArgs) {
   let userdata = await getUserSession(request);
   let CHAR_LIMIT = parseInt(process.env?.MAX_TEXT_LENGTH_MT!);
+  let url = new URL(request.url);
+  let q = url.searchParams.get("q") || "";
 
   return json({
     user: userdata,
     CHAR_LIMIT,
+    q,
   });
 }
 
@@ -93,7 +96,7 @@ export default function Index() {
   const source_lang = params.get("source") || "en";
   const [sourceText, setSourceText] = useState("");
   const [model, setModel] = useState("MONLAM-MELONG");
-  const { limitMessage, CHAR_LIMIT } = useLoaderData();
+  const { limitMessage, CHAR_LIMIT, q } = useLoaderData<typeof loader>();
   const [edit, setEdit] = useState(false);
   const [editText, setEditText] = useState("");
   const [inferenceId, setInferenceId] = useState(null);
@@ -105,6 +108,12 @@ export default function Index() {
 
   const editData = editfetcher.data;
   let charCount = sourceText?.length;
+
+  useEffect(() => {
+    if (q) {
+      setSourceText(q);
+    }
+  }, [q]);
 
   function handleCopy() {
     navigator.clipboard.writeText(output);
