@@ -48,11 +48,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
   let CHAR_LIMIT = parseInt(process.env?.MAX_TEXT_LENGTH_MT!);
   let url = new URL(request.url);
   let q = url.searchParams.get("q") || "";
+  const autoParam = url.searchParams.get("auto");
+  const autoRun = autoParam === "1" || autoParam === "true";
 
   return json({
     user: userdata,
     CHAR_LIMIT,
     q,
+    autoRun,
   });
 }
 
@@ -96,7 +99,7 @@ export default function Index() {
   const source_lang = params.get("source") || "en";
   const [sourceText, setSourceText] = useState("");
   const [model, setModel] = useState("MONLAM-MELONG");
-  const { limitMessage, CHAR_LIMIT, q } = useLoaderData<typeof loader>();
+  const { limitMessage, CHAR_LIMIT, q, autoRun } = useLoaderData<typeof loader>();
   const [edit, setEdit] = useState(false);
   const [editText, setEditText] = useState("");
   const [inferenceId, setInferenceId] = useState(null);
@@ -108,12 +111,21 @@ export default function Index() {
 
   const editData = editfetcher.data;
   let charCount = sourceText?.length;
+  const [hasAutoRun, setHasAutoRun] = useState(false);
 
   useEffect(() => {
     if (q) {
       setSourceText(q);
+      setHasAutoRun(false);
     }
   }, [q]);
+
+  useEffect(() => {
+    if (autoRun && q && sourceText === q && !hasAutoRun) {
+      trigger();
+      setHasAutoRun(true);
+    }
+  }, [autoRun, q, sourceText, hasAutoRun, trigger]);
 
   function handleCopy() {
     navigator.clipboard.writeText(output);
