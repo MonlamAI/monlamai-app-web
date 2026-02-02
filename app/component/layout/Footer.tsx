@@ -48,7 +48,7 @@ function Footer() {
             <img src="/assets/logo.png" width="40px" alt="Monalm AI" />
           </span>
           <div className="hidden md:block hover:underline text-[1rem] cursor-default leading-relaxed text-center">
-            {isEnglish ? "© Monlam AI 2025" : "© སྨོན་ལམ་རིག་ནུས། ༢༠༢༥"}
+            {isEnglish ? "© Monlam AI 2026" : "© སྨོན་ལམ་རིག་ནུས། ༢༠༢༦"}
           </div>
         </div>
         <div className="flex flex-wrap items-center">
