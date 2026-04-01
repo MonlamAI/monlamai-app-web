@@ -21,13 +21,23 @@
   },
   {
     "route": "placeholder",
-    "name": "ཟླ་བ་དོན་འགྲུབ།",
+    "name": "།",
+    "team": "འཛིན་སྐྱོང་སྡེ་ཚན།",
+    "designation": "རྩིས་པ།",
+    "bios": "",
+    "educationalProfessionalBackground": "",
+    "linkedInId": "",
+    "headshot": "/assets/team/choenyi-wangmo.jpg"
+  },
+  {
+    "route": "gonpo-dhondup",
+    "name": "མགོན་པོ་དོན་གྲུབ།",
     "team": "Tech Team",
     "designation": "UI/UX འཆར་འགོད་པ།",
     "bios": "",
     "educationalProfessionalBackground": "",
     "linkedInId": "",
-    "headshot": "/assets/team/dawa-dhondup.jpg"
+    "headshot": "/assets/team/gonpo-dhondup.jpg"
   },
   {
     "route": "placeholder",
@@ -93,7 +103,7 @@
     "route": "kunchok-dolma1",
     "name": "དཀོན་མཆོག་སྒྲོལ་མ།",
     "team": "འཛིན་སྐྱོང་སྡེ་ཚན།",
-    "designation": "ལྷོ་ཕྱོགས་ཡན་ལག་ལས་ཁུངས་ཀྱི་འབྲེལ་མཐུད་པ།",
+    "designation": "།",
     "bios": "Kunchok Dolma, a Tibetan refugee born and raised in India, is a dedicated advocate for building meaningful relationships and fostering trust and collaboration. With a strong commitment to fairness and justice, she strives to drive positive change and inspire others to do the same. Kunchok holds a master's degree in Leadership and Governance from MIT Pune and graduated with a BA in English Honours from Miranda House, University of Delhi. She is also a proud alumna of TCV and brings five years of experience as a Project Officer at the Department of Health, CTA.",
     "educationalProfessionalBackground": "In her personal life, Kunchok enjoys playing various sports, including table tennis, badminton, and carrom, though she modestly notes that she excels at none.",
     "linkedInId": "https://www.linkedin.com/in/kunchok-dolma-060325321/",
@@ -140,14 +150,14 @@
     "headshot": "/assets/team/sherab-gamtso.jpg"
   },
   {
-    "route": "shugtso1",
-    "name": "ཕྱུག་མཚོ།",
-    "team": "འཛིན་སྐྱོང་སྡེ་ཚན།",
-    "designation": "དངུལ་གཉེར་དང་རྒྱུ་ཆ་དོ་དམ་པ།",
+    "route": "placeholder",
+    "name": "།",
+    "team": "Tech Team",
+    "designation": "མཉེན་ཆས་ཆེད་ལས་པ།",
     "bios": "",
     "educationalProfessionalBackground": "",
     "linkedInId": "",
-    "headshot": "/assets/team/shugtso.jpg"
+    "headshot": "/assets/team/tenzin-choten.jpg"
   },
   {
     "route": "tenzin-gayche1",
@@ -161,13 +171,33 @@
   },
   {
     "route": "placeholder",
+    "name": "།",
+    "team": "Tech Team",
+    "designation": "མཉེན་ཆས་ཆེད་ལས་པ།",
+    "bios": "",
+    "educationalProfessionalBackground": "",
+    "linkedInId": "",
+    "headshot": "/assets/team/tenzin-khenrab.jpg"
+  },
+  {
+    "route": "placeholder",
     "name": "བསྟན་འཛིན་ཀུན་བཟང་།",
     "team": "Tech Team",
-    "designation": "འཕྲུལ་རིག་སློབ་སྟོན་པ།",
+    "designation": "མཉེན་ཆས་ལས་འཆར་འགན་འཛིན།",
     "bios": "",
     "educationalProfessionalBackground": "",
     "linkedInId": "",
     "headshot": "/assets/team/tenzin-kunsang.jpg"
+  },
+  {
+    "route": "placeholder",
+    "name": "བསྟན་འཛིན་",
+    "team": "འཛིན་སྐྱོང་སྡེ་ཚན།",
+    "designation": "ལྷོ་ཕྱོགས་ཡན་ལག་ལས་ཁུངས་ཀྱི་འབྲེལ་མཐུད་པ།",
+    "bios": "",
+    "educationalProfessionalBackground": "",
+    "linkedInId": "",
+    "headshot": "/assets/team/tenzin-namgyal.jpg"
   },
   {
     "route": "tenzin-norsang1",
@@ -193,7 +223,7 @@
     "route": "tenzin-paljor1",
     "name": "བསྟན་འཛིན་དཔལ་འབྱོར།",
     "team": "Tech Team",
-    "designation": "མཉེན་ཆས་ལས་འཆར་འགན་འཛིན།",
+    "designation": "།",
     "bios": "",
     "educationalProfessionalBackground": "",
     "linkedInId": "",
@@ -238,16 +268,6 @@
     "educationalProfessionalBackground": "",
     "linkedInId": "",
     "headshot": "/assets/team/tenzing-dhugkar.jpg"
-  },
-  {
-    "route": "tsering-ngodup",
-    "name": "ཚེ་རིང་དངོས་གྲུབ།",
-    "team": "འཛིན་སྐྱོང་སྡེ་ཚན།",
-    "designation": "རྩིས་པ།",
-    "bios": "",
-    "educationalProfessionalBackground": "",
-    "linkedInId": "",
-    "headshot": "/assets/team/tsering-ngodup.jpg"
   },
   {
     "route": "tsering-wangchuk1",
