@@ -63,7 +63,7 @@
     "route": "ju-tenkyong1",
     "name": "Ju Tenkyong",
     "team": "Admin Team",
-    "designation": "Dictionary Chief Editor",
+    "designation": "Editor in Chief",
     "bios": "",
     "educationalProfessionalBackground": "",
     "linkedInId": "",
@@ -73,7 +73,7 @@
     "route": "kalsang-dhondup1",
     "name": "Kalsang Dhondup",
     "team": "Tech Team",
-    "designation": "Software Engineer",
+    "designation": "Senior Software Engineer",
     "bios": "",
     "educationalProfessionalBackground": "",
     "linkedInId": "",
@@ -133,7 +133,7 @@
     "route": "lobsang-palden1",
     "name": "Lobsang Palden",
     "team": "Admin Team",
-    "designation": "Typographer",
+    "designation": "Font Developer",
     "bios": "",
     "educationalProfessionalBackground": "",
     "linkedInId": "",
@@ -163,7 +163,7 @@
     "route": "tenzin-gayche1",
     "name": "Tenzin Gayche",
     "team": "Tech Team",
-    "designation": "AI Advisor",
+    "designation": "Chief AI Officer",
     "bios": "Gayche is a seasoned ML Engineer with a deep-rooted passion for pushing the boundaries of language technology. With two years of hands-on experience in Machine Translation and Large Language Models, he brings a wealth of expertise to the team. His BTech in Computer Science, with a specialization in data science, provides a strong foundation for his technical prowess.",
     "educationalProfessionalBackground": "As a pioneer in the STT department, Gayche played a pivotal role in developing the team's inaugural text-to-speech model. His contributions have been instrumental in shaping the department's trajectory. Beyond his technical acumen, Gayche hobbies of birdwatching and painting lend a unique perspective to his work, fostering creativity and innovation. Driven by a desire to empower the Tibetan community, Gayche's ultimate goal is to elevate Tibetan language technology to par with other major languages. By bridging the digital divide, he aims to unlock a world of opportunities for Tibetan speakers.",
     "linkedInId": "",
@@ -220,17 +220,7 @@
     "headshot": "/assets/team/tenzin-nyima.jpg"
   },
   {
-    "route": "tenzin-paljor1",
-    "name": "Tenzin Paljor",
-    "team": "Tech Team",
-    "designation": "",
-    "bios": "",
-    "educationalProfessionalBackground": "",
-    "linkedInId": "",
-    "headshot": "/assets/team/tenzin-paljor.jpg"
-  },
-  {
-    "route": "tenzin-sherab1",
+    "route": "tenzin-sherab",
     "name": "Tenzin Sherab",
     "team": "Tech Team",
     "designation": "Software Engineer",
@@ -253,7 +243,7 @@
     "route": "tenzin-thinley1",
     "name": "Tenzin Thinley",
     "team": "Admin Team",
-    "designation": "Fundraising Officer",
+    "designation": "Fundraising & Project Manager",
     "bios": "",
     "educationalProfessionalBackground": "",
     "linkedInId": "",
@@ -263,7 +253,7 @@
     "route": "tenzing-dhugkar1",
     "name": "Tenzing Dhugkar Lingkar",
     "team": "Tech Team",
-    "designation": "Software Engineer",
+    "designation": "Senior Software Engineer",
     "bios": "",
     "educationalProfessionalBackground": "",
     "linkedInId": "",
@@ -278,5 +268,15 @@
     "educationalProfessionalBackground": "",
     "linkedInId": "",
     "headshot": "/assets/team/tsering-wangchuk.jpg"
+  },
+  {
+    "route": "placeholder",
+    "name": "Tsewang Yougyal",
+    "team": "Tech Team",
+    "designation": "Server Administrator",
+    "bios": "",
+    "educationalProfessionalBackground": "",
+    "linkedInId": "",
+    "headshot": "/assets/team/tsewang-yougyal.jpg"
   }
 ]
