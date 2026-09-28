@@ -12,7 +12,11 @@ export const getHeaders = async (request: Request, user?: any) => {
     "Client-IP": ip,
   };
   if (user) {
-    headers["Cookie"] = `email=${user.emails[0].value};`;
+    const email =
+      user.emails?.[0]?.value ?? user._json?.email ?? user.email;
+    if (email) {
+      headers["Cookie"] = `email=${email};`;
+    }
   }
 
   return headers;
