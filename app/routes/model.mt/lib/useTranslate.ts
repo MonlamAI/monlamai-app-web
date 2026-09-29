@@ -124,7 +124,7 @@ const useTranslate = ({
   const [error, setError] = useState("");
   const [isToasted, setIsToasted] = useState(false);
 
-  const trigger = async () => {
+  const trigger = useCallback(async () => {
     setResponseTime(0);
     if (!text || !text.trim()) {
       // Avoid fetching if text is empty or not provided
@@ -167,7 +167,16 @@ const useTranslate = ({
     };
 
     await fetchData();
-  };
+  }, [
+    text,
+    target_lang,
+    setData,
+    isToasted,
+    setIsToasted,
+    model,
+    setInferenceId,
+    editfetcher,
+  ]);
 
   return { data, isLoading, error, done, trigger, responseTime };
 };
